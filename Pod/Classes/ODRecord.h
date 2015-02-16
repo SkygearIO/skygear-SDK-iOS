@@ -12,7 +12,7 @@
 
 NSString * const ODRecordTypeUserRecord;
 
-@interface ODRecord : NSObject
+@interface ODRecord : NSObject<NSCopying>
 
 - (instancetype)initWithRecordType:(NSString *)recordType;
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId;
@@ -28,6 +28,8 @@ NSString * const ODRecordTypeUserRecord;
 - (void)addObjectsFromArray:(NSArray *)objects forKey:(id <NSCopying>)key;
 - (void)removeObject:(id)object forKey:(id <NSCopying>)key;
 - (void)removeObjectsFromArray:(NSArray *)objects forKey:(id <NSCopying>)key;
+
+- (ODRecord *)referencedRecordForKey:(id)key;
 
 // increment integer value stored in key by 1
 // if the value of key is nil, it is then treated as zero

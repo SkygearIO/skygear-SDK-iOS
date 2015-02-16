@@ -21,7 +21,7 @@ typedef enum ODReferenceAction : NSInteger {
 - (instancetype)initWithRecord:(ODRecord *)record;
 - (instancetype)initWithRecord:(ODRecord *)record action:(ODReferenceAction)action;
 - (instancetype)initWithRecordID:(ODRecordID *)recordID;
-- (instancetype)initWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action;
 
 @property (nonatomic, readonly, assign) ODReferenceAction referenceAction;
 @property (nonatomic, readonly, copy) ODRecordID *recordID;

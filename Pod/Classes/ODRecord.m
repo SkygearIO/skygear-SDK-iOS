@@ -8,6 +8,8 @@
 
 #import "ODRecord.h"
 
+#import "ODReference.h"
+
 @interface ODRecord()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
@@ -41,6 +43,17 @@
     return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    ODRecord *record = [[self.class allocWithZone:zone] init];
+    record->_recordType = [_recordType copyWithZone:zone];
+    record->_recordID = [_recordID copyWithZone:zone];
+    record->_object = [_object copyWithZone:zone];
+    return record;
+}
+
+#pragma mark - Properties
 
 - (void)setRecordID:(ODRecordID *)recordID {
     _recordID = recordID;
@@ -49,6 +62,13 @@
 - (void)setCreationDate:(NSDate *)date {
     _creationDate = date;
 }
+
+- (NSDictionary *)dictionary
+{
+    return [_object copy];
+}
+
+#pragma mark - Dictionary-like methods
 
 - (id)objectForKey:(id)key {
     return [self.object objectForKey:key];
@@ -66,9 +86,27 @@
     [self setObject:object forKey:key];
 }
 
-- (NSDictionary *)dictionary
-{
-    return [_object copy];
+- (ODRecord *)referencedRecordForKey:(id)key {
+    ODReference *reference = self[key];
+    return reference.record;
 }
 
+#pragma mark - Atomic increment
+
+- (void)incrementKey:(id<NSCopying>)key {
+    // nothing
+}
+
+- (void)incrementKey:(id<NSCopying>)key amount:(NSInteger)amount {
+    // nothing
+}
+
+- (void)incrementKeyPath:(id<NSCopying>)keyPath {
+    // nothing
+}
+
+- (void)incrementKeyPath:(id<NSCopying>)keyPath amount:(NSInteger)amount {
+    // nothing
+}
+    
 @end

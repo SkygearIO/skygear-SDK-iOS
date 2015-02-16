@@ -10,11 +10,21 @@
 
 #import "ODNotificationID.h"
 
+typedef enum ODNotificationType : NSInteger {
+    ODNotificationTypeQuery = 1,
+    ODNotificationTypeRecordZone = 2,
+    ODNotificationTypeReadNotification = 3,
+    ODNotificationTypePushNotification = 4,
+} ODNotificationType;
+
 @interface ODNotification : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary;
 
 @property (nonatomic, readonly, copy) ODNotificationID *notificationID;
+@property (nonatomic, readonly, assign) ODNotificationType notificationType;
 @property (nonatomic, readonly, copy) NSString *containerIdentifier;
 
 @property (nonatomic, readonly, assign) BOOL isPruned;

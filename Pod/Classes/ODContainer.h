@@ -12,7 +12,7 @@
 #import "ODAccessToken.h"
 
 @class ODUserRecordID;
-@class ODUserOperation;
+@class ODOperation;
 
 // keep it in sync with ODUserOperationActionCompletion
 typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NSError *error);
@@ -30,10 +30,20 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 @property (nonatomic, readonly) ODUserRecordID *currentUserRecordID;
 @property (nonatomic, readonly) ODAccessToken *currentAccessToken;
 
-- (void)addOperation:(ODUserOperation *)operation;
+- (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 - (void)loginUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 - (void)logoutUserWithcompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
+
+@end
+
+@interface ODContainer (ODPushOperation)
+
+- (void)pushToUserRecordID:(ODUserRecordID *)userRecordID alertBody:(NSString *)alertBody;
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody;
+
+- (void)pushToUserRecordID:(ODUserRecordID *)userRecordID alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
 
 @end

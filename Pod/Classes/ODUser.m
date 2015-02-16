@@ -47,7 +47,7 @@
 }
 
 - (ODQueryOperation *)followerQueryOperation {
-    ODQueryOperation *operation = [self followerQueryOperationWithRecordFetchedBlock:nil queryCompletionBlock:nil];
+    return [self followerQueryOperationWithRecordFetchedBlock:nil queryCompletionBlock:nil];
 }
 
 - (ODQueryOperation *)followerQueryOperationWithRecordFetchedBlock:(void(^)(ODRecord *record))recordFetchedBlock

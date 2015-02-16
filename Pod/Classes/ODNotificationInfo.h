@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ODNotificationInfo : NSObject
+@interface ODNotificationInfo : NSObject<NSCopying>
 
 @property(nonatomic, copy) NSString *alertBody;
 @property(nonatomic, copy) NSString *alertLocalizationKey;

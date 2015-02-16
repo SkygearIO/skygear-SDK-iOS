@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ODNewsfeed.h"
 #import "ODUser.h"
 #import "ODRecord.h"
 
@@ -64,6 +63,6 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 
 @interface ODDatabase (ODNewsfeed)
 
-- (void)fetchUserNewsFeed:(ODNewsfeed *)newsfeed completionHandler:(void (^)(ODRecord *results, NSError *error))completionHandler;
+- (void)fetchUserNewsFeed:(NSString *)newsfeedID completionHandler:(void (^)(ODRecord *results, NSError *error))completionHandler;
 
 @end

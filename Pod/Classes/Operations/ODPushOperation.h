@@ -8,15 +8,36 @@
 
 #import "ODOperation.h"
 
+#import "ODNotificationInfo.h"
 #import "ODUserRecordID.h"
 
 @interface ODPushOperation : ODOperation
 
-- initWithUserRecordID:(ODUserRecordID *)userRecordID message:(NSString *)message;
-- initWithUserRecordIDs:(NSArray *)userRecordIDs message:(NSString *)message;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody alertActionLocalizationKey:(NSString *)alertActionLocalizationKey soundName:(NSString *)soundName;
+
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs alertActionLocalizationKey:(NSString *)alertActionLocalizationKey soundName:(NSString *)soundName;
+
+- (instancetype)initWithUserRecordID:(ODUserRecordID *)userRecordID notificationInfo:(ODNotificationInfo *)notificationInfo;
+- (instancetype)initWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs notificationInfo:(ODNotificationInfo *)notificationInfo NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy) NSArray *userRecordIDs;
-@property (nonatomic, copy) NSString *message;
+
+/**
+ The configuration of notifications sent by this operation.
+
+ ## Discussion
+
+ For an opertion object not created by the family of `init` methods that receive a `ODNotificationInfo` object, the notificationInfo object created will have the shouldBadge property equalled YES by default.
+
+ If configuration of properties `alertLaunchImage`, `shouldBadge` or `shouldSendContentAvailable` is desired, create and set a new `ODNotificationInfo` object manually or use the `-[ODPushOperation initWithUserRecordIDs:notificationInfo:]` initializer. The value of property `desiredKeys` configured on such notificationInfo will be ignored.
+ 
+ If this property is nil when the operation starts, an NSInternalInconsistencyException will be thrown.
+ */
+@property (nonatomic, copy) ODNotificationInfo *notificationInfo;
 
 @property (nonatomic, copy) void(^perUserRecordIDCompletionBlock)(ODUserRecordID* userRecordID, NSError *error);
 @property (nonatomic, copy) void(^pushCompletionBlock)(NSError *error);

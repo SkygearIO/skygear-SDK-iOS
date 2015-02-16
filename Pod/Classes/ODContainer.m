@@ -8,18 +8,35 @@
 
 #import "ODContainer.h"
 #import "ODDatabase_Private.h"
-#import "ODUserOperation.h"
+#import "ODOperation.h"
+#import "ODPushOperation.h"
 #import "ODContainer_Private.h"
 #import "ODUserLoginOperation.h"
 #import "ODUserLogoutOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
+@interface ODContainer ()
+
+@property (nonatomic, readonly) NSOperationQueue *operationQueue;
+
+@end
+
 @implementation ODContainer {
     ODAccessToken *_accessToken;
     ODUserRecordID *_userRecordID;
     AFHTTPRequestOperationManager *_requestManager;
     ODDatabase *_publicCloudDatabase;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _operationQueue.name = @"ODContainerOperationQueue";
+        _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
+    }
+    return self;
 }
 
 + (ODContainer *)defaultContainer {
@@ -31,21 +48,16 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     return ODContainerDefaultInstance;
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
-    }
-    return self;
-}
-
 - (ODDatabase *)publicCloudDatabase {
     return _publicCloudDatabase;
 }
 
 - (ODUserRecordID *)currentUserRecordID {
     return _userRecordID;
+}
+
+- (void)addOperation:(ODOperation *)operation {
+    [self.operationQueue addOperation:operation];
 }
 
 - (ODAccessToken *)currentAccessToken
@@ -119,6 +131,28 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     };
     
     [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
+# pragma mark - ODPushOperation
+
+- (void)pushToUserRecordID:(ODUserRecordID *)userRecordID alertBody:(NSString *)alertBody {
+    ODPushOperation *pushOperation = [[ODPushOperation alloc] initWithUserRecordIDs:@[userRecordID] alertBody:alertBody];
+    [self addOperation:pushOperation];
+}
+
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody {
+    ODPushOperation *pushOperation = [[ODPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
+    [self addOperation:pushOperation];
+}
+
+- (void)pushToUserRecordID:(ODUserRecordID *)userRecordID alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs {
+    ODPushOperation *pushOperation = [[ODPushOperation alloc] initWithUserRecordIDs:@[userRecordID] alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs];
+    [self addOperation:pushOperation];
+}
+
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs {
+    ODPushOperation *pushOperation = [[ODPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs];
+    [self addOperation:pushOperation];
 }
 
 @end

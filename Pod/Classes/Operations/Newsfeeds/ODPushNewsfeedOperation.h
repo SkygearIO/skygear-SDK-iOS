@@ -8,25 +8,28 @@
 
 #import "ODDatabaseOperation.h"
 
-#import "ODNewsfeed.h"
+#import "ODNewsfeedItem.h"
 #import "ODReference.h"
 #import "ODRecord.h"
 
 @interface ODPushNewsfeedOperation : ODDatabaseOperation
 
-- (instancetype)initWithRecord:(ODRecord *)record
-            pushingToReference:(ODReference *)reference
-                   forNewsfeed:(ODNewsfeed *)newsfeed;
+- (instancetype)initWithNewsfeedItem:(ODNewsfeedItem *)newsfeedItem
+                  pushingToReference:(ODReference *)reference
+                       forNewsfeedID:(NSString *)newsfeedID;
 
-- (instancetype)initWithRecords:(NSArray *)records
-             pushingToReference:(ODReference *)reference
-                    forNewsfeed:(ODNewsfeed *)newsfeed;
+// is it really useful to push multiple items?
+- (instancetype)initWithNewsfeedItems:(NSArray /* ODNewsfeedItem */ *)newsfeedItems
+                   pushingToReference:(ODReference *)reference
+                        forNewsfeedID:(NSString *)newsfeedID;
 
 // seems pushing to a ODQuery is also desirable?
 
-@property (strong, nonatomic) ODNewsfeed *newsfeed;
-@property (nonatomic, copy) NSArray *records;
+@property (strong, nonatomic) NSString *newsfeedID;
+@property (nonatomic, copy) NSArray /* ODNewsfeedItem */ *newfeedItems;
 // reference to push to
 @property (nonatomic, copy) ODReference *reference;
+
+@property (nonatomic, copy) void(^pushNewsfeedCompletionBlock)(NSArray /* ODNewsfeedItem */ *newsfeedItems, NSError *error);
 
 @end

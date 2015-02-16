@@ -8,6 +8,12 @@
 
 #import "ODReference.h"
 
+@interface ODReference()
+
+- (instancetype)initWithRecordID:(ODRecordID *)recordID referencedRecord:(ODRecord *)record action:(ODReferenceAction)action NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @implementation ODReference
 
 - (instancetype)initWithRecord:(ODRecord *)record {
@@ -15,7 +21,7 @@
 }
 
 - (instancetype)initWithRecord:(ODRecord *)record action:(ODReferenceAction)action {
-    return [self initWithRecordID:record.recordID action:action];
+    return [self initWithRecordID:record.recordID referencedRecord:record action:action];
 }
 
 - (instancetype)initWithRecordID:(ODRecordID *)recordID {
@@ -23,8 +29,13 @@
 }
 
 - (instancetype)initWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action {
+    return [self initWithRecordID:recordID referencedRecord:nil action:action];
+}
+
+- (instancetype)initWithRecordID:(ODRecordID *)recordID referencedRecord:(ODRecord *)record action:(ODReferenceAction)action {
     self = [super init];
     if (self) {
+        _record = record;
         _recordID = recordID;
         _referenceAction = action;
     }
