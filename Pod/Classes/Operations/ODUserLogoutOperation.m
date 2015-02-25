@@ -10,17 +10,11 @@
 
 @implementation ODUserLogoutOperation
 
-- (BOOL)isNetworkEnabled
-{
-    return YES;
-}
-
-- (void)start
+- (void)prepareForRequest
 {
     self.request = [[ODRequest alloc] initWithAction:@"auth:logout"
                                              payload:nil];
     self.request.accessToken = self.container.currentAccessToken;
-    [super start];
 }
 
 - (void)setLogoutCompletionBlock:(void (^)(NSError *))logoutCompletionBlock

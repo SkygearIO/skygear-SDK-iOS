@@ -7,10 +7,7 @@
 //
 
 #import "ODContainer.h"
-#import <AFNetworking/AFNetworking.h>
 
 @interface ODContainer()
-
-- (AFHTTPRequestOperationManager *)requestManager;
 
 @end

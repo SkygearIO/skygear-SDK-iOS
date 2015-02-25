@@ -22,12 +22,7 @@
     return self;
 }
 
-- (BOOL)isNetworkEnabled
-{
-    return YES;
-}
-
-- (void)start
+- (void)prepareForRequest
 {
     NSMutableArray *stringIDs = [NSMutableArray array];
     [self.recordIDs enumerateObjectsUsingBlock:^(ODRecordID *obj, NSUInteger idx, BOOL *stop) {
@@ -43,7 +38,6 @@
     self.request = [[ODRequest alloc] initWithAction:@"record:fetch"
                                              payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
-    [super start];
 }
 
 - (void)setPerRecordCompletionBlock:(void (^)(ODRecord *, ODRecordID *, NSError *))perRecordCompletionBlock

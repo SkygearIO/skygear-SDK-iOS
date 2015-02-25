@@ -10,12 +10,9 @@
 Pod::Spec.new do |s|
   s.name             = "ODKit"
   s.version          = "0.1.0"
-  s.summary          = "A short description of ODKit."
+  s.summary          = "Ourd Objective-C client library."
   s.description      = <<-DESC
-                       An optional longer description of ODKit
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       This client library connects to the Ourd backend.
                        DESC
   s.homepage         = "https://github.com/oursky/ODKit"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
@@ -34,5 +31,5 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'AFNetworking', '~> 2.4'
+  # s.dependency 'AFNetworking', '~> 2.4'
 end

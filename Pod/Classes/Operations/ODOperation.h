@@ -17,8 +17,8 @@
 @property(nonatomic, strong) ODRequest *request;
 @property(nonatomic, readonly) NSDictionary *response;
 @property(nonatomic, readonly) NSError *error;
-@property(nonatomic, readonly, getter=isNetworkEnabled) BOOL networkEnabled DEPRECATED_ATTRIBUTE;
 
 - (instancetype)initWithRequest:(ODRequest *)request;
+- (void)prepareForRequest;
 
 @end

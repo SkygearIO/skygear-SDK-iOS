@@ -34,6 +34,11 @@
     return self;
 }
 
+- (BOOL)isAsynchronous
+{
+    return NO;
+}
+
 - (void)main {
     if (self.recordFetchedBlock) {
         for (ODRecord *record in self.results) {

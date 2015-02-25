@@ -22,8 +22,10 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		C6AA418D510F073AE2609148 /* libPods-ODKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */; };
+		CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE2681A9D9F31002C076E /* ODOperationTests.m */; };
+		CD7FE26B1A9DB97B002C076E /* NSURLRequestODRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */; };
+		CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,13 +62,15 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		657F94CCEA2515F29D33EDA5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B46A624FFAA79E1A174FB17 /* ODKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ODKit.podspec; path = ../ODKit.podspec; sourceTree = "<group>"; };
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BBCD8651B4E01440D50F8C99 /* Pods-ODKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.release.xcconfig"; sourceTree = "<group>"; };
 		C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		CD7FE2681A9D9F31002C076E /* ODOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODOperationTests.m; sourceTree = "<group>"; };
+		CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLRequestODRequestTests.m; sourceTree = "<group>"; };
+		CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUserLoginOperationTests.m; sourceTree = "<group>"; };
 		EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -171,8 +175,10 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
+				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
+				CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */,
+				CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -373,7 +379,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,
+				CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */,
+				CD7FE26B1A9DB97B002C076E /* NSURLRequestODRequestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

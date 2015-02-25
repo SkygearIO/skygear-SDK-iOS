@@ -67,6 +67,11 @@ ODNotificationInfo *DefaultNotificationInfo;
     return [DefaultNotificationInfo copy];
 }
 
+- (BOOL)isAsynchronous
+{
+    return NO;
+}
+
 - (void)main {
     // do nothing
 }

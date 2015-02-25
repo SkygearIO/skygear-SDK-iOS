@@ -22,19 +22,13 @@
     return self;
 }
 
-- (BOOL)isNetworkEnabled
-{
-    return YES;
-}
-
-- (void)start
+- (void)prepareForRequest
 {
     self.request = [[ODRequest alloc] initWithAction:self.createNewUser ? @"auth:signup" : @"auth:login"
                                              payload:@{
                                                        @"email": self.email,
                                                        @"password": self.password,
                                                        }];
-    [super start];
 }
 
 - (void)setLoginCompletionBlock:(void (^)(ODUserRecordID *, ODAccessToken *, NSError *))loginCompletionBlock

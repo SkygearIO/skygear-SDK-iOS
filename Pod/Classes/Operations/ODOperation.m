@@ -8,6 +8,7 @@
 
 #import "ODOperation.h"
 #import "ODContainer_Private.h"
+#import "NSURLRequest+ODRequest.h"
 
 @interface ODOperation ()
 
@@ -24,7 +25,7 @@
 
 - (instancetype)initWithRequest:(ODRequest *)request;
 {
-    if ((self = [super init])) {
+    if ((self = [self init])) {
         self.request = request;
     }
     return self;
@@ -32,12 +33,12 @@
 
 - (BOOL)isAsynchronous
 {
-    return self.isNetworkEnabled ? YES : [super isAsynchronous];
+    return YES;
 }
 
 - (BOOL)isExecuting
 {
-    return self.isNetworkEnabled ? _executing : [super isExecuting];
+    return self.asynchronous ? _executing : [super isExecuting];
 }
 
 - (void)setExecuting:(BOOL)aBOOL
@@ -51,7 +52,7 @@
 
 - (BOOL)isFinished
 {
-    return self.isNetworkEnabled ? _finished : [super isFinished];
+    return self.asynchronous ? _finished : [super isFinished];
 }
 
 - (void)setFinished:(BOOL)aBOOL
@@ -75,24 +76,17 @@
     [self didChangeValueForKey:@"response"];
 }
 
-
-/*
- TODO: When all ODOperation implements network request, this property
- should be removed.
- 
- Since ODOperation make network request asynchronously, it overrides
- the start method without calling -main. -main is implemented by stub
- operation classes that does not make network request. This design
- is subject to change.
- */
-- (BOOL)isNetworkEnabled
+- (NSURLRequest *)makeURLRequest
 {
-    return NO;
+    if (!self.request) {
+        [self prepareForRequest];
+    }
+    return [NSURLRequest requestWithODRequest:self.request];
 }
 
 - (void)start
 {
-    if (!self.isNetworkEnabled) {
+    if (!self.asynchronous) {
         [super start];
         return;
     }
@@ -103,25 +97,20 @@
     
     [self setExecuting:YES];
     
-    NSMutableDictionary *parameters = [self.request.payload mutableCopy];
-    if (self.request.accessToken) {
-        parameters[@"access_token"] = self.request.accessToken.tokenString;
-    }
-    parameters[@"action"] = self.request.action;
-    AFHTTPRequestOperationManager *manager = [self.container requestManager];
-    [manager POST:self.request.requestPath
-       parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSLog(@"JSON: %@", responseObject);
-              [self setResponse:responseObject];
-              [self setFinished:YES];
-              
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              NSLog(@"Error: %@", error);
-              self.error = error;
-              [self setFinished:YES];
-          }];
-
+    NSURLSessionConfiguration *myConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:myConfig];
+    NSURLSessionTask *task;
+    task = [session dataTaskWithRequest:[self makeURLRequest]
+                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                          if (!error) {
+                              id obj = [NSJSONSerialization JSONObjectWithData:data
+                                                                       options:0
+                                                                         error:nil];
+                              [self setResponse:obj];
+                          }
+                          [self setFinished:YES];
+                      }];
+    [task resume];
 }
 
 @end

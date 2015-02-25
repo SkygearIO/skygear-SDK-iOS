@@ -25,7 +25,6 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 @implementation ODContainer {
     ODAccessToken *_accessToken;
     ODUserRecordID *_userRecordID;
-    AFHTTPRequestOperationManager *_requestManager;
     ODDatabase *_publicCloudDatabase;
 }
 
@@ -63,14 +62,6 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 - (ODAccessToken *)currentAccessToken
 {
     return _accessToken;
-}
-
-- (AFHTTPRequestOperationManager *)requestManager {
-    if (!_requestManager) {
-        _requestManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:ODContainerRequestBaseURL]];
-        _requestManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    }
-    return _requestManager;
 }
 
 - (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken

@@ -23,12 +23,7 @@
     return self;
 }
 
-- (BOOL)isNetworkEnabled
-{
-    return YES;
-}
-
-- (void)start
+- (void)prepareForRequest
 {
     ODRecordSerializer *serializer = [ODRecordSerializer serializer];
     
@@ -41,7 +36,6 @@
     self.request = [[ODRequest alloc] initWithAction:@"record:save"
                                              payload:@{@"records": dictionariesToSave,
                                                        @"database_id": self.database.databaseID}];
-    [super start];
 }
 
 - (void)setPerRecordCompletionBlock:(void (^)(ODRecord *, NSError *))perRecordCompletionBlock

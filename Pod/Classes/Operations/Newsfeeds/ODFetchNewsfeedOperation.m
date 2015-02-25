@@ -43,6 +43,11 @@
     return self;
 }
 
+- (BOOL)isAsynchronous
+{
+    return NO;
+}
+
 - (void)main {
     NSAssert(self.userRecordID != nil, @"userRecordID cannot be nil");
 
