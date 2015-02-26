@@ -11,3 +11,5 @@
 extern const NSString *ODRecordSerializationCustomTypeKey;
 extern const NSString *ODRecordSerializationRecordIDKey;
 extern const NSString *ODRecordSerializationRecordTypeKey;
+extern const NSString *ODRecordSerializationReferenceType;
+extern const NSString *ODRecordSerializationDateType;

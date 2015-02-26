@@ -28,12 +28,12 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         data = @{
-                 ODRecordSerializationCustomTypeKey: @"date",
+                 ODRecordSerializationCustomTypeKey: ODRecordSerializationDateType,
                  @"$date": [formatter stringFromDate:obj],
                  };
     } else if ([obj isKindOfClass:[ODReference class]]) {
         data = @{
-                 ODRecordSerializationCustomTypeKey: @"ref",
+                 ODRecordSerializationCustomTypeKey: ODRecordSerializationReferenceType,
                  @"$id": [[(ODReference*)obj recordID] recordName],
                  };
     } else {

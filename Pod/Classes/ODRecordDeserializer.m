@@ -24,11 +24,11 @@
 - (id)deserializeObjectWithType:(NSString *)type data:(NSDictionary *)data
 {
     id obj = nil;
-    if ([type isEqualToString:@"date"]) {
+    if ([type isEqualToString:ODRecordSerializationDateType]) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         obj = [formatter dateFromString:data[@"$date"]];
-    } else if ([type isEqualToString:@"ref"]) {
+    } else if ([type isEqualToString:ODRecordSerializationReferenceType]) {
         obj = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:data[@"$id"]]];
     }
     return obj;
