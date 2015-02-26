@@ -80,6 +80,7 @@
 {
     if (!self.request) {
         [self prepareForRequest];
+        self.request.baseURL = self.container.endPointAddress;
     }
     return [NSURLRequest requestWithODRequest:self.request];
 }

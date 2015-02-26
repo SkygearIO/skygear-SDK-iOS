@@ -20,7 +20,10 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 @interface ODContainer : NSObject
 
 // seems we need a way to authenticate app
-+(ODContainer *)defaultContainer;
+- (instancetype)initWithAddress:(NSString *)address;
++ (ODContainer *)defaultContainer;
+
+@property (nonatomic, nonatomic) NSString *endPointAddress;
 
 @property (nonatomic, readonly) ODDatabase *publicCloudDatabase;
 @property (nonatomic, readonly) ODDatabase *privateCloudDatabase;

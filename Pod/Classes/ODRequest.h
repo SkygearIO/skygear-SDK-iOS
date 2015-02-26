@@ -14,8 +14,8 @@
 @property(nonatomic, copy) NSString *action;
 @property(nonatomic, copy) NSDictionary *payload;
 @property(nonatomic, strong) ODAccessToken *accessToken;
+@property(nonatomic, strong) NSURL *baseURL;
 @property(nonatomic, readonly) NSString *requestPath;
-@property(nonatomic, readonly) NSURL *baseURL;
 
 - (instancetype)initWithAction:(NSString *)action payload:(NSDictionary *)payload;
 

@@ -30,11 +30,6 @@
     [self didChangeValueForKey:@"payload"];
 }
 
-- (NSURL *)baseURL
-{
-    return [NSURL URLWithString:@"http://localhost:5000/v1/"];
-}
-
 - (NSString *)requestPath
 {
     if (self.action) {
