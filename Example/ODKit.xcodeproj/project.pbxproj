@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		CD7FE2771A9F0E6D002C076E /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = CD7FE27A1A9F0E6D002C076E /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				CD7FE27B1A9F0E79002C076E /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		3ED0BE5EFF5C701B898ED1F8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -261,6 +275,9 @@
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
+					CD7FE2771A9F0E6D002C076E = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
 				};
 			};
 			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "ODKit" */;
@@ -278,6 +295,7 @@
 			targets = (
 				6003F589195388D20070C39A /* ODKit */,
 				6003F5AD195388D20070C39A /* Tests */,
+				CD7FE2771A9F0E6D002C076E /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -349,6 +367,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CD7FE27B1A9F0E79002C076E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc --project-name $PROJECT_NAME --project-company \"Oursky\" --company-id com.oursky --ignore \".m\" --explicit-crossref --keep-undocumented-objects --keep-undocumented-members --no-warn-missing-arg --no-warn-undocumented-object --no-warn-undocumented-member --no-warn-empty-description --no-repeat-first-par --docset-bundle-id $PROJECT_NAME --docset-bundle-name $PROJECT_NAME --keep-intermediate-files --output \"$BUILD_DIR/docset\" \"$PROJECT_DIR/../Pod/Classes\"";
 		};
 		D875EEB35BEA3246A4BB7E22 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -579,6 +610,20 @@
 			};
 			name = Release;
 		};
+		CD7FE2781A9F0E6D002C076E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CD7FE2791A9F0E6D002C076E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -608,6 +653,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CD7FE27A1A9F0E6D002C076E /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD7FE2781A9F0E6D002C076E /* Debug */,
+				CD7FE2791A9F0E6D002C076E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
