@@ -33,6 +33,14 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 - (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Creates an anonymous user account and log in as the created user.
+ 
+ Use this to create a user that is not associated with an email address. This is a convenient method for
+ <ODCreateUserOperation>.
+ */
+- (void)signupUserAnonymouslyWithCompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 - (void)loginUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 - (void)logoutUserWithcompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 

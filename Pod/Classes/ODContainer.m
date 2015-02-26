@@ -13,6 +13,7 @@
 #import "ODContainer_Private.h"
 #import "ODUserLoginOperation.h"
 #import "ODUserLogoutOperation.h"
+#import "ODCreateUserOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
@@ -56,6 +57,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 }
 
 - (void)addOperation:(ODOperation *)operation {
+    operation.container = self;
     [self.operationQueue addOperation:operation];
 }
 
@@ -71,12 +73,11 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 }
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {
-    ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:username password:password];
-    operation.createNewUser = YES;
+    ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:username password:password];
     operation.container = self;
     
     __weak typeof(self) weakSelf = self;
-    operation.loginCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
+    operation.createCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
         if (!error) {
             [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
         }
@@ -86,6 +87,23 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     };
     
     [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
+- (void)signupUserAnonymouslyWithCompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler
+{
+    ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithAnonymousUserAndPassword:@"CHANGEME"];
+    
+    __weak typeof(self) weakSelf = self;
+    operation.createCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
+        if (!error) {
+            [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(recordID, error);
+        });
+    };
+    
+    [self addOperation:operation];
 }
 
 - (void)loginUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {

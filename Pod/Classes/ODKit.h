@@ -3,6 +3,7 @@
 #import "ODContainer+FacebookAuth.h"
 #import "ODContainer.h"
 #import "ODContainer_Private.h"
+#import "ODCreateUserOperation.h"
 #import "ODDatabase+FacebookExtension.h"
 #import "ODDatabase+ODContactFinder.h"
 #import "ODDatabase.h"

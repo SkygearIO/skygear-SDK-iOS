@@ -24,7 +24,7 @@
 
 - (void)prepareForRequest
 {
-    self.request = [[ODRequest alloc] initWithAction:self.createNewUser ? @"auth:signup" : @"auth:login"
+    self.request = [[ODRequest alloc] initWithAction:@"auth:login"
                                              payload:@{
                                                        @"email": self.email,
                                                        @"password": self.password,

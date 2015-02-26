@@ -14,7 +14,6 @@
 
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSString *password;
-@property (nonatomic, readwrite) BOOL createNewUser;
 @property (nonatomic, copy) void (^loginCompletionBlock)(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error);
 
 - (instancetype)initWithEmail:(NSString *)email password:(NSString *)password;
