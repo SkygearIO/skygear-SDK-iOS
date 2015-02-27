@@ -36,6 +36,8 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
         _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
+        
+        [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
     return self;
 }
@@ -52,6 +54,8 @@ initWithAddress accept IP:PORT, no scheme is required. i.e. no http://
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
         _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
+        
+        [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
     return self;
 }
@@ -83,10 +87,29 @@ initWithAddress accept IP:PORT, no scheme is required. i.e. no http://
     return _accessToken;
 }
 
+- (void)loadAccessCurrentUserRecordIDAndAccessToken
+{
+    NSString *userRecordName = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerCurrentUserRecordID"];
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerAccessToken"];
+    if (userRecordName && accessToken) {
+        _userRecordID = [[ODUserRecordID alloc] initWithRecordName:userRecordName];
+        _accessToken = [[ODAccessToken alloc] initWithTokenString:accessToken];
+    }
+}
+
 - (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken
 {
     _userRecordID = userRecord;
     _accessToken = accessToken;
+    
+    if (userRecord && accessToken) {
+        [[NSUserDefaults standardUserDefaults] setObject:userRecord.recordName forKey:@"ODContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString forKey:@"ODContainerAccessToken"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ODContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ODContainerAccessToken"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {
