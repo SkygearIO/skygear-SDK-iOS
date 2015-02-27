@@ -14,11 +14,15 @@ SpecBegin(ODRecordSerializer)
 describe(@"serialize", ^{
     __block ODRecordSerializer *serializer = nil;
     __block ODRecord *record = nil;
+    __block NSDateFormatter *dateFormatter = nil;
     
     beforeEach(^{
         serializer = [ODRecordSerializer serializer];
         record = [[ODRecord alloc] initWithRecordType:@"book"
                                              recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
+        
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     });
     
     it(@"init", ^{
@@ -58,7 +62,8 @@ describe(@"serialize", ^{
         expect([publishDate class]).to.beSubclassOf([NSDictionary class]);
         NSLog(@"%@", publishDate);
         expect(publishDate[ODRecordSerializationCustomTypeKey]).to.equal(ODRecordSerializationDateType);
-        expect(publishDate[@"$date"]).to.equal(@"2001-01-01T08:00:00+08:00");
+        
+        expect([dateFormatter dateFromString:publishDate[@"$date"]]).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
     });
     
     it(@"serialize array", ^{
