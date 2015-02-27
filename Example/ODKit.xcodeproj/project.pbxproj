@@ -38,12 +38,14 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		C6AA418D510F073AE2609148 /* libPods-ODKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */; };
 		CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */; };
+		CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */; };
 		CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE2681A9D9F31002C076E /* ODOperationTests.m */; };
 		CD7FE26B1A9DB97B002C076E /* NSURLRequestODRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */; };
 		CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */; };
 		CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE2711A9EDD5B002C076E /* ODCreateUserOperationTests.m */; };
 		CD8FE8301A9F1FE10087FE71 /* ODRecordSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */; };
 		CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */; };
+		CD98A8A61A9F34390056420F /* ODFetchRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,12 +89,14 @@
 		BBCD8651B4E01440D50F8C99 /* Pods-ODKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.release.xcconfig"; sourceTree = "<group>"; };
 		C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODContainerTests.m; sourceTree = "<group>"; };
+		CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODDatabaseTest.m; sourceTree = "<group>"; };
 		CD7FE2681A9D9F31002C076E /* ODOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODOperationTests.m; sourceTree = "<group>"; };
 		CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLRequestODRequestTests.m; sourceTree = "<group>"; };
 		CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUserLoginOperationTests.m; sourceTree = "<group>"; };
 		CD7FE2711A9EDD5B002C076E /* ODCreateUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODCreateUserOperationTests.m; sourceTree = "<group>"; };
 		CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordSerializerTests.m; sourceTree = "<group>"; };
 		CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordDeserializerTests.m; sourceTree = "<group>"; };
+		CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODFetchRecordsOperationTests.m; sourceTree = "<group>"; };
 		EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -205,6 +209,8 @@
 				CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */,
 				CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */,
 				CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */,
+				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
+				CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -426,9 +432,11 @@
 				CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,
+				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,
 				CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */,
 				CD8FE8301A9F1FE10087FE71 /* ODRecordSerializerTests.m in Sources */,
 				CD7FE26B1A9DB97B002C076E /* NSURLRequestODRequestTests.m in Sources */,
+				CD98A8A61A9F34390056420F /* ODFetchRecordsOperationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

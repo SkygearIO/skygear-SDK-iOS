@@ -33,6 +33,17 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
    completionHandler:(void (^)(NSArray *results,
                                NSError *error))completionHandler;
 
+/**
+ Fetches a single record from Ourd.
+ 
+ Use this method to fetch a single record from Ourd by specifying a <ODRecordID>. The fetch will be performed asynchronously
+ and <completeionHandler> will be called when the operation completes.
+ 
+ This is a convenient method for <ODFetchRecordsOperation>, which supports fetching multiple records by specifying multiple <ODRecordID>s.
+ 
+ @param recordID the record identifier to fetch
+ @param completionHandler the block to be called when operation completes.
+ */
 - (void)fetchRecordWithID:(ODRecordID *)recordID
         completionHandler:(void (^)(ODRecord *record,
                                     NSError *error))completionHandler;
