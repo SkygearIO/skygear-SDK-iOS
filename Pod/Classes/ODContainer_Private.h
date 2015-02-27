@@ -18,15 +18,4 @@
  */
 - (void)loadAccessCurrentUserRecordIDAndAccessToken;
 
-/**
- Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also stored in persistent
- storage.
- 
- This method is called when operation sign up, log in and log out is performed using the container's convenient
- method and when the operation is completed successfully. You should not call this method manually.
- 
- @see -loadAccessCurrentUserRecordIDAndAccessToken
- */
-- (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken;
-
 @end

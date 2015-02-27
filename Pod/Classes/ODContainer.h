@@ -36,6 +36,15 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 - (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
+/**
+ Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also stored in persistent
+ storage.
+ 
+ This method is called when operation sign up, log in and log out is performed using the container's convenient
+ method and when the operation is completed successfully.
+ 
+ @see -loadAccessCurrentUserRecordIDAndAccessToken
+ */
 - (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken;
 
 /**
