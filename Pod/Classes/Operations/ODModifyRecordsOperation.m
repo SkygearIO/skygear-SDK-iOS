@@ -13,12 +13,11 @@
     NSMutableDictionary *recordsByRecordID;
 }
 
-- (instancetype)initWithRecordsToSave:(NSArray *)records recordIDsToDelete:(NSArray *)recordIDs
+- (instancetype)initWithRecordsToSave:(NSArray *)records
 {
     self = [super init];
     if (self) {
         self.recordsToSave = records;
-        self.recordIDsToDelete = recordIDs;
     }
     return self;
 }
@@ -46,7 +45,7 @@
     [self didChangeValueForKey:@"perRecordCompletionBlock"];
 }
 
-- (void)setModifyRecordsCompletionBlock:(void (^)(NSArray *, NSArray *, NSError *))modifyRecordsCompletionBlock
+- (void)setModifyRecordsCompletionBlock:(void (^)(NSArray *, NSError *))modifyRecordsCompletionBlock
 {
     [self willChangeValueForKey:@"modifyRecordsCompletionBlock"];
     _modifyRecordsCompletionBlock = [modifyRecordsCompletionBlock copy];
@@ -56,7 +55,7 @@
 
 - (void)processResultArray:(NSArray *)result
 {
-    NSArray *savedRecords = [NSMutableArray array];
+    NSMutableArray *savedRecords = [NSMutableArray array];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         if ([obj[@"_type"] hasPrefix:@"_"]) {
             // TODO: Call perRecordCompletionBlock with NSError
@@ -66,11 +65,12 @@
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(record, nil);
             }
+            [savedRecords addObject:record];
         }
     }];
     
     if (self.modifyRecordsCompletionBlock) {
-        self.modifyRecordsCompletionBlock(savedRecords, @[], nil);
+        self.modifyRecordsCompletionBlock(savedRecords, nil);
     }
 }
 

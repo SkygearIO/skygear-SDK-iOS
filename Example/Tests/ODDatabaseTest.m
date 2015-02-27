@@ -51,6 +51,48 @@ describe(@"database", ^{
         });
         
     });
+    
+    it(@"modify record", ^{
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        NSString *bookTitle = @"A tale of two cities";
+        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
+                                                       recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
+        record[@"title"] = bookTitle;
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[
+                                                 @{
+                                                     @"_id": @"book1",
+                                                     @"_type": @"book",
+                                                     @"_revision": @"revision1",
+                                                     },
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [database saveRecord:record
+                      completion:^(ODRecord *record, NSError *error) {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              expect(record.recordID.recordName).to.equal(@"book1");
+                          });
+                          done();
+                      }];
+        });
+        
+    });
 });
 
 SpecEnd

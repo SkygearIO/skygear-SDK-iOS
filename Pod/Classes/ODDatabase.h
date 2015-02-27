@@ -47,6 +47,16 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 - (void)fetchRecordWithID:(ODRecordID *)recordID
         completionHandler:(void (^)(ODRecord *record,
                                     NSError *error))completionHandler;
+/**
+ Saves a single record to Ourd.
+ 
+ Use this method to save a single record to Ourd by specifying a <ODReordID>. The save will be performed asynchronously and
+ <completionHandler> will be called when the operation completes.
+ 
+ New record will be created in the database while existing record will be modified.
+ 
+ This is a convenient method for <ODModifyRecordsOperation>, which supports saving multiple records by specifying multiple <ODRecordID>s.
+ */
 - (void)saveRecord:(ODRecord *)record completion:(ODRecordSaveCompletion)completion;
 - (void)deleteRecordWithID:(ODRecordID *)recordID
                  completionHandler:(void (^)(ODRecordID *recordID,

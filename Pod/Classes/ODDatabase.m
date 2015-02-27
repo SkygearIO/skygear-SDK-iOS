@@ -71,12 +71,12 @@
     }
     record.creationDate = [NSDate date];
     
-    ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record] recordIDsToDelete:nil];
+    ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record]];
     operation.container = [ODContainer defaultContainer];
     operation.database = self;
     
     if (completion) {
-        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSArray *deletedRecordIDs, NSError *operationError) {
+        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([savedRecords count] > 0) {
                     completion(savedRecords[0], operationError);
