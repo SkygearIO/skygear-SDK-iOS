@@ -80,8 +80,8 @@ describe(@"modify", ^{
                     expect(savedRecords).to.haveCountOf(2);
                     expect([savedRecords[0] recordID]).to.equal(record1.recordID);
                     expect([savedRecords[1] recordID]).to.equal(record2.recordID);
+                    done();
                 });
-                done();
             };
             
             [[[NSOperationQueue alloc] init] addOperation:operation];

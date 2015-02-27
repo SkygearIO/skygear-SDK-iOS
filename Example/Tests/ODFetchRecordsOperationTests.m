@@ -85,8 +85,8 @@ describe(@"fetch", ^{
                     expect(recordsByRecordID).to.haveCountOf(2);
                     expect([recordsByRecordID[recordID1] recordID]).to.equal(recordID1);
                     expect([recordsByRecordID[recordID2] recordID]).to.equal(recordID2);
+                    done();
                 });
-                done();
             };
 
             [[[NSOperationQueue alloc] init] addOperation:operation];

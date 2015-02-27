@@ -33,7 +33,7 @@ describe(@"login", ^{
                                          @"user_id": @"USER_ID",
                                          @"access_token": @"ACCESS_TOKEN",
                                          };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:@{@"result": parameters}
                                                               options:0
                                                                 error:nil];
             
@@ -44,10 +44,12 @@ describe(@"login", ^{
         
         waitUntil(^(DoneCallback done) {
             operation.loginCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
-                expect(recordID.recordName).to.equal(@"USER_ID");
-                expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-                expect(error).to.beNil();
-                done();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(recordID.recordName).to.equal(@"USER_ID");
+                    expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+                    expect(error).to.beNil();
+                    done();
+                });
             };
 
             [[[NSOperationQueue alloc] init] addOperation:operation];

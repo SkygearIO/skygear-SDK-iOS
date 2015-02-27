@@ -54,10 +54,12 @@ describe(@"create", ^{
         
         waitUntil(^(DoneCallback done) {
             operation.createCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
-                expect(recordID.recordName).to.equal(@"USER_ID");
-                expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-                expect(error).to.beNil();
-                done();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(recordID.recordName).to.equal(@"USER_ID");
+                    expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+                    expect(error).to.beNil();
+                    done();
+                });
             };
             
             [[[NSOperationQueue alloc] init] addOperation:operation];
@@ -85,10 +87,12 @@ describe(@"create", ^{
         
         waitUntil(^(DoneCallback done) {
             operation.createCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
-                expect(recordID.recordName).to.equal(@"USER_ID");
-                expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-                expect(error).to.beNil();
-                done();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(recordID.recordName).to.equal(@"USER_ID");
+                    expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+                    expect(error).to.beNil();
+                    done();
+                });
             };
             
             [[[NSOperationQueue alloc] init] addOperation:operation];

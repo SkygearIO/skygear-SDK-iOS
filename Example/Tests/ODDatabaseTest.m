@@ -45,8 +45,8 @@ describe(@"database", ^{
                           dispatch_async(dispatch_get_main_queue(), ^{
                               expect(record.recordID.recordName).to.equal(@"book1");
                               expect(record[@"title"]).to.equal(bookTitle);
+                              done();
                           });
-                          done();
                       }];
         });
         
@@ -87,8 +87,8 @@ describe(@"database", ^{
                       completion:^(ODRecord *record, NSError *error) {
                           dispatch_async(dispatch_get_main_queue(), ^{
                               expect(record.recordID.recordName).to.equal(@"book1");
+                              done();
                           });
-                          done();
                       }];
         });
         
