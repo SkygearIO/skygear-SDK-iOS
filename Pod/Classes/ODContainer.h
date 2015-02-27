@@ -36,6 +36,7 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 - (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
+- (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken;
 
 /**
  Creates an anonymous user account and log in as the created user.
