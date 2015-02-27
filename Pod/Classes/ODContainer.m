@@ -32,7 +32,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _endPointAddress = ODContainerRequestBaseURL;
+        _endPointAddress = [NSURL URLWithString:ODContainerRequestBaseURL];
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
         _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
@@ -47,7 +47,8 @@ initWithAddress accept IP:PORT, no scheme is required. i.e. no http://
 - (instancetype)initWithAddress:(NSString *)address {
     self = [super init];
     if (self) {
-        _endPointAddress = [NSString stringWithFormat:@"http://%@/", address];
+        NSString *url = [NSString stringWithFormat:@"http://%@/", address];
+        _endPointAddress = [NSURL URLWithString:url];
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
         _publicCloudDatabase = [[ODDatabase alloc] initPrivately];

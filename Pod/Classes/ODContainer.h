@@ -23,7 +23,7 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 - (instancetype)initWithAddress:(NSString *)address;
 + (ODContainer *)defaultContainer;
 
-@property (nonatomic, nonatomic) NSString *endPointAddress;
+@property (nonatomic, nonatomic) NSURL *endPointAddress;
 
 @property (nonatomic, readonly) ODDatabase *publicCloudDatabase;
 @property (nonatomic, readonly) ODDatabase *privateCloudDatabase;
