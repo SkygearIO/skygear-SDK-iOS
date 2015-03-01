@@ -85,6 +85,13 @@
     return [NSURLRequest requestWithODRequest:self.request];
 }
 
+- (void)prepareForRequest
+{
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
+}
+
 - (void)start
 {
     if (!self.asynchronous) {

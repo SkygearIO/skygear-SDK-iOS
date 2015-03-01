@@ -19,6 +19,15 @@
 @property(nonatomic, readonly) NSError *error;
 
 - (instancetype)initWithRequest:(ODRequest *)request;
+
+/**
+ Prepares the operation before a request takes place. You should implement this method by creating a <ODRequest> object
+ and setting the object to the <request> property.
+ 
+ The default implementation of this method throws an exception.
+ 
+ This method is only called by <ODOperation> when the <request> property is <nil>.
+ */
 - (void)prepareForRequest;
 
 @end
