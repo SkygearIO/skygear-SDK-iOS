@@ -58,6 +58,15 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
  This is a convenient method for <ODModifyRecordsOperation>, which supports saving multiple records by specifying multiple <ODRecordID>s.
  */
 - (void)saveRecord:(ODRecord *)record completion:(ODRecordSaveCompletion)completion;
+
+/**
+ Deletes a single record from Ourd.
+ 
+ Use this method to delete a single record to Ourd by specifying a <ODRecordID>. The deletion will be performed asynchronously and
+ <completionHandler> will be called when the operation completes.
+ 
+ This is a convenient method for <ODDeleteRecordsOperation>, which supports deleting multiple records by specifying multiple <ODRecordID>s.
+ */
 - (void)deleteRecordWithID:(ODRecordID *)recordID
                  completionHandler:(void (^)(ODRecordID *recordID,
                                              NSError *error))completionHandler;

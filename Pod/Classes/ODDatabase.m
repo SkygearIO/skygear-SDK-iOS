@@ -13,6 +13,7 @@
 #import "ODRecordID.h"
 #import "ODFetchRecordsOperation.h"
 #import "ODModifyRecordsOperation.h"
+#import "ODDeleteRecordsOperation.h"
 
 @interface ODDatabase()
 
@@ -102,6 +103,29 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([recordsByRecordID count] > 0) {
                     completionHandler(recordsByRecordID[recordID], operationError);
+                } else {
+                    completionHandler(nil, operationError);
+                }
+            });
+        };
+    }
+    
+    [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
+- (void)deleteRecordWithID:(ODRecordID *)recordID
+         completionHandler:(void (^)(ODRecordID *recordID,
+                                     NSError *error))completionHandler
+{
+    ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
+    operation.container = [ODContainer defaultContainer];
+    operation.database = self;
+    
+    if (completionHandler) {
+        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([recordIDs count] > 0) {
+                    completionHandler(recordIDs[0], operationError);
                 } else {
                     completionHandler(nil, operationError);
                 }

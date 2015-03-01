@@ -93,6 +93,39 @@ describe(@"database", ^{
         });
         
     });
+    
+    it(@"delete record", ^{
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [database deleteRecordWithID:recordID
+                       completionHandler:^(ODRecordID *recordID, NSError *error) {
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               expect(recordID.recordName).to.equal(@"book1");
+                               done();
+                           });
+                       }];
+        });
+        
+    });
 });
 
 SpecEnd

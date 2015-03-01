@@ -38,6 +38,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		C6AA418D510F073AE2609148 /* libPods-ODKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */; };
 		CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */; };
+		CD42FE0C1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */; };
 		CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */; };
 		CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */; };
 		CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE2681A9D9F31002C076E /* ODOperationTests.m */; };
@@ -90,6 +91,7 @@
 		BBCD8651B4E01440D50F8C99 /* Pods-ODKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.release.xcconfig"; sourceTree = "<group>"; };
 		C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODDatabaseTest.m; sourceTree = "<group>"; };
+		CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODDeleteRecordsOperationTests.m; sourceTree = "<group>"; };
 		CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODContainerTests.m; sourceTree = "<group>"; };
 		CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODModifyRecordsOperationTests.m; sourceTree = "<group>"; };
 		CD7FE2681A9D9F31002C076E /* ODOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODOperationTests.m; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
 				CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */,
 				CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */,
+				CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD42FE0C1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,

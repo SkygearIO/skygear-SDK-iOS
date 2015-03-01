@@ -9,6 +9,7 @@
 #import "ODDatabase.h"
 #import "ODDatabaseOperation.h"
 #import "ODDatabase_Private.h"
+#import "ODDeleteRecordsOperation.h"
 #import "ODError.h"
 #import "ODFacebookAuthOperation.h"
 #import "ODFacebookFindUserByFriendOperation.h"
