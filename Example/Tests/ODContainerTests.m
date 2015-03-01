@@ -14,11 +14,38 @@
 SpecBegin(ODContainer)
 
 describe(@"save current user", ^{
+    it(@"logout user", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"result": @[
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [container logoutUserWithcompletionHandler:^(ODUserRecordID *user, NSError *error) {
+                done();
+            }];
+        });
+    });
+    
     it(@"fetch record", ^{
         ODContainer *container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"user1"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"accesstoken1"]];
-
+        
         container = [[ODContainer alloc] init];
         expect(container.currentUserRecordID.recordName).to.equal(@"user1");
         expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");

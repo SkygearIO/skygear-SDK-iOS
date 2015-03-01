@@ -55,6 +55,12 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
  */
 - (void)signupUserAnonymouslyWithCompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 - (void)loginUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Logs out the current user of this container.
+ 
+ This is a convenient method for <ODUserLogoutOperation>.
+ */
 - (void)logoutUserWithcompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 
 @end
