@@ -40,8 +40,11 @@ describe(@"create", ^{
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
-                                         @"user_id": @"USER_ID",
-                                         @"access_token": @"ACCESS_TOKEN",
+                                         @"result":
+                                             @{
+                                                 @"user_id": @"USER_ID",
+                                                 @"access_token": @"ACCESS_TOKEN",
+                                                 },
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
@@ -73,8 +76,11 @@ describe(@"create", ^{
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
-                                         @"user_id": @"USER_ID",
-                                         @"access_token": @"ACCESS_TOKEN",
+                                         @"result":
+                                             @{
+                                                 @"user_id": @"USER_ID",
+                                                 @"access_token": @"ACCESS_TOKEN",
+                                                 },
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
