@@ -40,8 +40,12 @@
                                                     queryCompletionBlock:(void(^)(ODQueryCursor *cursor, NSError *operationError))queryCompletionBlock {
     ODQuery *mutualFollowerQuery = self.followReference.mutualFollowerQuery;
     ODQueryOperation *queryOperation = [[ODQueryOperation alloc] initWithQuery:mutualFollowerQuery];
-    queryOperation.recordFetchedBlock = recordFetchedBlock;
-    queryOperation.queryCompletionBlock = queryCompletionBlock;
+    queryOperation.perRecordCompletionBlock = recordFetchedBlock;
+    queryOperation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
+        if (queryCompletionBlock) {
+            queryCompletionBlock(cursor, operationError);
+        }
+    };
 
     return queryOperation;
 }
@@ -54,8 +58,12 @@
                                               queryCompletionBlock:(void(^)(ODQueryCursor *cursor, NSError *operationError))queryCompletionBlock {
     ODQuery *followerQuery = self.followReference.followerQuery;
     ODQueryOperation *queryOperation = [[ODQueryOperation alloc] initWithQuery:followerQuery];
-    queryOperation.recordFetchedBlock = recordFetchedBlock;
-    queryOperation.queryCompletionBlock = queryCompletionBlock;
+    queryOperation.perRecordCompletionBlock = recordFetchedBlock;
+    queryOperation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
+        if (queryCompletionBlock) {
+            queryCompletionBlock(cursor, operationError);
+        }
+    };
 
     return queryOperation;
 }

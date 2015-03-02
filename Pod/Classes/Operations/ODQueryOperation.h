@@ -21,7 +21,7 @@
 @property (nonatomic, copy) ODRecordZoneID *zoneID;
 @property (nonatomic, copy) NSArray *results __deprecated;
 
-@property (nonatomic, copy) void (^recordFetchedBlock)(ODRecord *record);
-@property (nonatomic, copy) void (^queryCompletionBlock)(ODQueryCursor *cursor, NSError *operationError);
+@property(nonatomic, copy) void (^perRecordCompletionBlock)(ODRecord *record);
+@property(nonatomic, copy) void (^queryRecordsCompletionBlock)(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError);
 
 @end

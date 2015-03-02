@@ -7,7 +7,7 @@
 //
 
 #import "ODQueryOperation.h"
-
+#import "ODRecordDeserializer.h"
 #import "ODFollowQuery.h"
 
 @interface ODQueryOperation()
@@ -34,20 +34,63 @@
     return self;
 }
 
-- (BOOL)isAsynchronous
+- (void)prepareForRequest
 {
-    return NO;
+    NSMutableDictionary *payload = [@{
+                                      @"database_id": self.database.databaseID,
+                                      @"record_type": self.query.recordType,
+                                      @"predicate": @{},
+                                      } mutableCopy];
+    self.request = [[ODRequest alloc] initWithAction:@"record:query"
+                                             payload:payload];
+    self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)main {
-    if (self.recordFetchedBlock) {
-        for (ODRecord *record in self.results) {
-            self.recordFetchedBlock(record);
-        }
-    }
+- (void)setPerRecordCompletionBlock:(void (^)(ODRecord *))perRecordCompletionBlock
+{
+    [self willChangeValueForKey:@"perRecordCompletionBlock"];
+    _perRecordCompletionBlock = perRecordCompletionBlock;
+    [self updateCompletionBlock];
+    [self didChangeValueForKey:@"perRecordCompletionBlock"];
+}
 
-    if (self.queryCompletionBlock) {
-        self.queryCompletionBlock(nil, nil);
+- (void)setQueryRecordsCompletionBlock:(void (^)(NSArray *, ODQueryCursor *, NSError *))queryRecordsCompletionBlock
+{
+    [self willChangeValueForKey:@"queryRecordsCompletionBlock"];
+    _queryRecordsCompletionBlock = queryRecordsCompletionBlock;
+    [self updateCompletionBlock];
+    [self didChangeValueForKey:@"queryRecordsCompletionBlock"];
+}
+
+- (void)processResultArray:(NSArray *)result
+{
+    NSMutableArray *fetchedRecords = [NSMutableArray array];
+    
+    [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj[@"_type"] hasPrefix:@"_"]) {
+            // TODO: Call perRecordCompletionBlock with NSError
+        } else {
+            ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
+            ODRecord *record = [deserializer recordWithDictionary:obj];
+            [fetchedRecords addObject:record];
+            if (self.perRecordCompletionBlock) {
+                self.perRecordCompletionBlock(record);
+            }
+        }
+    }];
+    
+    if (self.queryRecordsCompletionBlock) {
+        self.queryRecordsCompletionBlock(fetchedRecords, nil, nil);
+    }
+}
+
+- (void)updateCompletionBlock
+{
+    if (self.perRecordCompletionBlock || self.queryRecordsCompletionBlock) {
+        __weak typeof(self) weakSelf = self;
+        self.completionBlock = ^{
+            [weakSelf processResultArray:weakSelf.response[@"result"]];
+        };
     }
 }
 

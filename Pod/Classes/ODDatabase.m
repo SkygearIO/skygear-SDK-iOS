@@ -14,6 +14,7 @@
 #import "ODFetchRecordsOperation.h"
 #import "ODModifyRecordsOperation.h"
 #import "ODDeleteRecordsOperation.h"
+#import "ODQueryOperation.h"
 
 @interface ODDatabase()
 
@@ -134,6 +135,24 @@
     }
     
     [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
+- (void)performQuery:(ODQuery *)query inZoneWithID:(ODRecordZoneID *)zoneID completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+    operation.container = [ODContainer defaultContainer];
+    operation.database = self;
+    
+    if (completionHandler) {
+        operation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(fetchedRecords, operationError);
+            });
+        };
+    }
+    
+    [self addOperation:operation];
+    [self commit];
 }
 
 @end

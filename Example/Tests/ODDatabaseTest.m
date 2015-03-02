@@ -126,6 +126,45 @@ describe(@"database", ^{
         });
         
     });
+    
+    it(@"perform query", ^{
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[
+                                                 @{
+                                                     @"_id": @"book1",
+                                                     @"_type": @"book",
+                                                     @"title": @"A tale of two cities",
+                                                     },
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+            [database performQuery:query inZoneWithID:nil completionHandler:^(NSArray *results, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(results).to.haveCountOf(1);
+                    expect(((ODRecord *)results[0]).recordID.recordName).to.equal(@"book1");
+                    done();
+                });
+            }];
+        });
+        
+    });
+    
 });
 
 SpecEnd
