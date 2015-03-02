@@ -13,6 +13,15 @@
 
 SpecBegin(ODContainer)
 
+describe(@"config End Point address", ^{
+    it(@"set the endPointAddress correctly", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        [container configAddress:@"newpoint.com:4321"];
+        NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
+        expect(container.endPointAddress).to.equal(expectEndPoint);
+    });
+});
+
 describe(@"save current user", ^{
     it(@"logout user", ^{
         ODContainer *container = [[ODContainer alloc] init];

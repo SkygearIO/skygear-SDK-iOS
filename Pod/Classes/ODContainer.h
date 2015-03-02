@@ -20,7 +20,7 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 @interface ODContainer : NSObject
 
 // seems we need a way to authenticate app
-- (instancetype)initWithAddress:(NSString *)address;
++ (instancetype)init;
 + (ODContainer *)defaultContainer;
 
 @property (nonatomic, nonatomic) NSURL *endPointAddress;
@@ -33,6 +33,8 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 @property (nonatomic, readonly) ODUserRecordID *currentUserRecordID;
 @property (nonatomic, readonly) ODAccessToken *currentAccessToken;
 
+// Configuration on the container End-Point, API-Token
+- (void)configAddress:(NSString *)address;
 - (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;

@@ -42,24 +42,6 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     return self;
 }
 
-
-/**
-initWithAddress accept IP:PORT, no scheme is required. i.e. no http://
-*/
-- (instancetype)initWithAddress:(NSString *)address {
-    self = [super init];
-    if (self) {
-        NSString *url = [NSString stringWithFormat:@"http://%@/", address];
-        _endPointAddress = [NSURL URLWithString:url];
-        _operationQueue = [[NSOperationQueue alloc] init];
-        _operationQueue.name = @"ODContainerOperationQueue";
-        _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
-        
-        [self loadAccessCurrentUserRecordIDAndAccessToken];
-    }
-    return self;
-}
-
 + (ODContainer *)defaultContainer {
     static dispatch_once_t onceToken;
     static ODContainer *ODContainerDefaultInstance;
@@ -75,6 +57,14 @@ initWithAddress accept IP:PORT, no scheme is required. i.e. no http://
 
 - (ODUserRecordID *)currentUserRecordID {
     return _userRecordID;
+}
+
+/**
+ Configurate the End-Point IP:PORT, no scheme is required. i.e. no http://
+ */
+- (void)configAddress:(NSString *)address {
+    NSString *url = [NSString stringWithFormat:@"http://%@/", address];
+    _endPointAddress = [NSURL URLWithString:url];
 }
 
 - (void)addOperation:(ODOperation *)operation {
