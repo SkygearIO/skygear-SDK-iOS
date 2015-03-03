@@ -29,16 +29,11 @@
     self = [super init];
     if (self) {
         _pendingOperations = [NSMutableArray array];
-
+        _databaseID = @"_public";
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODDatabaseQueue";
     }
     return self;
-}
-
-- (NSString *)databaseID
-{
-    return @"DATABASE_ID";
 }
 
 - (void)addOperation:(ODDatabaseOperation *)operation {

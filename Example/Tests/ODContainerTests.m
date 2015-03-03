@@ -22,6 +22,14 @@ describe(@"config End Point address", ^{
     });
 });
 
+describe(@"Default container", ^{
+    it(@"give DB default ID", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        expect(container.publicCloudDatabase.databaseID).to.equal(@"_public");
+        expect(container.privateCloudDatabase.databaseID).to.equal(@"_private");
+    });
+});
+
 describe(@"save current user", ^{
     it(@"logout user", ^{
         ODContainer *container = [[ODContainer alloc] init];

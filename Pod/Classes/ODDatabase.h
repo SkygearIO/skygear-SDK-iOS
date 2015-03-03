@@ -20,7 +20,7 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 
 @interface ODDatabase : NSObject
 
-@property (nonatomic, readonly) NSString *databaseID;
+@property (nonatomic, strong) NSString *databaseID;
 
 - (instancetype)init NS_UNAVAILABLE;
 
