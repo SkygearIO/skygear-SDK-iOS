@@ -36,7 +36,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
         _publicCloudDatabase = [[ODDatabase alloc] initPrivately];
-        _privateCloudDatabase.databaseID = @"_public";
+        _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[ODDatabase alloc] initPrivately];
         _privateCloudDatabase.databaseID = @"_private";
         
