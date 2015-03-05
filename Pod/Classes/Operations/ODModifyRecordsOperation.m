@@ -35,6 +35,7 @@
     self.request = [[ODRequest alloc] initWithAction:@"record:save"
                                              payload:@{@"records": dictionariesToSave,
                                                        @"database_id": self.database.databaseID}];
+    self.request.accessToken = self.container.currentAccessToken;
 }
 
 - (void)setPerRecordCompletionBlock:(void (^)(ODRecord *, NSError *))perRecordCompletionBlock
