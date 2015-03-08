@@ -20,14 +20,16 @@
 
 @property (nonatomic, readonly) NSMutableArray /* ODDatabaseOperation */ *pendingOperations;
 @property (nonatomic, readonly) NSOperationQueue *operationQueue;
+@property (nonatomic, strong, readwrite) ODContainer *container;
 
 @end
 
 @implementation ODDatabase
 
-- (instancetype)initPrivately {
+- (instancetype)initWithContainer:(ODContainer *)container {
     self = [super init];
     if (self) {
+        _container = container;
         _pendingOperations = [NSMutableArray array];
         _databaseID = @"_public";
         _operationQueue = [[NSOperationQueue alloc] init];
@@ -41,6 +43,8 @@
 }
 
 - (void)executeOperation:(ODDatabaseOperation *)operation {
+    operation.database = self;
+    operation.container = self.container;
     [self.operationQueue addOperation:operation];
 }
 
@@ -50,7 +54,7 @@
 }
 
 - (ODUser *)currentUser {
-    return [[ODUser alloc] initWithUserRecordID:[[ODContainer defaultContainer] currentUserRecordID]];
+    return [[ODUser alloc] initWithUserRecordID:[self.container currentUserRecordID]];
 }
 
 - (void)saveSubscription:(ODSubscription *)subscription
@@ -69,8 +73,6 @@
     record.creationDate = [NSDate date];
     
     ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record]];
-    operation.container = [ODContainer defaultContainer];
-    operation.database = self;
     
     if (completion) {
         operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
@@ -84,15 +86,13 @@
         };
     }
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [self executeOperation:operation];
 }
 
 - (void)fetchRecordWithID:(ODRecordID *)recordID
         completionHandler:(void (^)(ODRecord *record,
                                     NSError *error))completionHandler {
     ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID]];
-    operation.container = [ODContainer defaultContainer];
-    operation.database = self;
 
     if (completionHandler) {
         operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
@@ -106,7 +106,7 @@
         };
     }
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [self executeOperation:operation];
 }
 
 - (void)deleteRecordWithID:(ODRecordID *)recordID
@@ -114,8 +114,6 @@
                                      NSError *error))completionHandler
 {
     ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
-    operation.container = [ODContainer defaultContainer];
-    operation.database = self;
     
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
@@ -129,14 +127,12 @@
         };
     }
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [self executeOperation:operation];
 }
 
 - (void)performQuery:(ODQuery *)query inZoneWithID:(ODRecordZoneID *)zoneID completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
-    operation.container = [ODContainer defaultContainer];
-    operation.database = self;
     
     if (completionHandler) {
         operation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
@@ -146,8 +142,7 @@
         };
     }
     
-    [self addOperation:operation];
-    [self commit];
+    [self executeOperation:operation];
 }
 
 @end

@@ -11,6 +11,6 @@
 @interface ODDatabase ()
 
 // TODO: look for a better way to override NS_UNAVAILABLE on init
-- (instancetype)initPrivately;
+- (instancetype)initWithContainer:(ODContainer *)container;
 
 @end

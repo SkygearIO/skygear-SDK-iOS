@@ -15,12 +15,14 @@
 @class ODQuery;
 @class ODRecordZoneID;
 @class ODSubscription;
+@class ODContainer;
 
 typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 
 @interface ODDatabase : NSObject
 
 @property (nonatomic, strong) NSString *databaseID;
+@property (nonatomic, strong, readonly) ODContainer *container;
 
 - (instancetype)init NS_UNAVAILABLE;
 
