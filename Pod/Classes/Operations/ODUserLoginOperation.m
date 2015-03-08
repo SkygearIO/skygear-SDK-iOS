@@ -36,15 +36,29 @@
     if (loginCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
+            ODUserRecordID *recordID = nil;
+            ODAccessToken *accessToken = nil;
+            NSError *error = nil;
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                ODUserRecordID *recordID = [[ODUserRecordID alloc] initWithRecordName:response[@"user_id"]];
-                ODAccessToken *accessToken = [[ODAccessToken alloc] initWithTokenString:response[@"access_token"]];
-                NSLog(@"User logged in with UserRecordID %@ and AccessToken %@", response[@"user_id"], response[@"access_token"]);
-                loginCompletionBlock(recordID, accessToken, nil);
+                if (response[@"user_id"] && response[@"access_token"]) {
+                    recordID = [[ODUserRecordID alloc] initWithRecordName:response[@"user_id"]];
+                    accessToken = [[ODAccessToken alloc] initWithTokenString:response[@"access_token"]];
+                } else {
+                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                                code:0
+                                            userInfo:@{
+                                                       NSLocalizedDescriptionKey: @"Returned data does not contain expected data."
+                                                       }];
+                }
             } else {
-                loginCompletionBlock(nil, nil, weakSelf.error);
+                error = weakSelf.error;
             }
+
+            if (!error) {
+                NSLog(@"User logged in with UserRecordID %@.", recordID.recordName);
+            }
+            loginCompletionBlock(recordID, accessToken, error);
         };
     } else {
         self.completionBlock = nil;

@@ -77,7 +77,13 @@
     if (self.perRecordCompletionBlock || self.deleteRecordsCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
-            [weakSelf processResultArray:weakSelf.response[@"result"]];
+            if (weakSelf.error) {
+                if (weakSelf.deleteRecordsCompletionBlock) {
+                    weakSelf.deleteRecordsCompletionBlock(nil, weakSelf.error);
+                }
+            } else {
+                [weakSelf processResultArray:weakSelf.response[@"result"]];
+            }
         };
     }
 

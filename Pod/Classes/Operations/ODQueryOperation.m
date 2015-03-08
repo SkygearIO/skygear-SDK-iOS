@@ -89,7 +89,13 @@
     if (self.perRecordCompletionBlock || self.queryRecordsCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
-            [weakSelf processResultArray:weakSelf.response[@"result"]];
+            if (weakSelf.error) {
+                if (weakSelf.queryRecordsCompletionBlock) {
+                    weakSelf.queryRecordsCompletionBlock(nil, nil, weakSelf.error);
+                }
+            } else {
+                [weakSelf processResultArray:weakSelf.response[@"result"]];
+            }
         };
     }
 }

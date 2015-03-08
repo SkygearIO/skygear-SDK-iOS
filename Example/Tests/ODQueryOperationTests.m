@@ -14,11 +14,13 @@ SpecBegin(ODQueryOperation)
 
 describe(@"fetch", ^{
     __block ODContainer *container = nil;
-    
+    __block ODDatabase *database = nil;
+
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+        database = [container publicCloudDatabase];
     });
     
     it(@"empty predicate", ^{
@@ -85,6 +87,26 @@ describe(@"fetch", ^{
         });
     });
     
+    it(@"pass error", ^{
+        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [database executeOperation:operation];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

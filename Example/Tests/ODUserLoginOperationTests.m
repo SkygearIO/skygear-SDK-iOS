@@ -66,6 +66,25 @@ describe(@"login", ^{
         });
     });
     
+    it(@"pass error", ^{
+        ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.loginCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(error).toNot.beNil();
+                    done();
+                });
+            };
+            [container addOperation:operation];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

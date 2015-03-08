@@ -14,17 +14,18 @@ SpecBegin(ODFetchRecordsOperation)
 
 describe(@"fetch", ^{
     __block ODContainer *container = nil;
+    __block ODDatabase *database = nil;
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+        database = [container publicCloudDatabase];
     });
         
     it(@"single record", ^{
         ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -41,7 +42,6 @@ describe(@"fetch", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -58,8 +58,6 @@ describe(@"fetch", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
-        operation.database = database;
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -100,10 +98,31 @@ describe(@"fetch", ^{
                 });
             };
 
-            [container addOperation:operation];
+            [database executeOperation:operation];
         });
-});
+    });
     
+    it(@"pass error", ^{
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [database executeOperation:operation];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

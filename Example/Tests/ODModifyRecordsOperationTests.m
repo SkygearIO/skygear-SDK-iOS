@@ -16,11 +16,13 @@ describe(@"modify", ^{
     __block ODRecord *record1 = nil;
     __block ODRecord *record2 = nil;
     __block ODContainer *container = nil;
+    __block ODDatabase *database = nil;
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+        database = [container publicCloudDatabase];
         record1 = [[ODRecord alloc] initWithRecordType:@"book"
                                               recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
         record2 = [[ODRecord alloc] initWithRecordType:@"book"
@@ -29,7 +31,6 @@ describe(@"modify", ^{
     
     it(@"multiple record", ^{
         ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -48,9 +49,6 @@ describe(@"modify", ^{
     
     it(@"make request", ^{
         ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
-        operation.container = container;
-        operation.database = database;
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -91,7 +89,26 @@ describe(@"modify", ^{
                 });
             };
             
-            [container addOperation:operation];
+            [database executeOperation:operation];
+        });
+    });
+    
+    it(@"pass error", ^{
+        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [database executeOperation:operation];
         });
     });
     

@@ -14,17 +14,18 @@ SpecBegin(ODDeleteRecordsOperation)
 
 describe(@"delete", ^{
     __block ODContainer *container = nil;
+    __block ODDatabase *database = nil;
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+        database = [container publicCloudDatabase];
     });
 
     it(@"single record", ^{
         ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.database = database;
         operation.container = container;
         [operation prepareForRequest];
@@ -40,7 +41,6 @@ describe(@"delete", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.database = database;
         operation.container = container;
         [operation prepareForRequest];
@@ -56,8 +56,6 @@ describe(@"delete", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
-        operation.database = database;
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -87,7 +85,28 @@ describe(@"delete", ^{
                 });
             };
             
-            [container addOperation:operation];
+            [database executeOperation:operation];
+        });
+    });
+    
+    it(@"pass error", ^{
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [database executeOperation:operation];
         });
     });
     
