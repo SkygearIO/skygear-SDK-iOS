@@ -10,6 +10,8 @@
 #import "ODContainer_Private.h"
 #import "NSURLRequest+ODRequest.h"
 
+const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
+
 @interface ODOperation ()
 
 @property (nonatomic, strong) NSError *error;
@@ -110,15 +112,40 @@
     NSURLSessionTask *task;
     task = [session dataTaskWithRequest:[self makeURLRequest]
                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                          if (!error) {
-                              id obj = [NSJSONSerialization JSONObjectWithData:data
-                                                                       options:0
-                                                                         error:nil];
-                              [self setResponse:obj];
-                          }
-                          [self setFinished:YES];
+                          [self ODOperation_handleRequestCompletionWithData:data response:response error:error];
                       }];
     [task resume];
+}
+
+- (void)ODOperation_handleRequestCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error
+{
+    NSError *responseError;
+    NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                       options:0
+                                                                         error:&responseError];
+    
+    if (error) {
+        self.error = error;
+    } else {
+        responseDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                             options:0
+                                                               error:&error];
+        
+        if (!error) {
+            if (![responseDictionary isKindOfClass:[NSDictionary class]]) {
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey: @"The JSON object returned does not conformed to the expected format."
+                                                   }];
+                responseDictionary = nil;
+            }
+        }
+    }
+    
+    self.error = error;
+    [self setResponse:responseDictionary];
+    [self setFinished:YES];
 }
 
 @end

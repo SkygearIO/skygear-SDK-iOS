@@ -11,6 +11,8 @@
 #import "ODContainer.h"
 #import "ODRequest.h"
 
+extern const NSString * ODOperationErrorDomain;
+
 @interface ODOperation : NSOperation
 
 @property(nonatomic, strong) ODContainer *container;

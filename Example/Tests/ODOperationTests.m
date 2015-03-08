@@ -32,7 +32,12 @@ describe(@"request", ^{
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             expect(operation.executing).to.equal(YES);
-            return [[OHHTTPStubsResponse alloc] initWithData:[NSData data]
+            
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{}
+                                                           options:0
+                                                             error:nil];
+            
+            return [[OHHTTPStubsResponse alloc] initWithData:data
                                                   statusCode:200
                                                      headers:@{}];
         }];
@@ -40,8 +45,115 @@ describe(@"request", ^{
         waitUntil(^(DoneCallback done) {
             __block typeof(operation) blockOp = operation;
             operation.completionBlock = ^{
-                expect(blockOp.finished).to.equal(YES);
-                done();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect(blockOp.error).to.beNil();
+                    done();
+                });
+            };
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+        });
+    });
+    
+    it(@"handle NSError", ^{
+        NSString *action = @"auth:login";
+        NSDictionary *payload = @{};
+        
+        ODRequest *request = [[ODRequest alloc] initWithAction:action payload:payload];
+        ODOperation *operation = [[ODOperation alloc] initWithRequest:request];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            expect(operation.executing).to.equal(YES);
+            
+            NSError *networkError = [NSError errorWithDomain:NSURLErrorDomain
+                                                        code:-1001
+                                                    userInfo:@{
+                                                               NSLocalizedDescriptionKey: @"The operation couldn’t be completed.",
+                                                               NSURLErrorFailingURLStringErrorKey: request.URL
+                                                               }];
+            return [[OHHTTPStubsResponse alloc] initWithError:networkError];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            __block typeof(operation) blockOp = operation;
+            operation.completionBlock = ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    expect(blockOp.error.code).to.equal(-1001);
+                    done();
+                });
+            };
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+        });
+    });
+    
+    it(@"handle non json response", ^{
+        NSString *action = @"auth:login";
+        NSDictionary *payload = @{};
+        
+        ODRequest *request = [[ODRequest alloc] initWithAction:action payload:payload];
+        ODOperation *operation = [[ODOperation alloc] initWithRequest:request];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            expect(operation.executing).to.equal(YES);
+            
+            return [[OHHTTPStubsResponse alloc] initWithData:[@"INVALID DATA" dataUsingEncoding:NSUTF8StringEncoding]
+                                                  statusCode:200
+                                                     headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            __block typeof(operation) blockOp = operation;
+            operation.completionBlock = ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    expect(blockOp.error.code).to.equal(3840);
+                    done();
+                });
+            };
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+        });
+    });
+    
+    it(@"handle array JSON response", ^{
+        NSString *action = @"auth:login";
+        NSDictionary *payload = @{};
+        
+        ODRequest *request = [[ODRequest alloc] initWithAction:action payload:payload];
+        ODOperation *operation = [[ODOperation alloc] initWithRequest:request];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            expect(operation.executing).to.equal(YES);
+            
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@[]
+                                                           options:0
+                                                             error:nil];
+            
+            return [[OHHTTPStubsResponse alloc] initWithData:data
+                                                  statusCode:200
+                                                     headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            __block typeof(operation) blockOp = operation;
+            operation.completionBlock = ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    // FIXME: More concrete checks of the error?
+                    done();
+                });
             };
             NSOperationQueue *queue = [[NSOperationQueue alloc] init];
             [queue addOperation:operation];
