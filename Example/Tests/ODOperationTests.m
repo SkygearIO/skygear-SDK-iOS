@@ -160,6 +160,76 @@ describe(@"request", ^{
         });
     });
     
+    it(@"handle 400", ^{
+        NSString *action = @"auth:login";
+        NSDictionary *payload = @{};
+        
+        ODRequest *request = [[ODRequest alloc] initWithAction:action payload:payload];
+        ODOperation *operation = [[ODOperation alloc] initWithRequest:request];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            expect(operation.executing).to.equal(YES);
+            
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{}
+                                                           options:0
+                                                             error:nil];
+            
+            return [[OHHTTPStubsResponse alloc] initWithData:data
+                                                  statusCode:400
+                                                     headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            __block typeof(operation) blockOp = operation;
+            operation.completionBlock = ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    done();
+                });
+            };
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+        });
+    });
+    
+    it(@"handle 500", ^{
+        NSString *action = @"auth:login";
+        NSDictionary *payload = @{};
+        
+        ODRequest *request = [[ODRequest alloc] initWithAction:action payload:payload];
+        ODOperation *operation = [[ODOperation alloc] initWithRequest:request];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            expect(operation.executing).to.equal(YES);
+            
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{}
+                                                           options:0
+                                                             error:nil];
+            
+            return [[OHHTTPStubsResponse alloc] initWithData:data
+                                                  statusCode:500
+                                                     headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            __block typeof(operation) blockOp = operation;
+            operation.completionBlock = ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(blockOp.finished).to.equal(YES);
+                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    done();
+                });
+            };
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [queue addOperation:operation];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

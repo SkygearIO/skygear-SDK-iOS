@@ -125,8 +125,15 @@ const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
                                                                          error:&responseError];
     
     if (error) {
-        self.error = error;
+        // do nothing
+    } else if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+        error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                    code:0
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: @"Returned response is not NSHTTPURLResponse."
+                                           }];
     } else {
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         responseDictionary = [NSJSONSerialization JSONObjectWithData:data
                                                              options:0
                                                                error:&error];
@@ -136,10 +143,27 @@ const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
                 error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
                                             code:0
                                         userInfo:@{
-                                                   NSLocalizedDescriptionKey: @"The JSON object returned does not conformed to the expected format."
+                                                   NSLocalizedDescriptionKey: @"The JSON object returned does not conformed to the expected format.",
+                                                   NSURLErrorFailingURLErrorKey: response.URL
                                                    }];
                 responseDictionary = nil;
             }
+        }
+        
+        if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 500) {
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:@{
+                                               NSLocalizedDescriptionKey: @"An error occurred due to client error.",
+                                               NSURLErrorFailingURLErrorKey: response.URL
+                                               }];
+        } else if (httpResponse.statusCode >= 500) {
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:@{
+                                               NSLocalizedDescriptionKey: @"An error occurred due to server error.",
+                                               NSURLErrorFailingURLErrorKey: response.URL
+                                               }];
         }
     }
     
