@@ -10,6 +10,12 @@
 
 @implementation ODRecordID
 
+- (instancetype)init
+{
+    return [self initWithRecordName:[[NSUUID UUID] UUIDString]
+                             zoneID:nil];
+}
+
 - (instancetype)initWithRecordName:(NSString *)recordName {
     return [self initWithRecordName:recordName zoneID:nil];
 }

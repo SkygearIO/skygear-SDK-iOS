@@ -19,7 +19,8 @@
 @implementation ODRecord
 
 - (instancetype)initWithRecordType:(NSString *)recordType {
-    return [self initWithRecordType:recordType recordID:nil];
+    return [self initWithRecordType:recordType
+                           recordID:[[ODRecordID alloc] init]];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId {

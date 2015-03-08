@@ -12,6 +12,10 @@
 
 @interface ODRecordID : NSObject<NSCopying>
 
+/**
+ Instantiates an instance of ODRecordID with a random record name and the default record zone.
+ */
+- (instancetype)init;
 - (instancetype)initWithRecordName:(NSString *)recordName;
 - (instancetype)initWithRecordName:(NSString *)recordName zoneID:(ODRecordZoneID *)zoneID NS_DESIGNATED_INITIALIZER;
 

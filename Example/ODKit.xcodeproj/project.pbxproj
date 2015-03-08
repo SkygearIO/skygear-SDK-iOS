@@ -43,6 +43,8 @@
 		CD42FE141AA4499C0079B3DA /* ODQueryOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */; };
 		CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */; };
 		CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */; };
+		CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */; };
+		CD56972E1AAC7E2500AE596B /* ODRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD56972D1AAC7E2500AE596B /* ODRecordTests.m */; };
 		CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE2681A9D9F31002C076E /* ODOperationTests.m */; };
 		CD7FE26B1A9DB97B002C076E /* NSURLRequestODRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */; };
 		CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */; };
@@ -98,6 +100,8 @@
 		CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQueryOperationTests.m; sourceTree = "<group>"; };
 		CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODContainerTests.m; sourceTree = "<group>"; };
 		CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODModifyRecordsOperationTests.m; sourceTree = "<group>"; };
+		CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordIDTests.m; sourceTree = "<group>"; };
+		CD56972D1AAC7E2500AE596B /* ODRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordTests.m; sourceTree = "<group>"; };
 		CD7FE2681A9D9F31002C076E /* ODOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODOperationTests.m; sourceTree = "<group>"; };
 		CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLRequestODRequestTests.m; sourceTree = "<group>"; };
 		CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODUserLoginOperationTests.m; sourceTree = "<group>"; };
@@ -223,6 +227,8 @@
 				CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */,
 				CD42FE0F1AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m */,
 				CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */,
+				CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */,
+				CD56972D1AAC7E2500AE596B /* ODRecordTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -442,10 +448,12 @@
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */,
+				CD56972E1AAC7E2500AE596B /* ODRecordTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,
+				CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,
 				CD42FE101AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m in Sources */,
 				CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */,

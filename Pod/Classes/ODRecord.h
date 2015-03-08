@@ -14,6 +14,12 @@ NSString * const ODRecordTypeUserRecord;
 
 @interface ODRecord : NSObject<NSCopying>
 
+/**
+ Instantiates an instance of <ODRecord> with the specified record type with a randomly generated <ODRecordID>.
+ 
+ @param recordType Record type of the record.
+ @return An instance of ODRecord.
+ */
 - (instancetype)initWithRecordType:(NSString *)recordType;
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId;
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data;
