@@ -13,12 +13,22 @@
 SpecBegin(ODUserLogoutOperation)
 
 describe(@"logout", ^{
+    __block ODContainer *container = nil;
+    
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
+    
     it(@"make ODRequest", ^{
         ODUserLogoutOperation *operation = [[ODUserLogoutOperation alloc] init];
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"auth:logout");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
     });
     
     it(@"make request", ^{
@@ -45,7 +55,7 @@ describe(@"logout", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

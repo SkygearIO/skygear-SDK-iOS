@@ -13,16 +13,25 @@
 SpecBegin(ODDeleteRecordsOperation)
 
 describe(@"delete", ^{
+    __block ODContainer *container = nil;
     
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
+
     it(@"single record", ^{
         ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.database = database;
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:delete");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload[@"ids"]).to.equal(@[@"book1"]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
@@ -33,10 +42,12 @@ describe(@"delete", ^{
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.database = database;
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:delete");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload[@"ids"]).to.equal(@[@"book1", @"book2"]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
@@ -76,7 +87,7 @@ describe(@"delete", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

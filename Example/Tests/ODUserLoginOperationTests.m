@@ -13,12 +13,22 @@
 SpecBegin(ODUserLoginOperation)
 
 describe(@"login", ^{
+    __block ODContainer *container = nil;
+    
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
+    
     it(@"make ODRequest", ^{
         ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"auth:login");
+        expect(request.accessToken).to.beNil();
         expect(request.payload[@"email"]).to.equal(@"user@example.com");
         expect(request.payload[@"password"]).to.equal(@"password");
     });
@@ -52,7 +62,7 @@ describe(@"login", ^{
                 });
             };
 
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

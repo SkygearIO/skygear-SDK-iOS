@@ -15,23 +15,29 @@ SpecBegin(ODModifyRecordsOperation)
 describe(@"modify", ^{
     __block ODRecord *record1 = nil;
     __block ODRecord *record2 = nil;
+    __block ODContainer *container = nil;
     
     beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         record1 = [[ODRecord alloc] initWithRecordType:@"book"
                                               recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
         record2 = [[ODRecord alloc] initWithRecordType:@"book"
                                               recordID:[[ODRecordID alloc] initWithRecordName:@"book2"]];
     });
-
+    
     it(@"multiple record", ^{
         ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:save");
         expect(request.payload[@"records"]).to.haveCountOf(2);
+        expect(request.accessToken).to.equal(container.currentAccessToken);
         
         NSDictionary *recordPayload = request.payload[@"records"][0];
         expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book1");
@@ -43,6 +49,7 @@ describe(@"modify", ^{
     it(@"make request", ^{
         ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
         operation.database = database;
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -84,7 +91,7 @@ describe(@"modify", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

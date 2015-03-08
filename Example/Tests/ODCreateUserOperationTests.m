@@ -13,22 +13,34 @@
 SpecBegin(ODCreateUserOperation)
 
 describe(@"create", ^{
+    __block ODContainer *container = nil;
+    
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
+    
     it(@"normal user request", ^{
         ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"auth:signup");
+        expect(request.accessToken).to.beNil();
         expect(request.payload[@"email"]).to.equal(@"user@example.com");
         expect(request.payload[@"password"]).to.equal(@"password");
     });
     
     it(@"anonymous user request", ^{
         ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithAnonymousUserAndPassword:@"password"];
+        operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"auth:signup");
+        expect(request.accessToken).to.beNil();
         expect(request.payload).notTo.contain(@"email");
         expect(request.payload[@"password"]).to.equal(@"password");
     });
@@ -65,7 +77,7 @@ describe(@"create", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -101,7 +113,7 @@ describe(@"create", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

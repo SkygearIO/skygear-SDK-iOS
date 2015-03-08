@@ -13,16 +13,25 @@
 SpecBegin(ODQueryOperation)
 
 describe(@"fetch", ^{
+    __block ODContainer *container = nil;
+    
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
     
     it(@"empty predicate", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:query");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload[@"record_type"]).to.equal(@"book");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
@@ -72,7 +81,7 @@ describe(@"fetch", ^{
                 });
             };
             
-            [[[NSOperationQueue alloc] init] addOperation:operation];
+            [container addOperation:operation];
         });
     });
     

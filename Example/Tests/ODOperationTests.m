@@ -13,7 +13,14 @@
 SpecBegin(ODOperation)
 
 describe(@"request", ^{
+    __block ODContainer *container = nil;
     
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+                              accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+    });
+
     it(@"make http request", ^{
         NSString *action = @"auth:login";
         NSDictionary *payload = @{};
