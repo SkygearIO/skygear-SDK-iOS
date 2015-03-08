@@ -10,4 +10,15 @@
 
 @implementation ODDatabaseOperation
 
+- (void)operationWillStart
+{
+    [super operationWillStart];
+    if (![self database]) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:@"The operation being started does not have a ODDatabase set to the `database` property."
+                                     userInfo:nil];
+    }
+}
+
+
 @end

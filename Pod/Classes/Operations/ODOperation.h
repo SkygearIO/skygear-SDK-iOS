@@ -32,4 +32,6 @@ extern const NSString * ODOperationErrorDomain;
  */
 - (void)prepareForRequest;
 
+- (void)operationWillStart;
+
 @end

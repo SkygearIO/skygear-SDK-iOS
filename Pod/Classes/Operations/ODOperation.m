@@ -94,6 +94,15 @@ const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
                                  userInfo:nil];
 }
 
+- (void)operationWillStart
+{
+    if (![self container]) {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:@"The operation being started does not have a ODContainer set to the `container` property."
+                                     userInfo:nil];
+    }
+}
+
 - (void)start
 {
     if (!self.asynchronous) {
@@ -104,6 +113,8 @@ const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
     if (self.cancelled || self.executing || self.finished) {
         return;
     }
+    
+    [self operationWillStart];
     
     [self setExecuting:YES];
     

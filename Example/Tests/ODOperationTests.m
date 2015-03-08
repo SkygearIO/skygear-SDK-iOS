@@ -51,8 +51,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -87,8 +86,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -119,8 +117,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -155,8 +152,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -190,8 +186,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
     
@@ -225,8 +220,7 @@ describe(@"request", ^{
                     done();
                 });
             };
-            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-            [queue addOperation:operation];
+            [container addOperation:operation];
         });
     });
 
