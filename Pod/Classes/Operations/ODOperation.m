@@ -11,6 +11,11 @@
 #import "NSURLRequest+ODRequest.h"
 
 const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
+const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatusCodeKey";
+const NSString * ODOperationErrorMessageKey = @"ODOperationErrorMessageKey";
+const NSString * ODOperationErrorCodeKey = @"ODOperationErrorCodeKey";
+const NSString * ODOperationErrorTypeKey = @"ODOperationErrorTypeKey";
+const NSString * ODOperationErrorInfoKey = @"ODOperationErrorInfoKey";
 
 @interface ODOperation ()
 
@@ -154,28 +159,51 @@ const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
                 error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
                                             code:0
                                         userInfo:@{
-                                                   NSLocalizedDescriptionKey: @"The JSON object returned does not conformed to the expected format.",
+                                                   NSLocalizedDescriptionKey: @"The server sent a malformed response.",
                                                    NSURLErrorFailingURLErrorKey: response.URL
                                                    }];
                 responseDictionary = nil;
             }
         }
         
-        if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 500) {
-            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
-                                        code:0
-                                    userInfo:@{
-                                               NSLocalizedDescriptionKey: @"An error occurred due to client error.",
-                                               NSURLErrorFailingURLErrorKey: response.URL
-                                               }];
-        } else if (httpResponse.statusCode >= 500) {
-            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
-                                        code:0
-                                    userInfo:@{
-                                               NSLocalizedDescriptionKey: @"An error occurred due to server error.",
-                                               NSURLErrorFailingURLErrorKey: response.URL
-                                               }];
+        if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 600) {
+            NSDictionary *errorDictionary = responseDictionary[@"error"];
+            if ([errorDictionary isKindOfClass:[NSDictionary class]]) {
+                NSMutableDictionary *userInfo = [@{
+                                                   NSLocalizedDescriptionKey: @"An error occurred while processing the request.",
+                                                   NSURLErrorFailingURLErrorKey: response.URL,
+                                                   ODOperationErrorHTTPStatusCodeKey: @(httpResponse.statusCode),
+                                                   } mutableCopy];
+                NSArray *keysToCopy = @[ODOperationErrorCodeKey, ODOperationErrorTypeKey, ODOperationErrorMessageKey, ODOperationErrorInfoKey];
+                [keysToCopy enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if (errorDictionary[obj]) {
+                        userInfo[obj] = errorDictionary[obj];
+                    }
+                }];
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:[userInfo copy]];
+            }
+            
+            if (error == nil && httpResponse.statusCode >= 400 && httpResponse.statusCode < 500) {
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey: @"An unknown error occurred due to client error.",
+                                                   NSURLErrorFailingURLErrorKey: response.URL,
+                                                   ODOperationErrorHTTPStatusCodeKey: @(httpResponse.statusCode),
+                                                   }];
+            } else if (error == nil && httpResponse.statusCode >= 500) {
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey: @"An unknown error occurred due to server error.",
+                                                   NSURLErrorFailingURLErrorKey: response.URL,
+                                                   ODOperationErrorHTTPStatusCodeKey: @(httpResponse.statusCode),
+                                                   }];
+            }
         }
+        
     }
     
     self.error = error;

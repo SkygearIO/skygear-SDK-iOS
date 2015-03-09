@@ -168,7 +168,15 @@ describe(@"request", ^{
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             expect(operation.executing).to.equal(YES);
             
-            NSData *data = [NSJSONSerialization dataWithJSONObject:@{}
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{
+                                                                     @"error": @{
+                                                                             ODOperationErrorMessageKey: @"Unable to login.",
+                                                                             ODOperationErrorTypeKey: @"LoginError",
+                                                                             ODOperationErrorCodeKey: @100,
+                                                                             ODOperationErrorInfoKey: @{
+                                                                                     @"username": @"user@example.com",
+                                                                                     },
+                                                                             }}
                                                            options:0
                                                              error:nil];
             
@@ -182,7 +190,10 @@ describe(@"request", ^{
             operation.completionBlock = ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(blockOp.finished).to.equal(YES);
-                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    NSError *error = blockOp.error;
+                    expect([error class]).to.beSubclassOf([NSError class]);
+                    expect(error.userInfo[ODOperationErrorHTTPStatusCodeKey]).to.equal(@(400));
+                    expect(error.userInfo[ODOperationErrorTypeKey]).to.equal(@"LoginError");
                     done();
                 });
             };
@@ -202,7 +213,15 @@ describe(@"request", ^{
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             expect(operation.executing).to.equal(YES);
             
-            NSData *data = [NSJSONSerialization dataWithJSONObject:@{}
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{
+                                                                     @"error": @{
+                                                                             ODOperationErrorMessageKey: @"Unable to login.",
+                                                                             ODOperationErrorTypeKey: @"LoginError",
+                                                                             ODOperationErrorCodeKey: @100,
+                                                                             ODOperationErrorInfoKey: @{
+                                                                                     @"username": @"user@example.com",
+                                                                                     },
+                                                                             }}
                                                            options:0
                                                              error:nil];
             
@@ -216,7 +235,10 @@ describe(@"request", ^{
             operation.completionBlock = ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(blockOp.finished).to.equal(YES);
-                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                    NSError *error = blockOp.error;
+                    expect([error class]).to.beSubclassOf([NSError class]);
+                    expect(error.userInfo[ODOperationErrorHTTPStatusCodeKey]).to.equal(@(500));
+                    expect(error.userInfo[ODOperationErrorTypeKey]).to.equal(@"LoginError");
                     done();
                 });
             };
