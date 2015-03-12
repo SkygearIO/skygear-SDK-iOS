@@ -133,7 +133,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         });
     };
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [_operationQueue addOperation:operation];
 }
 
 - (void)signupUserAnonymouslyWithCompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler
@@ -168,7 +168,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         });
     };
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [_operationQueue addOperation:operation];
 }
 
 - (void)logoutUserWithcompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler
@@ -186,7 +186,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         });
     };
     
-    [[NSOperationQueue mainQueue] addOperation:operation];
+    [_operationQueue addOperation:operation];
 }
 
 - (NSString *)APIKey
