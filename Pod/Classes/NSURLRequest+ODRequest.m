@@ -19,6 +19,9 @@
     if (request.accessToken) {
         parameters[@"access_token"] = [request.accessToken.tokenString copy];
     }
+    if (request.APIKey) {
+        parameters[@"api_key"] = [request.APIKey copy];
+    }
     parameters[@"action"] = [request.action copy];
     
     NSError *error = nil;

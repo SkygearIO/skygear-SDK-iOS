@@ -32,9 +32,19 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 
 @property (nonatomic, readonly) ODUserRecordID *currentUserRecordID;
 @property (nonatomic, readonly) ODAccessToken *currentAccessToken;
+/**
+ Returns the API key of the container.
+ */
+@property (nonatomic, readonly) NSString *APIKey;
 
 // Configuration on the container End-Point, API-Token
 - (void)configAddress:(NSString *)address;
+
+/**
+ Set a new API key to the container.
+ */
+- (void)configureWithAPIKey:(NSString *)APIKey;
+
 - (void)addOperation:(ODOperation *)operation;
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler;

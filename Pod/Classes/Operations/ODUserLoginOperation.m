@@ -29,6 +29,17 @@
                                                        @"email": self.email,
                                                        @"password": self.password,
                                                        }];
+    self.request.APIKey = self.container.APIKey;
+}
+
+- (void)operationWillStart
+{
+    [super operationWillStart];
+    if (!self.container.APIKey) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"ODContainer is not configured with an API key."
+                                     userInfo:nil];
+    }
 }
 
 - (void)setLoginCompletionBlock:(void (^)(ODUserRecordID *, ODAccessToken *, NSError *))loginCompletionBlock

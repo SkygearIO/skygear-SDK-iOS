@@ -27,6 +27,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     ODAccessToken *_accessToken;
     ODUserRecordID *_userRecordID;
     ODDatabase *_publicCloudDatabase;
+    NSString *_APIKey;
 }
 
 - (instancetype)init {
@@ -39,6 +40,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[ODDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
+        _APIKey = nil;
         
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
@@ -68,6 +70,18 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 - (void)configAddress:(NSString *)address {
     NSString *url = [NSString stringWithFormat:@"http://%@/", address];
     _endPointAddress = [NSURL URLWithString:url];
+}
+
+- (void)configureWithAPIKey:(NSString *)APIKey
+{
+    if (APIKey != nil && ![APIKey isKindOfClass:[NSString class]]) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"APIKey must be a subclass of NSString. %@ given.", NSStringFromClass([APIKey class])]
+                                     userInfo:nil];
+    }
+    [self willChangeValueForKey:@"applicationIdentifier"];
+    _APIKey = [APIKey copy];
+    [self didChangeValueForKey:@"applicationIdentifier"];
 }
 
 - (void)addOperation:(ODOperation *)operation {
@@ -173,6 +187,20 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     };
     
     [[NSOperationQueue mainQueue] addOperation:operation];
+}
+
+- (NSString *)APIKey
+{
+    if (!_APIKey) {
+        NSLog(@"Warning: Container is not configured with an API key. Please call -[%@ %@].",
+              NSStringFromClass([ODContainer class]),
+              NSStringFromSelector(@selector(configureWithAPIKey:)));
+        
+        // TODO: This warning and early return should be removed when all apps are modified to call -configureWithAPIKey:.
+        NSLog(@"Warning: A placeholder string is returned as an API key instead. This workaround will be removed in the future and ODOperation is required to check for its existence.");
+        return @"PLACEHOLDER_API_KEY";
+    }
+    return _APIKey;
 }
 
 # pragma mark - ODPushOperation

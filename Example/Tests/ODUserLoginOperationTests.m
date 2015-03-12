@@ -17,6 +17,7 @@ describe(@"login", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
+        [container configureWithAPIKey:@"API_KEY"];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
     });
@@ -29,6 +30,7 @@ describe(@"login", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"auth:login");
         expect(request.accessToken).to.beNil();
+        expect(request.APIKey).to.equal(@"API_KEY");
         expect(request.payload[@"email"]).to.equal(@"user@example.com");
         expect(request.payload[@"password"]).to.equal(@"password");
     });

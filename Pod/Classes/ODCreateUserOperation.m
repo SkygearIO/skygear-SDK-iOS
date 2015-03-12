@@ -41,6 +41,17 @@
     payload[@"password"] = self.password;
     self.request = [[ODRequest alloc] initWithAction:@"auth:signup"
                                              payload:payload];
+    self.request.APIKey = self.container.APIKey;
+}
+
+- (void)operationWillStart
+{
+    [super operationWillStart];
+    if (!self.container.APIKey) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"ODContainer is not configured with an API key."
+                                     userInfo:nil];
+    }
 }
 
 - (void)setCreateCompletionBlock:(void (^)(ODUserRecordID *, ODAccessToken *, NSError *))createCompletionBlock

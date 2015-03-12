@@ -14,6 +14,11 @@
 @property(nonatomic, copy) NSString *action;
 @property(nonatomic, copy) NSDictionary *payload;
 @property(nonatomic, strong) ODAccessToken *accessToken;
+
+/**
+ Sets or returns the API key to be associated with the request.
+ */
+@property(nonatomic, strong) NSString *APIKey;
 @property(nonatomic, strong) NSURL *baseURL;
 @property(nonatomic, readonly) NSString *requestPath;
 
