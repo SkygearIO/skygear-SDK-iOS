@@ -62,6 +62,20 @@ describe(@"fetch", ^{
         expect(predicateArray[2]).to.equal(@"A tale of two cities");
     });
     
+    it(@"sorted", ^{
+        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+        query.sortDescriptors = @[
+                                  [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
+        operation.database = database;
+        [operation prepareForRequest];
+        ODRequest *request = operation.request;
+        
+        expect(request.payload[@"sort"][0]).to.equal(@[@{@"$type": @"keypath", @"$val": @"name"}, @"asc"]);
+    });
+    
     it(@"make request", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];

@@ -12,5 +12,6 @@
 
 + (instancetype)serializer;
 - (NSArray *)arrayWithPredicate:(NSPredicate *)predicate;
+- (NSArray *)arrayWithSortDescriptors:(NSArray *)sortDescriptors;
 
 @end

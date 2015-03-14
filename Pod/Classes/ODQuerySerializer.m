@@ -100,4 +100,15 @@
     }
 }
 
+- (NSArray *)arrayWithSortDescriptors:(NSArray *)sortDescriptors
+{
+    NSMutableArray *result = [NSMutableArray array];
+    [sortDescriptors enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
+        
+        [result addObject:@[[self objectWithExpression:[NSExpression expressionForKeyPath:obj.key]],
+                            obj.ascending ? @"asc" : @"desc"]];
+    }];
+    return [result copy];
+}
+
 @end

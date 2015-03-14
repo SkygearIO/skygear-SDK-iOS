@@ -43,6 +43,9 @@
                                       @"record_type": self.query.recordType,
                                       @"predicate": [serializer arrayWithPredicate:self.query.predicate],
                                       } mutableCopy];
+    if ([self.query.sortDescriptors count] > 0) {
+        payload[@"sort"] = [serializer arrayWithSortDescriptors:self.query.sortDescriptors];
+    }
     self.request = [[ODRequest alloc] initWithAction:@"record:query"
                                              payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
