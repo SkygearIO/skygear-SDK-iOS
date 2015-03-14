@@ -46,6 +46,16 @@
     if ([self.query.sortDescriptors count] > 0) {
         payload[@"sort"] = [serializer serializeWithSortDescriptors:self.query.sortDescriptors];
     }
+    if (self.query.eagerLoadKeyPath) {
+        NSArray *keys = [self.query.eagerLoadKeyPath componentsSeparatedByString:@"."];
+        if ([keys count] > 1) {
+            NSLog(@"Eager loading doesn't support key paths with length more than 1.");
+        }
+        if ([keys count] > 0) {
+            payload[@"eager"] = @[[serializer serializeWithExpression:
+                                   [NSExpression expressionForKeyPath:keys[0]]]];
+        }
+    }
     self.request = [[ODRequest alloc] initWithAction:@"record:query"
                                              payload:payload];
     self.request.accessToken = self.container.currentAccessToken;

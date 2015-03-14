@@ -76,6 +76,19 @@ describe(@"fetch", ^{
         expect(request.payload[@"sort"][0]).to.equal(@[@{@"$type": @"keypath", @"$val": @"name"}, @"asc"]);
     });
     
+    it(@"eager", ^{
+        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+        query.eagerLoadKeyPath = @"shelf";
+        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
+        operation.database = database;
+        [operation prepareForRequest];
+        ODRequest *request = operation.request;
+        
+        expect(request.payload[@"eager"][0]).to.equal(@{@"$type": @"keypath", @"$val": @"shelf"});
+    });
+    
     it(@"make request", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
