@@ -52,6 +52,7 @@
 		CD8FE8301A9F1FE10087FE71 /* ODRecordSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */; };
 		CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */; };
 		CD98A8A61A9F34390056420F /* ODFetchRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */; };
+		CDF571031AB4825700091DB3 /* ODQuerySerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF571021AB4825700091DB3 /* ODQuerySerializerTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordSerializerTests.m; sourceTree = "<group>"; };
 		CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordDeserializerTests.m; sourceTree = "<group>"; };
 		CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODFetchRecordsOperationTests.m; sourceTree = "<group>"; };
+		CDF571021AB4825700091DB3 /* ODQuerySerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQuerySerializerTests.m; sourceTree = "<group>"; };
 		EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -229,6 +231,7 @@
 				CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */,
 				CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */,
 				CD56972D1AAC7E2500AE596B /* ODRecordTests.m */,
+				CDF571021AB4825700091DB3 /* ODQuerySerializerTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */,
+				CDF571031AB4825700091DB3 /* ODQuerySerializerTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,
 				CD42FE101AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m in Sources */,
 				CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */,

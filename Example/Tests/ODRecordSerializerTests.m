@@ -50,7 +50,7 @@ describe(@"serialize", ^{
         NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
         NSDictionary *authorRef = dictionary[@"author"];
         expect([authorRef class]).to.beSubclassOf([NSDictionary class]);
-        expect(authorRef[ODRecordSerializationCustomTypeKey]).to.equal(ODRecordSerializationReferenceType);
+        expect(authorRef[ODDataSerializationCustomTypeKey]).to.equal(ODDataSerializationReferenceType);
         expect(authorRef[@"$id"]).to.equal(@"author1");
     });
     
@@ -61,7 +61,7 @@ describe(@"serialize", ^{
         NSDictionary *publishDate = dictionary[@"published"];
         expect([publishDate class]).to.beSubclassOf([NSDictionary class]);
         NSLog(@"%@", publishDate);
-        expect(publishDate[ODRecordSerializationCustomTypeKey]).to.equal(ODRecordSerializationDateType);
+        expect(publishDate[ODDataSerializationCustomTypeKey]).to.equal(ODDataSerializationDateType);
         
         expect([dateFormatter dateFromString:publishDate[@"$date"]]).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
     });

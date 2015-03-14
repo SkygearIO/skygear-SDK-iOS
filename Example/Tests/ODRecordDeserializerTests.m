@@ -47,7 +47,7 @@ describe(@"deserialize", ^{
     it(@"serialize reference", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"author"] = @{
-                            ODRecordSerializationCustomTypeKey: ODRecordSerializationReferenceType,
+                            ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
                             @"$id": @"author1",
                             };
         ODRecord *record = [deserializer recordWithDictionary:data];
@@ -59,7 +59,7 @@ describe(@"deserialize", ^{
     it(@"serialize date", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"published"] = @{
-                               ODRecordSerializationCustomTypeKey: ODRecordSerializationDateType,
+                               ODDataSerializationCustomTypeKey: ODDataSerializationDateType,
                                @"$date": @"2001-01-01T08:00:00+08:00",
                                };
         ODRecord *record = [deserializer recordWithDictionary:data];

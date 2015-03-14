@@ -13,6 +13,7 @@
 #import "ODUser.h"
 #import "ODRecordSerialization.h"
 #import "ODReference.h"
+#import "ODDataSerialization.h"
 
 @implementation ODRecordSerializer
 
@@ -21,56 +22,12 @@
     return [[ODRecordSerializer alloc] init];
 }
 
-- (id)serializeObject:(id)obj
-{
-    id data = nil;
-    if ([obj isKindOfClass:[NSDate class]]) {
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-        data = @{
-                 ODRecordSerializationCustomTypeKey: ODRecordSerializationDateType,
-                 @"$date": [formatter stringFromDate:obj],
-                 };
-    } else if ([obj isKindOfClass:[ODReference class]]) {
-        data = @{
-                 ODRecordSerializationCustomTypeKey: ODRecordSerializationReferenceType,
-                 @"$id": [[(ODReference*)obj recordID] recordName],
-                 };
-    } else {
-        data = obj;
-    }
-    return data;
-}
-
-- (id)valueWithObject:(id)obj
-{
-    if (!obj) {
-        return nil;
-    }
-    
-    if ([obj isKindOfClass:[NSArray class]]) {
-        NSMutableArray *newArray = [NSMutableArray array];
-        [(NSArray *)obj enumerateObjectsUsingBlock:^(id objInArray, NSUInteger idx, BOOL *stop) {
-            [newArray addObject:[self valueWithObject:objInArray]];
-        }];
-        return newArray;
-    } else if ([obj isKindOfClass:[NSDictionary class]]) {
-        NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-        [(NSDictionary *)obj enumerateKeysAndObjectsUsingBlock:^(id key, id objInDictionary, BOOL *stop) {
-            [newDictionary setObject:[self valueWithObject:objInDictionary]
-                              forKey:key];
-        }];
-        return newDictionary;
-    } else {
-        return [self serializeObject:obj];
-    }
-}
 
 - (NSDictionary *)dictionaryWithRecord:(ODRecord *)record
 {
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
     [record.dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [payload setObject:[self valueWithObject:obj]
+        [payload setObject:[ODDataSerialization serializeObject:obj]
                     forKey:key];
     }];
     

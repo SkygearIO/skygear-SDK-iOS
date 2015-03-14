@@ -37,11 +37,6 @@
                BlueprintName = "Tests"
                ReferencedContainer = "container:ODKit.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "BooSpec">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

@@ -8,8 +8,5 @@
 
 #import "ODRecordSerialization.h"
 
-const NSString *ODRecordSerializationCustomTypeKey = @"$type";
 const NSString *ODRecordSerializationRecordIDKey = @"_id";
 const NSString *ODRecordSerializationRecordTypeKey = @"_type";
-const NSString *ODRecordSerializationReferenceType = @"ref";
-const NSString *ODRecordSerializationDateType = @"date";

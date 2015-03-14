@@ -13,6 +13,7 @@
 #import "ODUser.h"
 #import "ODRecordSerialization.h"
 #import "ODReference.h"
+#import "ODDataSerialization.h"
 
 @implementation ODRecordDeserializer
 
@@ -21,68 +22,13 @@
     return [[ODRecordDeserializer alloc] init];
 }
 
-- (id)deserializeObjectWithType:(NSString *)type data:(NSDictionary *)data
-{
-    id obj = nil;
-    if ([type isEqualToString:(NSString *)ODRecordSerializationDateType]) {
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-        obj = [formatter dateFromString:data[@"$date"]];
-    } else if ([type isEqualToString:(NSString *)ODRecordSerializationReferenceType]) {
-        obj = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:data[@"$id"]]];
-    }
-    return obj;
-}
-
-- (id)objectWithValue:(id)value
-{
-    if (!value) {
-        return nil;
-    }
-    
-    if ([value isKindOfClass:[NSArray class]]) {
-        NSMutableArray *newArray = [NSMutableArray array];
-        [(NSArray *)value enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
-            [newArray addObject:[self objectWithValue:valueInArray]];
-        }];
-        return newArray;
-    } else if ([value isKindOfClass:[NSDictionary class]]) {
-        NSString *type = [(NSDictionary *)value objectForKey:ODRecordSerializationCustomTypeKey];
-        if (type) {
-            return [self deserializeObjectWithType:type data:value];
-        } else {
-            NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-            [(NSDictionary *)value enumerateKeysAndObjectsUsingBlock:^(id key, id valueInDictionary, BOOL *stop) {
-                [newDictionary setObject:[self objectWithValue:valueInDictionary]
-                                  forKey:key];
-            }];
-            return newDictionary;
-        }
-    } else {
-        return value;
-    }
-
-    
-    id obj = nil;
-    if ([value isKindOfClass:[NSDictionary class]]) {
-        NSString *type = [(NSDictionary *)value objectForKey:ODRecordSerializationCustomTypeKey];
-        if (type) {
-            obj = [self deserializeObjectWithType:type data:value];
-        } else {
-            obj = value;
-        }
-    } else {
-        obj = value;
-    }
-    return obj;
-}
 
 - (ODRecord *)recordWithDictionary:(NSDictionary *)obj
 {
     NSMutableDictionary *recordData = [NSMutableDictionary dictionary];
     [obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if (![(NSString *)key hasPrefix:@"_"]) {
-            [recordData setObject:[self objectWithValue:obj]
+            [recordData setObject:[ODDataSerialization deserializeObjectWithValue:obj]
                            forKey:key];
         }
     }];
