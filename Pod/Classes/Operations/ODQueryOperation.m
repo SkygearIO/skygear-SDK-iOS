@@ -9,6 +9,7 @@
 #import "ODQueryOperation.h"
 #import "ODRecordDeserializer.h"
 #import "ODFollowQuery.h"
+#import "ODQuerySerializer.h"
 
 @interface ODQueryOperation()
 
@@ -36,10 +37,11 @@
 
 - (void)prepareForRequest
 {
+    ODQuerySerializer *serializer = [ODQuerySerializer serializer];
     NSMutableDictionary *payload = [@{
                                       @"database_id": self.database.databaseID,
                                       @"record_type": self.query.recordType,
-                                      @"predicate": @{},
+                                      @"predicate": [serializer arrayWithPredicate:self.query.predicate],
                                       } mutableCopy];
     self.request = [[ODRequest alloc] initWithAction:@"record:query"
                                              payload:payload];

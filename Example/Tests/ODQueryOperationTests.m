@@ -36,6 +36,30 @@ describe(@"fetch", ^{
         expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload[@"record_type"]).to.equal(@"book");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
+        expect(request.payload[@"predicate"]).to.equal(@[]);
+    });
+    
+    it(@"simple query", ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@", @"A tale of two cities"];
+        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book"
+                                                   predicate:predicate];
+        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
+        operation.container = container;
+        operation.database = database;
+        [operation prepareForRequest];
+        ODRequest *request = operation.request;
+        expect([request class]).to.beSubclassOf([ODRequest class]);
+        expect(request.action).to.equal(@"record:query");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
+        expect(request.payload[@"record_type"]).to.equal(@"book");
+        expect(request.payload[@"database_id"]).to.equal(database.databaseID);
+        
+        NSArray *predicateArray = request.payload[@"predicate"];
+        expect([predicateArray class]).to.beSubclassOf([NSArray class]);
+        expect(predicateArray[0]).to.equal(@"eq");
+        expect(predicateArray[1]).to.equal(@{@"$type": @"keypath", @"$val": @"name"});
+        expect(predicateArray[2]).to.equal(@"A tale of two cities");
     });
     
     it(@"make request", ^{
