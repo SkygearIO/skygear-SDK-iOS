@@ -32,7 +32,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"lhs key path", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
@@ -44,7 +44,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"equal string", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
@@ -52,7 +52,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"equal integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
@@ -60,7 +60,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"equal number", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@", @12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
@@ -69,7 +69,7 @@ describe(@"deserialize", ^{
     
     it(@"equal date", ^{
         NSDate *dob = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"dob = %@", dob]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
@@ -78,7 +78,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"greater than integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name > %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"gt");
@@ -86,7 +86,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"greater than or equal integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name >= %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"gte");
@@ -94,7 +94,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"less than integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name < %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"lt");
@@ -102,7 +102,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"less than or equal integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name <= %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"lte");
@@ -110,7 +110,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"not equal integer", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name <> %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"neq");
@@ -118,7 +118,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"and", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@ && age >= %d", @"Peter", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
@@ -130,7 +130,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"double and", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@ && age >= %d && interest <> %@", @"Peter", 12, @"reading"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(4);
@@ -140,7 +140,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"or", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@ || age >= %d", @"Peter", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
@@ -152,7 +152,7 @@ describe(@"deserialize", ^{
     });
     
     it(@"not", ^{
-        NSArray *result = [serializer arrayWithPredicate:
+        NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"not (name = %@)", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(2);

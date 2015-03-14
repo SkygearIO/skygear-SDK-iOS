@@ -58,7 +58,7 @@
     }
 }
 
-- (id)objectWithExpression:(NSExpression *)expression
+- (id)serializeWithExpression:(NSExpression *)expression
 {
     switch (expression.expressionType) {
         case NSKeyPathExpressionType:
@@ -76,19 +76,19 @@
     }
 }
 
-- (NSArray *)arrayWithPredicate:(NSPredicate *)predicate
+- (id)serializeWithPredicate:(NSPredicate *)predicate
 {
     if ([predicate isKindOfClass:[NSComparisonPredicate class]]) {
         NSComparisonPredicate *comparison = (NSComparisonPredicate *)predicate;
         return @[[self nameWithPredicateOperatorType:[comparison predicateOperatorType]],
-                 [self objectWithExpression:[comparison leftExpression]],
-                 [self objectWithExpression:[comparison rightExpression]],
+                 [self serializeWithExpression:[comparison leftExpression]],
+                 [self serializeWithExpression:[comparison rightExpression]],
                  ];
     } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
         NSCompoundPredicate *compound = (NSCompoundPredicate *)predicate;
         NSMutableArray *result = [NSMutableArray arrayWithObject:[self nameWithCompoundPredicateType:compound.compoundPredicateType]];
         [[compound subpredicates] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [result addObject:[self arrayWithPredicate:(NSPredicate *)obj]];
+            [result addObject:[self serializeWithPredicate:(NSPredicate *)obj]];
         }];
         return [result copy];
     } else if (!predicate) {
@@ -100,12 +100,12 @@
     }
 }
 
-- (NSArray *)arrayWithSortDescriptors:(NSArray *)sortDescriptors
+- (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors
 {
     NSMutableArray *result = [NSMutableArray array];
     [sortDescriptors enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
         
-        [result addObject:@[[self objectWithExpression:[NSExpression expressionForKeyPath:obj.key]],
+        [result addObject:@[[self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
                             obj.ascending ? @"asc" : @"desc"]];
     }];
     return [result copy];

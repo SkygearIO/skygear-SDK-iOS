@@ -41,10 +41,10 @@
     NSMutableDictionary *payload = [@{
                                       @"database_id": self.database.databaseID,
                                       @"record_type": self.query.recordType,
-                                      @"predicate": [serializer arrayWithPredicate:self.query.predicate],
+                                      @"predicate": [serializer serializeWithPredicate:self.query.predicate],
                                       } mutableCopy];
     if ([self.query.sortDescriptors count] > 0) {
-        payload[@"sort"] = [serializer arrayWithSortDescriptors:self.query.sortDescriptors];
+        payload[@"sort"] = [serializer serializeWithSortDescriptors:self.query.sortDescriptors];
     }
     self.request = [[ODRequest alloc] initWithAction:@"record:query"
                                              payload:payload];

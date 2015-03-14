@@ -11,7 +11,8 @@
 @interface ODQuerySerializer : NSObject
 
 + (instancetype)serializer;
-- (NSArray *)arrayWithPredicate:(NSPredicate *)predicate;
-- (NSArray *)arrayWithSortDescriptors:(NSArray *)sortDescriptors;
+- (id)serializeWithExpression:(NSExpression *)expression;
+- (id)serializeWithPredicate:(NSPredicate *)predicate;
+- (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors;
 
 @end
