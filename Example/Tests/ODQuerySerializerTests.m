@@ -11,17 +11,13 @@
 
 SpecBegin(ODQuerySerializer)
 
-describe(@"deserialize", ^{
+describe(@"serialize predicate", ^{
     __block ODQuerySerializer *serializer = nil;
     __block NSDictionary *basicPayload = nil;
     __block NSDateFormatter *dateFormatter = nil;
     
     beforeEach(^{
         serializer = [ODQuerySerializer serializer];
-        basicPayload = @{
-                         ODRecordSerializationRecordTypeKey: @"book",
-                         ODRecordSerializationRecordIDKey: @"book1",
-                         };
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     });
@@ -159,6 +155,51 @@ describe(@"deserialize", ^{
         expect(result[0]).to.equal(@"not");
         expect([result[1] class]).to.beSubclassOf([NSArray class]);
         expect(result[1][0]).to.equal(@"eq");
+    });
+});
+
+describe(@"serialize sort descriptors", ^{
+    __block ODQuerySerializer *serializer = nil;
+    
+    beforeEach(^{
+        serializer = [ODQuerySerializer serializer];
+    });
+    
+    it(@"empty", ^{
+        NSArray *result = [serializer serializeWithSortDescriptors:@[]];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result).to.haveCountOf(0);
+    });
+    
+    it(@"sort asc", ^{
+        NSArray *sd = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+        NSArray *result = [serializer serializeWithSortDescriptors:sd];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result).to.haveCountOf(1);
+        expect(result[0][0]).to.equal(@{@"$type": @"keypath", @"$val": @"name"});
+        expect(result[0][1]).to.equal(@"asc");
+    });
+    
+    it(@"sort desc", ^{
+        NSArray *sd = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO]];
+        NSArray *result = [serializer serializeWithSortDescriptors:sd];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result).to.haveCountOf(1);
+        expect(result[0][0]).to.equal(@{@"$type": @"keypath", @"$val": @"name"});
+        expect(result[0][1]).to.equal(@"desc");
+    });
+    
+    it(@"sort multiple", ^{
+        NSArray *sd = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO],
+                        [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:YES],
+                        ];
+        NSArray *result = [serializer serializeWithSortDescriptors:sd];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result).to.haveCountOf(2);
+        expect(result[0][0]).to.equal(@{@"$type": @"keypath", @"$val": @"name"});
+        expect(result[0][1]).to.equal(@"desc");
+        expect(result[1][0]).to.equal(@{@"$type": @"keypath", @"$val": @"age"});
+        expect(result[1][1]).to.equal(@"asc");
     });
 });
 
