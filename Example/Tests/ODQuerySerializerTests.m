@@ -73,6 +73,15 @@ describe(@"serialize predicate", ^{
         expect([dateFormatter dateFromString:result[2][@"$date"]]).to.equal(dob);
     });
     
+    it(@"equal ref", ^{
+        ODReference *ref = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:@"hongkong"]];
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"city = %@", ref]];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result[0]).to.equal(@"eq");
+        expect(result[2]).to.equal(@{@"$type": @"ref", @"$id": @"hongkong"});
+    });
+    
     it(@"greater than integer", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name > %d", 12]];
