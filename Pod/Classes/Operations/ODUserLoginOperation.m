@@ -53,7 +53,7 @@
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
                 if (response[@"user_id"] && response[@"access_token"]) {
-                    recordID = [[ODUserRecordID alloc] initWithRecordName:response[@"user_id"]];
+                    recordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:response[@"user_id"]];
                     accessToken = [[ODAccessToken alloc] initWithTokenString:response[@"access_token"]];
                 } else {
                     error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain

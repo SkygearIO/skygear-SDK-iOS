@@ -18,8 +18,7 @@ describe(@"serialize", ^{
     
     beforeEach(^{
         serializer = [ODRecordSerializer serializer];
-        record = [[ODRecord alloc] initWithRecordType:@"book"
-                                             recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
+        record = [[ODRecord alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"] data:nil];
         
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
@@ -45,7 +44,7 @@ describe(@"serialize", ^{
     });
     
     it(@"serialize reference", ^{
-        [record setObject:[[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:@"author1"]]
+        [record setObject:[[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"author" name:@"author1"]]
                    forKey:@"author"];
         NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
         NSDictionary *authorRef = dictionary[@"author"];

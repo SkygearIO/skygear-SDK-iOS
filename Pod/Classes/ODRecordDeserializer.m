@@ -38,15 +38,13 @@
     NSString *recordType = obj[ODRecordSerializationRecordTypeKey];
     NSString *stringID = obj[ODRecordSerializationRecordIDKey];
     if ([recordType isEqualToString:@"user"]) {
-        recordID = [[ODUserRecordID alloc] initWithRecordName:stringID];
-        record = [[ODUser alloc] initWithRecordType:recordType
-                                           recordID:recordID
-                                               data:recordData];
+        recordID = [[ODUserRecordID alloc] initWithRecordType:recordType name:stringID];
+        record = [[ODUser alloc] initWithRecordID:recordID
+                                             data:recordData];
     } else {
-        recordID = [[ODRecordID alloc] initWithRecordName:stringID];
-        record = [[ODRecord alloc] initWithRecordType:recordType
-                                             recordID:recordID
-                                                 data:recordData];
+        recordID = [[ODRecordID alloc] initWithRecordType:recordType name:stringID];
+        record = [[ODRecord alloc] initWithRecordID:recordID
+                                               data:recordData];
     }
     
     return record;

@@ -21,8 +21,11 @@ NSString * const ODRecordTypeUserRecord;
  @return An instance of ODRecord.
  */
 - (instancetype)initWithRecordType:(NSString *)recordType;
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId;
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data;
+- (instancetype)initWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
 
 - (id)objectForKey:(id)key;
 - (id)objectForKeyedSubscript:(id)key;

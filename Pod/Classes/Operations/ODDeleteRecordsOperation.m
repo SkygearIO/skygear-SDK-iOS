@@ -23,7 +23,7 @@
 {
     NSMutableArray *stringIDs = [NSMutableArray array];
     [self.recordIDs enumerateObjectsUsingBlock:^(ODRecordID *obj, NSUInteger idx, BOOL *stop) {
-        [stringIDs addObject:obj.recordName];
+        [stringIDs addObject:[obj canonicalString]];
     }];
     NSMutableDictionary *payload = [@{
                                       @"ids": stringIDs,
@@ -54,7 +54,7 @@
 {
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:obj[@"_id"]];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:obj[@"_type"] name:obj[@"_id"]];
         if (self.perRecordCompletionBlock) {
             self.perRecordCompletionBlock(recordID, nil);
         }

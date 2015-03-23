@@ -18,7 +18,7 @@ describe(@"create", ^{
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container configureWithAPIKey:@"API_KEY"];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
     });
     

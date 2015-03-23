@@ -99,7 +99,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     NSString *userRecordName = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerCurrentUserRecordID"];
     NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerAccessToken"];
     if (userRecordName && accessToken) {
-        _userRecordID = [[ODUserRecordID alloc] initWithRecordName:userRecordName];
+        _userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:userRecordName];
         _accessToken = [[ODAccessToken alloc] initWithTokenString:accessToken];
     }
 }

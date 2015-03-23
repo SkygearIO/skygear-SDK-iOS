@@ -74,12 +74,12 @@ describe(@"serialize predicate", ^{
     });
     
     it(@"equal ref", ^{
-        ODReference *ref = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:@"hongkong"]];
+        ODReference *ref = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"city" name:@"hongkong"]];
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"city = %@", ref]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
-        expect(result[2]).to.equal(@{@"$type": @"ref", @"$id": @"hongkong"});
+        expect(result[2]).to.equal(@{@"$type": @"ref", @"$id": @"hongkong", @"$class": @"city"});
     });
     
     it(@"greater than integer", ^{

@@ -61,7 +61,7 @@
         if ([obj[@"_type"] hasPrefix:@"_"]) {
             // TODO: Call perRecordCompletionBlock with NSError
         } else {
-            ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:obj[@"_id"]];
+            ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:obj[@"_type"] name:obj[@"_id"]];
             ODRecord *record = [recordsByRecordID objectForKey:recordID];
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(record, nil);

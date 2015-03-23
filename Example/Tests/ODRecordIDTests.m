@@ -14,10 +14,19 @@ SpecBegin(ODRecordID)
 
 describe(@"ODRecordID", ^{
     it(@"init", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] init];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book"];
+        expect(recordID.recordType).to.equal(@"book");
         expect(recordID.recordName).toNot.beNil();
         expect([recordID.recordName class]).to.beSubclassOf([NSString class]);
         expect([recordID zoneID]).to.beNil();
+        expect([recordID.description class]).to.beSubclassOf([NSString class]);
+    });
+    
+    it(@"canonical string", ^{
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        expect(recordID.recordType).to.equal(@"book");
+        expect(recordID.recordName).to.equal(@"book1");
+        expect(recordID.canonicalString).to.equal(@"book/book1");
     });
 });
 

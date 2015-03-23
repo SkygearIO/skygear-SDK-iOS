@@ -18,13 +18,13 @@ describe(@"delete", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
     });
 
     it(@"single record", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
         operation.database = database;
         operation.container = container;
@@ -33,13 +33,13 @@ describe(@"delete", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:delete");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"ids"]).to.equal(@[@"book1"]);
+        expect(request.payload[@"ids"]).to.equal(@[recordID.canonicalString]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
     
     it(@"multiple record", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
         operation.database = database;
         operation.container = container;
@@ -48,13 +48,13 @@ describe(@"delete", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:delete");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"ids"]).to.equal(@[@"book1", @"book2"]);
+        expect(request.payload[@"ids"]).to.equal(@[recordID1.canonicalString, recordID2.canonicalString]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
     
     it(@"make request", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -90,8 +90,8 @@ describe(@"delete", ^{
     });
     
     it(@"pass error", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

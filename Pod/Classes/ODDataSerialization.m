@@ -24,7 +24,8 @@ const NSString *ODDataSerializationDateType = @"date";
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         obj = [formatter dateFromString:data[@"$date"]];
     } else if ([type isEqualToString:(NSString *)ODDataSerializationReferenceType]) {
-        obj = [[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordName:data[@"$id"]]];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:data[@"$class"] name:data[@"$id"]];
+        obj = [[ODReference alloc] initWithRecordID:recordID];
     }
     return obj;
 }
@@ -67,10 +68,18 @@ const NSString *ODDataSerializationDateType = @"date";
                  @"$date": [formatter stringFromDate:obj],
                  };
     } else if ([obj isKindOfClass:[ODReference class]]) {
-        data = @{
-                 ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
-                 @"$id": [[(ODReference*)obj recordID] recordName],
-                 };
+        if ([[obj recordID] recordType]) {
+            data = @{
+                     ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
+                     @"$id": [[(ODReference*)obj recordID] recordName],
+                     @"$class": [[(ODReference*)obj recordID] recordType],
+                     };
+        } else {
+            data = @{
+                     ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
+                     @"$id": [[(ODReference*)obj recordID] recordName],
+                     };
+        }
     } else {
         data = obj;
     }

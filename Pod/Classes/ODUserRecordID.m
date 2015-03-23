@@ -14,7 +14,7 @@
  * Start: Private interface
  **/
 - (instancetype)initWithUsername:(NSString *)username email:(NSString *)email recordName:(NSString *)recordName {
-    self = [super initWithRecordName:recordName];
+    self = [super initWithRecordType:@"user" name:recordName];
     if (self) {
         _username = username;
         _email = email;

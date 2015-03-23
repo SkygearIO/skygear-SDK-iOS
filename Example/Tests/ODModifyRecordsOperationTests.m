@@ -20,13 +20,13 @@ describe(@"modify", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
         record1 = [[ODRecord alloc] initWithRecordType:@"book"
-                                              recordID:[[ODRecordID alloc] initWithRecordName:@"book1"]];
+                                              recordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"]];
         record2 = [[ODRecord alloc] initWithRecordType:@"book"
-                                              recordID:[[ODRecordID alloc] initWithRecordName:@"book2"]];
+                                              recordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"]];
     });
     
     it(@"multiple record", ^{

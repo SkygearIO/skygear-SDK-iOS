@@ -18,13 +18,13 @@ describe(@"fetch", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordName:@"USER_ID"]
+        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
     });
         
     it(@"single record", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordName:@"book1"];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID]];
         operation.container = container;
         operation.database = database;
@@ -33,14 +33,14 @@ describe(@"fetch", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:fetch");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"ids"]).to.equal(@[@"book1"]);
+        expect(request.payload[@"ids"]).to.equal(@[recordID.canonicalString]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         expect(request.payload).toNot.contain(@"desired_keys");
     });
     
     it(@"multiple record", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
         operation.container = container;
         operation.database = database;
@@ -49,14 +49,14 @@ describe(@"fetch", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"record:fetch");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"ids"]).to.equal(@[@"book1", @"book2"]);
+        expect(request.payload[@"ids"]).to.equal(@[recordID1.canonicalString, recordID2.canonicalString]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         expect(request.payload).toNot.contain(@"desired_keys");
     });
     
     it(@"make request", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -103,8 +103,8 @@ describe(@"fetch", ^{
     });
     
     it(@"pass error", ^{
-        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordName:@"book1"];
-        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordName:@"book2"];
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

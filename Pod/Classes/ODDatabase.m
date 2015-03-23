@@ -68,7 +68,7 @@
 - (void)saveRecord:(ODRecord *)record completion:(ODRecordSaveCompletion)completion {
     if ([record.recordType isEqualToString:@"question"]) {
         record[@"id"] = @6666;
-        record.recordID = [[ODRecordID alloc] initWithRecordName:@"6666"];
+        record.recordID = [[ODRecordID alloc] initWithRecordType:@"question" name:@"6666"];
     }
     record.creationDate = [NSDate date];
     

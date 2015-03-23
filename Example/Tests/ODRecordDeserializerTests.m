@@ -49,6 +49,7 @@ describe(@"deserialize", ^{
         data[@"author"] = @{
                             ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
                             @"$id": @"author1",
+                            @"$class": @"author",
                             };
         ODRecord *record = [deserializer recordWithDictionary:data];
         ODReference *authorRef = record[@"author"];

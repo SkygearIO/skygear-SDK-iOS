@@ -19,36 +19,52 @@
 @implementation ODRecord
 
 - (instancetype)initWithRecordType:(NSString *)recordType {
-    return [self initWithRecordType:recordType
-                           recordID:[[ODRecordID alloc] init]];
+    return [self initWithRecordID:[[ODRecordID alloc] initWithRecordType:recordType]
+                             data:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId {
-    self = [super init];
-    if (self) {
-        _recordType = recordType;
-        _recordID = recordId;
-        _object = [NSMutableDictionary dictionary];
+    if (![recordId.recordType isEqualToString:recordId.recordType]) {
+        recordId = [[ODRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
     }
-    return self;
+    return [self initWithRecordID:recordId data:nil];
+}
+
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName
+{
+    return [self initWithRecordID:[[ODRecordID alloc] initWithRecordType:recordType name:recordName]
+                             data:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data
 {
+    if (![recordId.recordType isEqualToString:recordId.recordType]) {
+        recordId = [[ODRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
+    }
+    return [self initWithRecordID:recordId data:data];
+}
+
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
+{
+    return [self initWithRecordID:[[ODRecordID alloc] initWithRecordType:recordType name:recordName]
+                             data:data];
+}
+
+- (instancetype)initWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data
+{
     self = [super init];
     if (self) {
-        _recordType = recordType;
-        _recordID = recordId;
-        _object = [data mutableCopy];
+        _recordID = [recordId copy];
+        _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
     }
     return self;
 }
+
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
     ODRecord *record = [[self.class allocWithZone:zone] init];
-    record->_recordType = [_recordType copyWithZone:zone];
     record->_recordID = [_recordID copyWithZone:zone];
     record->_object = [_object copyWithZone:zone];
     return record;
@@ -67,6 +83,11 @@
 - (NSDictionary *)dictionary
 {
     return [_object copy];
+}
+
+- (NSString *)recordType
+{
+    return self.recordID.recordType;
 }
 
 #pragma mark - Dictionary-like methods
