@@ -14,6 +14,7 @@
 #import "ODUserLoginOperation.h"
 #import "ODUserLogoutOperation.h"
 #import "ODCreateUserOperation.h"
+#import "ODRegisterDeviceOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
@@ -187,6 +188,56 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     };
     
     [_operationQueue addOperation:operation];
+}
+
+- (void)registerRemoteNotificationDeviceToken:(NSString *)deviceToken
+                             existingDeviceID:(NSString *)existingDeviceID
+                            completionHandler:(void(^)(NSString *, NSError *))completionHandler
+{
+    ODRegisterDeviceOperation *op = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken];
+    op.deviceID = existingDeviceID;
+    op.registerCompletionBlock = ^(NSString *deviceID, NSError *error){
+        BOOL willRetry = NO;
+        if (error) {
+            // If the device ID is not recognized by the server,
+            // we should retry the request without the device ID.
+            // Presumably the server will generate a new device ID.
+            BOOL isNotFound = YES; // FIXME
+            if (isNotFound && existingDeviceID) {
+                [self registerRemoteNotificationDeviceToken:deviceToken
+                                           existingDeviceID:nil
+                                          completionHandler:completionHandler];
+                willRetry = YES;
+            }
+        }
+        
+        if (!willRetry) {
+            if (completionHandler) {
+                completionHandler(deviceID, error);
+            }
+        }
+    };
+    [self addOperation:op];
+}
+
+
+- (void)registerRemoteNotificationDeviceToken:(NSString *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
+{
+    NSString *existingDeviceID = [[NSUserDefaults standardUserDefaults]
+                                  objectForKey:@"ODContainerDeviceID"];
+    [self registerRemoteNotificationDeviceToken:deviceToken
+                               existingDeviceID:existingDeviceID
+                              completionHandler:^(NSString *deviceID, NSError *error) {
+                                  if (deviceID) {
+                                      [[NSUserDefaults standardUserDefaults] setObject:deviceID
+                                                                                forKey:@"ODContainerDeviceID"];
+                                      [[NSUserDefaults standardUserDefaults] synchronize];
+                                  }
+                                  
+                                  if (completionHandler) {
+                                      completionHandler(deviceID, error);
+                                  }
+                              }];
 }
 
 - (NSString *)APIKey

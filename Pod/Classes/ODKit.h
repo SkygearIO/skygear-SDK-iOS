@@ -50,6 +50,7 @@
 #import "ODRecordZoneID.h"
 #import "ODRecord_Private.h"
 #import "ODReference.h"
+#import "ODRegisterDeviceOperation.h"
 #import "ODRequest.h"
 #import "ODServerChangeToken.h"
 #import "ODSubscription.h"

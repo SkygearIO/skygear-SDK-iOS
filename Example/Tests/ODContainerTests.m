@@ -84,4 +84,39 @@ describe(@"save current user", ^{
     });
 });
 
+describe(@"register device", ^{
+    it(@"new device", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"id": @"DEVICE_ID"
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [container registerRemoteNotificationDeviceToken:@"DEVICE_TOKEN"
+                                           completionHandler:^(NSString *deviceID, NSError *error) {
+                                               expect(deviceID).to.equal(@"DEVICE_ID");
+                                               done();
+                                           }];
+        });
+    });
+    
+    afterEach(^{
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    });
+});
+
 SpecEnd

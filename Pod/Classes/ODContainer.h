@@ -75,6 +75,11 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
  */
 - (void)logoutUserWithcompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler;
 
+/**
+ Registers a device token for push notification.
+ */
+- (void)registerRemoteNotificationDeviceToken:(NSString *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler;
+
 @end
 
 @interface ODContainer (ODPushOperation)
