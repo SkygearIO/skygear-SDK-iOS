@@ -41,9 +41,9 @@ describe(@"modify", ^{
         expect(request.accessToken).to.equal(container.currentAccessToken);
         
         NSDictionary *recordPayload = request.payload[@"records"][0];
-        expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book1");
+        expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book/book1");
         recordPayload = request.payload[@"records"][1];
-        expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book2");
+        expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book/book2");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
     
