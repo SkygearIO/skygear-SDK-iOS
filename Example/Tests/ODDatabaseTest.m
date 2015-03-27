@@ -88,6 +88,7 @@ describe(@"database", ^{
                       completion:^(ODRecord *record, NSError *error) {
                           dispatch_async(dispatch_get_main_queue(), ^{
                               expect(record.recordID.recordName).to.equal(@"book1");
+                              expect(record.recordID.recordType).to.equal(@"book");
                               done();
                           });
                       }];
@@ -120,6 +121,7 @@ describe(@"database", ^{
             [database deleteRecordWithID:recordID
                        completionHandler:^(ODRecordID *recordID, NSError *error) {
                            dispatch_async(dispatch_get_main_queue(), ^{
+                               expect(recordID.recordType).to.equal(@"book");
                                expect(recordID.recordName).to.equal(@"book1");
                                done();
                            });
@@ -158,6 +160,7 @@ describe(@"database", ^{
             [database performQuery:query inZoneWithID:nil completionHandler:^(NSArray *results, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(results).to.haveCountOf(1);
+                    expect(((ODRecord *)results[0]).recordID.recordType).to.equal(@"book");
                     expect(((ODRecord *)results[0]).recordID.recordName).to.equal(@"book1");
                     done();
                 });

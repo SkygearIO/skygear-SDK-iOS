@@ -31,7 +31,7 @@
                     forKey:key];
     }];
     
-    payload[ODRecordSerializationRecordIDKey] = record.recordID.recordName;
+    payload[ODRecordSerializationRecordIDKey] = record.recordID.canonicalString;
     payload[ODRecordSerializationRecordTypeKey] = record.recordType; // TODO: should use recordID.recordType
     NSAssert(payload, @"payload is nil");
     return payload;

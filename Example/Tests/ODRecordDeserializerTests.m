@@ -55,6 +55,7 @@ describe(@"deserialize", ^{
         ODReference *authorRef = record[@"author"];
         expect([authorRef class]).to.beSubclassOf([ODReference class]);
         expect(authorRef.recordID.recordName).to.equal(@"author1");
+        expect(authorRef.recordID.recordType).to.equal(@"author");
     });
     
     it(@"serialize date", ^{
