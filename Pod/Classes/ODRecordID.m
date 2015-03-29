@@ -107,4 +107,14 @@
     return [NSString stringWithFormat:@"%@/%@", self.recordType, self.recordName];
 }
 
++ (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString
+{
+    NSArray *components = [canonicalString componentsSeparatedByString:@"/"];
+    if ([components count] == 2) {
+        return [[self alloc] initWithRecordType:components[0] name:components[1]];
+    } else {
+        return nil;
+    }
+}
+
 @end

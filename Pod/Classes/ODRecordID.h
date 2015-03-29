@@ -23,6 +23,8 @@
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
 - (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
 
++ (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
+
 @property(nonatomic, readonly, strong) NSString *recordType;
 @property(nonatomic, readonly, strong) NSString *recordName;
 @property(nonatomic, readonly, strong) ODRecordZoneID *zoneID;
