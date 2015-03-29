@@ -8,6 +8,7 @@
 
 #import "ODDeleteRecordsOperation.h"
 #import "ODRecordSerialization.h"
+#import "ODDataSerialization.h"
 
 @implementation ODDeleteRecordsOperation
 
@@ -51,26 +52,46 @@
     [self didChangeValueForKey:@"deleteRecordsCompletionBlock"];
 }
 
-- (void)processResultArray:(NSArray *)result
+- (NSArray *)processResultArray:(NSArray *)result
 {
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
-        if (self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(recordID, nil);
+        NSError *error = nil;
+        ODRecord *record = nil;
+        ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
+        
+        if (recordID) {
+            if ([obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
+                NSMutableDictionary *userInfo = [ODDataSerialization userInfoWithErrorDictionary:obj];
+                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:userInfo];
+            }
+        } else {
+            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
+                                                                        errorDictionary:nil];
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:userInfo];
         }
-        [deletedRecordIDs removeObject:recordID];
+        
+        if (recordID && self.perRecordCompletionBlock) {
+            self.perRecordCompletionBlock(recordID, error);
+        }
+        
+        if (record) {
+            [deletedRecordIDs removeObject:recordID];
+        }
     }];
-    
+
     if (self.perRecordCompletionBlock) {
         [deletedRecordIDs enumerateObjectsUsingBlock:^(ODRecordID *recordID, NSUInteger idx, BOOL *stop) {
             self.perRecordCompletionBlock(recordID, nil);
         }];
     }
-    
-    if (self.deleteRecordsCompletionBlock) {
-        self.deleteRecordsCompletionBlock(deletedRecordIDs, nil);
-    }
+
+    return deletedRecordIDs;
 }
 
 - (void)updateCompletionBlock
@@ -78,12 +99,23 @@
     if (self.perRecordCompletionBlock || self.deleteRecordsCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
-            if (weakSelf.error) {
-                if (weakSelf.deleteRecordsCompletionBlock) {
-                    weakSelf.deleteRecordsCompletionBlock(nil, weakSelf.error);
+            NSArray *resultArray = nil;
+            NSError *error = weakSelf.error;
+            if (!error) {
+                NSArray *responseArray = weakSelf.response[@"result"];
+                if ([responseArray isKindOfClass:[NSArray class]]) {
+                    resultArray = [weakSelf processResultArray:responseArray];
+                } else {
+                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                                                             errorDictionary:nil];
+                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                                code:0
+                                            userInfo:userInfo];
                 }
-            } else {
-                [weakSelf processResultArray:weakSelf.response[@"result"]];
+            }
+            
+            if (weakSelf.deleteRecordsCompletionBlock) {
+                weakSelf.deleteRecordsCompletionBlock(resultArray, error);
             }
         };
     }

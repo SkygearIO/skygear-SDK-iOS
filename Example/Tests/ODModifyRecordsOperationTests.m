@@ -110,6 +110,64 @@ describe(@"modify", ^{
         });
     });
     
+    it(@"per block", ^{
+        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[
+                                                 @{
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
+                                                     @"_revision": @"revision1",
+                                                     },
+                                                 @{
+                                                     @"_id": @"book/book2",
+                                                     @"_type": @"error",
+                                                     @"code": @(100),
+                                                     @"message": @"An error.",
+                                                     @"type": @"SaveError",
+                                                     }
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            NSMutableArray *remainingRecordIDs = [@[record1.recordID, record2.recordID] mutableCopy];
+            
+            operation.perRecordCompletionBlock = ^(ODRecord *record, NSError *error) {
+                if ([record.recordID isEqual:record1.recordID]) {
+                    expect([record class]).to.beSubclassOf([ODRecord class]);
+                    expect(record.recordID).to.equal(record1.recordID);
+                } else if ([record.recordID isEqual:record2.recordID]) {
+                    expect([error class]).to.beSubclassOf([NSError class]);
+                    expect([error ODErrorType]).to.equal(@"SaveError");
+                }
+                [remainingRecordIDs removeObject:record.recordID];
+            };
+            
+            operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(remainingRecordIDs).to.haveCountOf(0);
+                    done();
+                });
+            };
+            
+            [database executeOperation:operation];
+        });
+    });
+    
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

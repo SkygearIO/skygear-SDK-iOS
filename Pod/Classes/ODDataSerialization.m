@@ -9,6 +9,7 @@
 #import "ODDataSerialization.h"
 #import "ODDataSerialization.h"
 #import "ODReference.h"
+#import "ODError.h"
 
 const NSString *ODDataSerializationCustomTypeKey = @"$type";
 const NSString *ODDataSerializationReferenceType = @"ref";
@@ -110,5 +111,35 @@ const NSString *ODDataSerializationDateType = @"date";
     }
 }
 
++ (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    
+    if ([dict[@"code"] isKindOfClass:[NSNumber class]]) {
+        userInfo[ODErrorCodeKey] = [NSNumber numberWithInteger:[dict[@"code"] integerValue]];
+    } else {
+        NSLog(@"`code` is missing in error object or it is not a number.");
+    }
+    
+    if ([dict[@"type"] isKindOfClass:[NSString class]]) {
+        userInfo[ODErrorTypeKey] = [dict[@"type"] copy];
+    } else {
+        NSLog(@"`type` is missing in error object or it is not a string.");
+    }
+    
+    if ([dict[@"message"] isKindOfClass:[NSString class]]) {
+        userInfo[ODErrorMessageKey] = [dict[@"message"] copy];
+    } else {
+        NSLog(@"`message` is missing in error object or it is not a string.");
+    }
+    
+    if ([dict[@"info"] isKindOfClass:[NSDictionary class]]) {
+        userInfo[ODErrorInfoKey] = [dict[@"info"] copy];
+    } else {
+        NSLog(@"`info` is missing in error object or it is not a dictionary.");
+    }
+    
+    return userInfo;
+}
 
 @end

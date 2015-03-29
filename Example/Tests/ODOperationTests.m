@@ -113,7 +113,7 @@ describe(@"request", ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(blockOp.finished).to.equal(YES);
                     expect([blockOp.error class]).to.beSubclassOf([NSError class]);
-                    expect(blockOp.error.code).to.equal(3840);
+                    expect([(NSError *)[blockOp.error userInfo][NSUnderlyingErrorKey] code]).to.equal(3840);
                     done();
                 });
             };
@@ -170,10 +170,10 @@ describe(@"request", ^{
             
             NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                                                                      @"error": @{
-                                                                             ODOperationErrorMessageKey: @"Unable to login.",
-                                                                             ODOperationErrorTypeKey: @"LoginError",
-                                                                             ODOperationErrorCodeKey: @100,
-                                                                             ODOperationErrorInfoKey: @{
+                                                                             @"message": @"Unable to login.",
+                                                                             @"type": @"LoginError",
+                                                                             @"code": @100,
+                                                                             @"error": @{
                                                                                      @"username": @"user@example.com",
                                                                                      },
                                                                              }}
@@ -193,7 +193,7 @@ describe(@"request", ^{
                     NSError *error = blockOp.error;
                     expect([error class]).to.beSubclassOf([NSError class]);
                     expect(error.userInfo[ODOperationErrorHTTPStatusCodeKey]).to.equal(@(400));
-                    expect(error.userInfo[ODOperationErrorTypeKey]).to.equal(@"LoginError");
+                    expect([error ODErrorType]).to.equal(@"LoginError");
                     done();
                 });
             };
@@ -215,10 +215,10 @@ describe(@"request", ^{
             
             NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                                                                      @"error": @{
-                                                                             ODOperationErrorMessageKey: @"Unable to login.",
-                                                                             ODOperationErrorTypeKey: @"LoginError",
-                                                                             ODOperationErrorCodeKey: @100,
-                                                                             ODOperationErrorInfoKey: @{
+                                                                             @"message": @"Unable to login.",
+                                                                             @"type": @"LoginError",
+                                                                             @"code": @100,
+                                                                             @"error": @{
                                                                                      @"username": @"user@example.com",
                                                                                      },
                                                                              }}
@@ -238,7 +238,7 @@ describe(@"request", ^{
                     NSError *error = blockOp.error;
                     expect([error class]).to.beSubclassOf([NSError class]);
                     expect(error.userInfo[ODOperationErrorHTTPStatusCodeKey]).to.equal(@(500));
-                    expect(error.userInfo[ODOperationErrorTypeKey]).to.equal(@"LoginError");
+                    expect([error ODErrorType]).to.equal(@"LoginError");
                     done();
                 });
             };

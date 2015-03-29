@@ -16,5 +16,6 @@ extern const NSString *ODDataSerializationDateType;
 
 + (id)deserializeObjectWithValue:(id)value;
 + (id)serializeObject:(id)obj;
++ (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict;
 
 @end

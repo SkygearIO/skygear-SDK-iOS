@@ -11,6 +11,8 @@
 #import "ODUser.h"
 #import "ODUserRecordID.h"
 #import "ODRecordDeserializer.h"
+#import "ODRecordSerialization.h"
+#import "ODDataSerialization.h"
 
 @implementation ODFetchRecordsOperation
 
@@ -56,26 +58,56 @@
     [self didChangeValueForKey:@"fetchRecordsCompletionBlock"];
 }
 
-- (void)processResultArray:(NSArray *)result
+- (NSDictionary *)processResultArray:(NSArray *)result
 {
     NSMutableDictionary *recordsByRecordID = [NSMutableDictionary dictionary];
     
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        if ([obj[@"_type"] hasPrefix:@"_"]) {
-            // TODO: Call perRecordCompletionBlock with NSError
-        } else {
-            ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
-            ODRecord *record = [deserializer recordWithDictionary:obj];
-            [recordsByRecordID setObject:record forKey:record.recordID];
-            if (self.perRecordCompletionBlock) {
-                self.perRecordCompletionBlock(record, record.recordID, nil);
+        NSError *error = nil;
+        ODRecord *record = nil;
+        ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
+        
+        if (recordID) {
+            if ([obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
+                ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
+                record = [deserializer recordWithDictionary:obj];
+                
+                if (!record) {
+                    NSLog(@"Error with returned record.");
+                }
+            } else if ([obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
+                NSMutableDictionary *userInfo = [ODDataSerialization userInfoWithErrorDictionary:obj];
+                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
+                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                            code:0
+                                        userInfo:userInfo];
             }
+        } else {
+            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
+                                                                        errorDictionary:nil];
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:userInfo];
+        }
+        
+        if (!error && !record) {
+            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Record does not conform with expected format."
+                                                                        errorDictionary:nil];
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:userInfo];
+        }
+        
+        if (recordID && self.perRecordCompletionBlock) {
+            self.perRecordCompletionBlock(record, recordID, error);
+        }
+        
+        if (record) {
+            [recordsByRecordID setObject:record forKey:recordID];
         }
     }];
     
-    if (self.fetchRecordsCompletionBlock) {
-        self.fetchRecordsCompletionBlock(recordsByRecordID, nil);
-    }
+    return recordsByRecordID;
 }
 
 - (void)updateCompletionBlock
@@ -83,12 +115,23 @@
     if (self.perRecordCompletionBlock || self.fetchRecordsCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
-            if (weakSelf.error) {
-                if (weakSelf.fetchRecordsCompletionBlock) {
-                    weakSelf.fetchRecordsCompletionBlock(nil, weakSelf.error);
+            NSDictionary *resultDictionary = nil;
+            NSError *error = weakSelf.error;
+            if (!error) {
+                NSArray *responseArray = weakSelf.response[@"result"];
+                if ([responseArray isKindOfClass:[NSArray class]]) {
+                    resultDictionary = [weakSelf processResultArray:responseArray];
+                } else {
+                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                                                             errorDictionary:nil];
+                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                                code:0
+                                            userInfo:userInfo];
                 }
-            } else {
-                [weakSelf processResultArray:weakSelf.response[@"result"]];
+            }
+            
+            if (weakSelf.fetchRecordsCompletionBlock) {
+                weakSelf.fetchRecordsCompletionBlock(resultDictionary, error);
             }
         };
     }
