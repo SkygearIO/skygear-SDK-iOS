@@ -24,8 +24,8 @@ describe(@"database", ^{
                                          @"database_id": database.databaseID,
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"book1",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
                                                      @"title": bookTitle,
                                                      },
                                                  ]
@@ -56,8 +56,7 @@ describe(@"database", ^{
     it(@"modify record", ^{
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         NSString *bookTitle = @"A tale of two cities";
-        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
-                                                       recordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"]];
+        ODRecord *record = [[ODRecord alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"] data:nil];
         record[@"title"] = bookTitle;
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -68,8 +67,8 @@ describe(@"database", ^{
                                          @"database_id": database.databaseID,
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"book1",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
                                                      @"_revision": @"revision1",
                                                      },
                                                  ]
@@ -140,8 +139,8 @@ describe(@"database", ^{
                                          @"database_id": database.databaseID,
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"book1",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
                                                      @"title": @"A tale of two cities",
                                                      },
                                                  ]

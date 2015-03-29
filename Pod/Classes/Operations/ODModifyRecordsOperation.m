@@ -8,6 +8,7 @@
 
 #import "ODModifyRecordsOperation.h"
 #import "ODRecordSerializer.h"
+#import "ODRecordSerialization.h"
 
 @implementation ODModifyRecordsOperation {
     NSMutableDictionary *recordsByRecordID;
@@ -61,7 +62,7 @@
         if ([obj[@"_type"] hasPrefix:@"_"]) {
             // TODO: Call perRecordCompletionBlock with NSError
         } else {
-            ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:obj[@"_type"] name:obj[@"_id"]];
+            ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
             ODRecord *record = [recordsByRecordID objectForKey:recordID];
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(record, nil);

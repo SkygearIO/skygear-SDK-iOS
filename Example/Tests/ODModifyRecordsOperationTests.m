@@ -23,10 +23,8 @@ describe(@"modify", ^{
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
-        record1 = [[ODRecord alloc] initWithRecordType:@"book"
-                                              recordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"]];
-        record2 = [[ODRecord alloc] initWithRecordType:@"book"
-                                              recordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"]];
+        record1 = [[ODRecord alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"] data:nil];
+        record2 = [[ODRecord alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"] data:nil];
     });
     
     it(@"multiple record", ^{
@@ -58,13 +56,13 @@ describe(@"modify", ^{
                                          @"database_id": database.databaseID,
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"book1",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
                                                      @"_revision": @"revision1",
                                                      },
                                                  @{
-                                                     @"_id": @"book2",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book2",
+                                                     @"_type": @"record",
                                                      @"_revision": @"revision2",
                                                      }
                                                  ]

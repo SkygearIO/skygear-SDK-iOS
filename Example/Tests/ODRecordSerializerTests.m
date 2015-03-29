@@ -32,7 +32,7 @@ describe(@"serialize", ^{
     it(@"serialize empty record", ^{
         NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
         expect([dictionary class]).to.beSubclassOf([NSDictionary class]);
-        expect(dictionary[ODRecordSerializationRecordTypeKey]).to.equal(@"book");
+        expect(dictionary[ODRecordSerializationRecordTypeKey]).to.equal(@"record");
         expect(dictionary[ODRecordSerializationRecordIDKey]).to.equal(@"book/book1");
     });
     

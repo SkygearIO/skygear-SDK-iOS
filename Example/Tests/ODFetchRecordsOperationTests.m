@@ -67,13 +67,13 @@ describe(@"fetch", ^{
                                          @"database_id": database.databaseID,
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"book1",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
                                                      @"title": @"A tale of two cities",
                                                      },
                                                  @{
-                                                     @"_id": @"book2",
-                                                     @"_type": @"book",
+                                                     @"_id": @"book/book2",
+                                                     @"_type": @"record",
                                                      @"title": @"Old man and the sea",
                                                      }
                                              ]

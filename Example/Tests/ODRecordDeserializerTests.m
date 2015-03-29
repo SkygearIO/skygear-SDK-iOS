@@ -18,8 +18,8 @@ describe(@"deserialize", ^{
     beforeEach(^{
         deserializer = [ODRecordDeserializer deserializer];
         basicPayload = @{
-                         ODRecordSerializationRecordTypeKey: @"book",
-                         ODRecordSerializationRecordIDKey: @"book1",
+                         ODRecordSerializationRecordTypeKey: @"record",
+                         ODRecordSerializationRecordIDKey: @"book/book1",
                          };
     });
     

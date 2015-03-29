@@ -7,6 +7,7 @@
 //
 
 #import "ODDeleteRecordsOperation.h"
+#import "ODRecordSerialization.h"
 
 @implementation ODDeleteRecordsOperation
 
@@ -54,7 +55,7 @@
 {
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:obj[@"_type"] name:obj[@"_id"]];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
         if (self.perRecordCompletionBlock) {
             self.perRecordCompletionBlock(recordID, nil);
         }
