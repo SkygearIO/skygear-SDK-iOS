@@ -20,6 +20,7 @@
 - (instancetype)initWithRecordName:(NSString *)recordName zoneID:(ODRecordZoneID *)zoneID __deprecated;
 
 - (instancetype)initWithRecordType:(NSString *)type;
+- (instancetype)initWithCanonicalString:(NSString *)canonicalString;
 - (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
 
 @property(nonatomic, readonly, strong) NSString *recordType;

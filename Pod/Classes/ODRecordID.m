@@ -32,6 +32,18 @@
     return [self initWithRecordType:type name:nil];
 }
 
+- (instancetype)initWithCanonicalString:(NSString *)canonicalString
+{
+    NSArray *components = [canonicalString componentsSeparatedByString:@"/"];
+    if ([components count] != 2) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"Invalid Record ID string."
+                                     userInfo:nil];
+    }
+    
+    return [self initWithRecordType:components[0] name:components[1]];
+}
+
 - (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName
 {
     self = [super init];
