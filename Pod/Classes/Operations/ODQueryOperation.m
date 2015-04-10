@@ -90,10 +90,16 @@
         ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
         
         if (recordID) {
-            if ([obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
+            NSString *type = obj[ODRecordSerializationRecordTypeKey];
+            if ([type isEqualToString:@"record"]) {
                 record = [deserializer recordWithDictionary:obj];
-            } else if ([obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
+                
+                if (!record) {
+                    NSLog(@"Warning: Received malformed record dictionary.");
+                }
+            } else {
                 // not expecting an error here.
+                NSLog(@"Warning: Received dictionary with unexpected value (%@) in `%@` key.", type, ODRecordSerializationRecordTypeKey);
             }
         } else {
             NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."

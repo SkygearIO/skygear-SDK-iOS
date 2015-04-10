@@ -158,6 +158,64 @@ describe(@"fetch", ^{
         });
     });
 
+    it(@"per block", ^{
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[
+                                                 @{
+                                                     @"_id": @"book/book1",
+                                                     @"_type": @"record",
+                                                     @"title": @"A tale of two cities",
+                                                     },
+                                                 @{
+                                                     @"_id": @"book/book2",
+                                                     @"_type": @"unknown",
+                                                     },
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            NSMutableArray *remainingRecordIDs = [@[recordID1] mutableCopy];
+            operation.perRecordCompletionBlock = ^(ODRecord *record) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(record).toNot.beNil();
+                    ODRecordID *recordID = record.recordID;
+                    if ([recordID isEqual:recordID1]) {
+                        expect([record class]).to.beSubclassOf([ODRecord class]);
+                        expect(record.recordID).to.equal(recordID1);
+                    }
+                    [remainingRecordIDs removeObject:recordID];
+                });
+            };
+            
+            operation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(remainingRecordIDs).to.haveCountOf(0);
+                    done();
+                });
+            };
+            
+            
+            [database executeOperation:operation];
+        });
+    });
+    
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });
