@@ -10,6 +10,8 @@
 #import "ODRecordDeserializer.h"
 #import "ODFollowQuery.h"
 #import "ODQuerySerializer.h"
+#import "ODRecordSerialization.h"
+#import "ODDataSerialization.h"
 
 @interface ODQueryOperation()
 
@@ -77,16 +79,37 @@
     [self didChangeValueForKey:@"queryRecordsCompletionBlock"];
 }
 
-- (void)processResultArray:(NSArray *)result
+- (NSArray *)processResultArray:(NSArray *)result
 {
     NSMutableArray *fetchedRecords = [NSMutableArray array];
+    ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
     
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        if ([obj[@"_type"] hasPrefix:@"_"]) {
-            // TODO: Call perRecordCompletionBlock with NSError
+        NSError *error = nil;
+        ODRecord *record = nil;
+        ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
+        
+        if (recordID) {
+            NSString *type = obj[ODRecordSerializationRecordTypeKey];
+            if ([type isEqualToString:@"record"]) {
+                record = [deserializer recordWithDictionary:obj];
+                
+                if (!record) {
+                    NSLog(@"Warning: Received malformed record dictionary.");
+                }
+            } else {
+                // not expecting an error here.
+                NSLog(@"Warning: Received dictionary with unexpected value (%@) in `%@` key.", type, ODRecordSerializationRecordTypeKey);
+            }
         } else {
-            ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
-            ODRecord *record = [deserializer recordWithDictionary:obj];
+            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
+                                                                        errorDictionary:nil];
+            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                        code:0
+                                    userInfo:userInfo];
+        }
+        
+        if (record) {
             [fetchedRecords addObject:record];
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(record);
@@ -94,9 +117,7 @@
         }
     }];
     
-    if (self.queryRecordsCompletionBlock) {
-        self.queryRecordsCompletionBlock(fetchedRecords, nil, nil);
-    }
+    return fetchedRecords;
 }
 
 - (void)updateCompletionBlock
@@ -104,12 +125,23 @@
     if (self.perRecordCompletionBlock || self.queryRecordsCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
-            if (weakSelf.error) {
-                if (weakSelf.queryRecordsCompletionBlock) {
-                    weakSelf.queryRecordsCompletionBlock(nil, nil, weakSelf.error);
+            NSArray *resultArray = nil;
+            NSError *error = weakSelf.error;
+            if (!error) {
+                NSArray *responseArray = weakSelf.response[@"result"];
+                if ([responseArray isKindOfClass:[NSArray class]]) {
+                    resultArray = [weakSelf processResultArray:responseArray];
+                } else {
+                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                                                             errorDictionary:nil];
+                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                                code:0
+                                            userInfo:userInfo];
                 }
-            } else {
-                [weakSelf processResultArray:weakSelf.response[@"result"]];
+            }
+
+            if (weakSelf.queryRecordsCompletionBlock) {
+                weakSelf.queryRecordsCompletionBlock(resultArray, nil, error);
             }
         };
     }

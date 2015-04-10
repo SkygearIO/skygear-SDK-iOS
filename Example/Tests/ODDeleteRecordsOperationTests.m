@@ -110,6 +110,55 @@ describe(@"delete", ^{
         });
     });
     
+    it(@"per block", ^{
+        ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
+        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"database_id": database.databaseID,
+                                         @"result": @[
+                                                 @{
+                                                     @"_id": @"book/book2",
+                                                     @"_type": @"error",
+                                                     @"code": @(100),
+                                                     @"message": @"An error.",
+                                                     @"type": @"Error",
+                                                     }
+                                                 ]
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            NSMutableArray *remaingRecordIDs = [@[recordID1, recordID2] mutableCopy];
+            operation.perRecordCompletionBlock = ^(ODRecordID *recordID, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [remaingRecordIDs removeObject:recordID];
+                });
+            };
+            
+            operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(remaingRecordIDs).to.haveCountOf(0);
+                    done();
+                });
+            };
+            
+            [database executeOperation:operation];
+        });
+    });
+    
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

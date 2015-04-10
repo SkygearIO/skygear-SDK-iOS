@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */; };
 		38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */; };
 		3ED0BE5EFF5C701B898ED1F8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -70,6 +71,7 @@
 		0AA14A77F7B5805A52640ECF /* Pods-ODKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.debug.xcconfig"; sourceTree = "<group>"; };
 		1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ODKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C525CB7BEDCD9C5F745CECD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorODErrorTests.m; sourceTree = "<group>"; };
 		38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRegisterDeviceOperationTests.m; sourceTree = "<group>"; };
 		3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ODKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ODKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +222,7 @@
 				6003F5B6195388D20070C39A /* Supporting Files */,
 				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */,
+				385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */,
 				CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */,
 				CD7FE2711A9EDD5B002C076E /* ODCreateUserOperationTests.m */,
 				CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */,
@@ -461,6 +464,7 @@
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */,
+				385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* ODQuerySerializerTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,
 				CD42FE101AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m in Sources */,

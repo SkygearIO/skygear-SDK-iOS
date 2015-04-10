@@ -23,7 +23,7 @@ describe(@"ODRecordID", ^{
     });
     
     it(@"canonical string", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+        ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:@"book/book1"];
         expect(recordID.recordType).to.equal(@"book");
         expect(recordID.recordName).to.equal(@"book1");
         expect(recordID.canonicalString).to.equal(@"book/book1");

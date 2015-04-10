@@ -13,10 +13,6 @@
 
 extern const NSString * ODOperationErrorDomain;
 extern const NSString * ODOperationErrorHTTPStatusCodeKey;
-extern const NSString * ODOperationErrorMessageKey;
-extern const NSString * ODOperationErrorCodeKey;
-extern const NSString * ODOperationErrorTypeKey;
-extern const NSString * ODOperationErrorInfoKey;
 
 @interface ODOperation : NSOperation
 
@@ -38,5 +34,7 @@ extern const NSString * ODOperationErrorInfoKey;
 - (void)prepareForRequest;
 
 - (void)operationWillStart;
+
+- (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description errorDictionary:(NSDictionary *)dict;
 
 @end

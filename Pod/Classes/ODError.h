@@ -36,3 +36,8 @@ typedef enum : NSInteger {
     ODErrorLimitExceeded           = 27,
     ODErrorUserDeletedZone         = 28,
 } ODErrorCode;
+
+extern const NSString * ODErrorMessageKey;
+extern const NSString * ODErrorCodeKey;
+extern const NSString * ODErrorTypeKey;
+extern const NSString * ODErrorInfoKey;

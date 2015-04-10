@@ -33,16 +33,13 @@
         }
     }];
     
-    ODRecordID *recordID;
+    ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
     ODRecord *record;
-    NSString *recordType = obj[ODRecordSerializationRecordTypeKey];
-    NSString *stringID = obj[ODRecordSerializationRecordIDKey];
-    if ([recordType isEqualToString:@"user"]) {
-        recordID = [[ODUserRecordID alloc] initWithRecordType:recordType name:stringID];
+    if ([recordID.recordType isEqualToString:@"user"]) {
+        recordID = [[ODUserRecordID alloc] initWithCanonicalString:recordID.canonicalString];
         record = [[ODUser alloc] initWithRecordID:recordID
                                              data:recordData];
     } else {
-        recordID = [[ODRecordID alloc] initWithRecordType:recordType name:stringID];
         record = [[ODRecord alloc] initWithRecordID:recordID
                                                data:recordData];
     }
