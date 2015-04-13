@@ -15,6 +15,7 @@
 #import "ODModifyRecordsOperation.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODQueryOperation.h"
+#import "ODQueryCache.h"
 
 @interface ODDatabase()
 
@@ -143,6 +144,30 @@
     }
     
     [self executeOperation:operation];
+}
+
+- (void)performCachedQuery:(ODQuery *)query inZoneWithID:(ODRecordZoneID *)zoneID completionHandler:(void (^)(NSArray *, BOOL, NSError *))completionHandler
+{
+    ODQueryCache *cache = [[ODQueryCache alloc] initWithDatabase:self];
+    NSArray *cachedResults = [cache cachedResultsWithQuery:query];
+    if (cachedResults && completionHandler) {
+        completionHandler(cachedResults, YES, nil);
+    }
+    
+    [self performQuery:query
+          inZoneWithID:zoneID
+     completionHandler:^(NSArray *results, NSError *error) {
+         if (error) {
+             if (completionHandler) {
+                 completionHandler(cachedResults, NO, error);
+             }
+         } else {
+             [cache cacheQuery:query results:results];
+             if (completionHandler) {
+                 completionHandler(results, NO, nil);
+             }
+         }
+     }];
 }
 
 @end

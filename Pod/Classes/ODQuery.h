@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ODQuery : NSObject
+@interface ODQuery : NSObject <NSSecureCoding>
 
 - (instancetype) init NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)recordType

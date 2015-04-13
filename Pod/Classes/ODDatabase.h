@@ -34,6 +34,11 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
         inZoneWithID:(ODRecordZoneID *)zoneID
    completionHandler:(void (^)(NSArray *results,
                                NSError *error))completionHandler;
+- (void)performCachedQuery:(ODQuery *)query
+              inZoneWithID:(ODRecordZoneID *)zoneID
+         completionHandler:(void (^)(NSArray *results,
+                                     BOOL pending,
+                                     NSError *error))completionHandler;
 
 /**
  Fetches a single record from Ourd.
