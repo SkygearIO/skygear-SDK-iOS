@@ -58,6 +58,29 @@
     }
 }
 
+- (id)serializeWithQuery:(ODQuery *)query
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+    result[@"record_type"] = query.recordType;
+    if (query.predicate) {
+        result[@"predicate"] = [self serializeWithPredicate:query.predicate];
+    }
+    if (query.sortDescriptors.count > 0) {
+        result[@"sort"] = [self serializeWithSortDescriptors:query.sortDescriptors];
+    }
+    if (query.eagerLoadKeyPath) {
+        NSArray *keys = [query.eagerLoadKeyPath componentsSeparatedByString:@"."];
+        if ([keys count] > 1) {
+            NSLog(@"Eager loading doesn't support key paths with length more than 1.");
+        }
+        if ([keys count] > 0) {
+            result[@"eager"] = @[[self serializeWithExpression:
+                                   [NSExpression expressionForKeyPath:keys[0]]]];
+        }
+    }
+    return result;
+}
+
 - (id)serializeWithExpression:(NSExpression *)expression
 {
     switch (expression.expressionType) {

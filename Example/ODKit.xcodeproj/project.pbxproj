@@ -24,6 +24,7 @@
 		372FD24E1AF79F59008128EC /* ODHexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 372FD24D1AF79F59008128EC /* ODHexer.m */; };
 		383510EA1AFB4DF5009DD3E2 /* ODRecordChangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */; };
 		383510EC1AFB5014009DD3E2 /* ODRecordStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */; };
+		3785584A1AE63FEC00685319 /* ODSubscriptionSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */; };
 		383CE06D1ADBB8420085E24B /* ODQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383CE06C1ADBB8420085E24B /* ODQueryTests.m */; };
 		385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */; };
 		3867EA331AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */; };
@@ -81,6 +82,7 @@
 		372FD24D1AF79F59008128EC /* ODHexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODHexer.m; sourceTree = "<group>"; };
 		383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordChangeTests.m; sourceTree = "<group>"; };
 		383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageTests.m; sourceTree = "<group>"; };
+		378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODSubscriptionSerializerTests.m; sourceTree = "<group>"; };
 		383CE06C1ADBB8420085E24B /* ODQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQueryTests.m; sourceTree = "<group>"; };
 		385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorODErrorTests.m; sourceTree = "<group>"; };
 		3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */,
 				3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */,
 				38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */,
+				378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */,
 				383CE06D1ADBB8420085E24B /* ODQueryTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,
+				3785584A1AE63FEC00685319 /* ODSubscriptionSerializerTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				38A115351B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,

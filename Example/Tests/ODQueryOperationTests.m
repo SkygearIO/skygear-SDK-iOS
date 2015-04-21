@@ -36,7 +36,7 @@ describe(@"fetch", ^{
         expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload[@"record_type"]).to.equal(@"book");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
-        expect(request.payload[@"predicate"]).to.equal(@[]);
+        expect(request.payload[@"predicate"]).to.equal(nil);
     });
     
     it(@"simple query", ^{

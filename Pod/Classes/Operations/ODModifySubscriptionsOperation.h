@@ -16,6 +16,6 @@
 
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
 
-@property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *deletedSubscriptionIDs, NSError *operationError);
+@property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *savedSubscriptions, NSError *operationError);
 
 @end

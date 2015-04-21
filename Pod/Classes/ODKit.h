@@ -55,6 +55,7 @@
 #import "ODRequest.h"
 #import "ODServerChangeToken.h"
 #import "ODSubscription.h"
+#import "ODSubscriptionSerializer.h"
 #import "ODUser.h"
 #import "ODUserLoginOperation.h"
 #import "ODUserLogoutOperation.h"
