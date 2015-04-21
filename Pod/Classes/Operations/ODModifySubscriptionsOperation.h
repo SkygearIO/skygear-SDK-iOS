@@ -12,12 +12,10 @@
 
 @interface ODModifySubscriptionsOperation : ODDatabaseOperation
 
-- (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave
-                    subscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete;
+- (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
 
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
-@property (nonatomic, copy) NSArray *subscriptionIDsToDelete;
 
-@property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *savedSubscriptions, NSArray *deletedSubscriptionIDs, NSError *operationError);
+@property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *deletedSubscriptionIDs, NSError *operationError);
 
 @end

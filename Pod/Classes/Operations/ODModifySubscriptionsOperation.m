@@ -10,4 +10,13 @@
 
 @implementation ODModifySubscriptionsOperation
 
+- (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave
+{
+    self = [super init];
+    if (self) {
+        self.subscriptionsToSave = subscriptionsToSave;
+    }
+    return self;
+}
+
 @end
