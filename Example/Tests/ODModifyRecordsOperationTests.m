@@ -159,6 +159,7 @@ describe(@"modify", ^{
             
             operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(savedRecords).to.haveCountOf(1);
                     expect(remainingRecordIDs).to.haveCountOf(0);
                     done();
                 });

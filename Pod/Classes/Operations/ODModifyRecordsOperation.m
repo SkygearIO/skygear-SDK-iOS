@@ -91,7 +91,7 @@
             self.perRecordCompletionBlock(record, error);
         }
         
-        if (record) {
+        if (record && !error) {
             [savedRecords addObject:record];
         }
     }];

@@ -150,6 +150,7 @@ describe(@"delete", ^{
             
             operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(recordIDs).to.haveCountOf(1);
                     expect(remaingRecordIDs).to.haveCountOf(0);
                     done();
                 });

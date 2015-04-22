@@ -57,7 +57,6 @@
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
-        ODRecord *record = nil;
         ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
         
         if (recordID) {
@@ -76,11 +75,10 @@
                                     userInfo:userInfo];
         }
         
-        if (recordID && self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(recordID, error);
-        }
-        
-        if (record) {
+        if (recordID) {
+            if (self.perRecordCompletionBlock) {
+                self.perRecordCompletionBlock(recordID, error);
+            }
             [deletedRecordIDs removeObject:recordID];
         }
     }];
