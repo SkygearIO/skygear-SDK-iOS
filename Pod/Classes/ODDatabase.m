@@ -66,12 +66,28 @@
     }
 }
 
+#pragma mark - Convenient methods for record operations
+
+- (void)od_prepareRecordForSaving:(ODRecord *)record
+{
+    if (![record isKindOfClass:[ODRecord class]]) {
+        NSString *reason = [NSString stringWithFormat:@"The given object %@ is not an ODRecord.", record];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:reason
+                                     userInfo:nil];
+    }
+    
+    if (!record.creationDate) {
+        record.creationDate = [NSDate date];
+    }
+}
+
 - (void)saveRecord:(ODRecord *)record completion:(ODRecordSaveCompletion)completion {
     if ([record.recordType isEqualToString:@"question"]) {
         record[@"id"] = @6666;
         record.recordID = [[ODRecordID alloc] initWithRecordType:@"question" name:@"6666"];
     }
-    record.creationDate = [NSDate date];
+    [self od_prepareRecordForSaving:record];
     
     ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record]];
     
@@ -84,6 +100,35 @@
                     completion(nil, operationError);
                 }
             });
+        };
+    }
+    
+    [self executeOperation:operation];
+}
+
+- (void)saveRecords:(NSArray *)records completionHandler:(void (^)(NSArray *, NSError *))completionHandler perRecordErrorHandler:(void (^)(ODRecord *, NSError *))errorHandler
+{
+    [records enumerateObjectsUsingBlock:^(ODRecord *obj, NSUInteger idx, BOOL *stop) {
+        [self od_prepareRecordForSaving:obj];
+    }];
+    
+    ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:records];
+    
+    if (completionHandler) {
+        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(savedRecords, operationError);
+            });
+        };
+    }
+    
+    if (errorHandler) {
+        operation.perRecordCompletionBlock = ^(ODRecord *record, NSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    errorHandler(record, error);
+                });
+            }
         };
     }
     
@@ -110,6 +155,32 @@
     [self executeOperation:operation];
 }
 
+- (void)fetchRecordsWithIDs:(NSArray *)recordIDs completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler perRecordErrorHandler:(void (^)(ODRecordID *, NSError *))errorHandler
+{
+    ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:recordIDs];
+    
+    if (completionHandler) {
+        operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordsByRecordID, operationError);
+            });
+        };
+    }
+    
+    if (errorHandler) {
+        operation.perRecordCompletionBlock = ^(ODRecord *record, ODRecordID *recordID, NSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    errorHandler(recordID, error);
+                    
+                });
+            }
+        };
+    }
+    
+    [self executeOperation:operation];
+}
+
 - (void)deleteRecordWithID:(ODRecordID *)recordID
          completionHandler:(void (^)(ODRecordID *recordID,
                                      NSError *error))completionHandler
@@ -125,6 +196,31 @@
                     completionHandler(nil, operationError);
                 }
             });
+        };
+    }
+    
+    [self executeOperation:operation];
+}
+
+- (void)deleteRecordsWithIDs:(NSArray *)recordIDs completionHandler:(void (^)(NSArray *, NSError *))completionHandler perRecordErrorHandler:(void (^)(ODRecordID *, NSError *))errorHandler
+{
+    ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
+    
+    if (completionHandler) {
+        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordIDs, operationError);
+            });
+        };
+    }
+    
+    if (errorHandler) {
+        operation.perRecordCompletionBlock = ^(ODRecordID *deletedRecordID, NSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    errorHandler(deletedRecordID, error);
+                });
+            }
         };
     }
     
