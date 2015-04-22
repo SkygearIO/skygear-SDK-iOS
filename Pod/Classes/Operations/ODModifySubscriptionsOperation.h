@@ -7,7 +7,6 @@
 //
 
 #import "ODDatabaseOperation.h"
-
 #import "ODSubscription.h"
 
 @interface ODModifySubscriptionsOperation : ODDatabaseOperation

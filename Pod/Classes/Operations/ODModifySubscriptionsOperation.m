@@ -7,8 +7,13 @@
 //
 
 #import "ODModifySubscriptionsOperation.h"
+#import "ODSubscriptionSerialization.h"
+#import "ODSubscriptionSerializer.h"
+#import "ODDataSerialization.h"
 
-@implementation ODModifySubscriptionsOperation
+@implementation ODModifySubscriptionsOperation {
+    NSMutableDictionary *subscriptionsByID;
+}
 
 - (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave
 {
@@ -17,6 +22,100 @@
         self.subscriptionsToSave = subscriptionsToSave;
     }
     return self;
+}
+
+- (void)prepareForRequest
+{
+    ODSubscriptionSerializer *serializer = [ODSubscriptionSerializer serializer];
+
+    NSMutableArray *dictionariesToSave = [NSMutableArray array];
+    subscriptionsByID = [NSMutableDictionary dictionary];
+    for (ODSubscription *subscription in self.subscriptionsToSave) {
+        [dictionariesToSave addObject:[serializer dictionaryWithSubscription:subscription]];
+        subscriptionsByID[subscription.subscriptionID] = subscription;
+    }
+    self.request = [[ODRequest alloc] initWithAction:@"subscription:save"
+                                             payload:@{
+                                                       @"database_id": self.database.databaseID,
+                                                       @"subscriptions": dictionariesToSave,
+                                                       }];
+    self.request.accessToken = self.container.currentAccessToken;
+}
+
+- (void)setModifySubscriptionsCompletionBlock:(void (^)(NSArray *, NSError *))modifySubscriptionsCompletionBlock
+{
+    [self willChangeValueForKey:@"modifySubscriptionsCompletionBlock"];
+    _modifySubscriptionsCompletionBlock = modifySubscriptionsCompletionBlock;
+    [self updateCompletionBlock];
+    [self didChangeValueForKey:@"modifySubscriptionsCompletionBlock"];
+}
+
+- (NSArray *)processResultArray:(NSArray *)result
+{
+    NSMutableArray *savedSubscriptions = [NSMutableArray array];
+    for (NSDictionary *dict in result) {
+//        NSError *error = nil;
+        ODSubscription *subscription = nil;
+        NSString *subscriptionID = dict[ODSubscriptionSerializationSubscriptionIDKey];
+        if (subscriptionID) {
+            subscription = subscriptionsByID[subscriptionID];
+            if (!subscription) {
+                NSLog(@"A returned subscription is not requested.");
+            }
+
+            NSString *subscriptionType = dict[ODSubscriptionSerializationSubscriptionTypeKey];
+            if ([subscriptionType isEqual:ODSubscriptionSerializationSubscriptionTypeQuery]) {
+                // do nothing
+            } else if ([subscriptionType isEqual:ODSubscriptionSerializationSubscriptionTypeError]) {
+//                NSMutableDictionary *userInfo = [ODDataSerialization userInfoWithErrorDictionary:dict];
+//                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying subscription.";
+//                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+//                                            code:0
+//                                        userInfo:userInfo];
+            }
+        } else {
+//            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `id`"
+//                                                                        errorDictionary:nil];
+//            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+//                                        code:0
+//                                    userInfo:userInfo];
+        }
+
+        if (subscription) {
+            [savedSubscriptions addObject:subscription];
+        }
+    }
+
+    return savedSubscriptions;
+}
+
+- (void)updateCompletionBlock
+{
+    if (self.modifySubscriptionsCompletionBlock) {
+        __weak typeof(self) weakSelf = self;
+        self.completionBlock = ^{
+            NSArray *resultArray = nil;
+            NSError *error = weakSelf.error;
+            if (!error) {
+                NSArray *responseArray = weakSelf.response[@"result"];
+                if ([responseArray isKindOfClass:[NSArray class]]) {
+                    resultArray = [weakSelf processResultArray:responseArray];
+                } else {
+                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed results."
+                                                                             errorDictionary:nil];
+                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                                code:0
+                                            userInfo:userInfo];
+                }
+            }
+
+            if (weakSelf.modifySubscriptionsCompletionBlock) {
+                weakSelf.modifySubscriptionsCompletionBlock(resultArray, error);
+            }
+        };
+    } else {
+        self.completionBlock = nil;
+    }
 }
 
 @end

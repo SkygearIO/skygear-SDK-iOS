@@ -10,9 +10,6 @@
 
 #import "ODSubscription.h"
 
-extern const NSString *ODSubscriptionSerializationTypeQuery;
-extern const NSString *ODSubscriptionSerializationTypeRecordZone;
-
 @interface ODSubscriptionSerializer : NSObject
 
 + (instancetype)serializer;

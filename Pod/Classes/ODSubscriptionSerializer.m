@@ -7,9 +7,8 @@
 //
 
 #import "ODSubscriptionSerializer.h"
+#import "ODSubscriptionSerialization.h"
 #import "ODQuerySerializer.h"
-
-const NSString *ODSubscriptionSerializationTypeQuery = @"query";
 
 @implementation ODSubscriptionSerializer
 
@@ -21,11 +20,11 @@ const NSString *ODSubscriptionSerializationTypeQuery = @"query";
 - (NSDictionary *)dictionaryWithSubscription:(ODSubscription *)subscription {
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
     if (subscription.subscriptionID) {
-        payload[@"id"] = subscription.subscriptionID;
+        payload[ODSubscriptionSerializationSubscriptionIDKey] = subscription.subscriptionID;
     }
     switch (subscription.subscriptionType) {
         case ODSubscriptionTypeQuery:
-            payload[@"type"] = @"query";
+            payload[ODSubscriptionSerializationSubscriptionTypeKey] = ODSubscriptionSerializationSubscriptionTypeQuery;
             if (subscription.query) {
                 payload[@"query"] = [[ODQuerySerializer serializer] serializeWithQuery:subscription.query];
             }
