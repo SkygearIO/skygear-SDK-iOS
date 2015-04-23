@@ -42,4 +42,24 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if (![object isKindOfClass:[ODReference class]]) {
+        return NO;
+    }
+
+    return [self isEqualToReference:(ODReference *)object];
+}
+
+- (BOOL)isEqualToReference:(ODReference *)reference {
+    return [_recordID isEqualToRecordID:reference.recordID] && _referenceAction == reference.referenceAction;
+}
+
+- (NSUInteger)hash {
+    return _recordID.hash ^ _referenceAction;
+}
+
 @end

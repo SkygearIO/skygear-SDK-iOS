@@ -22,6 +22,8 @@
 
 + (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
 
+- (BOOL)isEqualToRecordID:(ODRecordID *)recordID;
+
 @property(nonatomic, readonly, strong) NSString *recordType;
 @property(nonatomic, readonly, strong) NSString *recordName;
 @property(nonatomic, readonly, strong) NSString *canonicalString;
