@@ -25,6 +25,7 @@
 		383510EA1AFB4DF5009DD3E2 /* ODRecordChangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */; };
 		383510EC1AFB5014009DD3E2 /* ODRecordStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */; };
 		376CB11B1AE8F8E100FA0324 /* ODSubscriptionDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 376CB11A1AE8F8E100FA0324 /* ODSubscriptionDeserializerTests.m */; };
+		376CB11D1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 376CB11C1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m */; };
 		3785584A1AE63FEC00685319 /* ODSubscriptionSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */; };
 		3785584F1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3785584E1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m */; };
 		37B477B71AE8A9C100B8566D /* ODQueryDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B477B61AE8A9C100B8566D /* ODQueryDeserializerTests.m */; };
@@ -86,6 +87,7 @@
 		383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordChangeTests.m; sourceTree = "<group>"; };
 		383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageTests.m; sourceTree = "<group>"; };
 		376CB11A1AE8F8E100FA0324 /* ODSubscriptionDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODSubscriptionDeserializerTests.m; sourceTree = "<group>"; };
+		376CB11C1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODFetchSubscriptionsOperationTests.m; sourceTree = "<group>"; };
 		378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODSubscriptionSerializerTests.m; sourceTree = "<group>"; };
 		3785584E1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODModifySubscriptionsOperationTests.m; sourceTree = "<group>"; };
 		37B477B61AE8A9C100B8566D /* ODQueryDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQueryDeserializerTests.m; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */,
 				CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */,
 				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
+				376CB11C1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m */,
 				CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */,
 				3785584E1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m */,
 				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
@@ -505,6 +508,7 @@
 				383CE06D1ADBB8420085E24B /* ODQueryTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* ODOperationTests.m in Sources */,
 				376CB11B1AE8F8E100FA0324 /* ODSubscriptionDeserializerTests.m in Sources */,
+				376CB11D1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m in Sources */,
 				3785584A1AE63FEC00685319 /* ODSubscriptionSerializerTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				38A115351B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m in Sources */,
