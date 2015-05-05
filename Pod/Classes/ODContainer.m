@@ -190,7 +190,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     [_operationQueue addOperation:operation];
 }
 
-- (void)registerRemoteNotificationDeviceToken:(NSString *)deviceToken
+- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
                              existingDeviceID:(NSString *)existingDeviceID
                             completionHandler:(void(^)(NSString *, NSError *))completionHandler
 {
@@ -221,8 +221,9 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 }
 
 
-- (void)registerRemoteNotificationDeviceToken:(NSString *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
+- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
 {
+
     NSString *existingDeviceID = [[NSUserDefaults standardUserDefaults]
                                   objectForKey:@"ODContainerDeviceID"];
     [self registerRemoteNotificationDeviceToken:deviceToken

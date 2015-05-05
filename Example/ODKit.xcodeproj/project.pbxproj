@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		372FD24E1AF79F59008128EC /* ODHexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 372FD24D1AF79F59008128EC /* ODHexer.m */; };
 		383CE06D1ADBB8420085E24B /* ODQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383CE06C1ADBB8420085E24B /* ODQueryTests.m */; };
 		385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */; };
 		38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */; };
@@ -72,6 +73,8 @@
 		0AA14A77F7B5805A52640ECF /* Pods-ODKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.debug.xcconfig"; sourceTree = "<group>"; };
 		1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ODKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C525CB7BEDCD9C5F745CECD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		372FD24C1AF79F59008128EC /* ODHexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODHexer.h; sourceTree = "<group>"; };
+		372FD24D1AF79F59008128EC /* ODHexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODHexer.m; sourceTree = "<group>"; };
 		383CE06C1ADBB8420085E24B /* ODQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQueryTests.m; sourceTree = "<group>"; };
 		385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorODErrorTests.m; sourceTree = "<group>"; };
 		38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRegisterDeviceOperationTests.m; sourceTree = "<group>"; };
@@ -146,6 +149,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37F26A081AF8E91E006A21A8 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				372FD24C1AF79F59008128EC /* ODHexer.h */,
+				372FD24D1AF79F59008128EC /* ODHexer.m */,
+			);
+			name = Commons;
+			sourceTree = "<group>";
+		};
 		3860173C0F432095134E4C25 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -221,26 +233,27 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5B6195388D20070C39A /* Supporting Files */,
-				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
-				CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */,
+				37F26A081AF8E91E006A21A8 /* Commons */,
 				385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */,
-				CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */,
-				CD7FE2711A9EDD5B002C076E /* ODCreateUserOperationTests.m */,
+				CD7FE26A1A9DB97B002C076E /* NSURLRequestODRequestTests.m */,
 				CD48CE0C1AA05A9200A1CD04 /* ODContainerTests.m */,
-				CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */,
-				CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */,
-				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
+				CD7FE2711A9EDD5B002C076E /* ODCreateUserOperationTests.m */,
 				CD395D0C1AA0273F00A97B16 /* ODDatabaseTest.m */,
-				CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */,
 				CD42FE0B1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m */,
-				CD42FE0F1AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m */,
+				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
+				CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */,
+				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
 				CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */,
-				CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */,
-				CD56972D1AAC7E2500AE596B /* ODRecordTests.m */,
 				CDF571021AB4825700091DB3 /* ODQuerySerializerTests.m */,
-				38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */,
 				383CE06C1ADBB8420085E24B /* ODQueryTests.m */,
+				CD98A8A31A9F28030056420F /* ODRecordDeserializerTests.m */,
+				CD5697291AAC7D3700AE596B /* ODRecordIDTests.m */,
+				CD8FE82F1A9F1FE10087FE71 /* ODRecordSerializerTests.m */,
+				CD56972D1AAC7E2500AE596B /* ODRecordTests.m */,
+				38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */,
+				CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */,
+				CD42FE0F1AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m */,
+				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -468,6 +481,7 @@
 				CD48CE0F1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* ODCreateUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */,
+				372FD24E1AF79F59008128EC /* ODHexer.m in Sources */,
 				385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* ODQuerySerializerTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <ODKit/ODKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "ODHexer.h"
 
 SpecBegin(ODRegisterDeviceOperation)
 
@@ -22,7 +23,7 @@ describe(@"register", ^{
     });
     
     it(@"new device request", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:@"DEVICE_TOKEN"];
+        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         operation.container = container;
         [operation prepareForRequest];
         
@@ -30,12 +31,12 @@ describe(@"register", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"device:register");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"device_token"]).to.equal(@"DEVICE_TOKEN");
+        expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
         expect(request.payload[@"id"]).to.beNil();
     });
     
     it(@"update device request", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:@"DEVICE_TOKEN"];
+        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         [operation prepareForRequest];
@@ -44,18 +45,20 @@ describe(@"register", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"device:register");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"device_token"]).to.equal(@"DEVICE_TOKEN");
+        expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
         expect(request.payload[@"id"]).to.equal(@"DEVICE_ID");
     });
     
     it(@"new device response", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:@"DEVICE_TOKEN"];
+        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
-                                         @"id": @"DEVICE_ID",
+                                         @"result": @{
+                                             @"id": @"DEVICE_ID",
+                                             },
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
@@ -76,9 +79,38 @@ describe(@"register", ^{
             [container addOperation:operation];
         });
     });
-    
+
+    it(@"error with response without id", ^{
+        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"result": @{},
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            operation.registerCompletionBlock = ^(NSString *deviceID, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [container addOperation:operation];
+        });
+    });
+
     it(@"pass error", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:@"DEVICE_TOKEN"];
+        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {

@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <ODKit/ODKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+
+#import "ODHexer.h"
+
 #import "ODContainer_Private.h"
+
 
 SpecBegin(ODContainer)
 
@@ -106,7 +110,7 @@ describe(@"register device", ^{
         }];
         
         waitUntil(^(DoneCallback done) {
-            [container registerRemoteNotificationDeviceToken:@"DEVICE_TOKEN"
+            [container registerRemoteNotificationDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]
                                            completionHandler:^(NSString *deviceID, NSError *error) {
                                                expect(deviceID).to.equal(@"DEVICE_ID");
                                                done();

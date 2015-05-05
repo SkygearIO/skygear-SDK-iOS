@@ -11,12 +11,10 @@
 
 @interface ODRegisterDeviceOperation : ODOperation
 
-- (instancetype)initWithDeviceToken:(NSString *)deviceToken;
+- (instancetype)initWithDeviceToken:(NSData *)deviceToken;
 
-@property (nonatomic, readonly, copy) NSString *deviceToken;
+@property (nonatomic, readonly, copy) NSData *deviceToken;
 @property (nonatomic, readwrite, copy) NSString *deviceID;
 @property(nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
-
-
 
 @end
