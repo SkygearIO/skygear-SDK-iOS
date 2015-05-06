@@ -18,6 +18,23 @@ describe(@"ODRecord", ^{
         expect(record.recordID).toNot.beNil();
         expect(record.recordType).to.equal(@"book");
     });
+    
+    it(@"set attribute to nil", ^{
+        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
+                                                           name:@"HelloWorld"
+                                                           data:@{@"title": @"Hello World"}];
+        record[@"title"] = nil;
+        expect(record[@"title"]).to.beNil();
+    });
+
+    it(@"set attribute to NSNull", ^{
+        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
+                                                           name:@"HelloWorld"
+                                                           data:@{@"title": @"Hello World"}];
+        record[@"title"] = [NSNull null];
+        expect(record[@"title"]).to.beNil();
+    });
+    
 });
 
 SpecEnd

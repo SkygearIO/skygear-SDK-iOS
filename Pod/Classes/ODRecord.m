@@ -93,7 +93,11 @@
 #pragma mark - Dictionary-like methods
 
 - (id)objectForKey:(id)key {
-    return [self.object objectForKey:key];
+    id object = [self.object objectForKey:key];
+    if ([[NSNull null] isEqual:object]) {
+        object = nil;
+    }
+    return object;
 }
 
 - (id)objectForKeyedSubscript:(id)key {
@@ -101,6 +105,9 @@
 }
 
 - (void)setObject:(id)object forKey:(id <NSCopying>)key {
+    if (!object) {
+        object = [NSNull null];
+    }
     [self.object setObject:object forKey:key];
 }
 
