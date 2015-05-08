@@ -12,28 +12,26 @@
 #import "ODRecordSerializer.h"
 #import "ODRecordDeserializer.h"
 
-@implementation ODRecordStorageFileBackedMemoryStore
+@implementation ODRecordStorageFileBackedMemoryStore {
+    NSString *_path;
+}
 
-- (instancetype)init
+- (instancetype)initWithFile:(NSString *)path
 {
     self = [super init];
     if (self) {
+        _path = path;
         [self prepareForPersistentStorage];
         [self load];
     }
     return self;
 }
 
-- (NSString *)persistentStoragePath
-{
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    return path;
-}
-
 - (void)prepareForPersistentStorage
 {
+    NSString *directoryPath = [_path stringByDeletingLastPathComponent];
     NSError *error = nil;
-    [[NSFileManager defaultManager] createDirectoryAtPath:[self persistentStoragePath]
+    [[NSFileManager defaultManager] createDirectoryAtPath:directoryPath
                               withIntermediateDirectories:YES
                                                attributes:nil
                                                     error:&error];
@@ -45,9 +43,7 @@
 - (void)load
 {
     [self.records removeAllObjects];
-    NSString *path = [self persistentStoragePath];
-    path = [path stringByAppendingPathComponent:@"ODRecordStorage.plist"];
-    NSDictionary *serializedRecords = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
+    NSDictionary *serializedRecords = [NSKeyedUnarchiver unarchiveObjectWithFile:_path];
     ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
     [serializedRecords enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:key];
@@ -57,16 +53,12 @@
 
 - (void)synchronize
 {
-    [self prepareForPersistentStorage];
-    NSString *path = [self persistentStoragePath];
-    path = [path stringByAppendingPathComponent:@"ODRecordStorage.plist"];
-    
     NSMutableDictionary *serializedRecords = [[NSMutableDictionary alloc] init];
     ODRecordSerializer *serializer = [ODRecordSerializer serializer];
     [self.records enumerateKeysAndObjectsUsingBlock:^(ODRecordID *key, ODRecord *obj, BOOL *stop) {
         serializedRecords[[key canonicalString]] = [serializer dictionaryWithRecord:obj];
     }];
-    [NSKeyedArchiver archiveRootObject:serializedRecords toFile:path];
+    [NSKeyedArchiver archiveRootObject:serializedRecords toFile:_path];
 }
 
 

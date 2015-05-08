@@ -9,18 +9,22 @@
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <ODKit/ODKit.h>
+#import "ODRecordStorageMemoryStore.h"
 
 SpecBegin(ODRecordStorage)
 
 describe(@"ODRecordStorage", ^{
+    __block ODRecordStorage *storage = nil;
+    
+    beforeEach(^{
+        storage = [[ODRecordStorage alloc] initWithBackingStore:[[ODRecordStorageMemoryStore alloc] init]];
+    });
+
     it(@"init", ^{
-        ODRecordStorage *storage = [ODRecordStorage recordStorageBackedByMemory];
         expect([storage class]).to.equal([ODRecordStorage class]);
     });
     
     it(@"fetch, save, delete", ^{
-        ODRecordStorage *storage = [ODRecordStorage recordStorageBackedByMemory];
-        
         // save
         ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
         record[@"title"] = @"Hello World!";
@@ -36,8 +40,6 @@ describe(@"ODRecordStorage", ^{
     });
     
     it(@"pending changes", ^{
-        ODRecordStorage *storage = [ODRecordStorage recordStorageBackedByMemory];
-        
         // save
         ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
         record[@"title"] = @"Hello World!";
@@ -52,8 +54,6 @@ describe(@"ODRecordStorage", ^{
     });
     
     it(@"dismiss changes", ^{
-        ODRecordStorage *storage = [ODRecordStorage recordStorageBackedByMemory];
-        
         // save
         ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
         record[@"title"] = @"Hello World!";

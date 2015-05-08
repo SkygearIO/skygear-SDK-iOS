@@ -11,6 +11,7 @@
 #import "ODRecord.h"
 #import "ODRecordChange.h"
 #import "ODRecordResultController.h"
+#import "ODRecordStorageBackingStore.h"
 
 typedef enum : NSInteger {
     /**
@@ -60,8 +61,7 @@ typedef enum : NSInteger {
  */
 @property (nonatomic, assign) BOOL enabled;
 
-+ (ODRecordStorage *)recordStorageBackedByMemory;
-+ (ODRecordStorage *)recordStorageBackedByFile;
+- (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore;
 
 /**
  Handles a remote notification dictionary.
