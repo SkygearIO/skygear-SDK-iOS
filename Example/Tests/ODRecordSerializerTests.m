@@ -50,7 +50,7 @@ describe(@"serialize", ^{
         NSDictionary *authorRef = dictionary[@"author"];
         expect([authorRef class]).to.beSubclassOf([NSDictionary class]);
         expect(authorRef[ODDataSerializationCustomTypeKey]).to.equal(ODDataSerializationReferenceType);
-        expect(authorRef[@"$id"]).to.equal(@"author1");
+        expect(authorRef[@"$id"]).to.equal(@"author/author1");
     });
     
     it(@"serialize date", ^{

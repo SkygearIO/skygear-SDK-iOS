@@ -48,8 +48,7 @@ describe(@"deserialize", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"author"] = @{
                             ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
-                            @"$id": @"author1",
-                            @"$class": @"author",
+                            @"$id": @"author/author1",
                             };
         ODRecord *record = [deserializer recordWithDictionary:data];
         ODReference *authorRef = record[@"author"];
