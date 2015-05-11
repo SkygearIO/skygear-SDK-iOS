@@ -47,6 +47,7 @@
 #import "ODRecordID.h"
 #import "ODRecordSerialization.h"
 #import "ODRecordSerializer.h"
+#import "ODRecordStorage.h"
 #import "ODRecordZoneID.h"
 #import "ODRecord_Private.h"
 #import "ODReference.h"
