@@ -26,26 +26,12 @@
     NSMutableArray *_failedChanges;
 }
 
-+ (ODRecordStorage *)recordStorageBackedByMemory
-{
-    ODRecordStorage *storage = [[ODRecordStorage alloc] init];
-    storage->_backingStore = [[ODRecordStorageMemoryStore alloc] init];
-    return storage;
-}
-
-+ (ODRecordStorage *)recordStorageBackedByFile
-{
-    ODRecordStorage *storage = [[ODRecordStorage alloc] init];
-    storage->_backingStore = [[ODRecordStorageFileBackedMemoryStore alloc] init];
-    return storage;
-}
-
-- (instancetype)init
+- (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore
 {
     self = [super init];
     if (self) {
         _records = [NSMapTable strongToWeakObjectsMapTable];
-        _backingStore = [[ODRecordStorageFileBackedMemoryStore alloc] init];
+        _backingStore = backingStore;
         _defaultResolveMethod = ODRecordResolveByReplacing;
         _pendingChanges = [[NSMutableArray alloc] init];
         _failedChanges = [[NSMutableArray alloc] init];

@@ -11,4 +11,7 @@
 
 @interface ODRecordStorageFileBackedMemoryStore : ODRecordStorageMemoryStore
 
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
+
 @end
