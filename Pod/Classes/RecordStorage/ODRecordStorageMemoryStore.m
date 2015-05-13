@@ -37,6 +37,11 @@
     [_records removeObjectForKey:record.recordID];
 }
 
+- (void)deleteRecordWithRecordID:(ODRecordID *)recordID
+{
+    [_records removeObjectForKey:recordID];
+}
+
 - (BOOL)existsRecordWithRecordID:(ODRecordID *)recordID
 {
     return (BOOL)[_records objectForKey:recordID];
@@ -58,6 +63,17 @@
         }
     }];
     return wantedRecordIDs;
+}
+
+- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *))block
+{
+    if (!block) {
+        return;
+    }
+    
+    [_records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        block(obj);
+    }];
 }
 
 - (void)synchronize

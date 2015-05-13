@@ -10,6 +10,7 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <ODKit/ODKit.h>
 #import "ODRecordStorageMemoryStore.h"
+#import "ODRecordSynchronizer.h"
 
 SpecBegin(ODRecordStorageCoordinator)
 
@@ -44,6 +45,8 @@ describe(@"ODRecordStorageCoordinator", ^{
         ODRecordStorage *storage = [coordinator recordStorageWithDatabase:[container privateCloudDatabase]
                                                                   options:nil];
         expect([storage class]).to.beSubclassOf([ODRecordStorage class]);
+        expect([storage backingStore]).to.conformTo(@protocol(ODRecordStorageBackingStore));
+        expect([[storage synchronizer] class]).to.beSubclassOf([ODRecordSynchronizer class]);
     });
 });
 

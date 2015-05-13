@@ -16,9 +16,11 @@
 - (void)insertRecord:(ODRecord *)record;
 - (void)updateRecord:(ODRecord *)record;
 - (void)deleteRecord:(ODRecord *)record;
+- (void)deleteRecordWithRecordID:(ODRecordID *)recordID;
 - (ODRecord *)fetchRecordWithRecordID:(ODRecordID *)recordID;
 - (BOOL)existsRecordWithRecordID:(ODRecordID *)recordID;
 - (NSArray *)queryRecordIDsWithRecordType:(NSString *)recordType;
 - (void)synchronize;
+- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *record))block;
 
 @end

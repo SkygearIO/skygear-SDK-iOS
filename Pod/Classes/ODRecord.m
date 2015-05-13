@@ -66,7 +66,7 @@
 - (id)copyWithZone:(NSZone *)zone {
     ODRecord *record = [[self.class allocWithZone:zone] init];
     record->_recordID = [_recordID copyWithZone:zone];
-    record->_object = [_object copyWithZone:zone];
+    record->_object = [[_object copyWithZone:zone] mutableCopy];
     return record;
 }
 

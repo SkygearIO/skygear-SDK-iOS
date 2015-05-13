@@ -11,6 +11,7 @@
 #import "ODContainer.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"
+#import "ODRecordSynchronizer.h"
 
 const NSString *ODRecordStorageCoordinatorBackingStoreKey = @"backingStore";
 const NSString *ODRecordStorageCoordinatorMemoryStore = @"MemoryStore";
@@ -106,6 +107,9 @@ const NSString *ODRecordStorageCoordinatorFilePath = @"filePath";
                                      query:query
                                    options:options];
     ODRecordStorage *storage = [[ODRecordStorage alloc] initWithBackingStore:backingStore];
+    storage.synchronizer = [[ODRecordSynchronizer alloc] initWithContainer:self.container
+                                                                  database:database
+                                                                     query:query];
     [self registerRecordStorage:storage];
     return storage;
 }

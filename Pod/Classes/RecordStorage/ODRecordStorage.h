@@ -13,6 +13,8 @@
 #import "ODRecordResultController.h"
 #import "ODRecordStorageBackingStore.h"
 
+@class ODRecordSynchronizer;
+
 typedef enum : NSInteger {
     /**
      Record is in the same state as the last known state on server.
@@ -60,6 +62,23 @@ typedef enum : NSInteger {
  until this is set to YES again.
  */
 @property (nonatomic, assign) BOOL enabled;
+
+/**
+ Returns whether the <ODRecordStorage> is currently updating the backing store.
+ 
+ When the backing store is being updated, calling -beginUpdating is not allowed.
+ */
+@property (nonatomic, readonly, getter=isUpdating) BOOL updating;
+
+/**
+ Returns the backing store object used to initialize the the storage.
+ */
+@property (nonatomic, readonly, strong) id<ODRecordStorageBackingStore> backingStore;
+
+/**
+ Sets or returns a synchronizer to the record storage.
+ */
+@property (nonatomic, readwrite, strong) ODRecordSynchronizer *synchronizer;
 
 - (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore;
 
@@ -204,5 +223,33 @@ typedef enum : NSInteger {
  <ODRecordStorage> will call the specified block for each failed record.
  */
 - (void)dismissFailedChangesWithBlock:(BOOL (^)(ODRecordChange *item, ODRecord *record))block;
+
+#pragma mark - Applying updates
+
+/**
+ Notifies the storage that it will begin receiving record updates.
+ */
+- (void)beginUpdating;
+
+/**
+ Notifies the storage that it has received all record updates.
+ 
+ Call this method when the you have finished sending remote record updates to the storage. The
+ storage uses this opportunity to commit updates to backing store and fires notification that
+ the storage is updated.
+ */
+- (void)finishUpdating;
+
+/**
+ Replace all existing records in the backing store with a new array of records.
+ */
+- (void)updateByReplacingWithRecords:(NSArray *)records;
+
+/**
+ Apply a pending change to the backing store.
+ */
+- (void)updateByApplyingChange:(ODRecordChange *)change
+                     recordOnRemote:(ODRecord *)remoteRecord
+                              error:(NSError *)error;
 
 @end
