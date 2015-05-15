@@ -12,7 +12,6 @@
 
 typedef enum ODNotificationType : NSInteger {
     ODNotificationTypeQuery = 1,
-    ODNotificationTypeRecordZone = 2,
     ODNotificationTypeReadNotification = 3,
     ODNotificationTypePushNotification = 4,
 } ODNotificationType;

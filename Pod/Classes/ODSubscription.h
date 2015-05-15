@@ -10,7 +10,6 @@
 
 #import "ODNotificationInfo.h"
 #import "ODQuery.h"
-#import "ODRecordZoneID.h"
 
 @interface ODSubscription : NSObject
 
@@ -24,7 +23,6 @@
                          predicate:(NSPredicate *)predicate
                     subscriptionID:(NSString *)subscriptionID;
 
-@property (nonatomic, copy) ODRecordZoneID *zoneID;
 @property (nonatomic, readonly) ODQuery *query;
 
 // probably duplicated with query?

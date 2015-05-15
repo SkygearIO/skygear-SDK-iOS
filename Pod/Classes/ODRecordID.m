@@ -19,14 +19,6 @@
     return [self initWithRecordType:nil name:recordName];
 }
 
-- (instancetype)initWithRecordName:(NSString *)recordName zoneID:(ODRecordZoneID *)zoneID {
-    self = [self initWithRecordType:nil name:recordName];
-    if (self) {
-        self->_zoneID = zoneID;
-    }
-    return self;
-}
-
 - (instancetype)initWithRecordType:(NSString *)type
 {
     return [self initWithRecordType:type name:nil];
@@ -53,7 +45,6 @@
         }
         _recordType = [type copy];
         _recordName = recordName ? [recordName copy] : [[NSUUID UUID] UUIDString];
-        _zoneID = nil;
     }
     return self;
 }
@@ -61,7 +52,6 @@
 - (id)copyWithZone:(NSZone *)zone {
     ODRecordID *recordID = [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
                                                                           name:[_recordName copyWithZone:zone]];
-    recordID->_zoneID = [_zoneID copyWithZone:zone];
     return recordID;
 }
 
@@ -86,14 +76,13 @@
     
     return (
             ((recordID.recordName == nil && self.recordName == nil) || [recordID.recordName isEqual:self.recordName])
-            && ((recordID.zoneID == nil && self.zoneID == nil) || [recordID.zoneID isEqual:self.zoneID])
             && ((recordID.recordType == nil && self.recordType == nil) || [recordID.recordType isEqual:self.recordType])
             );
 }
 
 - (NSUInteger)hash
 {
-    return [self.recordName hash] ^ [self.zoneID hash] ^ [self.recordType hash];
+    return [self.recordName hash] ^ [self.recordType hash];
 }
 
 - (NSString *)description

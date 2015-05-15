@@ -29,12 +29,9 @@ typedef enum : NSInteger {
     ODErrorOperationCancelled      = 20,
     ODErrorChangeTokenExpired      = 21,
     ODErrorBatchRequestFailed      = 22,
-    ODErrorZoneBusy                = 23,
     ODErrorBadDatabase             = 24,
     ODErrorQuotaExceeded           = 25,
-    ODErrorZoneNotFound            = 26,
     ODErrorLimitExceeded           = 27,
-    ODErrorUserDeletedZone         = 28,
 } ODErrorCode;
 
 extern const NSString * ODErrorMessageKey;

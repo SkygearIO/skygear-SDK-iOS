@@ -13,7 +13,6 @@
 
 @class ODDatabaseOperation;
 @class ODQuery;
-@class ODRecordZoneID;
 @class ODSubscription;
 @class ODContainer;
 
@@ -31,11 +30,9 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 - (void)commit;
 
 - (void)performQuery:(ODQuery *)query
-        inZoneWithID:(ODRecordZoneID *)zoneID
    completionHandler:(void (^)(NSArray *results,
                                NSError *error))completionHandler;
 - (void)performCachedQuery:(ODQuery *)query
-              inZoneWithID:(ODRecordZoneID *)zoneID
          completionHandler:(void (^)(NSArray *results,
                                      BOOL pending,
                                      NSError *error))completionHandler;

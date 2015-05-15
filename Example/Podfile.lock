@@ -16,7 +16,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   ODKit:
-    :path: ../
+    :path: "../"
   Specta:
     :git: https://github.com/specta/specta.git
     :tag: v0.3.0.beta1
@@ -29,8 +29,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  ODKit: 6e7deaa52145ac3906a3a8f5aa3aa979e2cae411
+  ODKit: 784cc0e04e459b3f657dc2227a52f333344741c8
   OHHTTPStubs: 00152a63400246fcbc4b772a2a547ea34c97cbd6
-  Specta: 63e8ac8e07db6675c7096d37f77a266a1be4c02d
+  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.4

@@ -18,7 +18,6 @@ describe(@"ODRecordID", ^{
         expect(recordID.recordType).to.equal(@"book");
         expect(recordID.recordName).toNot.beNil();
         expect([recordID.recordName class]).to.beSubclassOf([NSString class]);
-        expect([recordID zoneID]).to.beNil();
         expect([recordID.description class]).to.beSubclassOf([NSString class]);
     });
     
