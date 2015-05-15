@@ -21,4 +21,6 @@
 
 @property(nonatomic, copy) NSArray *desiredKeys;
 
+- (BOOL)isEqualToNotificationInfo:(ODNotificationInfo *)notificationInfo;
+
 @end

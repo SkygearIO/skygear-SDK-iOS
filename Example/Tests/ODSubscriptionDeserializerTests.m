@@ -82,6 +82,93 @@ describe(@"deserialize subscription", ^{
         expect(subscription.query.recordType).to.equal(@"recordType");
         expect(subscription.query.predicate).to.equal([NSPredicate predicateWithFormat:@"name = %@", @"John"]);
     });
+
+    it(@"deserialize subscription with notification info", ^{
+        NSDictionary *subscriptionDict = @{
+                                           @"id": @"subscriptionID",
+                                           @"type": @"query",
+                                           @"notification_info": @{
+                                                   @"aps": @{
+                                                           @"alert": @{
+                                                                   @"body": @"alertBody",
+                                                                   @"action-loc-key": @"alertActionLocalizationKey",
+                                                                   @"loc-key": @"alertLocalizationKey",
+                                                                   @"loc-args": @[@"arg0", @"arg1"],
+                                                                   @"launch-image": @"alertLaunchImage",
+                                                                   },
+                                                           @"sound": @"soundName",
+                                                           @"should-badge": @YES,
+                                                           @"should-send-content-available": @YES,
+                                                           },
+                                                   },
+                                           };
+
+        ODSubscription *subscription = [deserializer subscriptionWithDictionary:subscriptionDict];
+        expect(subscription.subscriptionType).to.equal(ODSubscriptionTypeQuery);
+        expect(subscription.subscriptionID).to.equal(@"subscriptionID");
+
+        ODNotificationInfo *expectedNotificationInfo = [[ODNotificationInfo alloc] init];
+        expectedNotificationInfo.alertBody = @"alertBody";
+        expectedNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        expectedNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
+        expectedNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        expectedNotificationInfo.alertLaunchImage = @"alertLaunchImage";
+        expectedNotificationInfo.soundName = @"soundName";
+        expectedNotificationInfo.shouldBadge = YES;
+        expectedNotificationInfo.shouldSendContentAvailable = YES;
+        expect(subscription.notificationInfo).to.equal(expectedNotificationInfo);
+    });
+});
+
+describe(@"deserialize notification info", ^{
+    __block ODNotificationInfoDeserializer *deserializer = nil;
+
+    beforeEach(^{
+        deserializer = [ODNotificationInfoDeserializer deserializer];
+    });
+
+    it(@"deserialize nil", ^{
+        ODNotificationInfo *notificationInfo = [deserializer notificationInfoWithDictionary:nil];
+        expect(notificationInfo).to.equal(nil);
+    });
+
+    it(@"deserialize empty dicty", ^{
+        ODNotificationInfo *notificationInfo = [deserializer notificationInfoWithDictionary:@{}];
+        expect(notificationInfo).to.equal(nil);
+    });
+
+    it(@"deserialize full notification info", ^{
+        NSDictionary *notificationInfoDict = @{
+                                               @"aps": @{
+                                                       @"alert": @{
+                                                               @"body": @"alertBody",
+                                                               @"action-loc-key": @"alertActionLocalizationKey",
+                                                               @"loc-key": @"alertLocalizationKey",
+                                                               @"loc-args": @[@"arg0", @"arg1"],
+                                                               @"launch-image": @"alertLaunchImage",
+                                                               },
+                                                       @"sound": @"soundName",
+                                                       @"should-badge": @YES,
+                                                       @"should-send-content-available": @YES,
+                                                       },
+                                               @"desired_keys": @[@"key0", @"key1"],
+                                               };
+
+        ODNotificationInfo *notificationInfo = [deserializer notificationInfoWithDictionary:notificationInfoDict];
+
+        ODNotificationInfo *expectedNotificationInfo = [[ODNotificationInfo alloc] init];
+        expectedNotificationInfo.alertBody = @"alertBody";
+        expectedNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        expectedNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
+        expectedNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        expectedNotificationInfo.alertLaunchImage = @"alertLaunchImage";
+        expectedNotificationInfo.soundName = @"soundName";
+        expectedNotificationInfo.shouldBadge = YES;
+        expectedNotificationInfo.shouldSendContentAvailable = YES;
+        expectedNotificationInfo.desiredKeys = @[@"key0", @"key1"];
+        expect(notificationInfo).to.equal(expectedNotificationInfo);
+    });
+
 });
 
 SpecEnd

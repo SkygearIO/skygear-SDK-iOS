@@ -8,6 +8,14 @@
 
 #import "ODNotificationInfo.h"
 
+static BOOL isNilOrEqualString(NSString *s1, NSString *s2) {
+    return (s1 == nil && s2 == nil) || [s1 isEqualToString:s2];
+}
+
+static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2) {
+    return (a1 == nil && a2 == nil) || [a1 isEqualToArray:a2];
+}
+
 @implementation ODNotificationInfo
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -24,6 +32,60 @@
     info->_desiredKeys = [_desiredKeys copyWithZone:zone];
 
     return info;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (!object) {
+        return NO;
+    }
+
+    if (![object isKindOfClass:ODNotificationInfo.class]) {
+        return NO;
+    }
+
+    return [self isEqualToNotificationInfo:object];
+}
+
+- (BOOL)isEqualToNotificationInfo:(ODNotificationInfo *)n
+{
+    return isNilOrEqualString(self.alertActionLocalizationKey, n.alertActionLocalizationKey) &&
+        isNilOrEqualString(self.alertBody, n.alertBody) &&
+        isNilOrEqualString(self.alertLaunchImage, self.alertLaunchImage) &&
+        isNilOrEqualArray(self.alertLocalizationArgs, n.alertLocalizationArgs) &&
+        isNilOrEqualString(self.alertLocalizationKey, n.alertLocalizationKey) &&
+        isNilOrEqualString(self.soundName, n.soundName) &&
+        self.shouldBadge == n.shouldBadge &&
+        self.shouldSendContentAvailable == n.shouldSendContentAvailable &&
+        isNilOrEqualArray(self.desiredKeys, n.desiredKeys);
+}
+
+- (NSUInteger)hash
+{
+    return self.alertActionLocalizationKey.hash ^
+        self.alertBody.hash ^
+        self.alertLaunchImage.hash ^
+        self.alertLocalizationArgs.hash ^
+        self.alertLocalizationKey.hash ^
+        self.soundName.hash ^
+        self.shouldBadge ^
+        self.shouldSendContentAvailable ^
+        self.desiredKeys.hash;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ <alertBody = %@, alertLocalizationKey = %@, alertLocalizationArgs = %@, alertActionLocalizationKey = %@, alertLaunchImage = %@, soundName = %@, shouldBadge = %@, shouldSendContentAvailable = %@, desiredKeys = %@>",
+            NSStringFromClass(self.class),
+            self.alertBody,
+            self.alertLocalizationKey,
+            self.alertLocalizationArgs,
+            self.alertActionLocalizationKey,
+            self.alertLaunchImage,
+            self.soundName,
+            @(self.shouldBadge),
+            @(self.shouldSendContentAvailable),
+            self.desiredKeys];
 }
 
 @end

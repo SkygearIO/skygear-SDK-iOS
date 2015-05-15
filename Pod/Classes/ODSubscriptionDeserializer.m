@@ -8,6 +8,7 @@
 
 #import "ODSubscriptionDeserializer.h"
 #import "ODSubscriptionSerialization.h"
+#import "ODNotificationInfoDeserializer.h"
 #import "ODQueryDeserializer.h"
 
 @implementation ODSubscriptionDeserializer
@@ -40,6 +41,11 @@
     } else {
         NSLog(@"Unrecgonized subscription type = %@", subscriptionType);
     }
+
+    ODNotificationInfoDeserializer *notificationInfoDeserializer = [ODNotificationInfoDeserializer deserializer];
+
+    ODNotificationInfo *notificationInfo = [notificationInfoDeserializer notificationInfoWithDictionary:dictionary[@"notification_info"]];
+    subscription.notificationInfo = notificationInfo;
 
     return subscription;
 }
