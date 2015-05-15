@@ -227,7 +227,7 @@
     [self executeOperation:operation];
 }
 
-- (void)performQuery:(ODQuery *)query inZoneWithID:(ODRecordZoneID *)zoneID completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+- (void)performQuery:(ODQuery *)query completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
     
@@ -242,7 +242,7 @@
     [self executeOperation:operation];
 }
 
-- (void)performCachedQuery:(ODQuery *)query inZoneWithID:(ODRecordZoneID *)zoneID completionHandler:(void (^)(NSArray *, BOOL, NSError *))completionHandler
+- (void)performCachedQuery:(ODQuery *)query completionHandler:(void (^)(NSArray *, BOOL, NSError *))completionHandler
 {
     ODQueryCache *cache = [[ODQueryCache alloc] initWithDatabase:self];
     NSArray *cachedResults = [cache cachedResultsWithQuery:query];
@@ -251,7 +251,6 @@
     }
     
     [self performQuery:query
-          inZoneWithID:zoneID
      completionHandler:^(NSArray *results, NSError *error) {
          if (error) {
              if (completionHandler) {

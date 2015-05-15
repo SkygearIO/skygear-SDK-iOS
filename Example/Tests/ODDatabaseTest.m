@@ -320,7 +320,7 @@ describe(@"database", ^{
         
         waitUntil(^(DoneCallback done) {
             ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
-            [database performQuery:query inZoneWithID:nil completionHandler:^(NSArray *results, NSError *error) {
+            [database performQuery:query completionHandler:^(NSArray *results, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(results).to.haveCountOf(1);
                     expect(((ODRecord *)results[0]).recordID.recordType).to.equal(@"book");

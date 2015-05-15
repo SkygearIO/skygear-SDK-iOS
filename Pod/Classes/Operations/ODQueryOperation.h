@@ -10,7 +10,6 @@
 
 #import "ODQuery.h"
 #import "ODQueryCursor.h"
-#import "ODRecordZoneID.h"
 
 @interface ODQueryOperation : ODDatabaseOperation
 
@@ -18,7 +17,6 @@
 - (instancetype)initWithCursor:(ODQueryCursor *)cursor;
 
 @property (nonatomic, copy) ODQuery *query;
-@property (nonatomic, copy) ODRecordZoneID *zoneID;
 @property (nonatomic, copy) NSArray *results __deprecated;
 
 @property(nonatomic, copy) void (^perRecordCompletionBlock)(ODRecord *record);
