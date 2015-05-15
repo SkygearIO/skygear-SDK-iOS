@@ -9,6 +9,7 @@
 #import "ODSubscriptionSerializer.h"
 #import "ODSubscriptionSerialization.h"
 #import "ODQuerySerializer.h"
+#import "ODNotificationInfoSerializer.h"
 
 @implementation ODSubscriptionSerializer
 
@@ -22,11 +23,18 @@
     if (subscription.subscriptionID) {
         payload[ODSubscriptionSerializationSubscriptionIDKey] = subscription.subscriptionID;
     }
+
+    NSDictionary *notificationInfoDict;
     switch (subscription.subscriptionType) {
         case ODSubscriptionTypeQuery:
             payload[ODSubscriptionSerializationSubscriptionTypeKey] = ODSubscriptionSerializationSubscriptionTypeQuery;
             if (subscription.query) {
                 payload[@"query"] = [[ODQuerySerializer serializer] serializeWithQuery:subscription.query];
+            }
+
+            notificationInfoDict = [[ODNotificationInfoSerializer serializer] dictionaryWithNotificationInfo:subscription.notificationInfo];
+            if (notificationInfoDict.count) {
+                payload[@"notification_info"] = notificationInfoDict;
             }
             break;
         default:

@@ -33,6 +33,7 @@
 #import "ODNotification.h"
 #import "ODNotificationID.h"
 #import "ODNotificationInfo.h"
+#import "ODNotificationInfoSerializer.h"
 #import "ODOperation.h"
 #import "ODPushNewsfeedOperation.h"
 #import "ODPushNotification.h"

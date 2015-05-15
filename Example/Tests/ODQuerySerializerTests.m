@@ -26,6 +26,11 @@ describe(@"serialize query", ^{
         expect([serializer class]).to.beSubclassOf([ODQuerySerializer class]);
     });
 
+    it(@"serialize nil", ^{
+        NSDictionary *result = [serializer serializeWithQuery:nil];
+        expect(result).to.equal(@{});
+    });
+
     it(@"serialize predicate", ^{
         query.eagerLoadKeyPath = @"name";
 

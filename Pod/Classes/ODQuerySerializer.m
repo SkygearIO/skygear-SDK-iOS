@@ -61,7 +61,9 @@
 - (id)serializeWithQuery:(ODQuery *)query
 {
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    result[@"record_type"] = query.recordType;
+    if (query.recordType.length) {
+        result[@"record_type"] = query.recordType;
+    }
     if (query.predicate) {
         result[@"predicate"] = [self serializeWithPredicate:query.predicate];
     }
