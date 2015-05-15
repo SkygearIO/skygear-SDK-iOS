@@ -11,7 +11,7 @@
 @interface ODRecordID : NSObject<NSCopying>
 
 /**
- Instantiates an instance of ODRecordID with a random record name and the default record zone.
+ Instantiates an instance of ODRecordID with a random record name.
  */
 - (instancetype)init __deprecated;
 - (instancetype)initWithRecordName:(NSString *)recordName __deprecated;
