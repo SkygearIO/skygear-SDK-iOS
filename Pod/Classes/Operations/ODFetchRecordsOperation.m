@@ -42,22 +42,6 @@
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)setPerRecordCompletionBlock:(void (^)(ODRecord *, ODRecordID *, NSError *))perRecordCompletionBlock
-{
-    [self willChangeValueForKey:@"perRecordCompletionBlock"];
-    _perRecordCompletionBlock = perRecordCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"perRecordCompletionBlock"];
-}
-
-- (void)setFetchRecordsCompletionBlock:(void (^)(NSDictionary *, NSError *))fetchRecordsCompletionBlock
-{
-    [self willChangeValueForKey:@"fetchRecordsCompletionBlock"];
-    _fetchRecordsCompletionBlock = fetchRecordsCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"fetchRecordsCompletionBlock"];
-}
-
 - (NSDictionary *)processResultArray:(NSArray *)result
 {
     NSMutableDictionary *recordsByRecordID = [NSMutableDictionary dictionary];
@@ -110,30 +94,30 @@
     return recordsByRecordID;
 }
 
-- (void)updateCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (self.perRecordCompletionBlock || self.fetchRecordsCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            NSDictionary *resultDictionary = nil;
-            NSError *error = weakSelf.error;
-            if (!error) {
-                NSArray *responseArray = weakSelf.response[@"result"];
-                if ([responseArray isKindOfClass:[NSArray class]]) {
-                    resultDictionary = [weakSelf processResultArray:responseArray];
-                } else {
-                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                                             errorDictionary:nil];
-                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
-                                                code:0
-                                            userInfo:userInfo];
-                }
-            }
-            
-            if (weakSelf.fetchRecordsCompletionBlock) {
-                weakSelf.fetchRecordsCompletionBlock(resultDictionary, error);
-            }
-        };
+    if (self.fetchRecordsCompletionBlock) {
+        self.fetchRecordsCompletionBlock(nil, error);
+    }
+}
+
+- (void)handleResponse:(NSDictionary *)response
+{
+    NSDictionary *resultDictionary = nil;
+    NSError *error = nil;
+    NSArray *responseArray = response[@"result"];
+    if ([responseArray isKindOfClass:[NSArray class]]) {
+        resultDictionary = [self processResultArray:responseArray];
+    } else {
+        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                                             errorDictionary:nil];
+        error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                    code:0
+                                userInfo:userInfo];
+    }
+    
+    if (self.fetchRecordsCompletionBlock) {
+        self.fetchRecordsCompletionBlock(resultDictionary, error);
     }
 }
 

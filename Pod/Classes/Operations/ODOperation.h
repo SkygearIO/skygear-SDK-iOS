@@ -18,8 +18,8 @@ extern const NSString * ODOperationErrorHTTPStatusCodeKey;
 
 @property(nonatomic, strong) ODContainer *container;
 @property(nonatomic, strong) ODRequest *request;
-@property(nonatomic, readonly) NSDictionary *response;
-@property(nonatomic, readonly) NSError *error;
+@property(nonatomic, readonly) NSDictionary *response __deprecated;
+@property(nonatomic, readonly) NSError *error __deprecated;
 
 - (instancetype)initWithRequest:(ODRequest *)request;
 
@@ -32,6 +32,30 @@ extern const NSString * ODOperationErrorHTTPStatusCodeKey;
  This method is only called by <ODOperation> when the <request> property is <nil>.
  */
 - (void)prepareForRequest;
+
+/**
+ Handles request error when operation completes.
+ 
+ If an error has occurred when making the request or when processing the returned data,
+ this method will be called to handle the error. Either this method or the -handleResponse:
+ method will be called, but not both.
+ 
+ The default implementation of this method does nothing. Subclass is expected to implement this
+ method.
+ */
+- (void)handleRequestError:(NSError *)error;
+
+/**
+ Handles the response when operation completes.
+ 
+ When no error occurred when making the request or when processing the returned data, this
+ method will be called to handle the response. Either this method or the -handleRequestError:
+ method will be called, but not both.
+ 
+ The default implementation of this method does nothing. Subclass is expected to implement this
+ method.
+ */
+- (void)handleResponse:(NSDictionary *)response;
 
 - (void)operationWillStart;
 

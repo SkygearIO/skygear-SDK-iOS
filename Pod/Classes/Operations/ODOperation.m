@@ -16,18 +16,20 @@
 const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
 const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatusCodeKey";
 
-@interface ODOperation ()
-
-@property (nonatomic, strong) NSError *error;
-@property (nonatomic, copy) NSDictionary *response;
-
-@end
-
 @implementation ODOperation {
     BOOL _executing;
     BOOL _finished;
+    NSError *_error;
     NSDictionary *_response;
     NSHTTPURLResponse *_httpResponse;
+}
+
+- (instancetype)init
+{
+    if ((self = [super init])) {
+        [self resetCompletionBlock];
+    }
+    return self;
 }
 
 - (instancetype)initWithRequest:(ODRequest *)request;
@@ -71,16 +73,14 @@ const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     }
 }
 
-- (NSDictionary *)response
+- (NSError *)error
 {
-    return _response;
+    return _error;
 }
 
-- (void)setResponse:(NSDictionary *)anObject
+- (NSDictionary *)response
 {
-    [self willChangeValueForKey:@"response"];
-    _response = [anObject copy];
-    [self didChangeValueForKey:@"response"];
+    return [_response copy];
 }
 
 - (NSURLRequest *)makeURLRequest
@@ -150,7 +150,7 @@ const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     _httpResponse = [response isKindOfClass:[NSHTTPURLResponse class]] ? (NSHTTPURLResponse *)response : nil;
 
     if (error) {
-        self.error = error;
+        _error = error;
     } else if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
         // A NSHTTPURLResponse is required to check the HTTP status code of the response, which
         // is required to determine if an error occurred.
@@ -205,11 +205,34 @@ const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
             }
         }
 
-        self.error = error;
-        [self setResponse:responseDictionary];
+        _error = error;
+        _response = responseDictionary;
     }
     
     [self setFinished:YES];
+}
+
+- (void)resetCompletionBlock
+{
+    __block __weak typeof(self) weakSelf = self;
+    self.completionBlock = ^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (strongSelf->_error) {
+            [strongSelf handleRequestError:strongSelf->_error];
+        } else {
+            [strongSelf handleResponse:strongSelf->_response];
+        }
+    };
+}
+
+- (void)handleRequestError:(NSError *)error
+{
+    // Do nothing. Subclass should implement this method to define custom behavior.
+}
+
+- (void)handleResponse:(NSDictionary *)response
+{
+    // Do nothing. Subclass should implement this method to define custom behavior.
 }
 
 @end
