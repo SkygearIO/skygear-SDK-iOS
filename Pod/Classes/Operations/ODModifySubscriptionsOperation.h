@@ -13,6 +13,7 @@
 
 - (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
 
+@property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
 
 @property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *savedSubscriptions, NSError *operationError);

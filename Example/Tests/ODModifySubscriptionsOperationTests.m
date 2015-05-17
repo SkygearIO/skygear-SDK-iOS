@@ -29,6 +29,7 @@ describe(@"modify subscription", ^{
 
     it(@"multiple subscriptions", ^{
         ODModifySubscriptionsOperation *operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[subscription1, subscription2]];
+        operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -36,11 +37,14 @@ describe(@"modify subscription", ^{
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"subscription:save");
         expect(request.accessToken).to.equal(container.currentAccessToken);
-        expect(request.payload[@"database_id"]).to.equal(database.databaseID);
-        expect(request.payload[@"subscriptions"]).to.equal(@[
-                                                            @{@"id": @"sub1", @"type": @"query"},
-                                                            @{@"id": @"sub2", @"type": @"query"},
-                                                            ]);
+        expect(request.payload).to.equal(@{
+                                           @"database_id": database.databaseID,
+                                           @"subscriptions": @[
+                                                   @{@"id": @"sub1", @"type": @"query"},
+                                                   @{@"id": @"sub2", @"type": @"query"},
+                                                   ],
+                                           @"device_id": @"DEVICE_ID",
+                                           });
     });
 
     it(@"make request", ^{
@@ -103,6 +107,31 @@ describe(@"modify subscription", ^{
                 });
             };
             [database executeOperation:operation];
+        });
+    });
+
+    describe(@"when there exists device id", ^{
+        __block ODModifySubscriptionsOperation *operation;
+
+        beforeEach(^{
+            id odDefaultsMock = OCMClassMock(ODDefaults.class);
+            OCMStub([odDefaultsMock sharedDefaults]).andReturn(odDefaultsMock);
+            OCMStub([odDefaultsMock deviceID]).andReturn(@"EXISTING_DEVICE_ID");
+
+            operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[]];
+            operation.container = container;
+            operation.database = database;
+        });
+
+        it(@"request with device id", ^{
+            [operation prepareForRequest];
+            expect(operation.request.payload[@"device_id"]).to.equal(@"EXISTING_DEVICE_ID");
+        });
+
+        it(@"user-set device id overrides existing device id", ^{
+            operation.deviceID = @"ASSIGNED_DEVICE_ID";
+            [operation prepareForRequest];
+            expect(operation.request.payload[@"device_id"]).to.equal(@"ASSIGNED_DEVICE_ID");
         });
     });
 

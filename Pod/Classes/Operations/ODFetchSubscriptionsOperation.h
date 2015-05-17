@@ -14,6 +14,8 @@
 
 + (instancetype)fetchAllSubscriptionsOperation;
 
+@property(nonatomic, copy) NSString *deviceID;
+
 @property(nonatomic, copy) NSArray *subscriptionIDs;
 
 @property(nonatomic, copy) void(^fetchSubscriptionCompletionBlock)(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError);

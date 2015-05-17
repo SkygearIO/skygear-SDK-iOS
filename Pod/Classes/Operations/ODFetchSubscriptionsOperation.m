@@ -7,6 +7,8 @@
 //
 
 #import "ODFetchSubscriptionsOperation.h"
+
+#import "ODDefaults.h"
 #import "ODSubscriptionDeserializer.h"
 #import "ODSubscriptionSerialization.h"
 
@@ -52,13 +54,27 @@
     NSMutableDictionary *payload = [@{
                                       @"database_id": self.database.databaseID,
                                       } mutableCopy];
-    if (self.isFetchAll) {
-        payload[@"fetch_all"] = @YES;
-    } else if (subscriptionIDs.count) {
-        payload[@"ids"] = subscriptionIDs;
+
+    NSString *deviceID = nil;
+    if (self.deviceID) {
+        deviceID = self.deviceID;
+    } else {
+        deviceID = [ODDefaults sharedDefaults].deviceID;
     }
-    self.request = [[ODRequest alloc] initWithAction:@"subscription:fetch"
-                                             payload:payload];
+    if (deviceID.length) {
+            payload[@"device_id"] = deviceID;
+    }
+
+    if (self.isFetchAll) {
+        self.request = [[ODRequest alloc] initWithAction:@"subscription:fetch_all"
+                                                 payload:payload];
+    } else {
+        if (subscriptionIDs.count) {
+            payload[@"ids"] = subscriptionIDs;
+        }
+        self.request = [[ODRequest alloc] initWithAction:@"subscription:fetch"
+                                                 payload:payload];
+    }
     self.request.accessToken = self.container.currentAccessToken;
 }
 

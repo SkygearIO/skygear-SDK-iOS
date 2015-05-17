@@ -7,6 +7,8 @@
 //
 
 #import "ODModifySubscriptionsOperation.h"
+
+#import "ODDefaults.h"
 #import "ODSubscriptionSerialization.h"
 #import "ODSubscriptionSerializer.h"
 #import "ODDataSerialization.h"
@@ -28,17 +30,32 @@
 {
     ODSubscriptionSerializer *serializer = [ODSubscriptionSerializer serializer];
 
+    NSMutableDictionary *payload = [@{
+                                      @"database_id": self.database.databaseID,
+                                      } mutableCopy];
+
     NSMutableArray *dictionariesToSave = [NSMutableArray array];
     subscriptionsByID = [NSMutableDictionary dictionary];
     for (ODSubscription *subscription in self.subscriptionsToSave) {
         [dictionariesToSave addObject:[serializer dictionaryWithSubscription:subscription]];
         subscriptionsByID[subscription.subscriptionID] = subscription;
     }
+    if (dictionariesToSave.count) {
+        payload[@"subscriptions"] = dictionariesToSave;
+    }
+
+    NSString *deviceID = nil;
+    if (self.deviceID) {
+        deviceID = self.deviceID;
+    } else {
+        deviceID = [ODDefaults sharedDefaults].deviceID;
+    }
+    if (deviceID.length) {
+        payload[@"device_id"] = deviceID;
+    }
+
     self.request = [[ODRequest alloc] initWithAction:@"subscription:save"
-                                             payload:@{
-                                                       @"database_id": self.database.databaseID,
-                                                       @"subscriptions": dictionariesToSave,
-                                                       }];
+                                             payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
 }
 
@@ -54,6 +71,7 @@
 {
     NSMutableArray *savedSubscriptions = [NSMutableArray array];
     for (NSDictionary *dict in result) {
+        // per item error has not been utilized yet
 //        NSError *error = nil;
         ODSubscription *subscription = nil;
         NSString *subscriptionID = dict[ODSubscriptionSerializationSubscriptionIDKey];
