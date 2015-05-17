@@ -12,3 +12,4 @@ const NSString * ODErrorMessageKey = @"ODErrorMessage";
 const NSString * ODErrorCodeKey = @"ODErrorCode";
 const NSString * ODErrorTypeKey = @"ODErrorType";
 const NSString * ODErrorInfoKey = @"ODErrorInfo";
+NSString * const ODPartialErrorsByItemIDKey = @"ODPartialErrorsByItemIDKey";

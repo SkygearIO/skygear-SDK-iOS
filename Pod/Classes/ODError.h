@@ -38,3 +38,4 @@ extern const NSString * ODErrorMessageKey;
 extern const NSString * ODErrorCodeKey;
 extern const NSString * ODErrorTypeKey;
 extern const NSString * ODErrorInfoKey;
+extern NSString * const ODPartialErrorsByItemIDKey;
