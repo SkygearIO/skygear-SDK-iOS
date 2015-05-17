@@ -11,20 +11,20 @@
 #import "ODReference.h"
 #import "ODError.h"
 
-const NSString *ODDataSerializationCustomTypeKey = @"$type";
-const NSString *ODDataSerializationReferenceType = @"ref";
-const NSString *ODDataSerializationDateType = @"date";
+NSString * const ODDataSerializationCustomTypeKey = @"$type";
+NSString * const ODDataSerializationReferenceType = @"ref";
+NSString * const ODDataSerializationDateType = @"date";
 
 @implementation ODDataSerialization
 
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data
 {
     id obj = nil;
-    if ([type isEqualToString:(NSString *)ODDataSerializationDateType]) {
+    if ([type isEqualToString:ODDataSerializationDateType]) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         obj = [formatter dateFromString:data[@"$date"]];
-    } else if ([type isEqualToString:(NSString *)ODDataSerializationReferenceType]) {
+    } else if ([type isEqualToString:ODDataSerializationReferenceType]) {
         ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:data[@"$id"]];
         obj = [[ODReference alloc] initWithRecordID:recordID];
     }

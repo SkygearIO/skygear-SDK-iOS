@@ -64,7 +64,7 @@
 
             NSMutableDictionary *userInfo = [ODDataSerialization userInfoWithErrorDictionary:obj];
             userInfo[NSLocalizedDescriptionKey] = @"An error occurred while deleting subscription.";
-            errorBySubscriptionID[subscriptionID] = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+            errorBySubscriptionID[subscriptionID] = [NSError errorWithDomain:ODOperationErrorDomain
                                                                         code:0
                                                                     userInfo:userInfo];
         } else if (subscriptionID.length) {
@@ -73,7 +73,7 @@
             // malformed response
             NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `id` or not in correct format."
                                                                         errorDictionary:nil];
-            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] = [NSError errorWithDomain:ODOperationErrorDomain
                                                                                            code:0
                                                                                        userInfo:userInfo];
 
@@ -109,7 +109,7 @@
             [self processResultArray:responseArray deletedsubscriptionIDs:&deletedSubscriptions operationError:&error];
         } else {
             NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result." errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+            error = [NSError errorWithDomain:ODOperationErrorDomain
                                     code:0
                                 userInfo:userInfo];
         }

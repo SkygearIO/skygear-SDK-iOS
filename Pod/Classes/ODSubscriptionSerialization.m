@@ -8,7 +8,7 @@
 
 #import "ODSubscriptionSerialization.h"
 
-const NSString *ODSubscriptionSerializationSubscriptionIDKey = @"id";
-const NSString *ODSubscriptionSerializationSubscriptionTypeKey = @"type";
-const NSString *ODSubscriptionSerializationSubscriptionTypeQuery = @"query";
-const NSString *ODSubscriptionSerializationSubscriptionTypeError = @"error";
+NSString * const ODSubscriptionSerializationSubscriptionIDKey = @"id";
+NSString * const ODSubscriptionSerializationSubscriptionTypeKey = @"type";
+NSString * const ODSubscriptionSerializationSubscriptionTypeQuery = @"query";
+NSString * const ODSubscriptionSerializationSubscriptionTypeError = @"error";

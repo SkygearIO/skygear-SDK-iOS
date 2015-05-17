@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern const NSString *ODSubscriptionSerializationSubscriptionIDKey;
-extern const NSString *ODSubscriptionSerializationSubscriptionTypeKey;
-extern const NSString *ODSubscriptionSerializationSubscriptionTypeQuery;
-extern const NSString *ODSubscriptionSerializationSubscriptionTypeError;
+extern NSString * const ODSubscriptionSerializationSubscriptionIDKey;
+extern NSString * const ODSubscriptionSerializationSubscriptionTypeKey;
+extern NSString * const ODSubscriptionSerializationSubscriptionTypeQuery;
+extern NSString * const ODSubscriptionSerializationSubscriptionTypeError;

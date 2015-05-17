@@ -11,8 +11,8 @@
 #import "ODContainer.h"
 #import "ODRequest.h"
 
-extern const NSString * ODOperationErrorDomain;
-extern const NSString * ODOperationErrorHTTPStatusCodeKey;
+extern NSString * const ODOperationErrorDomain;
+extern NSString * const ODOperationErrorHTTPStatusCodeKey;
 
 @interface ODOperation : NSOperation
 

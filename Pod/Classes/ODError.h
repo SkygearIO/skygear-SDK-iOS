@@ -34,8 +34,8 @@ typedef enum : NSInteger {
     ODErrorLimitExceeded           = 27,
 } ODErrorCode;
 
-extern const NSString * ODErrorMessageKey;
-extern const NSString * ODErrorCodeKey;
-extern const NSString * ODErrorTypeKey;
-extern const NSString * ODErrorInfoKey;
+extern NSString * const ODErrorMessageKey;
+extern NSString * const ODErrorCodeKey;
+extern NSString * const ODErrorTypeKey;
+extern NSString * const ODErrorInfoKey;
 extern NSString * const ODPartialErrorsByItemIDKey;

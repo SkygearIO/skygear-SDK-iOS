@@ -8,5 +8,5 @@
 
 #import <Foundation/Foundation.h>
 
-extern const NSString *ODRecordSerializationRecordIDKey;
-extern const NSString *ODRecordSerializationRecordTypeKey;
+extern NSString * const ODRecordSerializationRecordIDKey;
+extern NSString * const ODRecordSerializationRecordTypeKey;
