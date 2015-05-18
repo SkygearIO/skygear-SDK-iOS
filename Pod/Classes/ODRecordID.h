@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ODRecordID : NSObject<NSCopying>
+@interface ODRecordID : NSObject<NSCopying, NSSecureCoding>
 
 /**
  Instantiates an instance of ODRecordID with a random record name.
