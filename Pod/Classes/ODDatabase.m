@@ -13,6 +13,7 @@
 #import "ODRecordID.h"
 #import "ODFetchRecordsOperation.h"
 #import "ODModifyRecordsOperation.h"
+#import "ODModifySubscriptionsOperation.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODQueryOperation.h"
 #import "ODQueryCache.h"
@@ -61,9 +62,21 @@
 - (void)saveSubscription:(ODSubscription *)subscription
        completionHandler:(void (^)(ODSubscription *subscription,
                                    NSError *error))completionHandler {
+    ODModifySubscriptionsOperation *operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[subscription]];
     if (completionHandler) {
-        completionHandler(subscription, nil);
+        operation.modifySubscriptionsCompletionBlock = ^(NSArray *savedSubscriptions, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                ODSubscription *subscription = nil;
+                if (!operationError) {
+                    subscription = savedSubscriptions[0];
+                }
+
+                completionHandler(subscription, operationError);
+            });
+        };
     }
+
+    [self executeOperation:operation];
 }
 
 #pragma mark - Convenient methods for record operations
