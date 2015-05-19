@@ -23,6 +23,7 @@
 #import "ODFetchNewsfeedOperation.h"
 #import "ODFetchNotificationChangesOperation.h"
 #import "ODFetchRecordsOperation.h"
+#import "ODQueryRelationsOperation.h"
 #import "ODFetchSubscriptionsOperation.h"
 #import "ODFollowQuery.h"
 #import "ODFollowReference.h"
