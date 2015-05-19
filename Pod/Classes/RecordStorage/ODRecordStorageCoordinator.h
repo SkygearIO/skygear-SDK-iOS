@@ -13,10 +13,10 @@
 @class ODQuery;
 @class ODContainer;
 
-extern const NSString *ODRecordStorageCoordinatorBackingStoreKey;
-extern const NSString *ODRecordStorageCoordinatorMemoryStore;
-extern const NSString *ODRecordStorageCoordinatorFileBackedMemoryStore;
-extern const NSString *ODRecordStorageCoordinatorFilePath;
+extern NSString * const ODRecordStorageCoordinatorBackingStoreKey;
+extern NSString * const ODRecordStorageCoordinatorMemoryStore;
+extern NSString * const ODRecordStorageCoordinatorFileBackedMemoryStore;
+extern NSString * const ODRecordStorageCoordinatorFilePath;
 
 /**
  The <ODRecordStorageCoordinator> is responsible for keeping

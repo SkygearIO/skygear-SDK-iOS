@@ -11,17 +11,18 @@
 #import "ODNotificationInfo.h"
 #import "ODQuery.h"
 
+typedef enum : NSInteger {
+    ODSubscriptionTypeQuery      = 1,
+    ODSubscriptionTypeRecordZone = 2,
+} ODSubscriptionType;
+
 @interface ODSubscription : NSObject
 
 - (instancetype)initWithQuery:(ODQuery *)query;
 - (instancetype)initWithQuery:(ODQuery *)query
                  subscriptionID:(NSString *)subscriptionID;
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate
-                    subscriptionID:(NSString *)subscriptionID;
+@property (nonatomic, readonly, assign) ODSubscriptionType subscriptionType;
 
 @property (nonatomic, readonly) ODQuery *query;
 

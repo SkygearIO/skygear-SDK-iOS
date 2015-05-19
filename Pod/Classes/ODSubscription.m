@@ -11,6 +11,7 @@
 @interface ODSubscription()
 
 @property (nonatomic, copy) NSString *subscriptionID;
+@property (nonatomic, readwrite, assign) ODSubscriptionType subscriptionType;
 
 @end
 
@@ -24,13 +25,11 @@
                  subscriptionID:(NSString *)subscriptionID {
     self = [super init];
     if (self) {
+        _subscriptionType = ODSubscriptionTypeQuery;
         _query = query;
         _subscriptionID = subscriptionID;
     }
     return self;
 }
 
-- (NSString *)subscriptionID {
-    return @"someSubscriptionID";
-}
 @end

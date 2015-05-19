@@ -13,8 +13,8 @@
 #import "ODError.h"
 #import "ODDataSerialization.h"
 
-const NSString * ODOperationErrorDomain = @"ODOperationErrorDomain";
-const NSString * ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatusCodeKey";
+NSString * const ODOperationErrorDomain = @"ODOperationErrorDomain";
+NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatusCodeKey";
 
 @implementation ODOperation {
     BOOL _executing;

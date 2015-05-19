@@ -13,10 +13,10 @@
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordSynchronizer.h"
 
-const NSString *ODRecordStorageCoordinatorBackingStoreKey = @"backingStore";
-const NSString *ODRecordStorageCoordinatorMemoryStore = @"MemoryStore";
-const NSString *ODRecordStorageCoordinatorFileBackedMemoryStore = @"FileBackedMemoryStore";
-const NSString *ODRecordStorageCoordinatorFilePath = @"filePath";
+NSString * const ODRecordStorageCoordinatorBackingStoreKey = @"backingStore";
+NSString * const ODRecordStorageCoordinatorMemoryStore = @"MemoryStore";
+NSString * const ODRecordStorageCoordinatorFileBackedMemoryStore = @"FileBackedMemoryStore";
+NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
 
 @implementation ODRecordStorageCoordinator {
     NSMutableArray *_recordStorages;

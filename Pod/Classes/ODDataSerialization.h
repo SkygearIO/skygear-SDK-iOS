@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-extern const NSString *ODDataSerializationCustomTypeKey;
-extern const NSString *ODDataSerializationReferenceType;
-extern const NSString *ODDataSerializationDateType;
+extern NSString * const ODDataSerializationCustomTypeKey;
+extern NSString * const ODDataSerializationReferenceType;
+extern NSString * const ODDataSerializationDateType;
 
 @interface ODDataSerialization : NSObject
 

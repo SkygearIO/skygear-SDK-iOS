@@ -11,6 +11,49 @@
 
 SpecBegin(ODQuerySerializer)
 
+describe(@"serialize query", ^{
+    __block ODQuerySerializer *serializer = nil;
+    __block ODQuery *query = nil;
+
+    beforeEach(^{
+        serializer = [ODQuerySerializer serializer];
+        query = [[ODQuery alloc] initWithRecordType:@"recordType"
+                                          predicate:nil];
+    });
+
+    it(@"init", ^{
+        ODQuerySerializer *serializer = [ODQuerySerializer serializer];
+        expect([serializer class]).to.beSubclassOf([ODQuerySerializer class]);
+    });
+
+    it(@"serialize nil", ^{
+        NSDictionary *result = [serializer serializeWithQuery:nil];
+        expect(result).to.equal(@{});
+    });
+
+    it(@"serialize predicate", ^{
+        query.eagerLoadKeyPath = @"name";
+
+        NSDictionary *result = [serializer serializeWithQuery:query];
+        expect(result).to.equal(@{
+                                  @"record_type": @"recordType",
+                                  @"eager": @[@{@"$type": @"keypath", @"$val": @"name"}],
+                                  });
+    });
+
+    it(@"serialize sort", ^{
+        query.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+
+        NSDictionary *result = [serializer serializeWithQuery:query];
+        expect(result).to.equal(@{
+                                  @"record_type": @"recordType",
+                                  @"sort": @[
+                                          @[@{@"$type": @"keypath", @"$val": @"name"}, @"asc"]
+                                          ],
+                                  });
+    });
+});
+
 describe(@"serialize predicate", ^{
     __block ODQuerySerializer *serializer = nil;
     __block NSDictionary *basicPayload = nil;
@@ -21,12 +64,7 @@ describe(@"serialize predicate", ^{
         dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     });
-    
-    it(@"init", ^{
-        ODQuerySerializer *serializer = [ODQuerySerializer serializer];
-        expect([serializer class]).to.beSubclassOf([ODQuerySerializer class]);
-    });
-    
+
     it(@"lhs key path", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];

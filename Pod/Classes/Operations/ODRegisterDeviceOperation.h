@@ -15,6 +15,6 @@
 
 @property (nonatomic, readonly, copy) NSData *deviceToken;
 @property (nonatomic, readwrite, copy) NSString *deviceID;
-@property(nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
+@property (nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
 
 @end

@@ -15,11 +15,15 @@ SpecBegin(ODRegisterDeviceOperation)
 
 describe(@"register", ^{
     __block ODContainer *container = nil;
-    
+    __block id odDefaultsMock = nil;
+
     beforeEach(^{
         container = [[ODContainer alloc] init];
         [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
+
+        odDefaultsMock = OCMClassMock(ODDefaults.class);
+        OCMStub([odDefaultsMock sharedDefaults]).andReturn(odDefaultsMock);
     });
     
     it(@"new device request", ^{
@@ -73,6 +77,7 @@ describe(@"register", ^{
             operation.registerCompletionBlock = ^(NSString *deviceID, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(deviceID).to.equal(@"DEVICE_ID");
+                    OCMVerify([odDefaultsMock setDeviceID:@"DEVICE_ID"]);
                     done();
                 });
             };
@@ -127,7 +132,60 @@ describe(@"register", ^{
             [container addOperation:operation];
         });
     });
-    
+
+    describe(@"when there exists device id", ^{
+        beforeEach(^{
+            OCMStub([odDefaultsMock deviceID]).andReturn(@"EXISTING_DEVICE_ID");
+        });
+
+        it(@"request with device id", ^{
+            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+            operation.container = container;
+            [operation prepareForRequest];
+            expect(operation.request.payload[@"id"]).to.equal(@"EXISTING_DEVICE_ID");
+        });
+
+        it(@"reqeust be overriden by deviceID property", ^{
+            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+            operation.container = container;
+            operation.deviceID = @"ASSIGNED_DEVICE_ID";
+            [operation prepareForRequest];
+            expect(operation.request.payload[@"id"]).to.equal(@"ASSIGNED_DEVICE_ID");
+        });
+
+        it(@"update device id from response", ^{
+            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                                             @"result": @{
+                                                     @"id": @"BRAND_NEW_DEVICE_ID",
+                                                     },
+                                             };
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                                  options:0
+                                                                    error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload
+                                                  statusCode:200
+                                                     headers:@{}];
+            }];
+
+            waitUntil(^(DoneCallback done) {
+                operation.registerCompletionBlock = ^(NSString *deviceID, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(deviceID).to.equal(@"BRAND_NEW_DEVICE_ID");
+                        OCMVerify([odDefaultsMock setDeviceID:@"BRAND_NEW_DEVICE_ID"]);
+                        done();
+                    });
+                };
+                [container addOperation:operation];
+            });
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });

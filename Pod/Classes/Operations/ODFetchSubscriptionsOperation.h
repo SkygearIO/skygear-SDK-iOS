@@ -10,9 +10,11 @@
 
 @interface ODFetchSubscriptionsOperation : ODDatabaseOperation
 
-- (instancetype)initWithSubscriptionIDs:(NSArray *)subscriptionIDs;
+- (instancetype)initWithSubscriptionIDs:(NSArray *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)fetchAllSubscriptionsOperation;
+
+@property(nonatomic, copy) NSString *deviceID;
 
 @property(nonatomic, copy) NSArray *subscriptionIDs;
 

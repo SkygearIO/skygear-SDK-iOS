@@ -8,7 +8,8 @@
 
 #import "ODError.h"
 
-const NSString * ODErrorMessageKey = @"ODErrorMessage";
-const NSString * ODErrorCodeKey = @"ODErrorCode";
-const NSString * ODErrorTypeKey = @"ODErrorType";
-const NSString * ODErrorInfoKey = @"ODErrorInfo";
+NSString * const ODErrorMessageKey = @"ODErrorMessage";
+NSString * const ODErrorCodeKey = @"ODErrorCode";
+NSString * const ODErrorTypeKey = @"ODErrorType";
+NSString * const ODErrorInfoKey = @"ODErrorInfo";
+NSString * const ODPartialErrorsByItemIDKey = @"ODPartialErrorsByItemIDKey";

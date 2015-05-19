@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ODQuery.h"
 
 @interface ODQuerySerializer : NSObject
 
 + (instancetype)serializer;
+- (id)serializeWithQuery:(ODQuery *)query;
 - (id)serializeWithExpression:(NSExpression *)expression;
 - (id)serializeWithPredicate:(NSPredicate *)predicate;
 - (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors;

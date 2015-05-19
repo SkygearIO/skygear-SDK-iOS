@@ -8,6 +8,8 @@
 
 #import "ODRegisterDeviceOperation.h"
 
+#import "ODDefaults.h"
+
 @interface ODRegisterDeviceOperation()
 
 @property (readonly) NSString *hexDeviceToken;
@@ -46,8 +48,15 @@
                                       @"type": @"ios",
                                       @"device_token": self.hexDeviceToken,
                                       } mutableCopy];
-    if (self.deviceID) {
-        payload[@"id"] = self.deviceID;
+
+    NSString *deviceID;
+    if (self.deviceID.length) {
+        deviceID = self.deviceID;
+    } else {
+        deviceID = [ODDefaults sharedDefaults].deviceID;
+    }
+    if (deviceID.length) {
+        payload[@"id"] = deviceID;
     }
 
     self.request = [[ODRequest alloc] initWithAction:@"device:register"
@@ -64,7 +73,12 @@
         self.completionBlock = ^{
             NSError *error;
             NSDictionary *response = [weakSelf parseResponse:&error];
-            weakSelf.registerCompletionBlock(response[@"id"], error);
+
+            NSString *deviceID = response[@"id"];
+            if (deviceID.length) {
+                [ODDefaults sharedDefaults].deviceID = deviceID;
+            }
+            weakSelf.registerCompletionBlock(deviceID, error);
         };
     } else {
         self.completionBlock = nil;

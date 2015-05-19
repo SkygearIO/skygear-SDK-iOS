@@ -8,5 +8,5 @@
 
 #import "ODRecordSerialization.h"
 
-const NSString *ODRecordSerializationRecordIDKey = @"_id";
-const NSString *ODRecordSerializationRecordTypeKey = @"_type";
+NSString * const ODRecordSerializationRecordIDKey = @"_id";
+NSString * const ODRecordSerializationRecordTypeKey = @"_type";
