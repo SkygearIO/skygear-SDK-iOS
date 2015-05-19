@@ -11,11 +11,13 @@
 #import "ODContainer.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"
+#import "ODRecordStorageSqliteStore.h"
 #import "ODRecordSynchronizer.h"
 
 NSString * const ODRecordStorageCoordinatorBackingStoreKey = @"backingStore";
 NSString * const ODRecordStorageCoordinatorMemoryStore = @"MemoryStore";
 NSString * const ODRecordStorageCoordinatorFileBackedMemoryStore = @"FileBackedMemoryStore";
+NSString * const ODRecordStorageCoordinatorSqliteStore = @"SqliteStore";
 NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
 
 @implementation ODRecordStorageCoordinator {
@@ -76,12 +78,20 @@ NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
 {
     id<ODRecordStorageBackingStore> backingStore = nil;
     NSString *storeName = options[ODRecordStorageCoordinatorBackingStoreKey];
-    if (!storeName || [storeName isEqual:ODRecordStorageCoordinatorFileBackedMemoryStore]) {
+    if (!storeName || [storeName isEqual:ODRecordStorageCoordinatorSqliteStore]) {
         NSString *path = options[ODRecordStorageCoordinatorFilePath];
         if (!path) {
             NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
             // TODO: Change file name for different database and query
-            path = [cachePath stringByAppendingString:@"ODRecordStorage.plist"];
+            path = [cachePath stringByAppendingPathComponent:@"ODRecordStorage.db"];
+        }
+        backingStore = [[ODRecordStorageSqliteStore alloc] initWithFile:path];
+    } else if (!storeName || [storeName isEqual:ODRecordStorageCoordinatorFileBackedMemoryStore]) {
+        NSString *path = options[ODRecordStorageCoordinatorFilePath];
+        if (!path) {
+            NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+            // TODO: Change file name for different database and query
+            path = [cachePath stringByAppendingPathComponent:@"ODRecordStorage.plist"];
         }
         backingStore = [[ODRecordStorageFileBackedMemoryStore alloc] initWithFile:path];
     } else if ([storeName isEqual:ODRecordStorageCoordinatorMemoryStore]) {

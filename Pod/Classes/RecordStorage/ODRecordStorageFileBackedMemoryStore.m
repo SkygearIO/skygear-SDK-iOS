@@ -43,22 +43,46 @@
 - (void)load
 {
     [self.records removeAllObjects];
-    NSDictionary *serializedRecords = [NSKeyedUnarchiver unarchiveObjectWithFile:_path];
+    [self.changes removeAllObjects];
+    [self.localRecords removeAllObjects];
+    NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithFile:_path];
     ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
-    [serializedRecords enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [dict[@"records"] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:key];
         self.records[recordID] = [deserializer recordWithDictionary:obj];
     }];
+    [dict[@"localRecords"] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:key];
+        if ([[NSNull null] isEqual:obj]) {
+            self.localRecords[recordID] = obj;
+        } else {
+            self.localRecords[recordID] = [deserializer recordWithDictionary:obj];
+        }
+    }];
+    [self.changes addObjectsFromArray:dict[@"changes"]];
 }
 
 - (void)synchronize
 {
     NSMutableDictionary *serializedRecords = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *serializedLocalRecords = [[NSMutableDictionary alloc] init];
     ODRecordSerializer *serializer = [ODRecordSerializer serializer];
     [self.records enumerateKeysAndObjectsUsingBlock:^(ODRecordID *key, ODRecord *obj, BOOL *stop) {
         serializedRecords[[key canonicalString]] = [serializer dictionaryWithRecord:obj];
     }];
-    [NSKeyedArchiver archiveRootObject:serializedRecords toFile:_path];
+    [self.localRecords enumerateKeysAndObjectsUsingBlock:^(ODRecordID *key, ODRecord *obj, BOOL *stop) {
+        if ([[NSNull null] isEqual:obj]) {
+            serializedLocalRecords[[key canonicalString]] = obj;
+        } else {
+            serializedLocalRecords[[key canonicalString]] = [serializer dictionaryWithRecord:obj];
+        }
+    }];
+    [NSKeyedArchiver archiveRootObject:@{
+                                         @"records": serializedRecords,
+                                         @"changes": self.changes,
+                                         @"localRecords": serializedLocalRecords,
+                                         }
+                                toFile:_path];
 }
 
 

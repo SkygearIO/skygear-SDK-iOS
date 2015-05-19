@@ -11,7 +11,7 @@
 #import "ODModifyRecordsOperation.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODQueryOperation.h"
-#import "ODRecordChange_Private.h"
+#import "ODRecordChange.h"
 
 @implementation ODRecordSynchronizer {
     BOOL _updating;
@@ -44,6 +44,8 @@
                                        NSError *operationError) {
         if (!operationError) {
             [storage beginUpdating];
+            NSLog(@"%@: Updating record storage by replacing with %lu records.",
+                  self, [fetchedRecords count]);
             [storage updateByReplacingWithRecords:fetchedRecords];
             [storage finishUpdating];
         }
@@ -60,7 +62,7 @@
     if (recordToSave) {
         [change.attributesToSave
          enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-             recordToSave[key] = obj;
+             recordToSave[key] = obj[1];
          }];
     } else {
         NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
@@ -106,7 +108,7 @@
                     _updating = NO;
                 }
             };
-            change.state = ODRecordChangeStateStarted;
+            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == ODRecordChangeDelete) {
@@ -128,7 +130,7 @@
                     _updating = NO;
                 }
             };
-            change.state = ODRecordChangeStateStarted;
+            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
             updateCount++;
             [self.database executeOperation:op];
         }

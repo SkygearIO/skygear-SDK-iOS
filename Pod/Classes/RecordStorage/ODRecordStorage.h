@@ -192,12 +192,6 @@ typedef enum : NSInteger {
  */
 - (ODRecordState)recordStateWithRecord:(ODRecord *)record;
 
-
-/**
- Revert a record to the last synchronized state.
- */
-- (void)revertRecord:(ODRecord *)record;
-
 /**
  Dismisses a record change. Dismissing a change prevents such change
  from being submitted to the remote server.

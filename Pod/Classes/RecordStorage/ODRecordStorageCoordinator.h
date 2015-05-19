@@ -16,6 +16,7 @@
 extern NSString * const ODRecordStorageCoordinatorBackingStoreKey;
 extern NSString * const ODRecordStorageCoordinatorMemoryStore;
 extern NSString * const ODRecordStorageCoordinatorFileBackedMemoryStore;
+extern NSString * const ODRecordStorageCoordinatorSqliteStore;
 extern NSString * const ODRecordStorageCoordinatorFilePath;
 
 /**

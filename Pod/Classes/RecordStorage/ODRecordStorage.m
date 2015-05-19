@@ -7,7 +7,7 @@
 //
 
 #import "ODRecordStorage.h"
-#import "ODRecordChange_Private.h"
+#import "ODRecordChange.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordSynchronizer.h"
@@ -22,12 +22,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 
 @implementation ODRecordStorage {
     NSMapTable *_records;
-    NSMutableDictionary *_recordsPendingSave;
-    NSMutableDictionary *_recordsPendingDelete;
     ODRecordResolveMethod _defaultResolveMethod;
-    
-    NSMutableArray *_pendingChanges;
-    NSMutableArray *_failedChanges;
     NSMutableDictionary *_completionBlocks;
 }
 
@@ -38,10 +33,6 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
         _records = [NSMapTable strongToWeakObjectsMapTable];
         _backingStore = backingStore;
         _defaultResolveMethod = ODRecordResolveByReplacing;
-        _pendingChanges = [[NSMutableArray alloc] init];
-        _failedChanges = [[NSMutableArray alloc] init];
-        _recordsPendingSave = [[NSMutableDictionary alloc] init];
-        _recordsPendingDelete = [[NSMutableDictionary alloc] init];
         _completionBlocks = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -162,19 +153,25 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     // Fetch each record, the record may come from the cache or the backing store. Ignore records that are pending delete.
     NSMutableArray *records = [NSMutableArray array];
     [recordIDs enumerateObjectsUsingBlock:^(ODRecordID *recordID, NSUInteger idx, BOOL *stop) {
-        if (![_recordsPendingDelete objectForKey:recordID]) {
-            [records addObject:[self recordWithRecordID:recordID]];
+        if (![[_backingStore recordIDsPendingDelete] containsObject:recordID]) {
+            ODRecord *record = [self recordWithRecordID:recordID];
+            if (record) {
+                [records addObject:record];
+            }
         }
     }];
     
     // Include records that are pending save to the output array.
-    [_recordsPendingSave enumerateKeysAndObjectsUsingBlock:^(ODRecordID *recordID,
-                                                            ODRecord *record, BOOL *stop) {
-        if ([recordID.recordType isEqualToString:recordType]
-            && ![recordIDs containsObject:recordID])
-        {
-            [records addObject:[self recordWithRecordID:recordID]];
-        }
+    [[_backingStore recordIDsPendingSave]
+     enumerateObjectsUsingBlock:^(ODRecordID *recordID, NSUInteger idx, BOOL *stop) {
+         if ([recordID.recordType isEqualToString:recordType]
+             && ![recordIDs containsObject:recordID])
+         {
+             ODRecord *record = [self recordWithRecordID:recordID];
+             if (record) {
+                 [records addObject:record];
+             }
+         }
     }];
     
 // FIXME: ODRecord is not key value coding compliant
@@ -184,6 +181,10 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 //    if ([sortDescriptors count]) {
 //        [records sortUsingDescriptors:sortDescriptors];
 //    }
+    
+    NSLog(@"%@: Query for record type `%@` returns %lu records. Predicate: %@",
+          self, recordType, [records count], predicate);
+
     return records;
 }
 
@@ -212,8 +213,15 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (void)shouldProcessChanges
 {
     if (self.enabled) {
-        [_synchronizer recordStorage:self
-                         saveChanges:[self.pendingChanges copy]];
+        if (self.hasPendingChanges) {
+            NSLog(@"%@: Enabled and detected %lu pending changes."
+                  " Will ask synchronizer to save changes.",
+                  self, [self.pendingChanges count]);
+            [_synchronizer recordStorage:self
+                             saveChanges:[self.pendingChanges copy]];
+        } else {
+            NSLog(@"%@: Enabled but there are no no pending changes.", self);
+        }
     }
 }
 
@@ -234,53 +242,39 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     return difference;
 }
 
+- (BOOL)hasPendingChanges
+{
+    return (BOOL)[[_backingStore pendingChanges] count];
+}
+
 - (NSArray *)pendingChanges
 {
-    return [_pendingChanges copy];
+    return [_backingStore pendingChanges];
 }
 
 - (NSArray *)failedChanges
 {
-    return [_failedChanges copy];
+    return [_backingStore failedChanges];
 }
 
 - (ODRecordChange *)changeWithRecord:(ODRecord *)record
 {
-    // FIXME: inefficient implementation
-    __block ODRecordChange *change = nil;
-    ODRecordID *wantedID = record.recordID;
-    void (^enumerateBlock)(id, NSUInteger, BOOL *) = ^(ODRecordChange *obj, NSUInteger idx, BOOL *stop) {
-        NSAssert([obj isKindOfClass:[ODRecordChange class]],
-                 @"%@ is expected to be an ODRecordChange.", NSStringFromClass([obj class]));
-        if ([obj.recordID isEqual:wantedID]) {
-            change = obj;
-            *stop = YES;
-        }
-    };
-    
-    for (NSArray *changesArray in @[_pendingChanges, _failedChanges]) {
-        [changesArray enumerateObjectsUsingBlock:enumerateBlock];
-        if (change) {
-            return change;
-        }
-    }
-    return nil;
+    return [_backingStore changeWithRecordID:record.recordID];
 }
 
 - (void)_appendChange:(ODRecordChange *)change record:(ODRecord *)record completion:(id)handler
 {
     [self _dismissExistingChangeIfAnyWithRecord:record error:nil];
-    change.state = ODRecordChangeStateWaiting;
-    [_pendingChanges addObject:change];
-    
+    [_backingStore appendChange:change state:ODRecordChangeStateWaiting];
     switch (change.action) {
         case ODRecordChangeSave:
-            [_recordsPendingSave setObject:record forKey:record.recordID];
+            [_backingStore saveRecordLocally:record];
             break;
         case ODRecordChangeDelete:
-            [_recordsPendingDelete setObject:record forKey:record.recordID];
+            [_backingStore deleteRecordLocally:record];
             break;
     }
+    [_backingStore synchronize];
     if (handler) {
         [_completionBlocks setObject:[handler copy] forKey:change.recordID];
     }
@@ -303,7 +297,9 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (BOOL)dismissChange:(ODRecordChange *)item error:(NSError *__autoreleasing *)error
 {
     if (item.error) {
-        [_failedChanges removeObject:item];
+        [_backingStore removeChange:item];
+        [_backingStore revertRecordLocallyWithRecordID:item.recordID];
+        [_backingStore synchronize];
         [_completionBlocks removeObjectForKey:item.recordID];
         return YES;
     } else {
@@ -317,15 +313,9 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
                 return NO;
             }
         }
-        [_pendingChanges removeObject:item];
-        switch(item.action) {
-            case ODRecordChangeSave:
-                [_recordsPendingSave removeObjectForKey:item.recordID];
-                break;
-            case ODRecordChangeDelete:
-                [_recordsPendingDelete removeObjectForKey:item.recordID];
-                break;
-        }
+        [_backingStore removeChange:item];
+        [_backingStore revertRecordLocallyWithRecordID:item.recordID];
+        [_backingStore synchronize];
         [_completionBlocks removeObjectForKey:item.recordID];
         return YES;
     }
@@ -334,7 +324,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (void)dismissFailedChangesWithBlock:(BOOL (^)(ODRecordChange *, ODRecord *))block
 {
     if (block) {
-        NSArray *failedChangesCopy = [_failedChanges copy];
+        NSArray *failedChangesCopy = [_backingStore failedChanges];
         [failedChangesCopy enumerateObjectsUsingBlock:^(ODRecordChange *obj, NSUInteger idx, BOOL *stop) {
             NSAssert([obj isKindOfClass:[ODRecordChange class]],
                      @"%@ is expected to be an ODRecordChange.", NSStringFromClass([obj class]));
@@ -358,16 +348,14 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     }];
     
     [records enumerateObjectsUsingBlock:^(ODRecord *obj, NSUInteger idx, BOOL *stop) {
-        if ([oldRecordIDs containsObject:obj.recordID]) {
-            [_backingStore updateRecord:obj];
-            [oldRecordIDs removeObject:obj.recordID];
-        } else {
-            [_backingStore insertRecord:obj];
-        }
+        [_backingStore saveRecord:obj];
+        [_records setObject:obj forKey:obj.recordID];
+        [oldRecordIDs removeObject:obj.recordID];
     }];
     
     [oldRecordIDs enumerateObjectsUsingBlock:^(ODRecordID *obj, NSUInteger idx, BOOL *stop) {
         [_backingStore deleteRecordWithRecordID:obj];
+        [_records removeObjectForKey:obj];
     }];
 }
 
@@ -375,29 +363,23 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
                      recordOnRemote:(ODRecord *)remoteRecord
                               error:(NSError *)error
 {
-    [_pendingChanges removeObject:change];
     if (error) {
-        change.error = error;
-        [_failedChanges addObject:change];
+        [_backingStore setFinishedStateWithError:error ofChange:change];
     } else {
         if (change.action == ODRecordChangeSave) {
-            if ([_backingStore existsRecordWithRecordID:change.recordID]) {
-                [_backingStore updateRecord:remoteRecord];
-            } else {
-                [_backingStore insertRecord:remoteRecord];
-            }
-            [_recordsPendingSave removeObjectForKey:change.recordID];
+            [_backingStore saveRecord:remoteRecord];
         } else if (change.action == ODRecordChangeDelete) {
             ODRecord *recordToDelete = [_backingStore fetchRecordWithRecordID:change.recordID];
-            [_backingStore deleteRecord:recordToDelete];
-            [_recordsPendingDelete removeObjectForKey:change.recordID];
+            if (recordToDelete) {
+                [_backingStore deleteRecord:recordToDelete];
+            }
         }
         void (^block)() = [_completionBlocks objectForKey:change.recordID];
         if (block) {
             block();
         }
+        [_backingStore setState:ODRecordChangeStateFinished ofChange:change];
     }
-    change.state = ODRecordChangeStateFinished;
 }
 
 - (void)beginUpdating

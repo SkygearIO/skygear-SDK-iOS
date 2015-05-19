@@ -35,6 +35,7 @@
 		385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */; };
 		3867EA331AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */; };
 		38A115351B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */; };
+		38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */; };
 		38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */; };
 		3ED0BE5EFF5C701B898ED1F8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -99,6 +100,7 @@
 		385633841AC82F5100F1FD84 /* NSErrorODErrorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorODErrorTests.m; sourceTree = "<group>"; };
 		3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
 		38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordSynchronizerTests.m; sourceTree = "<group>"; };
+		38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
 		38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRegisterDeviceOperationTests.m; sourceTree = "<group>"; };
 		3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ODKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ODKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -287,6 +289,11 @@
 				CD7FE26C1A9DBB9F002C076E /* ODUserLoginOperationTests.m */,
 				CD42FE0F1AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
+				383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */,
+				383510EB1AFB5014009DD3E2 /* ODRecordStorageTests.m */,
+				3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */,
+				38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */,
+				38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -505,6 +512,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m in Sources */,
+				38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */,
 				38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* ODRecordTests.m in Sources */,
