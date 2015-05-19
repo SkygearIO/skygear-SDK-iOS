@@ -26,6 +26,7 @@
     
     NSMutableArray *_pendingChanges;
     NSMutableArray *_failedChanges;
+    NSMutableDictionary *_completionBlocks;
 }
 
 - (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore
@@ -39,6 +40,7 @@
         _failedChanges = [[NSMutableArray alloc] init];
         _recordsPendingSave = [[NSMutableDictionary alloc] init];
         _recordsPendingDelete = [[NSMutableDictionary alloc] init];
+        _completionBlocks = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -277,7 +279,9 @@
             [_recordsPendingDelete setObject:record forKey:record.recordID];
             break;
     }
-    change.completionBlock = handler;
+    if (handler) {
+        [_completionBlocks setObject:[handler copy] forKey:change.recordID];
+    }
     [self shouldProcessChanges];
 }
         
@@ -298,6 +302,7 @@
 {
     if (item.error) {
         [_failedChanges removeObject:item];
+        [_completionBlocks removeObjectForKey:item.recordID];
         return YES;
     } else {
         if (item.state == ODRecordChangeStateStarted) {
@@ -319,6 +324,7 @@
                 [_recordsPendingDelete removeObjectForKey:item.recordID];
                 break;
         }
+        [_completionBlocks removeObjectForKey:item.recordID];
         return YES;
     }
 }
@@ -384,8 +390,9 @@
             [_backingStore deleteRecord:recordToDelete];
             [_recordsPendingDelete removeObjectForKey:change.recordID];
         }
-        if (change.completionBlock) {
-            change.completionBlock();
+        void (^block)() = [_completionBlocks objectForKey:change.recordID];
+        if (block) {
+            block();
         }
     }
     change.state = ODRecordChangeStateFinished;

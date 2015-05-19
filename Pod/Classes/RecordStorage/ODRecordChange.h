@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class ODRecord;
 @class ODRecordID;
 
 typedef enum : NSInteger {
@@ -49,7 +50,7 @@ typedef enum : NSInteger {
     ODRecordChangeStateFinished,
 } ODRecordChangeState;
 
-@interface ODRecordChange : NSObject
+@interface ODRecordChange : NSObject <NSCoding>
 
 @property (nonatomic, readonly, copy) ODRecordID *recordID;
 @property (nonatomic, readonly, copy) NSDictionary *attributesToSave;
@@ -57,5 +58,15 @@ typedef enum : NSInteger {
 @property (nonatomic, readonly) ODRecordChangeState state;
 @property (nonatomic, readonly) ODRecordResolveMethod resolveMethod;
 @property (nonatomic, readonly, copy) NSError *error;
+
+- (instancetype)initWithRecord:(ODRecord *)record
+                        action:(ODRecordChangeAction)action
+                 resolveMethod:(ODRecordResolveMethod)resolveMethod
+              attributesToSave:(NSDictionary *)attributesToSave;
+
+- (instancetype)initWithRecordID:(ODRecordID *)recordID
+                          action:(ODRecordChangeAction)action
+                   resolveMethod:(ODRecordResolveMethod)resolveMethod
+                attributesToSave:(NSDictionary *)attributesToSave;
 
 @end
