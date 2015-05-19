@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ODNotificationID : NSObject
+@interface ODNotificationID : NSObject<NSCopying>
 
 @end

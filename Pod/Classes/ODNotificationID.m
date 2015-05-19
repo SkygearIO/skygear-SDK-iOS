@@ -10,4 +10,9 @@
 
 @implementation ODNotificationID
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [[ODNotificationID alloc] init];
+}
+
 @end
