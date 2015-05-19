@@ -13,6 +13,8 @@
 #import "ODRecordResultController.h"
 #import "ODRecordStorageBackingStore.h"
 
+extern NSString * const ODRecordStorageDidUpdateNotification;
+
 @class ODRecordSynchronizer;
 
 typedef enum : NSInteger {

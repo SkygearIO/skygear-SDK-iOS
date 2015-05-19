@@ -12,6 +12,8 @@
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordSynchronizer.h"
 
+NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpdateNotification";
+
 @interface ODRecordStorage ()
 
 - (void)shouldProcessChanges;
@@ -413,7 +415,9 @@
     _updating = NO;
     [self didChangeValueForKey:@"updating"];
     
-    // FIXME need to post notification
+    [[NSNotificationCenter defaultCenter] postNotificationName:ODRecordStorageDidUpdateNotification
+                                                        object:self
+                                                      userInfo:nil];
 }
 
 @end
