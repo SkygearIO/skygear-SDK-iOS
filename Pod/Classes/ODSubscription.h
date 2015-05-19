@@ -22,12 +22,6 @@ typedef enum : NSInteger {
 - (instancetype)initWithQuery:(ODQuery *)query
                  subscriptionID:(NSString *)subscriptionID;
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate
-                    subscriptionID:(NSString *)subscriptionID;
-
 @property (nonatomic, readonly, assign) ODSubscriptionType subscriptionType;
 
 @property (nonatomic, readonly) ODQuery *query;
