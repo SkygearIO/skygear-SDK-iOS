@@ -37,4 +37,11 @@
     return payload;
 }
 
+- (NSData *)JSONDataWithRecord:(ODRecord *)record error:(NSError *__autoreleasing *)error
+{
+    return [NSJSONSerialization dataWithJSONObject:[self dictionaryWithRecord:record]
+                                           options:0
+                                             error:error];
+}
+
 @end

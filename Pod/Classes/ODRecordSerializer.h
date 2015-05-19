@@ -14,5 +14,6 @@
 + (instancetype)serializer;
 
 - (NSDictionary *)dictionaryWithRecord:(ODRecord *)record;
+- (NSData *)JSONDataWithRecord:(ODRecord *)record error:(NSError **)error;
 
 @end
