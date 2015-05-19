@@ -14,7 +14,7 @@
 #import "ODDefaults.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODDeleteSubscriptionsOperation.h"
-#import "ODDeleteRelationsOperation.h"
+#import "ODRemoveRelationsOperation.h"
 #import "ODError.h"
 #import "ODFacebookAuthOperation.h"
 #import "ODFacebookFindUserByFriendOperation.h"

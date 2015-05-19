@@ -10,7 +10,7 @@
 #import <ODKit/ODKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
-SpecBegin(ODDeleteRelationsOperation)
+SpecBegin(ODRemoveRelationsOperation)
 
 describe(@"relation add", ^{
     __block ODUser *follower1 = nil;
@@ -28,8 +28,7 @@ describe(@"relation add", ^{
     });
     
     it(@"multiple relations", ^{
-        ODDeleteRelationsOperation *operation = [[ODDeleteRelationsOperation alloc] initWithType:@"follow"
-                                                                                andUsersToDelete:@[follower1, follower2]];
+        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" andUsersToRemove:@[follower1, follower2]];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -44,8 +43,7 @@ describe(@"relation add", ^{
     });
     
     it(@"make request", ^{
-        ODDeleteRelationsOperation *operation = [[ODDeleteRelationsOperation alloc] initWithType:@"follow"
-                                                                                andUsersToDelete:@[follower1, follower2]];
+        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" andUsersToRemove:@[follower1, follower2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -74,7 +72,7 @@ describe(@"relation add", ^{
         }];
         
         waitUntil(^(DoneCallback done) {
-            operation.deleteRelationsCompletionBlock = ^(NSArray *deletedUserIDs, NSError *operationError) {
+            operation.removeRelationsCompletionBlock = ^(NSArray *deletedUserIDs, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect([deletedUserIDs class]).to.beSubclassOf([NSArray class]);
                     expect(deletedUserIDs).to.haveCountOf(1);

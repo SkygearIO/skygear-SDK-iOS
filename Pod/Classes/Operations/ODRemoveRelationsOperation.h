@@ -8,13 +8,13 @@
 
 #import "ODOperation.h"
 
-@interface ODDeleteRelationsOperation : ODOperation
+@interface ODRemoveRelationsOperation : ODOperation
 
 
 /**
  Instantiates an instance of <ODDeleteRelationsOperation> with a list of user to be related with current user.
  */
-- (instancetype)initWithType:(NSString *)relationType andUsersToDelete:(NSArray *)users;
+- (instancetype)initWithType:(NSString *)relationType andUsersToRemove:(NSArray *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.
@@ -24,7 +24,7 @@
 /**
  Sets or returns an array of users to be delete on the specified related.
  */
-@property (nonatomic, copy) NSArray *usersToDelete;
+@property (nonatomic, copy) NSArray *usersToRemove;
 
 
 /**
@@ -37,6 +37,6 @@
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^deleteRelationsCompletionBlock)(NSArray *deletedUserIDs, NSError *operationError);
+@property (nonatomic, copy) void (^removeRelationsCompletionBlock)(NSArray *deletedUserIDs, NSError *operationError);
 
 @end

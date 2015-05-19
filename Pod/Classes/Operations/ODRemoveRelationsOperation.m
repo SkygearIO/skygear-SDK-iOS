@@ -6,19 +6,19 @@
 //
 //
 
-#import "ODDeleteRelationsOperation.h"
+#import "ODRemoveRelationsOperation.h"
 
 #import "ODDataSerialization.h"
 #import "ODError.h"
 
-@implementation ODDeleteRelationsOperation
+@implementation ODRemoveRelationsOperation
 
 
-- (instancetype)initWithType:(NSString *)relationType andUsersToDelete:(NSArray *)users
+- (instancetype)initWithType:(NSString *)relationType andUsersToRemove:(NSArray *)users
 {
     if ((self = [super init])) {
         _relationType = relationType;
-        _usersToDelete = users;
+        _usersToRemove = users;
     }
     return self;
 }
@@ -29,7 +29,7 @@
                                       @"type": self.relationType
                                       } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
-    for (ODUser *user in self.usersToDelete) {
+    for (ODUser *user in self.usersToRemove) {
         [targets addObject:user.recordID.canonicalString];
     }
     payload[@"targets"] = targets;
@@ -72,8 +72,8 @@
 
 - (void)handleRequestError:(NSError *)error
 {
-    if (self.deleteRelationsCompletionBlock) {
-        self.deleteRelationsCompletionBlock(nil, error);
+    if (self.removeRelationsCompletionBlock) {
+        self.removeRelationsCompletionBlock(nil, error);
     }
 }
 
@@ -92,8 +92,8 @@
                                     code:0
                                 userInfo:userInfo];
     }
-    if (self.deleteRelationsCompletionBlock) {
-        self.deleteRelationsCompletionBlock(userIDs, error);
+    if (self.removeRelationsCompletionBlock) {
+        self.removeRelationsCompletionBlock(userIDs, error);
     }
 }
 
