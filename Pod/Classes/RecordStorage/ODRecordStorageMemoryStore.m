@@ -90,10 +90,10 @@
     return [result copy];
 }
 
-- (NSArray *)queryRecordIDsWithRecordType:(NSString *)recordType
+- (NSArray *)recordIDsWithRecordType:(NSString *)recordType
 {
     NSMutableArray *wantedRecordIDs = [[NSMutableArray alloc] init];
-    [self enumerateRecordsWithBlock:^(ODRecord *record) {
+    [self enumerateRecordsWithBlock:^(ODRecord *record, BOOL *stop) {
         if ([record.recordID.recordType isEqualToString:recordType]) {
             [wantedRecordIDs addObject:record.recordID];
         }
@@ -101,7 +101,7 @@
     return wantedRecordIDs;
 }
 
-- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *))block
+- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *, BOOL *))block
 {
     if (!block) {
         return;
@@ -111,14 +111,42 @@
         if ([_localRecords objectForKey:key]) {
             return;
         }
-        block([obj copy]);
+        block([obj copy], stop);
     }];
     [_localRecords enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([[NSNull null] isEqual:obj]) {
             return;
         }
-        block([obj copy]);
+        block([obj copy], stop);
     }];
+}
+
+- (void)enumerateRecordsWithType:(NSString *)recordType
+                       predicate:(NSPredicate *)predicate
+                 sortDescriptors:(NSArray *)sortDescriptors
+                      usingBlock:(void (^)(ODRecord *, BOOL *))block
+{
+    if (!block) {
+        return;
+    }
+    
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    [self enumerateRecordsWithBlock:^(ODRecord *record, BOOL *stop) {
+        if ([recordType isEqualToString:record.recordType] && (!predicate || [predicate evaluateWithObject:record])) {
+            if ([sortDescriptors count]) {
+                [result addObject:record];
+            } else {
+                block(record, stop);
+            }
+        }
+    }];
+    
+    if ([sortDescriptors count]) {
+        [result sortUsingDescriptors:sortDescriptors];
+        [result enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            block(obj, stop);
+        }];
+    }
 }
 
 - (void)synchronize

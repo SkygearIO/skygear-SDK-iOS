@@ -60,6 +60,17 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     return record;
 }
 
+- (ODRecord *)_getCacheRecordWithRecordID:(ODRecordID *)recordID
+                         orSetCacheRecord:(ODRecord *)record
+{
+    ODRecord *cachedRecord = [_records objectForKey:recordID];
+    if (!cachedRecord) {
+        [self _setCacheRecord:record recordID:recordID];
+        cachedRecord = record;
+    }
+    return record;
+}
+
 - (void)_setCacheRecord:(ODRecord *)record recordID:(ODRecordID *)recordID
 {
     if (record) {
@@ -147,40 +158,13 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 
 - (NSArray *)recordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
 {
-    // Query the backing store for record IDs of the specified type.
-    NSArray *recordIDs = [_backingStore queryRecordIDsWithRecordType:recordType];
-    
-    // Fetch each record, the record may come from the cache or the backing store. Ignore records that are pending delete.
-    NSMutableArray *records = [NSMutableArray array];
-    [recordIDs enumerateObjectsUsingBlock:^(ODRecordID *recordID, NSUInteger idx, BOOL *stop) {
-        if (![[_backingStore recordIDsPendingDelete] containsObject:recordID]) {
-            ODRecord *record = [self recordWithRecordID:recordID];
-            if (record) {
-                [records addObject:record];
-            }
-        }
-    }];
-    
-    // Include records that are pending save to the output array.
-    [[_backingStore recordIDsPendingSave]
-     enumerateObjectsUsingBlock:^(ODRecordID *recordID, NSUInteger idx, BOOL *stop) {
-         if ([recordID.recordType isEqualToString:recordType]
-             && ![recordIDs containsObject:recordID])
-         {
-             ODRecord *record = [self recordWithRecordID:recordID];
-             if (record) {
-                 [records addObject:record];
-             }
-         }
-    }];
-    
-// FIXME: ODRecord is not key value coding compliant
-//    if (predicate) {
-//        [records filterUsingPredicate:predicate];
-//    }
-//    if ([sortDescriptors count]) {
-//        [records sortUsingDescriptors:sortDescriptors];
-//    }
+    NSMutableArray *records = [[NSMutableArray alloc] init];
+    [self enumerateRecordsWithType:recordType
+                         predicate:predicate
+                   sortDescriptors:sortDescriptors
+                        usingBlock:^(ODRecord *record, BOOL *stop) {
+                            [records addObject:record];
+                        }];
     
     NSLog(@"%@: Query for record type `%@` returns %lu records. Predicate: %@",
           self, recordType, [records count], predicate);
@@ -190,15 +174,19 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 
 - (void)enumerateRecordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors usingBlock:(void (^)(ODRecord *, BOOL *))block
 {
-    if (block) {
-        // FIXME: inefficient implementation
-        NSArray *records = [self recordsWithType:recordType predicate:predicate sortDescriptors:sortDescriptors];
-        [records enumerateObjectsUsingBlock:^(ODRecord *obj, NSUInteger idx, BOOL *stop) {
-            NSAssert([obj isKindOfClass:[ODRecord class]],
-                     @"%@ is expected to be an ODRecord.", NSStringFromClass([obj class]));
-            block(obj, stop);
-        }];
+    if (!block) {
+        return;
     }
+    
+    [_backingStore enumerateRecordsWithType:recordType
+                                  predicate:predicate
+                            sortDescriptors:sortDescriptors
+                                 usingBlock:^(ODRecord *record, BOOL *stop) {
+                                     ODRecord *result =
+                                         [self _getCacheRecordWithRecordID:record.recordID
+                                                          orSetCacheRecord:record];
+                                     block(result, stop);
+                                 }];
 }
 
 #pragma mark - Change processing
@@ -343,7 +331,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 {
     NSAssert([records isKindOfClass:[NSArray class]], @"records must be array.");
     NSMutableArray *oldRecordIDs = [NSMutableArray array];
-    [_backingStore enumerateRecordsWithBlock:^(ODRecord *record) {
+    [_backingStore enumerateRecordsWithBlock:^(ODRecord *record, BOOL *stop) {
         [oldRecordIDs addObject:record.recordID];
     }];
     

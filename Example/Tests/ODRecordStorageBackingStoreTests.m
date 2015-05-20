@@ -179,7 +179,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore saveRecord:record];
         [backingStore synchronize];
         
-        NSArray *recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        NSArray *recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(1);
         
         // Fetch record
@@ -197,7 +197,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore deleteRecord:record];
         [backingStore synchronize];
         
-        recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(0);
         expect([backingStore fetchRecordWithRecordID:record.recordID]).to.beNil();
     });
@@ -205,12 +205,12 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
     it(@"save, fetch, revert locally", ^{
         [backingStore saveRecord:record];
         [backingStore synchronize];
-
+        
         // Save record
         [backingStore saveRecordLocally:localRecord];
         [backingStore synchronize];
         
-        NSArray *recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        NSArray *recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(1);
         
         // Fetch record
@@ -223,12 +223,12 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore synchronize];
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(localRecord[@"title"]);
-
+        
         // Revert local record
         [backingStore revertRecordLocallyWithRecordID:recordID];
         [backingStore synchronize];
         
-        recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(1);
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
@@ -242,7 +242,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore deleteRecordLocallyWithRecordID:recordID];
         [backingStore synchronize];
         
-        NSArray *recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        NSArray *recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(0);
         
         // Fetch record
@@ -252,7 +252,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore revertRecordLocallyWithRecordID:recordID];
         [backingStore synchronize];
         
-        recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(1);
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
@@ -268,7 +268,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore saveRecord:record];
         [backingStore synchronize];
         
-        NSArray *recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        NSArray *recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(1);
         ODRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
@@ -283,12 +283,125 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore deleteRecordWithRecordID:recordID];
         [backingStore synchronize];
         
-        NSArray *recordIDs = [backingStore queryRecordIDsWithRecordType:@"book"];
+        NSArray *recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(0);
         ODRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord).to.beNil();
     });
     
+});
+
+sharedExamples(@"ODRecordStorageBackingStore-Query", ^(NSDictionary *data) {
+    __block id<ODRecordStorageBackingStore> backingStore;
+    
+    beforeEach(^{
+        if (data[@"backingStoreFactory"]) {
+            id<ODRecordStorageBackingStore> (^factory)() = data[@"backingStoreFactory"];
+            backingStore = factory();
+        } else {
+            backingStore = data[@"backingStore"];
+        }
+        
+        ODRecord *record;
+        record = [[ODRecord alloc] initWithRecordID:[ODRecordID recordIDWithCanonicalString:@"book/id1"]
+                                               data:@{@"title": @"Hello World!", @"order": @(1)}];
+        [backingStore saveRecord:record];
+
+        record = [[ODRecord alloc] initWithRecordID:[ODRecordID recordIDWithCanonicalString:@"book/id1"]
+                                               data:@{@"title": @"Bye World!", @"order": @(3)}];
+        [backingStore saveRecordLocally:record];
+        
+        record = [[ODRecord alloc] initWithRecordID:[ODRecordID recordIDWithCanonicalString:@"book/id2"]
+                                               data:@{@"title": @"Hello Island!", @"order": @(2)}];
+        [backingStore saveRecord:record];
+
+        record = [[ODRecord alloc] initWithRecordID:[ODRecordID recordIDWithCanonicalString:@"note/id1"]
+                                               data:@{@"title": @"My note!"}];
+        [backingStore saveRecord:record];
+
+        record = [[ODRecord alloc] initWithRecordID:[ODRecordID recordIDWithCanonicalString:@"note/id2"]
+                                               data:@{@"title": @"Your note!"}];
+        [backingStore saveRecord:record];
+        [backingStore deleteRecordLocally:record];
+        [backingStore synchronize];
+    });
+    
+    it(@"simple enumerate 1", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithType:@"book"
+                                     predicate:nil
+                               sortDescriptors:nil
+                                    usingBlock:^(ODRecord *record, BOOL *stop) {
+                                        [recordIDs addObject:record.recordID.canonicalString];
+                                    }];
+        expect(recordIDs).to.haveCountOf(2);
+        expect(recordIDs).to.contain(@"book/id1");
+        expect(recordIDs).to.contain(@"book/id2");
+    });
+    
+    it(@"enumerate all", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithBlock:^(ODRecord *record, BOOL *stop) {
+            [recordIDs addObject:record.recordID.canonicalString];
+        }];
+        expect(recordIDs).to.haveCountOf(3);
+        expect(recordIDs).to.contain(@"book/id1");
+        expect(recordIDs).to.contain(@"book/id2");
+        expect(recordIDs).to.contain(@"note/id1");
+    });
+    
+    it(@"simple enumerate 2", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithType:@"note"
+                                     predicate:nil
+                               sortDescriptors:nil
+                                    usingBlock:^(ODRecord *record, BOOL *stop) {
+                                        [recordIDs addObject:record.recordID.canonicalString];
+                                    }];
+        expect(recordIDs).to.haveCountOf(1);
+        expect(recordIDs).to.contain(@"note/id1");
+    });
+    
+    it(@"predicate enumerate", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithType:@"book"
+                                     predicate:[NSPredicate predicateWithFormat:@"title = %@",
+                                                @"Hello Island!"]
+                               sortDescriptors:nil
+                                    usingBlock:^(ODRecord *record, BOOL *stop) {
+                                        [recordIDs addObject:record.recordID.canonicalString];
+                                    }];
+        expect(recordIDs).to.haveCountOf(1);
+        expect(recordIDs).to.contain(@"book/id2");
+    });
+    
+    it(@"sorted enumerate desc", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithType:@"book"
+                                     predicate:nil
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
+                                                                                ascending:NO] ]
+                                    usingBlock:^(ODRecord *record, BOOL *stop) {
+                                        [recordIDs addObject:record.recordID.canonicalString];
+                                    }];
+        expect(recordIDs).to.haveCountOf(2);
+        expect(recordIDs[0]).to.contain(@"book/id1");
+        expect(recordIDs[1]).to.contain(@"book/id2");
+    });
+    
+    it(@"sorted enumerate asc", ^{
+        NSMutableArray *recordIDs = [NSMutableArray array];
+        [backingStore enumerateRecordsWithType:@"book"
+                                     predicate:nil
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
+                                                                                ascending:YES] ]
+                                    usingBlock:^(ODRecord *record, BOOL *stop) {
+                                        [recordIDs addObject:record.recordID.canonicalString];
+                                    }];
+        expect(recordIDs).to.haveCountOf(2);
+        expect(recordIDs[1]).to.contain(@"book/id1");
+        expect(recordIDs[0]).to.contain(@"book/id2");
+    });
 });
 
 SharedExamplesEnd
@@ -305,6 +418,7 @@ describe(@"ODRecordStorageBackingStore-Changes", ^{
                            };
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Changes", data);
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Records", data);
+    itShouldBehaveLike(@"ODRecordStorageBackingStore-Query", data);
 });
 
 SpecEnd
@@ -323,6 +437,7 @@ describe(@"ODRecordStorageBackingStore-Changes", ^{
                            };
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Changes", data);
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Records", data);
+    itShouldBehaveLike(@"ODRecordStorageBackingStore-Query", data);
 });
 
 SpecEnd
@@ -340,6 +455,7 @@ describe(@"ODRecordStorageBackingStore-Changes", ^{
                            };
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Changes", data);
     itShouldBehaveLike(@"ODRecordStorageBackingStore-Records", data);
+    itShouldBehaveLike(@"ODRecordStorageBackingStore-Query", data);
 });
 
 SpecEnd

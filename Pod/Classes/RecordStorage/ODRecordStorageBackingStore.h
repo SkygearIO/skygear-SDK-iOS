@@ -86,8 +86,26 @@
  */
 - (BOOL)existsRecordWithRecordID:(ODRecordID *)recordID;
 
-- (NSArray *)queryRecordIDsWithRecordType:(NSString *)recordType;
-- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *record))block;
+/**
+ Returns record ID of all records with the specified type.
+ */
+- (NSArray *)recordIDsWithRecordType:(NSString *)recordType;
+
+/**
+ Enumerate all records in the backing store regardless of record
+ type.
+ */
+- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *record, BOOL *stop))block;
+
+/**
+ Enumerate records in the backing store with the specified type.
+ 
+ You can use this method to enumerate records satisfying a predicate and sorted in an order.
+ */
+- (void)enumerateRecordsWithType:(NSString *)recordType
+                       predicate:(NSPredicate *)predicate
+                 sortDescriptors:(NSArray *)sortDescriptors
+                      usingBlock:(void (^)(ODRecord *record, BOOL *stop))block;
 
 #pragma mark - Change management
 

@@ -347,7 +347,7 @@
     }
 }
 
-- (NSArray *)queryRecordIDsWithRecordType:(NSString *)recordType
+- (NSArray *)recordIDsWithRecordType:(NSString *)recordType
 {
     if (![self checkTableWithRecordType:recordType autoCreate:NO]) {
         return [NSArray array];
@@ -366,7 +366,7 @@
     return result;
 }
 
-- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *))block
+- (void)enumerateRecordsWithBlock:(void (^)(ODRecord *, BOOL *stop))block
 {
     if (!block) {
         return;
@@ -374,23 +374,60 @@
     
     [[self allRecordTypes] enumerateObjectsUsingBlock:^(NSString *recordType,
                                                         NSUInteger idx, BOOL *stop) {
-        NSString *stmt = [NSString stringWithFormat:@"SELECT id, name, json FROM %@;"
-                          "WHERE overlay_id IS NULL AND deleted=0;", recordType];
-        
-        FMResultSet *s = [_db executeQuery:stmt];
-        while ([s next]) {
-            NSData *data = [s dataForColumn:@"json"];
-            if (data) {
-                ODRecord *record = [_deserializer recordWithJSONData:data
-                                                               error:nil];
-                NSAssert(record, nil);
-                block(record);
-            } else {
-                NSLog(@"%@: Record row %d (Record ID: %@/%@) has empty json data.",
-                      self, [s intForColumn:@"id"], recordType, [s stringForColumn:@"name"]);
-            }
-        }
+        [self enumerateRecordsWithType:recordType
+                             predicate:nil
+                       sortDescriptors:nil
+                            usingBlock:block];
     }];
+}
+
+- (void)enumerateRecordsWithType:(NSString *)recordType
+                       predicate:(NSPredicate *)predicate
+                 sortDescriptors:(NSArray *)sortDescriptors
+                      usingBlock:(void (^)(ODRecord *, BOOL *))block
+{
+    if (!block) {
+        return;
+    }
+
+    if (![self checkTableWithRecordType:recordType autoCreate:NO]) {
+        return;
+    }
+    
+    NSString *stmt = [NSString stringWithFormat:@"SELECT id, name, json, overlay_id FROM %@ "
+                      "WHERE overlay_id IS NULL AND deleted=0;", recordType];
+    
+    FMResultSet *s = [_db executeQuery:stmt];
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    while ([s next]) {
+        NSData *data = [s dataForColumn:@"json"];
+        if (data) {
+            ODRecord *record = [_deserializer recordWithJSONData:data
+                                                           error:nil];
+            NSAssert(record, nil);
+            BOOL stop = NO;
+            if (!predicate || [predicate evaluateWithObject:record]) {
+                if ([sortDescriptors count]) {
+                    [result addObject:record];
+                } else {
+                    block(record, &stop);
+                }
+            }
+            if (stop) {
+                return;
+            }
+        } else {
+            NSLog(@"%@: Record row %d (Record ID: %@/%@) has empty json data.",
+                  self, [s intForColumn:@"id"], recordType, [s stringForColumn:@"name"]);
+        }
+    }
+    
+    if ([sortDescriptors count]) {
+        [result sortUsingDescriptors:sortDescriptors];
+        [result enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            block(obj, stop);
+        }];
+    }
 }
 
 - (void)beginTransactionIfNotAlready

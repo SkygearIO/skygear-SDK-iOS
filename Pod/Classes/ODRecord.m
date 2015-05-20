@@ -120,6 +120,16 @@
     return reference.record;
 }
 
+- (id)valueForKey:(NSString *)key
+{
+    return [self objectForKey:key];
+}
+
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    return [self setObject:value forKey:key];
+}
+
 #pragma mark - Atomic increment
 
 - (void)incrementKey:(id<NSCopying>)key {

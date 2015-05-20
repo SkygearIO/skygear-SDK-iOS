@@ -159,8 +159,12 @@ describe(@"ODRecordStorage", ^{
         
         NSArray *records = [storage recordsWithType:@"book"];
         expect(records).to.haveCountOf(2);
-        expect(records).to.contain(recordToAdd);
-        expect(records).to.contain(recordToChange);
+        NSArray *recordIDs = @[
+                               ((ODRecord *)records[0]).recordID,
+                               ((ODRecord *)records[1]).recordID,
+                               ];
+        expect(recordIDs).to.contain(recordToAdd.recordID);
+        expect(recordIDs).to.contain(recordToChange.recordID);
         
         ODRecord *changedRecord = [storage recordWithRecordID:recordToChange.recordID];
         expect(changedRecord[@"title"]).to.equal(recordToChange[@"title"]);
