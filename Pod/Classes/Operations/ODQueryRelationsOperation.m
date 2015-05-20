@@ -34,7 +34,7 @@
 {
     self.request = [[ODRequest alloc] initWithAction:@"relation:fetch"
                                              payload:@{
-                                                       @"type": self.relationType,
+                                                       @"name": self.relationType,
                                                        @"direction": self.directionString
                                                            }];
     self.request.accessToken = self.container.currentAccessToken;

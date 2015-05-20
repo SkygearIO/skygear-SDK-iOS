@@ -34,7 +34,7 @@ describe(@"relation add", ^{
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"relation:delete");
-        expect(request.payload[@"type"]).to.equal(@"follow");
+        expect(request.payload[@"name"]).to.equal(@"follow");
         expect(request.payload[@"targets"]).to.haveCountOf(2);
         expect(request.accessToken).to.equal(container.currentAccessToken);
         

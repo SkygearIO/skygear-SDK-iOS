@@ -25,7 +25,7 @@
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{
-                                     @"type": self.relationType
+                                     @"name": self.relationType
                                      } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (ODUser *user in self.usersToRelate) {

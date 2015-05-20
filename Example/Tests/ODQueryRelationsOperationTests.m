@@ -30,7 +30,7 @@ describe(@"modify", ^{
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"relation:fetch");
-        expect(request.payload[@"type"]).to.equal(@"follow");
+        expect(request.payload[@"name"]).to.equal(@"follow");
         expect(request.payload[@"direction"]).to.equal(@"active");
         expect(request.accessToken).to.equal(container.currentAccessToken);
     });
