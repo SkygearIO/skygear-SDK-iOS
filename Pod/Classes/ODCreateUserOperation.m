@@ -26,7 +26,7 @@
 {
     if ((self = [super init])) {
         self.email = nil;
-        self.password = password;
+        self.password = nil;
         self.anonymousUser = YES;
     }
     return self;
@@ -36,9 +36,10 @@
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     if (!self.anonymousUser) {
+        payload[@"user_id"] = self.email;
         payload[@"email"] = self.email;
+        payload[@"password"] = self.password;
     }
-    payload[@"password"] = self.password;
     self.request = [[ODRequest alloc] initWithAction:@"auth:signup"
                                              payload:payload];
     self.request.APIKey = self.container.APIKey;

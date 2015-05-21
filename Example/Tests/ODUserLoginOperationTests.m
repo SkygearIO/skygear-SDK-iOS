@@ -31,7 +31,7 @@ describe(@"login", ^{
         expect(request.action).to.equal(@"auth:login");
         expect(request.accessToken).to.beNil();
         expect(request.APIKey).to.equal(@"API_KEY");
-        expect(request.payload[@"email"]).to.equal(@"user@example.com");
+        expect(request.payload[@"user_id"]).to.equal(@"user@example.com");
         expect(request.payload[@"password"]).to.equal(@"password");
     });
 
@@ -42,7 +42,7 @@ describe(@"login", ^{
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
-                                         @"user_id": @"USER_ID",
+                                         @"user_id": @"user@example.com",
                                          @"access_token": @"ACCESS_TOKEN",
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:@{@"result": parameters}
@@ -58,7 +58,7 @@ describe(@"login", ^{
             operation.loginCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(recordID.recordType).to.equal(@"user");
-                    expect(recordID.recordName).to.equal(@"USER_ID");
+                    expect(recordID.recordName).to.equal(@"user@example.com");
                     expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                     expect(error).to.beNil();
                     done();

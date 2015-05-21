@@ -26,7 +26,7 @@
 {
     self.request = [[ODRequest alloc] initWithAction:@"auth:login"
                                              payload:@{
-                                                       @"email": self.email,
+                                                       @"user_id": self.email,
                                                        @"password": self.password,
                                                        }];
     self.request.APIKey = self.container.APIKey;

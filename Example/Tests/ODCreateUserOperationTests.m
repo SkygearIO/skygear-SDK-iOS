@@ -45,7 +45,6 @@ describe(@"create", ^{
         expect(request.accessToken).to.beNil();
         expect(request.APIKey).to.equal(@"API_KEY");
         expect(request.payload).notTo.contain(@"email");
-        expect(request.payload[@"password"]).to.equal(@"password");
     });
     
     it(@"make normal user request", ^{
