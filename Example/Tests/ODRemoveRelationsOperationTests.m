@@ -28,7 +28,7 @@ describe(@"relation add", ^{
     });
     
     it(@"multiple relations", ^{
-        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" andUsersToRemove:@[follower1, follower2]];
+        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" usersToRemove:@[follower1, follower2]];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -43,7 +43,7 @@ describe(@"relation add", ^{
     });
     
     it(@"make request", ^{
-        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" andUsersToRemove:@[follower1, follower2]];
+        ODRemoveRelationsOperation *operation = [[ODRemoveRelationsOperation alloc] initWithType:@"follow" usersToRemove:@[follower1, follower2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

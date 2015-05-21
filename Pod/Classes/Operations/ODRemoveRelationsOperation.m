@@ -14,7 +14,7 @@
 @implementation ODRemoveRelationsOperation
 
 
-- (instancetype)initWithType:(NSString *)relationType andUsersToRemove:(NSArray *)users
+- (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users
 {
     if ((self = [super init])) {
         _relationType = relationType;

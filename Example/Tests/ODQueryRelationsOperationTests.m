@@ -24,7 +24,7 @@ describe(@"modify", ^{
     });
     
     it(@"make ODRequest", ^{
-        ODQueryRelationsOperation *operation = [[ODQueryRelationsOperation alloc] initWithType:@"follow" andDirection:ODRelationDirectionActive];
+        ODQueryRelationsOperation *operation = [[ODQueryRelationsOperation alloc] initWithType:@"follow" direction:ODRelationDirectionActive];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -38,7 +38,7 @@ describe(@"modify", ^{
     it(@"make request", ^{
         ODUserRecordID *userID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1002"];
         ODQueryRelationsOperation *operation = [[ODQueryRelationsOperation alloc] initWithType:@"follow"
-                                                                                  andDirection:ODRelationDirectionPassive];
+                                                                                  direction:ODRelationDirectionPassive];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

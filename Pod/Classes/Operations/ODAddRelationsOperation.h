@@ -16,7 +16,7 @@
  
  @param records An array of users to be related.
  */
-- (instancetype)initWithType:(NSString *)relationType andUsersToRelated:(NSArray *)users;
+- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.

@@ -33,7 +33,7 @@ typedef enum : NSInteger {
 @property (nonatomic, copy) NSString *relationType;
 @property (nonatomic, assign) ODRelationDirection direction;
 
-- (instancetype)initWithType:(NSString *)relationType andDirection:(ODRelationDirection)direction;
+- (instancetype)initWithType:(NSString *)relationType direction:(ODRelationDirection)direction;
 
 /**
  Sets or returns a block to be called when a user fetch operation completes for

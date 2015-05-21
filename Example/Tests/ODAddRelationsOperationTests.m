@@ -29,7 +29,7 @@ describe(@"relation add", ^{
     
     it(@"multiple relations", ^{
         ODAddRelationsOperation *operation = [[ODAddRelationsOperation alloc] initWithType:@"follow"
-                                                                         andUsersToRelated:@[follower1, follower2]];
+                                                                         usersToRelated:@[follower1, follower2]];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -45,7 +45,7 @@ describe(@"relation add", ^{
     
     it(@"make request", ^{
         ODAddRelationsOperation *operation = [[ODAddRelationsOperation alloc] initWithType:@"follow"
-                                                                         andUsersToRelated:@[follower1, follower2]];
+                                                                         usersToRelated:@[follower1, follower2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

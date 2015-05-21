@@ -20,7 +20,7 @@
 
 @implementation ODQueryRelationsOperation
 
-- (instancetype)initWithType:(NSString *)relationType andDirection:(ODRelationDirection)direction
+- (instancetype)initWithType:(NSString *)relationType direction:(ODRelationDirection)direction
 {
     if ((self = [super init])) {
         _relationType = relationType;

@@ -13,7 +13,7 @@
 
 @implementation ODAddRelationsOperation
 
-- (instancetype)initWithType:(NSString *)relationType andUsersToRelated:(NSArray *)users
+- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray *)users
 {
     if ((self = [super init])) {
         _relationType = relationType;
