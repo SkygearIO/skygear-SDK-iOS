@@ -11,9 +11,11 @@
 #import "ODModifyRecordsOperation.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODQueryOperation.h"
-#import "ODRecordChange_Private.h"
+#import "ODRecordChange.h"
 
-@implementation ODRecordSynchronizer
+@implementation ODRecordSynchronizer {
+    BOOL _updating;
+}
 
 - (instancetype)initWithContainer:(ODContainer *)container
                          database:(ODDatabase *)database
@@ -24,6 +26,7 @@
         _container = container;
         _database = database;
         _query = query;
+        _updating = NO;
     }
     return self;
 }
@@ -32,15 +35,23 @@
 {
     NSAssert(self.query, @"currently only support syncing with query.");
     
+    if (_updating) {
+        return;
+    }
+    
     ODQueryOperation *op = [[ODQueryOperation alloc] initWithQuery:self.query];
     op.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor,
                                        NSError *operationError) {
         if (!operationError) {
             [storage beginUpdating];
+            NSLog(@"%@: Updating record storage by replacing with %lu records.",
+                  self, [fetchedRecords count]);
             [storage updateByReplacingWithRecords:fetchedRecords];
             [storage finishUpdating];
         }
+        _updating = NO;
     };
+    _updating = YES;
     [self.database executeOperation:op];
 }
 
@@ -51,7 +62,7 @@
     if (recordToSave) {
         [change.attributesToSave
          enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-             recordToSave[key] = obj;
+             recordToSave[key] = obj[1];
          }];
     } else {
         NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
@@ -67,6 +78,14 @@
 - (void)recordStorage:(ODRecordStorage *)storage
           saveChanges:(NSArray *)changes;
 {
+    if (_updating) {
+        return;
+    }
+    
+    _updating = YES;
+    
+    __block NSInteger updateCount = 0;
+    
     [changes enumerateObjectsUsingBlock:^(ODRecordChange *change, NSUInteger idx, BOOL *stop) {
         if (change.action == ODRecordChangeSave) {
             ODRecord *recordToSave = [self _constructRecordForSavingWithStorage:storage
@@ -84,8 +103,13 @@
             };
             op.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
                 [storage finishUpdating];
+                updateCount--;
+                if (updateCount <= 0) {
+                    _updating = NO;
+                }
             };
-            change.state = ODRecordChangeStateStarted;
+            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
+            updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == ODRecordChangeDelete) {
             ODDeleteRecordsOperation *op = [[ODDeleteRecordsOperation alloc]
@@ -101,8 +125,13 @@
             op.deleteRecordsCompletionBlock = ^(NSArray *deletedRecordIDs,
                                                 NSError *operationError) {
                 [storage finishUpdating];
+                updateCount--;
+                if (updateCount <= 0) {
+                    _updating = NO;
+                }
             };
-            change.state = ODRecordChangeStateStarted;
+            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
+            updateCount++;
             [self.database executeOperation:op];
         }
 

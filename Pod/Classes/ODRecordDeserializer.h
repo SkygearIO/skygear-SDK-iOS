@@ -14,5 +14,6 @@
 + (instancetype)deserializer;
 
 - (ODRecord *)recordWithDictionary:(NSDictionary *)dictionary;
+- (ODRecord *)recordWithJSONData:(NSData *)data error:(NSError **)error;
 
 @end

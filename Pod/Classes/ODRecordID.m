@@ -49,10 +49,22 @@
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithRecordType:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"type"]
+                               name:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     ODRecordID *recordID = [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
                                                                           name:[_recordName copyWithZone:zone]];
     return recordID;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:_recordName forKey:@"name"];
+    [aCoder encodeObject:_recordType forKey:@"type"];
 }
 
 - (BOOL)isEqual:(id)object

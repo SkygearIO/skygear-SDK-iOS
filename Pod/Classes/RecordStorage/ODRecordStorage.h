@@ -13,6 +13,8 @@
 #import "ODRecordResultController.h"
 #import "ODRecordStorageBackingStore.h"
 
+extern NSString * const ODRecordStorageDidUpdateNotification;
+
 @class ODRecordSynchronizer;
 
 typedef enum : NSInteger {
@@ -189,12 +191,6 @@ typedef enum : NSInteger {
  The record state of the given record.
  */
 - (ODRecordState)recordStateWithRecord:(ODRecord *)record;
-
-
-/**
- Revert a record to the last synchronized state.
- */
-- (void)revertRecord:(ODRecord *)record;
 
 /**
  Dismisses a record change. Dismissing a change prevents such change

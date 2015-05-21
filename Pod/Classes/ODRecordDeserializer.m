@@ -47,4 +47,16 @@
     return record;
 }
 
+- (ODRecord *)recordWithJSONData:(NSData *)data error:(NSError *__autoreleasing *)error
+{
+    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
+                                                               options:0
+                                                                 error:error];
+    if (jsonObject) {
+        return [self recordWithDictionary:jsonObject];
+    } else {
+        return nil;
+    }
+}
+
 @end

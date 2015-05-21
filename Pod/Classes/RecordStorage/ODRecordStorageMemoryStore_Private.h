@@ -12,5 +12,7 @@
 @interface ODRecordStorageMemoryStore ()
 
 @property (nonatomic, readonly) NSMutableDictionary *records;
+@property (nonatomic, readonly) NSMutableArray *changes;
+@property (nonatomic, readonly) NSMutableDictionary *localRecords;
 
 @end
