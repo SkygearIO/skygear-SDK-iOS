@@ -43,15 +43,18 @@
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSString *objType = obj[@"_type"];
         NSString *userID = obj[@"_id"];
+        ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithCanonicalString:userID];
         if ([objType isEqual:@"error"]) {
             NSMutableDictionary *userInfo = [ODDataSerialization userInfoWithErrorDictionary:obj];
             userInfo[NSLocalizedDescriptionKey] = @"An error occurred while adding relation.";
-            errorByUserID[userID] = [NSError errorWithDomain:ODOperationErrorDomain
-                                                        code:0
-                                                    userInfo:userInfo];
+            NSError *error = [NSError errorWithDomain:ODOperationErrorDomain
+                                                code:0
+                                            userInfo:userInfo];
+            errorByUserID[userID] = error;
+            if (self.perUserCompletionBlock) {
+                self.perUserCompletionBlock(userRecordID, error);
+            }
         } else {
-            // TODO: Error handling on add failed.
-            ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithCanonicalString:userID];
             [savedUserIDs addObject:userRecordID];
             if (self.perUserCompletionBlock) {
                 self.perUserCompletionBlock(userRecordID, nil);
