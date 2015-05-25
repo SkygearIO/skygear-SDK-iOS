@@ -7,6 +7,7 @@
 //
 
 #import "ODRecordStorage.h"
+#import "ODRecordStorage_Private.h"
 #import "ODRecordChange.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"

@@ -8,6 +8,7 @@
 
 #import "ODRecordSynchronizer.h"
 #import "ODRecordStorage.h"
+#import "ODRecordStorage_Private.h"
 #import "ODModifyRecordsOperation.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODQueryOperation.h"
@@ -31,6 +32,31 @@
     return self;
 }
 
+- (void)triggerUpdateWithRecordStorage:(ODRecordStorage *)storage
+{
+    if (_updating) {
+        return;
+    }
+    
+    if (storage.hasPendingChanges) {
+        [self recordStorage:storage saveChanges:storage.pendingChanges];
+    } else if (storage.hasUpdateAvailable) {
+        [self recordStorageFetchUpdates:storage];
+    }
+}
+
+
+- (void)setUpdateAvailableWithRecordStorage:(ODRecordStorage *)storage
+                               notification:(ODNotification *)note
+{
+    storage.hasUpdateAvailable = YES;
+    if (storage.enabled) {
+        [self triggerUpdateWithRecordStorage:storage];
+    } else {
+        NSLog(@"Update is available but record storage is not enabled. Storage: %@.", storage);
+    }
+}
+
 - (void)recordStorageFetchUpdates:(ODRecordStorage *)storage
 {
     NSAssert(self.query, @"currently only support syncing with query.");
@@ -48,6 +74,7 @@
                   self, (unsigned long)[fetchedRecords count]);
             [storage updateByReplacingWithRecords:fetchedRecords];
             [storage finishUpdating];
+            storage.hasUpdateAvailable = NO;
         }
         _updating = NO;
     };
