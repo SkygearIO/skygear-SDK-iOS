@@ -52,6 +52,30 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     }
 }
 
+#pragma mark - Changing all records with force
+
+- (BOOL)performUpdateWithError:(NSError **)error
+{
+    if (self.hasPendingChanges) {
+        if (error) {
+            NSDictionary *userInfo = @{
+                                      NSLocalizedDescriptionKey: @"Unable to perform update because"
+                                      @" there are pending changes."
+                                      };
+            *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
+                                         code:0
+                                     userInfo:userInfo];
+        }
+        return NO;
+    }
+    
+    [self.synchronizer recordStorageFetchUpdates:self];
+    if (error) {
+        *error = nil;
+    }
+    return YES;
+}
+
 #pragma mark - Fetch, save and delete records
 
 - (ODRecord *)_getCacheRecordWithRecordID:(ODRecordID *)recordID

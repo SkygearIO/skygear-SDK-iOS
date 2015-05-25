@@ -92,7 +92,17 @@ typedef enum : NSInteger {
  */
 - (BOOL)handleUpdateWithRemoteNotification:(NSDictionary *)info;
 
-#pragma mark - Saving and removing.
+#pragma mark - Changing all records
+
+/**
+ Manually trigger an update to be performed on the receiver.
+ 
+ Update are performed asynchronously. If there are pending changes, the record storage
+ cannot be updated. This method returns <NO> when the receiver cannot perform update.
+ */
+- (BOOL)performUpdateWithError:(NSError **)error;
+
+#pragma mark - Saving and removing
 
 /**
  Save specified record.
