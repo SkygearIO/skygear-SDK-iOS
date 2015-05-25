@@ -84,7 +84,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
         [backingStore synchronize];
         
         expect([backingStore failedChanges]).to.haveCountOf(0);
-        expect([backingStore pendingChanges]).to.haveCountOf(1);
+        expect([backingStore pendingChangesCount]).to.equal(1);
         change = [[backingStore pendingChanges] firstObject];
         expect(change.recordID).to.equal(recordID);
         expect(change.state).to.equal(@(ODRecordChangeStateWaiting));
@@ -99,7 +99,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
         [backingStore synchronize];
         
         expect([backingStore failedChanges]).to.haveCountOf(1);
-        expect([backingStore pendingChanges]).to.haveCountOf(0);
+        expect([backingStore pendingChangesCount]).to.equal(0);
         change = [[backingStore failedChanges] firstObject];
         expect(change.recordID).to.equal(recordID);
         expect(change.state).to.equal(@(ODRecordChangeStateFinished));
@@ -109,7 +109,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
         [backingStore removeChange:change];
         [backingStore synchronize];
         expect([backingStore failedChanges]).to.haveCountOf(0);
-        expect([backingStore pendingChanges]).to.haveCountOf(0);
+        expect([backingStore pendingChangesCount]).to.equal(0);
     });
     
     

@@ -201,6 +201,11 @@
     return nil;
 }
 
+- (NSUInteger)pendingChangesCount
+{
+    return [[self pendingChanges] count];
+}
+
 - (NSArray *)pendingChanges
 {
     return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"error = NULL"]];
@@ -209,28 +214,6 @@
 - (NSArray *)failedChanges
 {
     return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"error != NULL"]];
-}
-
-- (NSArray *)recordIDsPendingSave
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeSave) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
-- (NSArray *)recordIDsPendingDelete
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeDelete) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
 }
 
 @end

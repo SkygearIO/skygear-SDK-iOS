@@ -228,9 +228,9 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
         if (self.hasPendingChanges) {
             NSLog(@"%@: Enabled and detected %lu pending changes."
                   " Will ask synchronizer to save changes.",
-                  self, [self.pendingChanges count]);
+                  self, [_backingStore pendingChangesCount]);
             [_synchronizer recordStorage:self
-                             saveChanges:[self.pendingChanges copy]];
+                             saveChanges:self.pendingChanges];
         } else {
             NSLog(@"%@: Enabled but there are no no pending changes.", self);
         }
@@ -256,7 +256,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 
 - (BOOL)hasPendingChanges
 {
-    return (BOOL)[[_backingStore pendingChanges] count];
+    return (BOOL)[_backingStore pendingChangesCount];
 }
 
 - (NSArray *)pendingChanges

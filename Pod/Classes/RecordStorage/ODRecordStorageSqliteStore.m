@@ -567,6 +567,17 @@
     }
 }
 
+- (NSUInteger)pendingChangesCount
+{
+    NSString *stmt = @"SELECT count(*) FROM _pendingChanges WHERE NOT state=?;";
+    FMResultSet *s = [_db executeQuery:stmt, [NSNumber numberWithInt:ODRecordChangeStateFinished]];
+    if ([s next]) {
+        return (NSUInteger)[s intForColumnIndex:0];
+    } else {
+        return 0;
+    }
+}
+
 - (NSArray *)pendingChanges
 {
     NSString *stmt = @"SELECT * FROM _pendingChanges WHERE NOT state=?;";
@@ -590,28 +601,5 @@
     }
     return result;
 }
-
-- (NSArray *)recordIDsPendingSave
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeSave) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
-- (NSArray *)recordIDsPendingDelete
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeDelete) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
 
 @end

@@ -148,6 +148,11 @@
 - (ODRecordChange *)changeWithRecordID:(ODRecordID *)recordID;
 
 /**
+ Returns the number of pending changes.
+ */
+- (NSUInteger)pendingChangesCount;
+
+/**
  Returns an array of pending changes.
  */
 - (NSArray *)pendingChanges;
@@ -156,8 +161,5 @@
  Returns an array of failed changes.
  */
 - (NSArray *)failedChanges;
-
-- (NSArray *)recordIDsPendingSave;
-- (NSArray *)recordIDsPendingDelete;
 
 @end
