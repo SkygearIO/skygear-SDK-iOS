@@ -45,7 +45,7 @@
         if (!operationError) {
             [storage beginUpdating];
             NSLog(@"%@: Updating record storage by replacing with %lu records.",
-                  self, [fetchedRecords count]);
+                  self, (unsigned long)[fetchedRecords count]);
             [storage updateByReplacingWithRecords:fetchedRecords];
             [storage finishUpdating];
         }
