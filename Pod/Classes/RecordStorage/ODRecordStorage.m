@@ -164,10 +164,16 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (ODRecordState)recordStateWithRecord:(ODRecord *)record
 {
     ODRecordChange *change = [self changeWithRecord:record];
-    if (change && change.error) {
-        return ODRecordStateConflicted;
-    } else if (change) {
-        return ODRecordStateSynchronizing;
+    if (change) {
+        if (change.error) {
+            return ODRecordStateConflicted;
+        } else if ([self.synchronizer isProcessingChange:change storage:self]) {
+            return ODRecordStateSynchronizing;
+        } else if (change.finished) {
+            return ODRecordStateSynchronized;
+        } else {
+            return ODRecordStateNotSynchronized;
+        }
     } else {
         return ODRecordStateSynchronized;
     }
@@ -218,7 +224,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (void)shouldFetchUpdates
 {
     if (self.enabled) {
-        [_synchronizer recordStorageFetchUpdates:self];
+        [self performUpdateWithError:nil];
     }
 }
 
@@ -277,7 +283,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 - (void)_appendChange:(ODRecordChange *)change record:(ODRecord *)record completion:(id)handler
 {
     [self _dismissExistingChangeIfAnyWithRecord:record error:nil];
-    [_backingStore appendChange:change state:ODRecordChangeStateWaiting];
+    [_backingStore appendChange:change];
     switch (change.action) {
         case ODRecordChangeSave:
             [_backingStore saveRecordLocally:record];
@@ -315,7 +321,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
         [_completionBlocks removeObjectForKey:item.recordID];
         return YES;
     } else {
-        if (item.state == ODRecordChangeStateStarted) {
+        if ([_synchronizer isProcessingChange:item storage:self]) {
             if (error) {
                 *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
                                              code:0
@@ -376,7 +382,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
                               error:(NSError *)error
 {
     if (error) {
-        [_backingStore setFinishedStateWithError:error ofChange:change];
+        [_backingStore setFinishedWithError:error change:change];
     } else {
         if (change.action == ODRecordChangeSave) {
             [_backingStore saveRecord:remoteRecord];
@@ -390,7 +396,7 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
         if (block) {
             block();
         }
-        [_backingStore setState:ODRecordChangeStateFinished ofChange:change];
+        [_backingStore setFinishedWithError:nil change:change];
     }
 }
 

@@ -115,13 +115,6 @@
 - (void)appendChange:(ODRecordChange *)change;
 
 /**
- Append a change to the backing store.
- 
- This method will also set the state to the specified state before appending.
- */
-- (void)appendChange:(ODRecordChange *)change state:(ODRecordChangeState)state;
-
-/**
  Remove a change from the backing store.
  
  This will not revert any locally changes. Locally saved changes should be
@@ -130,17 +123,9 @@
 - (void)removeChange:(ODRecordChange *)change;
 
 /**
- Set the current state of the change.
- */
-- (void)setState:(ODRecordChangeState)state ofChange:(ODRecordChange *)change;
-
-/**
- Set a change to be finished and specify an NSError that has occurred.
- 
- If no error has occurred, it is recommend that -setState:ofChange: be called
- instead.
- */
-- (void)setFinishedStateWithError:(NSError *)error ofChange:(ODRecordChange *)change;
+ Set a change to be finished and optionally specify an NSError that has occurred.
+  */
+- (void)setFinishedWithError:(NSError *)error change:(ODRecordChange *)change;
 
 /**
  Returns a change related with a record by a record ID.

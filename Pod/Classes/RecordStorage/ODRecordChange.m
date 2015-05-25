@@ -49,7 +49,7 @@
         _recordID = [aDecoder decodeObjectForKey:@"recordID"];
         _attributesToSave = [aDecoder decodeObjectForKey:@"attributesToSave"];
         _action = [aDecoder decodeIntegerForKey:@"action"];
-        _state = [aDecoder decodeIntegerForKey:@"state"];
+        _finished = [aDecoder decodeBoolForKey:@"finished"];
         _resolveMethod = [aDecoder decodeIntegerForKey:@"resolveMethod"];
         _error = [aDecoder decodeObjectForKey:@"error"];
     }
@@ -61,7 +61,7 @@
     [aCoder encodeObject:_recordID forKey:@"recordID"];
     [aCoder encodeObject:_attributesToSave forKey:@"attributesToSave"];
     [aCoder encodeInteger:_action forKey:@"action"];
-    [aCoder encodeInteger:_state forKey:@"state"];
+    [aCoder encodeInteger:_finished forKey:@"finished"];
     [aCoder encodeInteger:_resolveMethod forKey:@"resolveMethod"];
     [aCoder encodeObject:_error forKey:@"error"];
 }

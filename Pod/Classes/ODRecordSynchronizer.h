@@ -54,4 +54,6 @@
 - (void)recordStorage:(ODRecordStorage *)storage
           saveChanges:(NSArray *)changes;
 
+- (BOOL)isProcessingChange:(ODRecordChange *)change storage:(ODRecordStorage *)storage;
+
 @end

@@ -36,10 +36,10 @@ describe(@"ODRecordChange", ^{
                                                  action:ODRecordChangeSave
                                           resolveMethod:ODRecordResolveByUpdatingDelta
                                        attributesToSave:@{@"title": @[[NSNull null], @"Hello World"]}];
-        change.state = ODRecordChangeStateFinished;
+        change.finished = YES;
         change.error = [NSError errorWithDomain:@"UnknownErrorDomain" code:0 userInfo:nil];
         
-        expect(change.state).to.equal(ODRecordChangeStateFinished);
+        expect(change.finished).to.beTruthy();
         expect(change.error.domain).to.equal(@"UnknownErrorDomain");
     });
 });

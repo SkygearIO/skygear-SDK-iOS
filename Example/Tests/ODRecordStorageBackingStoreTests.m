@@ -80,29 +80,29 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
                                          attributesToSave:attrs];
         
         // Append pending change
-        [backingStore appendChange:change state:ODRecordChangeStateWaiting];
+        [backingStore appendChange:change];
         [backingStore synchronize];
         
         expect([backingStore failedChanges]).to.haveCountOf(0);
         expect([backingStore pendingChangesCount]).to.equal(1);
         change = [[backingStore pendingChanges] firstObject];
         expect(change.recordID).to.equal(recordID);
-        expect(change.state).to.equal(@(ODRecordChangeStateWaiting));
+        expect(change.finished).to.beFalsy();
         
         // Get change with Record ID
         ODRecordChange *returnedChange = [backingStore changeWithRecordID:recordID];
-        expect(returnedChange.state).to.equal(@(ODRecordChangeStateWaiting));
+        expect(returnedChange.finished).to.beFalsy();
         
         // Set change to failed
         NSError *error = [NSError errorWithDomain:@"Error" code:0 userInfo:nil];
-        [backingStore setFinishedStateWithError:error ofChange:change];
+        [backingStore setFinishedWithError:error change:change];
         [backingStore synchronize];
         
         expect([backingStore failedChanges]).to.haveCountOf(1);
         expect([backingStore pendingChangesCount]).to.equal(0);
         change = [[backingStore failedChanges] firstObject];
         expect(change.recordID).to.equal(recordID);
-        expect(change.state).to.equal(@(ODRecordChangeStateFinished));
+        expect(change.finished).to.beTruthy();
         expect(change.error.domain).to.equal(@"Error");
         
         // Remove the change
@@ -131,8 +131,8 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
                                           attributesToSave:nil];
         
         // Append pending change
-        [backingStore appendChange:change1 state:ODRecordChangeStateWaiting];
-        [backingStore appendChange:change2 state:ODRecordChangeStateWaiting];
+        [backingStore appendChange:change1];
+        [backingStore appendChange:change2];
         [backingStore synchronize];
         
         expect([backingStore failedChanges]).to.haveCountOf(0);
@@ -141,8 +141,9 @@ sharedExamples(@"ODRecordStorageBackingStore-Changes", ^(NSDictionary *data) {
         NSError *error = [NSError errorWithDomain:@"Error"
                                              code:0
                                          userInfo:nil];
-        [backingStore setFinishedStateWithError:error ofChange:change1];
-        [backingStore setFinishedStateWithError:error ofChange:change2];
+        
+        [backingStore setFinishedWithError:error change:change1];
+        [backingStore setFinishedWithError:error change:change2];
         [backingStore synchronize];
 
         expect([backingStore failedChanges]).to.haveCountOf(2);
