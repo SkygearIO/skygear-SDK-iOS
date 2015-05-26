@@ -13,6 +13,7 @@
 @class ODQuery;
 @class ODRecordSynchronizer;
 @class ODRecordStorage;
+@class ODRecordChange;
 
 /**
  This class handles the network operations required to sync a record storage with remote server.

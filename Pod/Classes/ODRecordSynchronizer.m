@@ -97,7 +97,7 @@
                                             initWithRecordsToSave:@[recordToSave]];
             op.perRecordCompletionBlock = ^(ODRecord *record, NSError *error) {
                 if (!storage.updating) {
-                    [storage beginUpdating];
+                    [storage beginUpdatingForChanges:YES];
                 }
                 [storage updateByApplyingChange:change
                                  recordOnRemote:record
@@ -119,7 +119,7 @@
                                             initWithRecordIDsToDelete:@[change.recordID]];
             op.perRecordCompletionBlock = ^(ODRecordID *recordID, NSError *error) {
                 if (!storage.updating) {
-                    [storage beginUpdating];
+                    [storage beginUpdatingForChanges:YES];
                 }
                 [storage updateByApplyingChange:change
                                  recordOnRemote:nil

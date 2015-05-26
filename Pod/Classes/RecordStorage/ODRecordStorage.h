@@ -14,6 +14,13 @@
 #import "ODRecordStorageBackingStore.h"
 
 extern NSString * const ODRecordStorageDidUpdateNotification;
+extern NSString * const ODRecordStorageWillSynchronizeChangesNotification;
+extern NSString * const ODRecordStorageDidSynchronizeChangesNotification;
+extern NSString * const ODRecordStorageUpdateAvailableNotification;
+extern NSString * const ODRecordStoragePendingChangesCountKey;
+extern NSString * const ODRecordStorageFailedChangesCountKey;
+extern NSString * const ODRecordStorageSavedRecordIDsKey;
+extern NSString * const ODRecordStorageDeletedRecordIDsKey;
 
 @class ODRecordSynchronizer;
 
@@ -236,6 +243,7 @@ typedef enum : NSInteger {
  Notifies the storage that it will begin receiving record updates.
  */
 - (void)beginUpdating;
+- (void)beginUpdatingForChanges:(BOOL)forChanges;
 
 /**
  Notifies the storage that it has received all record updates.

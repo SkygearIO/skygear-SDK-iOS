@@ -7,12 +7,20 @@
 //
 
 #import "ODRecordStorage.h"
+#import "ODRecordStorage_Private.h"
 #import "ODRecordChange.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordSynchronizer.h"
 
 NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpdateNotification";
+NSString * const ODRecordStorageWillSynchronizeChangesNotification = @"ODRecordStorageWillSynchronizeChangesNotification";
+NSString * const ODRecordStorageDidSynchronizeChangesNotification = @"ODRecordStorageDidSynchronizeChangesNotification";
+NSString * const ODRecordStorageUpdateAvailableNotification = @"ODRecordStorageUpdateAvailableNotification";
+NSString * const ODRecordStoragePendingChangesCountKey = @"pendingChangesCount";
+NSString * const ODRecordStorageFailedChangesCountKey = @"failedChangesCount";
+NSString * const ODRecordStorageSavedRecordIDsKey = @"savedRecordIDs";
+NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 @interface ODRecordStorage ()
 
@@ -24,6 +32,9 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     NSMapTable *_records;
     ODRecordResolveMethod _defaultResolveMethod;
     NSMutableDictionary *_completionBlocks;
+    BOOL _updatingForChanges;
+    NSMutableArray *_savedRecordIDs;
+    NSMutableArray *_deletedRecordIDs;
 }
 
 - (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore
@@ -50,6 +61,17 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
             [self shouldProcessChanges];
         }
     }
+}
+
+- (void)markAsUpdateAvailable
+{
+    [self willChangeValueForKey:@"hasUpdateAvailable"];
+    _hasUpdateAvailable = YES;
+    [self didChangeValueForKey:@"hasUpdateAvailable"];
+    NSNotificationCenter *noteCenter = [NSNotificationCenter defaultCenter];
+    [noteCenter postNotificationName:ODRecordStorageUpdateAvailableNotification
+                              object:self
+                            userInfo:nil];
 }
 
 #pragma mark - Changing all records with force
@@ -367,12 +389,14 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     
     [records enumerateObjectsUsingBlock:^(ODRecord *obj, NSUInteger idx, BOOL *stop) {
         [_backingStore saveRecord:obj];
+        [_savedRecordIDs addObject:obj.recordID];
         [_records setObject:obj forKey:obj.recordID];
         [oldRecordIDs removeObject:obj.recordID];
     }];
     
     [oldRecordIDs enumerateObjectsUsingBlock:^(ODRecordID *obj, NSUInteger idx, BOOL *stop) {
         [_backingStore deleteRecordWithRecordID:obj];
+        [_deletedRecordIDs addObject:obj];
         [_records removeObjectForKey:obj];
     }];
 }
@@ -386,10 +410,12 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     } else {
         if (change.action == ODRecordChangeSave) {
             [_backingStore saveRecord:remoteRecord];
+            [_savedRecordIDs addObject:remoteRecord.recordID];
         } else if (change.action == ODRecordChangeDelete) {
             ODRecord *recordToDelete = [_backingStore fetchRecordWithRecordID:change.recordID];
             if (recordToDelete) {
                 [_backingStore deleteRecord:recordToDelete];
+                [_deletedRecordIDs addObject:recordToDelete.recordID];
             }
         }
         void (^block)() = [_completionBlocks objectForKey:change.recordID];
@@ -402,7 +428,24 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
 
 - (void)beginUpdating
 {
+    [self beginUpdatingForChanges:NO];
+}
+
+- (void)beginUpdatingForChanges:(BOOL)forChanges
+{
     NSAssert(!_updating, @"Calling %@ while updating is not defined.", NSStringFromSelector(_cmd));
+    _savedRecordIDs = [NSMutableArray array];
+    _deletedRecordIDs = [NSMutableArray array];
+    NSNotificationCenter *noteCenter = [NSNotificationCenter defaultCenter];
+    if (_updatingForChanges) {
+        _updatingForChanges = forChanges;
+        [noteCenter postNotificationName:ODRecordStorageWillSynchronizeChangesNotification
+                                  object:self
+                                userInfo:@{
+                                           ODRecordStoragePendingChangesCountKey:
+                                               @([self.backingStore pendingChangesCount])
+                                           }];
+    }
     [self willChangeValueForKey:@"updating"];
     _updating = YES;
     [self didChangeValueForKey:@"updating"];
@@ -414,10 +457,27 @@ NSString * const ODRecordStorageDidUpdateNotification = @"ODRecordStorageDidUpda
     [self willChangeValueForKey:@"updating"];
     _updating = NO;
     [self didChangeValueForKey:@"updating"];
+ 
+    NSNotificationCenter *noteCenter = [NSNotificationCenter defaultCenter];
+    if (_updatingForChanges) {
+        [noteCenter postNotificationName:ODRecordStorageDidSynchronizeChangesNotification
+                                  object:self
+                                userInfo:@{
+                                           ODRecordStorageFailedChangesCountKey:
+                                               @([[self.backingStore failedChanges] count])
+                                           }];
+        _updatingForChanges = NO;
+    }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:ODRecordStorageDidUpdateNotification
-                                                        object:self
-                                                      userInfo:nil];
+    [noteCenter postNotificationName:ODRecordStorageDidUpdateNotification
+                              object:self
+                            userInfo:@{
+                                       ODRecordStorageSavedRecordIDsKey: [_savedRecordIDs copy],
+                                       ODRecordStorageSavedRecordIDsKey: [_deletedRecordIDs copy],
+                                       }];
+    
+    _savedRecordIDs = nil;
+    _deletedRecordIDs = nil;
 }
 
 @end
