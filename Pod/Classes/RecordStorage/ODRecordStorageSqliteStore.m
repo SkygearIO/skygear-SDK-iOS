@@ -106,7 +106,7 @@
                       "recordID TEXT, "
                       "attributesToSave BLOB, "
                       "action INTEGER, "
-                      "state INTEGER, "
+                      "finished INTEGER, "
                       "resolveMethod INTEGER, "
                       "error BLOB"
                       ");";
@@ -453,25 +453,19 @@
     [self beginTransactionIfNotAlready];
     
     NSString *stmt = @"INSERT INTO _pendingChanges "
-    "(recordID, attributesToSave, action, state, resolveMethod, error) VALUES "
+    "(recordID, attributesToSave, action, finished, resolveMethod, error) VALUES "
     "(?, ?, ?, ?, ?, ?);";
     
     BOOL success = [_db executeUpdate:stmt,
                     change.recordID.canonicalString,
                     [NSKeyedArchiver archivedDataWithRootObject:change.attributesToSave],
                     [NSNumber numberWithInt:change.action],
-                    [NSNumber numberWithInt:change.state],
+                    [NSNumber numberWithBool:change.finished],
                     [NSNumber numberWithInt:change.resolveMethod],
                     change.error ? [NSKeyedArchiver archivedDataWithRootObject:change.error] : nil];
     NSAssert(success, @"handle insert failure not implemented");
 
     [self synchronize];
-}
-
-- (void)appendChange:(ODRecordChange *)change state:(ODRecordChangeState)state
-{
-    change.state = state;
-    [self appendChange:change];
 }
 
 - (void)removeChange:(ODRecordChange *)change
@@ -488,24 +482,24 @@
 
 - (BOOL)_purgeFinishedChangesWithError:(NSError **)error
 {
-    NSString *stmt = @"DELETE FROM _pendingChanges WHERE state = ? AND error IS NULL";
+    NSString *stmt = @"DELETE FROM _pendingChanges WHERE finished = ? AND error IS NULL";
     
-    BOOL success = [_db executeUpdate:stmt, @(ODRecordChangeStateFinished)];
+    BOOL success = [_db executeUpdate:stmt, @(YES)];
     if (!success && error) {
         *error = [_db lastError];
     }
     return success;
 }
 
-- (BOOL)_updateState:(ODRecordChangeState)state
-         changeError:(NSError *)error
-            ofChange:(ODRecordChange *)change
-       databaseError:(NSError **)databaseError
+- (BOOL)_updateIsFinished:(BOOL)finished
+              changeError:(NSError *)error
+                 ofChange:(ODRecordChange *)change
+            databaseError:(NSError **)databaseError
 {
-    NSString *stmt = @"UPDATE _pendingChanges SET state=?, error=? WHERE recordID = ?";
+    NSString *stmt = @"UPDATE _pendingChanges SET finished=?, error=? WHERE recordID = ?";
     
     BOOL success = [_db executeUpdate:stmt,
-                    @(state),
+                    @(finished),
                     error ? [NSKeyedArchiver archivedDataWithRootObject:error] : nil,
                     change.recordID.canonicalString];
     if (!success && databaseError) {
@@ -514,26 +508,15 @@
     return success;
 }
 
-- (void)setState:(ODRecordChangeState)state ofChange:(ODRecordChange *)change
+- (void)setFinishedWithError:(NSError *)error change:(ODRecordChange *)change
 {
-    change.state = state;
-    [self beginTransactionIfNotAlready];
-    [self _updateState:state
-           changeError:nil
-              ofChange:change
-         databaseError:nil];
-    [self synchronize];
-}
-
-- (void)setFinishedStateWithError:(NSError *)error ofChange:(ODRecordChange *)change
-{
-    change.state = ODRecordChangeStateFinished;
+    change.finished = YES;
     change.error = error;
     [self beginTransactionIfNotAlready];
-    [self _updateState:ODRecordChangeStateFinished
-           changeError:error
-              ofChange:change
-         databaseError:nil];
+    [self _updateIsFinished:YES
+                changeError:error
+                   ofChange:change
+              databaseError:nil];
     [self synchronize];
 }
 
@@ -548,7 +531,7 @@
                               action:[s intForColumn:@"action"]
                               resolveMethod:[s intForColumn:@"resolveMethod"]
                               attributesToSave:attributesToSave];
-    change.state = [s intForColumn:@"state"];
+    change.finished = [s boolForColumn:@"finished"];
     if ([s dataForColumn:@"error"]) {
         change.error = [NSKeyedUnarchiver unarchiveObjectWithData:[s dataForColumn:@"error"]];
     }
@@ -567,11 +550,22 @@
     }
 }
 
+- (NSUInteger)pendingChangesCount
+{
+    NSString *stmt = @"SELECT count(*) FROM _pendingChanges WHERE finished=?;";
+    FMResultSet *s = [_db executeQuery:stmt, @(NO)];
+    if ([s next]) {
+        return (NSUInteger)[s intForColumnIndex:0];
+    } else {
+        return 0;
+    }
+}
+
 - (NSArray *)pendingChanges
 {
-    NSString *stmt = @"SELECT * FROM _pendingChanges WHERE NOT state=?;";
+    NSString *stmt = @"SELECT * FROM _pendingChanges WHERE finished=?;";
     
-    FMResultSet *s = [_db executeQuery:stmt, [NSNumber numberWithInt:ODRecordChangeStateFinished]];
+    FMResultSet *s = [_db executeQuery:stmt, @(NO)];
     NSMutableArray *result = [NSMutableArray array];
     while ([s next]) {
         [result addObject:[self _changeWithResultSet:s]];
@@ -590,28 +584,5 @@
     }
     return result;
 }
-
-- (NSArray *)recordIDsPendingSave
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeSave) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
-- (NSArray *)recordIDsPendingDelete
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeDelete) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
 
 @end

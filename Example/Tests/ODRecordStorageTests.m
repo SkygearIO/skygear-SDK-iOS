@@ -193,6 +193,31 @@ describe(@"ODRecordStorage", ^{
         ODRecord *changedRecord = [storage recordWithRecordID:recordToChange.recordID];
         expect(changedRecord[@"title"]).to.equal(recordToChange[@"title"]);
     });
+    
+    it(@"record state", ^{
+        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
+        record[@"title"] = @"Hello World";
+        [storage beginUpdating];
+        [storage updateByReplacingWithRecords:@[record]];
+        [storage finishUpdating];
+        expect([storage recordStateWithRecord:record]).to.equal(ODRecordStateSynchronized);
+
+        record[@"title"] = @"Hello World 2";
+        [storage saveRecord:record];
+        expect([storage recordStateWithRecord:record]).to.equal(ODRecordStateNotSynchronized);
+    });
+
+    it(@"record state synchronizing", ^{
+        ODRecordSynchronizer *mockSyncher = OCMClassMock([ODRecordSynchronizer class]);
+        storage.synchronizer = mockSyncher;
+        
+        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
+        record[@"title"] = @"Hello World";
+        [storage saveRecord:record];
+        
+        OCMStub([mockSyncher isProcessingChange:[OCMArg any] storage:storage]).andReturn(YES);
+        expect([storage recordStateWithRecord:record]).to.equal(ODRecordStateSynchronizing);
+    });
 });
 
 SpecEnd

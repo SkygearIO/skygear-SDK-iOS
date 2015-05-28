@@ -13,6 +13,7 @@
 @class ODQuery;
 @class ODRecordSynchronizer;
 @class ODRecordStorage;
+@class ODRecordChange;
 
 /**
  This class handles the network operations required to sync a record storage with remote server.
@@ -53,5 +54,7 @@
  */
 - (void)recordStorage:(ODRecordStorage *)storage
           saveChanges:(NSArray *)changes;
+
+- (BOOL)isProcessingChange:(ODRecordChange *)change storage:(ODRecordStorage *)storage;
 
 @end

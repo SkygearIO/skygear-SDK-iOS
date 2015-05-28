@@ -162,31 +162,15 @@
     [self synchronize];
 }
 
-- (void)appendChange:(ODRecordChange *)change state:(ODRecordChangeState)state
-{
-    change.state = state;
-    [_changes addObject:change];
-    [self synchronize];
-}
-
 - (void)removeChange:(ODRecordChange *)change
 {
     [_changes removeObject:change];
     [self synchronize];
 }
 
-- (void)setState:(ODRecordChangeState)state ofChange:(ODRecordChange *)change
+- (void)setFinishedWithError:(NSError *)error change:(ODRecordChange *)change
 {
-    change.state = state;
-    if (change.state == ODRecordChangeStateFinished && !change.error) {
-        [_changes removeObject:change];
-    }
-    [self synchronize];
-}
-
-- (void)setFinishedStateWithError:(NSError *)error ofChange:(ODRecordChange *)change
-{
-    change.state = ODRecordChangeStateFinished;
+    change.finished = YES;
     change.error = error;
     [self synchronize];
 }
@@ -201,36 +185,19 @@
     return nil;
 }
 
+- (NSUInteger)pendingChangesCount
+{
+    return [[self pendingChanges] count];
+}
+
 - (NSArray *)pendingChanges
 {
-    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"error = NULL"]];
+    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = NO"]];
 }
 
 - (NSArray *)failedChanges
 {
-    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"error != NULL"]];
-}
-
-- (NSArray *)recordIDsPendingSave
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeSave) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
-}
-
-- (NSArray *)recordIDsPendingDelete
-{
-    NSMutableArray *result = [NSMutableArray array];
-    for (ODRecordChange *change in [self pendingChanges]) {
-        if (change.action == ODRecordChangeDelete) {
-            [result addObject:change.recordID];
-        }
-    }
-    return result;
+    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = YES AND error != NULL"]];
 }
 
 @end

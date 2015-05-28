@@ -43,19 +43,12 @@ typedef enum : NSInteger {
     ODRecordChangeDelete,
 } ODRecordChangeAction;
 
-typedef enum : NSInteger {
-    ODRecordChangeStateUndefined,
-    ODRecordChangeStateWaiting,
-    ODRecordChangeStateStarted,
-    ODRecordChangeStateFinished,
-} ODRecordChangeState;
-
 @interface ODRecordChange : NSObject <NSCoding>
 
 @property (nonatomic, readonly, copy) ODRecordID *recordID;
 @property (nonatomic, readonly, copy) NSDictionary *attributesToSave;
 @property (nonatomic, readonly) ODRecordChangeAction action;
-@property (nonatomic, readonly) ODRecordChangeState state;
+@property (nonatomic, readonly, getter=isFinished) BOOL finished;
 @property (nonatomic, readonly) ODRecordResolveMethod resolveMethod;
 @property (nonatomic, readonly, copy) NSError *error;
 

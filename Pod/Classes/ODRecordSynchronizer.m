@@ -15,6 +15,7 @@
 
 @implementation ODRecordSynchronizer {
     BOOL _updating;
+    NSMutableDictionary *_changesUpdating;
 }
 
 - (instancetype)initWithContainer:(ODContainer *)container
@@ -27,6 +28,7 @@
         _database = database;
         _query = query;
         _updating = NO;
+        _changesUpdating = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -95,7 +97,7 @@
                                             initWithRecordsToSave:@[recordToSave]];
             op.perRecordCompletionBlock = ^(ODRecord *record, NSError *error) {
                 if (!storage.updating) {
-                    [storage beginUpdating];
+                    [storage beginUpdatingForChanges:YES];
                 }
                 [storage updateByApplyingChange:change
                                  recordOnRemote:record
@@ -103,12 +105,13 @@
             };
             op.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
                 [storage finishUpdating];
+                [_changesUpdating removeObjectForKey:change.recordID];
                 updateCount--;
                 if (updateCount <= 0) {
                     _updating = NO;
                 }
             };
-            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
+            [_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == ODRecordChangeDelete) {
@@ -116,7 +119,7 @@
                                             initWithRecordIDsToDelete:@[change.recordID]];
             op.perRecordCompletionBlock = ^(ODRecordID *recordID, NSError *error) {
                 if (!storage.updating) {
-                    [storage beginUpdating];
+                    [storage beginUpdatingForChanges:YES];
                 }
                 [storage updateByApplyingChange:change
                                  recordOnRemote:nil
@@ -125,17 +128,23 @@
             op.deleteRecordsCompletionBlock = ^(NSArray *deletedRecordIDs,
                                                 NSError *operationError) {
                 [storage finishUpdating];
+                [_changesUpdating removeObjectForKey:change.recordID];
                 updateCount--;
                 if (updateCount <= 0) {
                     _updating = NO;
                 }
             };
-            [storage.backingStore setState:ODRecordChangeStateStarted ofChange:change];
+            [_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         }
 
     }];
+}
+
+- (BOOL)isProcessingChange:(ODRecordChange *)change storage:(ODRecordStorage *)storage
+{
+    return (BOOL)[_changesUpdating objectForKey:change.recordID];
 }
 
 

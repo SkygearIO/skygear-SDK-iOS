@@ -12,7 +12,7 @@
 
 @interface ODRecordChange ()
 
-@property (nonatomic, readwrite) ODRecordChangeState state;
+@property (nonatomic, readwrite, getter=isFinished) BOOL finished;
 @property (nonatomic, readwrite) NSError *error;
 
 @end
