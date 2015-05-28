@@ -14,6 +14,7 @@
 @class ODRecordSynchronizer;
 @class ODRecordStorage;
 @class ODRecordChange;
+@class ODNotification;
 
 /**
  This class handles the network operations required to sync a record storage with remote server.
@@ -43,6 +44,13 @@
 - (instancetype)initWithContainer:(ODContainer *)container
                          database:(ODDatabase *)database
                             query:(ODQuery *)query;
+
+
+/**
+ Notifies the synchronizer that update is available to the specified record storage.
+ */
+- (void)setUpdateAvailableWithRecordStorage:(ODRecordStorage *)storage
+                               notification:(ODNotification *)note;
 
 /**
  Instantiate network operations that causes the specified record storage to be updated.

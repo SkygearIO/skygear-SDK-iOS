@@ -12,6 +12,7 @@
 #import "ODRecordChange.h"
 #import "ODRecordResultController.h"
 #import "ODRecordStorageBackingStore.h"
+#import "ODNotification.h"
 
 extern NSString * const ODRecordStorageDidUpdateNotification;
 extern NSString * const ODRecordStorageWillSynchronizeChangesNotification;
@@ -89,15 +90,12 @@ typedef enum : NSInteger {
  */
 @property (nonatomic, readwrite, strong) ODRecordSynchronizer *synchronizer;
 
-- (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore;
-
 /**
- Handles a remote notification dictionary.
- 
- When a remote notification is received, the application should call
- this method so that the <ODRecordStorage> can fetch updates from remote.
+ Returns whether update from remote server is available.
  */
-- (BOOL)handleUpdateWithRemoteNotification:(NSDictionary *)info;
+@property (nonatomic, readonly) BOOL hasUpdateAvailable;
+
+- (instancetype)initWithBackingStore:(id<ODRecordStorageBackingStore>)backingStore;
 
 #pragma mark - Changing all records
 

@@ -219,7 +219,7 @@ NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                         }];
     
     NSLog(@"%@: Query for record type `%@` returns %lu records. Predicate: %@",
-          self, recordType, [records count], predicate);
+          self, recordType, (unsigned long)[records count], predicate);
 
     return records;
 }
@@ -256,7 +256,7 @@ NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
         if (self.hasPendingChanges) {
             NSLog(@"%@: Enabled and detected %lu pending changes."
                   " Will ask synchronizer to save changes.",
-                  self, [_backingStore pendingChangesCount]);
+                  self, (unsigned long)[self.pendingChanges count]);
             [_synchronizer recordStorage:self
                              saveChanges:self.pendingChanges];
         } else {

@@ -126,19 +126,27 @@ NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
 
 #pragma mark - Handle notifications
 
-- (BOOL)handleUpdateWithRemoteNotification:(NSDictionary *)info
+- (BOOL)notification:(ODNotification *)note shouldUpdateRecordStorage:(ODRecordStorage *)storage
+{
+    return YES; // TODO
+}
+
+- (BOOL)handleUpdateWithRemoteNotificationDictionary:(NSDictionary *)info
+{
+    ODNotification *note = [ODNotification notificationFromRemoteNotificationDictionary:info];
+    return [self handleUpdateWithRemoteNotification:note];
+}
+
+- (BOOL)handleUpdateWithRemoteNotification:(ODNotification *)note
 {
     __block BOOL handled = NO;
     
-    // TODO: Check if the notification info is for ODRecordStorage. If not, maybe we
-    // should not blindly pass it to ODRecordStorage.
-    
     [_recordStorages enumerateObjectsUsingBlock:^(ODRecordStorage *obj, NSUInteger idx, BOOL *stop) {
-        if (!obj.enabled) {
-            return;
+        if ([self notification:note shouldUpdateRecordStorage:obj]) {
+            [obj.synchronizer setUpdateAvailableWithRecordStorage:obj
+                                                     notification:note];
+            handled = YES;
         }
-        BOOL handledByStorage = [obj handleUpdateWithRemoteNotification:info];
-        handled = handled || handledByStorage;
     }];
     return handled;
 }
