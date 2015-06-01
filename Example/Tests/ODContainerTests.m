@@ -64,7 +64,7 @@ describe(@"save current user", ^{
     
     it(@"fetch record", ^{
         ODContainer *container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"user1"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"accesstoken1"]];
         
         container = [[ODContainer alloc] init];

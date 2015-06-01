@@ -11,6 +11,8 @@
 @interface ODUserRecordID : ODRecordID
 
 - (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)type NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_UNAVAILABLE;
 
 @property (nonatomic, readonly, copy) NSString *username;
 @property (nonatomic, readonly, copy) NSString *email;

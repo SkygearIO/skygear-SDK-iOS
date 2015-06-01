@@ -7,12 +7,13 @@
 //
 
 #import "ODContainer.h"
+#import "ODContainer_Private.h"
 #import "ODDatabase_Private.h"
 #import "ODOperation.h"
 #import "ODPushOperation.h"
-#import "ODContainer_Private.h"
 #import "ODUserLoginOperation.h"
 #import "ODUserLogoutOperation.h"
+#import "ODUserRecordID_Private.h"
 #import "ODCreateUserOperation.h"
 #import "ODRegisterDeviceOperation.h"
 
@@ -100,7 +101,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     NSString *userRecordName = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerCurrentUserRecordID"];
     NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerAccessToken"];
     if (userRecordName && accessToken) {
-        _userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:userRecordName];
+        _userRecordID = [ODUserRecordID recordIDWithUsername:userRecordName];
         _accessToken = [[ODAccessToken alloc] initWithTokenString:accessToken];
     }
 }

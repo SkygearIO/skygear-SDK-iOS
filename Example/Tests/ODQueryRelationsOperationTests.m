@@ -18,7 +18,7 @@ describe(@"modify", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
     });
@@ -36,7 +36,7 @@ describe(@"modify", ^{
     });
     
     it(@"make request", ^{
-        ODUserRecordID *userID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1002"];
+        ODUserRecordID *userID = [ODUserRecordID recordIDWithUsername:@"user1002"];
         ODQueryRelationsOperation *operation = [[ODQueryRelationsOperation alloc] initWithType:@"follow"
                                                                                   direction:ODRelationDirectionPassive];
         

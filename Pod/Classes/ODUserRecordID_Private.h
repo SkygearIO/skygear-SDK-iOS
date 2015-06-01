@@ -10,6 +10,12 @@
 
 @interface ODUserRecordID()
 
-- (instancetype)initWithUsername:(NSString *)username email:(NSString *)email recordName:(NSString *)recordName;
+- (instancetype)initWithUsername:(NSString *)username;
+- (instancetype)initWithUsername:(NSString *)username email:(NSString *)email;
+- (instancetype)initWithUsername:(NSString *)username email:(NSString *)email authData:(NSDictionary *)authData NS_DESIGNATED_INITIALIZER;
+
++ (instancetype)recordIDWithUsername:(NSString *)username;
++ (instancetype)recordIDWithUsername:(NSString *)username email:(NSString *)email;
++ (instancetype)recordIDWithUsername:(NSString *)username email:(NSString *)email authData:(NSDictionary *)authData;
 
 @end

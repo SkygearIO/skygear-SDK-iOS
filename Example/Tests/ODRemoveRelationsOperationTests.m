@@ -19,11 +19,11 @@ describe(@"relation add", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
-        ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1001"];
+        ODUserRecordID *userRecordID = [ODUserRecordID recordIDWithUsername:@"user1001"];
         follower1 = [[ODUser alloc] initWithUserRecordID:userRecordID];
-        userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1002"];
+        userRecordID = [ODUserRecordID recordIDWithUsername:@"user1002"];
         follower2 = [[ODUser alloc] initWithUserRecordID:userRecordID];
     });
     
