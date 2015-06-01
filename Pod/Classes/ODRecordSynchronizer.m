@@ -70,14 +70,14 @@
     ODQueryOperation *op = [[ODQueryOperation alloc] initWithQuery:self.query];
     op.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, ODQueryCursor *cursor,
                                        NSError *operationError) {
+        [storage beginUpdating];
         if (!operationError) {
-            [storage beginUpdating];
             NSLog(@"%@: Updating record storage by replacing with %lu records.",
                   self, (unsigned long)[fetchedRecords count]);
             [storage updateByReplacingWithRecords:fetchedRecords];
-            [storage finishUpdating];
             storage.hasUpdateAvailable = NO;
         }
+        [storage finishUpdating];
         _updating = NO;
     };
     _updating = YES;
@@ -131,7 +131,9 @@
                                           error:error];
             };
             op.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-                [storage finishUpdating];
+                if (storage.updating) {
+                    [storage finishUpdating];
+                }
                 [_changesUpdating removeObjectForKey:change.recordID];
                 updateCount--;
                 if (updateCount <= 0) {
@@ -154,7 +156,9 @@
             };
             op.deleteRecordsCompletionBlock = ^(NSArray *deletedRecordIDs,
                                                 NSError *operationError) {
-                [storage finishUpdating];
+                if (storage.updating) {
+                    [storage finishUpdating];
+                }
                 [_changesUpdating removeObjectForKey:change.recordID];
                 updateCount--;
                 if (updateCount <= 0) {
