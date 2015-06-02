@@ -11,21 +11,37 @@
 #import "ODFollowReference_Private.h"
 #import "ODQueryOperation.h"
 
+@interface ODUser()
+
+@property (nonatomic, readwrite, copy) ODUserRecordID *recordID;
+
+@end
+
 @implementation ODUser
 
-- (instancetype)initWithRecordType:(NSString *)recordType {
-    NSAssert([recordType isEqualToString:ODRecordTypeUserRecord], @"Cannot init a ODUser with RecordType !=  ODRecordTypeUserRecord");
-    return [super initWithRecordType:recordType];
-}
-
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId {
-    NSAssert([recordType isEqualToString:ODRecordTypeUserRecord], @"Cannot init a ODUser with RecordType !=  ODRecordTypeUserRecord");
-    return [super initWithRecordType:recordType recordID:recordId];
-}
-
 - (instancetype)initWithUserRecordID:(ODUserRecordID *)recordID {
-    self = [super initWithRecordType:ODRecordTypeUserRecord recordID:recordID];
+    return [self initWithUserRecordID:recordID data:nil];
+}
+
+- (instancetype)initWithUserRecordID:(ODUserRecordID *)recordID data:(NSDictionary *)data {
+    self = [super initWithRecordID:recordID data:data];
     return self;
+}
+
+- (NSString *)username {
+    return self.recordID.username;
+}
+
+- (NSString *)email {
+    return self.recordID.email;
+}
+
+- (NSDictionary *)authData {
+    return self.recordID.authData;
+}
+
+- (ODUserRecordID *)recordID {
+    return (ODUserRecordID *)[super recordID];
 }
 
 - (ODFollowReference *)followReference {
