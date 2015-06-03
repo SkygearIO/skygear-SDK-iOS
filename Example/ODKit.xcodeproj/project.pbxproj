@@ -40,7 +40,6 @@
 		38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */; };
 		38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */; };
 		3ED0BE5EFF5C701B898ED1F8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */; };
-		5F442D921B09F48A00B0A7C4 /* ODQueryRelationsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F442D911B09F48A00B0A7C4 /* ODQueryRelationsOperationTests.m */; };
 		5F9F71411B0B131A00F7ADDD /* ODAddRelationsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F71401B0B131A00F7ADDD /* ODAddRelationsOperationTests.m */; };
 		5F9F71431B0B349700F7ADDD /* ODRemoveRelationsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F71421B0B349700F7ADDD /* ODRemoveRelationsOperationTests.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -110,7 +109,6 @@
 		38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
 		38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRegisterDeviceOperationTests.m; sourceTree = "<group>"; };
 		3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		5F442D911B09F48A00B0A7C4 /* ODQueryRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODQueryRelationsOperationTests.m; sourceTree = "<group>"; };
 		5F9F71401B0B131A00F7ADDD /* ODAddRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODAddRelationsOperationTests.m; sourceTree = "<group>"; };
 		5F9F71421B0B349700F7ADDD /* ODRemoveRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRemoveRelationsOperationTests.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* ODKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ODKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -285,7 +283,6 @@
 				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
 				37B477B61AE8A9C100B8566D /* ODQueryDeserializerTests.m */,
 				CD42FE131AA4499C0079B3DA /* ODQueryOperationTests.m */,
-				5F442D911B09F48A00B0A7C4 /* ODQueryRelationsOperationTests.m */,
 				CDF571021AB4825700091DB3 /* ODQuerySerializerTests.m */,
 				383CE06C1ADBB8420085E24B /* ODQueryTests.m */,
 				383510E91AFB4DF5009DD3E2 /* ODRecordChangeTests.m */,
@@ -526,7 +523,6 @@
 				38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */,
 				38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */,
-				5F442D921B09F48A00B0A7C4 /* ODQueryRelationsOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* ODRecordTests.m in Sources */,
 				3867EA331AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* ODRecordDeserializerTests.m in Sources */,

@@ -39,3 +39,4 @@ extern NSString * const ODErrorCodeKey;
 extern NSString * const ODErrorTypeKey;
 extern NSString * const ODErrorInfoKey;
 extern NSString * const ODPartialErrorsByItemIDKey;
+extern NSString * const ODPartialEmailsNotFoundKey;

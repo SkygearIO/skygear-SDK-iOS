@@ -20,7 +20,7 @@ describe(@"discover", ^{
     });
 
     it(@"multiple emails", ^{
-        ODDiscoverUsersOperation *operation = [[ODDiscoverUsersOperation alloc] initWithEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
+        ODQueryUsersOperation *operation = [ODQueryUsersOperation discoverUsersOperationByEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -32,8 +32,23 @@ describe(@"discover", ^{
                                            });
     });
 
+    it(@"query relation", ^{
+        ODQueryUsersOperation *operation = [ODQueryUsersOperation queryUsersOperationByRelation:[ODRelation relationFollow] direction:ODRelationDirectionMutual];
+        operation.container = container;
+        [operation prepareForRequest];
+
+        ODRequest *request = operation.request;
+        expect([request class]).to.beSubclassOf([ODRequest class]);
+        expect(request.accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+        expect(request.action).to.equal(@"relation:query");
+        expect(request.payload).to.equal(@{
+                                           @"name": @"follow",
+                                           @"direction": @"mutual",
+                                           });
+    });
+
     it(@"make request", ^{
-        ODDiscoverUsersOperation *operation = [[ODDiscoverUsersOperation alloc] initWithEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
+        ODQueryUsersOperation *operation = [[ODQueryUsersOperation alloc] initWithEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -68,12 +83,11 @@ describe(@"discover", ^{
         }];
 
         waitUntil(^(DoneCallback done) {
-            operation.discoverUserCompletionBlock = ^(NSArray *users, NSArray *emailsNotFound, NSError *operationError) {
+            operation.discoverUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(users).to.haveCountOf(2);
                     expect([users[0] username]).to.equal(@"user0");
                     expect([users[1] username]).to.equal(@"user1");
-                    expect(emailsNotFound).to.haveCountOf(0);
                     expect(operationError).to.beNil();
                     done();
                 });
@@ -84,7 +98,7 @@ describe(@"discover", ^{
     });
 
     it(@"not found", ^{
-        ODDiscoverUsersOperation *operation = [[ODDiscoverUsersOperation alloc] initWithEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
+        ODQueryUsersOperation *operation = [[ODQueryUsersOperation alloc] initWithEmails:@[@"john.doe@example.com", @"jane.doe@example.com"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -99,14 +113,6 @@ describe(@"discover", ^{
                                                              @"email": @"john.doe@example.com",
                                                              },
                                                      },
-                                                 @{
-                                                     @"id": @"extraID",
-                                                     @"type": @"user",
-                                                     @"data": @{
-                                                             @"_id": @"extraID",
-                                                             @"email": @"extra@example.com",
-                                                             },
-                                                     },
                                                  ]
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
@@ -119,12 +125,15 @@ describe(@"discover", ^{
         }];
 
         waitUntil(^(DoneCallback done) {
-            operation.discoverUserCompletionBlock = ^(NSArray *users, NSArray *emailsNotFound, NSError *operationError) {
+            operation.discoverUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(users).to.haveCountOf(1);
                     expect([users[0] username]).to.equal(@"user0");
-                    expect(emailsNotFound).to.equal(@[@"jane.doe@example.com"]);
-                    expect(operationError).to.beNil();
+                    expect(operationError).notTo.beNil();
+                    expect(operationError.code).to.equal(ODErrorPartialFailure);
+                    expect(operationError.userInfo).to.equal(@{
+                                                               ODPartialEmailsNotFoundKey: @[@"jane.doe@example.com"],
+                                                               });
                     done();
                 });
             };

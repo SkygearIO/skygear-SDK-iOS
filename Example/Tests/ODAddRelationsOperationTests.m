@@ -61,7 +61,6 @@ describe(@"relation add", ^{
                                                      @"type": @"user",
                                                      @"data": @{
                                                              @"_id": @"user1001",
-                                                             @"email": @"user1001@example.com",
                                                              },
                                                      },
                                                  @{
@@ -90,7 +89,7 @@ describe(@"relation add", ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect([savedUsers class]).to.beSubclassOf([NSArray class]);
                     expect(savedUsers).to.haveCountOf(1);
-                    expect([savedUsers[0] recordID]).to.equal([ODUserRecordID recordIDWithUsername:@"user1001" email:@"user1001@example.com"]);
+                    expect(savedUsers[0]).to.equal([ODUserRecordID recordIDWithUsername:@"user1001"]);
                     expect(operationError).toNot.beNil();
                     NSArray *errorKeys = [operationError.userInfo[ODPartialErrorsByItemIDKey] allKeys];
                     expect(errorKeys).to.contain(@"user1002");
