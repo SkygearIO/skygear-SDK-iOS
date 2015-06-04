@@ -13,6 +13,8 @@
 @interface ODRecord()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
+@property (nonatomic, readwrite, copy) NSDate *creationDate;
+@property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
 
 @end
 

@@ -7,10 +7,11 @@
 //
 
 #import "ODRecordDeserializer.h"
-#import "ODRecord.h"
+#import "ODRecord_Private.h"
 #import "ODUserRecordID.h"
 #import "ODRecordID.h"
 #import "ODUser.h"
+#import "ODUserRecordID_Private.h"
 #import "ODRecordSerialization.h"
 #import "ODReference.h"
 #import "ODDataSerialization.h"
@@ -43,7 +44,12 @@
         record = [[ODRecord alloc] initWithRecordID:recordID
                                                data:recordData];
     }
-    
+
+    NSString *ownerID = obj[ODRecordSerializationRecordOwnerIDKey];
+    if (ownerID.length) {
+        record.creatorUserRecordID = [ODUserRecordID recordIDWithUsername:ownerID];
+    }
+
     return record;
 }
 

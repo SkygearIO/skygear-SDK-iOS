@@ -12,5 +12,6 @@
 
 @property (nonatomic, readwrite, copy) ODRecordID *recordID;
 @property (nonatomic, readwrite, copy) NSDate *creationDate;
+@property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
 
 @end
