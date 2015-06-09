@@ -15,16 +15,19 @@ SpecBegin(ODAddRelationsOperation)
 describe(@"relation add", ^{
     __block ODUser *follower1 = nil;
     __block ODUser *follower2 = nil;
+    __block ODUser *follower3 = nil;
     __block ODContainer *container = nil;
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
-        ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1001"];
-        follower1 = [[ODUser alloc] initWithUserRecordID:userRecordID];
-        userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1002"];
-        follower2 = [[ODUser alloc] initWithUserRecordID:userRecordID];
+        ODUserRecordID *userRecordID1 = [ODUserRecordID recordIDWithUsername:@"user1001"];
+        follower1 = [[ODUser alloc] initWithUserRecordID:userRecordID1];
+        ODUserRecordID *userRecordID2 = [ODUserRecordID recordIDWithUsername:@"user1002"];
+        follower2 = [[ODUser alloc] initWithUserRecordID:userRecordID2];
+        ODUserRecordID *userRecordID3 = [ODUserRecordID recordIDWithUsername:@"user1003"];
+        follower3 = [[ODUser alloc] initWithUserRecordID:userRecordID3];
     });
     
     it(@"multiple relations", ^{
@@ -39,13 +42,13 @@ describe(@"relation add", ^{
         expect(request.payload[@"targets"]).to.haveCountOf(2);
         expect(request.accessToken).to.equal(container.currentAccessToken);
         
-        expect(request.payload[@"targets"][0]).to.equal(@"user/user1001");
-        expect(request.payload[@"targets"][1]).to.equal(@"user/user1002");
+        expect(request.payload[@"targets"][0]).to.equal(@"user1001");
+        expect(request.payload[@"targets"][1]).to.equal(@"user1002");
     });
     
     it(@"make request", ^{
         ODAddRelationsOperation *operation = [[ODAddRelationsOperation alloc] initWithType:@"follow"
-                                                                         usersToRelated:@[follower1, follower2]];
+                                                                         usersToRelated:@[follower1, follower2, follower3]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -54,15 +57,23 @@ describe(@"relation add", ^{
                                          @"request_id": @"REQUEST_ID",
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"user/user1001",
+                                                     @"id": @"user1001",
+                                                     @"type": @"user",
+                                                     @"data": @{
+                                                             @"_id": @"user1001",
+                                                             },
                                                      },
                                                  @{
-                                                     @"_id": @"user/user1002",
-                                                     @"_type": @"error",
-                                                     @"message": @"cannot find user",
-                                                     @"code": @"ResourceNotFound",
-                                                     }
-                                                 ]
+                                                     @"id": @"user1002",
+                                                     @"type": @"error",
+                                                     @"data": @{
+                                                             @"code": @104,
+                                                             @"message": @"cannot find user",
+                                                             @"type": @"ResourceNotFound",
+                                                             @"info": @{@"id": @"user1002"},
+                                                             },
+                                                     },
+                                                 ],
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
@@ -74,12 +85,15 @@ describe(@"relation add", ^{
         }];
         
         waitUntil(^(DoneCallback done) {
-            operation.addRelationsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+            operation.addRelationsCompletionBlock = ^(NSArray *savedUsers, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    expect([savedRecords class]).to.beSubclassOf([NSArray class]);
-                    expect(savedRecords).to.haveCountOf(1);
-                    expect(savedRecords[0]).to.equal(follower1.recordID);
+                    expect([savedUsers class]).to.beSubclassOf([NSArray class]);
+                    expect(savedUsers).to.haveCountOf(1);
+                    expect(savedUsers[0]).to.equal([ODUserRecordID recordIDWithUsername:@"user1001"]);
                     expect(operationError).toNot.beNil();
+                    NSArray *errorKeys = [operationError.userInfo[ODPartialErrorsByItemIDKey] allKeys];
+                    expect(errorKeys).to.contain(@"user1002");
+                    expect(errorKeys).to.contain(@"user1003");
                     done();
                 });
             };

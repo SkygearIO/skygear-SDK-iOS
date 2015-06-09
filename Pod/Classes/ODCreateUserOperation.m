@@ -62,7 +62,7 @@
         self.completionBlock = ^{
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                ODUserRecordID *recordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:response[@"user_id"]];
+                ODUserRecordID *recordID = [ODUserRecordID recordIDWithUsername:response[@"user_id"]];
                 ODAccessToken *accessToken = [[ODAccessToken alloc] initWithTokenString:response[@"access_token"]];
                 NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"], response[@"access_token"]);
                 createCompletionBlock(recordID, accessToken, nil);

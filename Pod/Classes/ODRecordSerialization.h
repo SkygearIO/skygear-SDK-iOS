@@ -10,3 +10,4 @@
 
 extern NSString * const ODRecordSerializationRecordIDKey;
 extern NSString * const ODRecordSerializationRecordTypeKey;
+extern NSString * const ODRecordSerializationRecordOwnerIDKey;

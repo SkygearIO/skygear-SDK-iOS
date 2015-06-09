@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "ODRecordID.h"
+#import "ODUserRecordID.h"
 
 NSString * const ODRecordTypeUserRecord;
 
@@ -54,9 +55,9 @@ NSString * const ODRecordTypeUserRecord;
 @property (nonatomic, readonly, copy) ODRecordID *recordID;
 @property (nonatomic, readonly, copy) NSString *recordType;
 @property (nonatomic, readonly, copy) NSDate *creationDate;
-@property (nonatomic, readonly, copy) ODRecordID *creatorUserRecordID;
+@property (nonatomic, readonly, copy) ODUserRecordID *creatorUserRecordID;
 @property (nonatomic, readonly, copy) NSDate *modificationDate;
-@property (nonatomic, readonly, copy) ODRecordID *lastModifiedUserRecordID;
+@property (nonatomic, readonly, copy) ODUserRecordID *lastModifiedUserRecordID;
 @property (nonatomic, readonly, copy) NSString *recordChangeTag;
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 

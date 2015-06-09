@@ -27,13 +27,21 @@ describe(@"deserialize", ^{
         ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
         expect([deserializer class]).to.beSubclassOf([ODRecordDeserializer class]);
     });
-    
+
     it(@"deserialize empty record", ^{
         NSDictionary *data = [basicPayload copy];
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect([record class]).to.beSubclassOf([ODRecord class]);
         expect(record.recordID.recordName).to.equal(@"book1");
         expect(record.recordType).to.equal(@"book");
+    });
+    
+    it(@"deserialize meta data", ^{
+        NSMutableDictionary* data = [basicPayload mutableCopy];
+        data[ODRecordSerializationRecordOwnerIDKey] = @"ownerUserID";
+
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        expect(record.creatorUserRecordID.username).to.equal(@"ownerUserID");
     });
     
     it(@"deserialize string", ^{

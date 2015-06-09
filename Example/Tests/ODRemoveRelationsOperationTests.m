@@ -19,11 +19,11 @@ describe(@"relation add", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
-        ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1001"];
+        ODUserRecordID *userRecordID = [ODUserRecordID recordIDWithUsername:@"user1001"];
         follower1 = [[ODUser alloc] initWithUserRecordID:userRecordID];
-        userRecordID = [[ODUserRecordID alloc] initWithRecordType:@"user" name:@"user1002"];
+        userRecordID = [ODUserRecordID recordIDWithUsername:@"user1002"];
         follower2 = [[ODUser alloc] initWithUserRecordID:userRecordID];
     });
     
@@ -38,8 +38,8 @@ describe(@"relation add", ^{
         expect(request.payload[@"targets"]).to.haveCountOf(2);
         expect(request.accessToken).to.equal(container.currentAccessToken);
         
-        expect(request.payload[@"targets"][0]).to.equal(@"user/user1001");
-        expect(request.payload[@"targets"][1]).to.equal(@"user/user1002");
+        expect(request.payload[@"targets"][0]).to.equal(@"user1001");
+        expect(request.payload[@"targets"][1]).to.equal(@"user1002");
     });
     
     it(@"make request", ^{
@@ -52,13 +52,15 @@ describe(@"relation add", ^{
                                          @"request_id": @"REQUEST_ID",
                                          @"result": @[
                                                  @{
-                                                     @"_id": @"user/user1001",
+                                                     @"id": @"user1001",
                                                      },
                                                  @{
-                                                     @"_id": @"user/user1002",
-                                                     @"_type": @"error",
-                                                     @"message": @"cannot find user",
-                                                     @"code": @"ResourceNotFound",
+                                                     @"id": @"user1002",
+                                                     @"type": @"error",
+                                                     @"data": @{
+                                                         @"message": @"cannot find user",
+                                                         @"code": @"ResourceNotFound",
+                                                         },
                                                      }
                                                  ]
                                          };

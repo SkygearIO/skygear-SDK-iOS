@@ -13,3 +13,4 @@ NSString * const ODErrorCodeKey = @"ODErrorCode";
 NSString * const ODErrorTypeKey = @"ODErrorType";
 NSString * const ODErrorInfoKey = @"ODErrorInfo";
 NSString * const ODPartialErrorsByItemIDKey = @"ODPartialErrorsByItemIDKey";
+NSString * const ODPartialEmailsNotFoundKey = @"ODPartialEmailsNotFoundKey";

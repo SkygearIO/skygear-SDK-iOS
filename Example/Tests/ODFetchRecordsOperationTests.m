@@ -18,7 +18,7 @@ describe(@"fetch", ^{
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
-        [container updateWithUserRecordID:[[ODUserRecordID alloc] initWithRecordType:@"user" name:@"USER_ID"]
+        [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
     });

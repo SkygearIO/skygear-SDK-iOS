@@ -17,10 +17,14 @@
 @interface ODUser : ODRecord
 
 - (instancetype)initWithUserRecordID:(ODUserRecordID *)recordID;
+- (instancetype)initWithUserRecordID:(ODUserRecordID *)recordID data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithRecordType:(NSString *)recordType NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId NS_UNAVAILABLE;
-
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data NS_UNAVAILABLE;
+- (instancetype)initWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
 
 /**
  * The properties username, email, authData and isNew will be delegated to 
