@@ -103,6 +103,6 @@ typedef enum : NSInteger {
  
  This block reports an error with code ODErrorPartialFailure if the operation disocvers users by emails and no users can be found by some of the emails. The userInfo dictionary of the error contains a ODPartialEmailsNotFoundKey key, whose value is a NSArray object containing all emails that no users can be found.
  */
-@property (nonatomic, copy) void (^discoverUserCompletionBlock)(NSArray /* ODUser */ *users, NSError *operationError);
+@property (nonatomic, copy) void (^queryUserCompletionBlock)(NSArray /* ODUser */ *users, NSError *operationError);
 
 @end

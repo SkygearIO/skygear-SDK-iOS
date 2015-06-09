@@ -83,7 +83,7 @@ describe(@"discover", ^{
         }];
 
         waitUntil(^(DoneCallback done) {
-            operation.discoverUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
+            operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(users).to.haveCountOf(2);
                     expect([users[0] username]).to.equal(@"user0");
@@ -125,7 +125,7 @@ describe(@"discover", ^{
         }];
 
         waitUntil(^(DoneCallback done) {
-            operation.discoverUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
+            operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(users).to.haveCountOf(1);
                     expect([users[0] username]).to.equal(@"user0");

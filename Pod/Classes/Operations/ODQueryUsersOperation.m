@@ -105,8 +105,8 @@ NSString * NSStringFromRelationDirection(ODRelationDirection direction) {
 
 - (void)handleRequestError:(NSError *)error
 {
-    if (self.discoverUserCompletionBlock) {
-        self.discoverUserCompletionBlock(nil, error);
+    if (self.queryUserCompletionBlock) {
+        self.queryUserCompletionBlock(nil, error);
     }
 }
 
@@ -152,8 +152,8 @@ NSString * NSStringFromRelationDirection(ODRelationDirection direction) {
         }
     }
 
-    if (self.discoverUserCompletionBlock) {
-        self.discoverUserCompletionBlock(users, error);
+    if (self.queryUserCompletionBlock) {
+        self.queryUserCompletionBlock(users, error);
     }
 }
 
