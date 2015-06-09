@@ -50,8 +50,8 @@
 {
     self = [super initWithRecordType:@"user" name:username];
     if (self) {
-        _email = email;
-        _authData = authData;
+        _email = [email copy];
+        _authData = [authData copy];
     }
     return self;
 }
