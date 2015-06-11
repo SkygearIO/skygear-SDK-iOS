@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ODAccessControl.h"
 #import "ODRecordID.h"
 #import "ODUserRecordID.h"
 
@@ -59,6 +60,7 @@ NSString * const ODRecordTypeUserRecord;
 @property (nonatomic, readonly, copy) NSDate *modificationDate;
 @property (nonatomic, readonly, copy) ODUserRecordID *lastModifiedUserRecordID;
 @property (nonatomic, readonly, copy) NSString *recordChangeTag;
+@property (strong, nonatomic, readonly) ODAccessControl *accessControl;
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 
 @end

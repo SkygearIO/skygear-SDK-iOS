@@ -6,15 +6,13 @@
 //  Copyright (c) 2015 Rocky Chan. All rights reserved.
 //
 
-#import "ODRecord.h"
+#import "ODRecord_Private.h"
 
 #import "ODReference.h"
 
 @interface ODRecord()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
-@property (nonatomic, readwrite, copy) NSDate *creationDate;
-@property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
 
 @end
 

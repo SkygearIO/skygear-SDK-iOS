@@ -54,4 +54,25 @@
     return shared;
 }
 
+#pragma mark - NSObject
+
+- (BOOL)isEqualToRelation:(ODRelation *)relation
+{
+    // NOTE(limouren): since all instances are singleton we could use simple comparison here
+    return self == relation;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (self == object) {
+        return YES;
+    }
+
+    if (![object isKindOfClass:ODRelation.class]) {
+        return NO;
+    }
+
+    return [self isEqualToRelation:object];
+}
+
 @end

@@ -15,6 +15,8 @@
 + (instancetype)relationFollow;
 + (instancetype)relationFriend;
 
+- (BOOL)isEqualToRelation:(ODRelation *)relation;
+
 @property (nonatomic, readonly, copy) NSString *name;
 
 @end

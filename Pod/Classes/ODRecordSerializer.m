@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Rocky Chan. All rights reserved.
 //
 
+#import "ODAccessControlSerializer.h"
 #import "ODRecordSerializer.h"
 #import "ODRecord.h"
 #import "ODUserRecordID.h"
@@ -30,9 +31,21 @@
         [payload setObject:[ODDataSerialization serializeObject:obj]
                     forKey:key];
     }];
-    
+
     payload[ODRecordSerializationRecordIDKey] = record.recordID.canonicalString;
     payload[ODRecordSerializationRecordTypeKey] = @"record";
+
+    // NOTE(limouren): this checking is mostly for test cases.
+    // It is not expected for a record deserialized from web response to have
+    // nil accessControl.
+    if (record.accessControl) {
+        id serializedAccessControl = [[ODAccessControlSerializer serializer] arrayWithAccessControl:record.accessControl];
+        if (serializedAccessControl == nil) {
+            serializedAccessControl = [NSNull null];
+        }
+        payload[ODRecordSerializationRecordAccessControlKey] = serializedAccessControl;
+    }
+
     NSAssert(payload, @"payload is nil");
     return payload;
 }

@@ -13,5 +13,6 @@
 @property (nonatomic, readwrite, copy) ODRecordID *recordID;
 @property (nonatomic, readwrite, copy) NSDate *creationDate;
 @property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
+@property (strong, nonatomic, readwrite) ODAccessControl *accessControl;
 
 @end

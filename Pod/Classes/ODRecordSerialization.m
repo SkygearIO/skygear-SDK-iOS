@@ -11,3 +11,4 @@
 NSString * const ODRecordSerializationRecordIDKey = @"_id";
 NSString * const ODRecordSerializationRecordTypeKey = @"_type";
 NSString * const ODRecordSerializationRecordOwnerIDKey = @"_ownerID";
+NSString * const ODRecordSerializationRecordAccessControlKey = @"_access";
