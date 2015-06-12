@@ -11,26 +11,18 @@ PODS:
   - OHHTTPStubs (3.1.10):
     - OHHTTPStubs/Core (= 3.1.10)
   - OHHTTPStubs/Core (3.1.10)
-  - Specta (0.3.0.beta1)
+  - Specta (1.0.1)
 
 DEPENDENCIES:
   - Expecta
   - OCMock
   - ODKit (from `../`)
   - OHHTTPStubs
-  - Specta (from `https://github.com/specta/specta.git`, tag `v0.3.0.beta1`)
+  - Specta
 
 EXTERNAL SOURCES:
   ODKit:
-    :path: "../"
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
-
-CHECKOUT OPTIONS:
-  Specta:
-    :git: https://github.com/specta/specta.git
-    :tag: v0.3.0.beta1
+    :path: ../
 
 SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
@@ -38,6 +30,6 @@ SPEC CHECKSUMS:
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   ODKit: 4967175114434966499ead74081f8a8cea62a9d3
   OHHTTPStubs: 00152a63400246fcbc4b772a2a547ea34c97cbd6
-  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
+  Specta: 097be314a75de103703a3bf9a529dc1a398509d7
 
 COCOAPODS: 0.37.2

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <ODKit/ODKit.h>
 
+#import "ODAccessControl_Private.h"
+#import "ODAccessControlEntry.h"
+#import "ODRecord_Private.h"
+
 SpecBegin(ODRecordSerializer)
 
 describe(@"serialize", ^{
@@ -74,6 +78,27 @@ describe(@"serialize", ^{
         expect(serializedTopics).to.equal(topics);
     });
 
+    it(@"serialize public access control", ^{
+        record.accessControl = [ODAccessControl publicReadWriteAccessControl];
+
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"_access"]).to.equal([NSNull null]);
+    });
+
+    it(@"serialize empty access control", ^{
+        record.accessControl = [ODAccessControl accessControlWithEntries:nil];
+
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"_access"]).to.equal(@[]);
+    });
+
+    it(@"serialize access control", ^{
+        ODAccessControlEntry *entry = [ODAccessControlEntry writeEntryForRelation:[ODRelation relationFollow]];
+        record.accessControl = [ODAccessControl accessControlWithEntries:@[entry]];
+
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"_access"]).to.equal(@[@{@"relation": @"follow", @"level": @"write"}]);
+    });
 });
 
 SpecEnd

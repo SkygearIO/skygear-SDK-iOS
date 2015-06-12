@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Rocky Chan. All rights reserved.
 //
 
+#import "ODAccessControlDeserializer.h"
 #import "ODRecordDeserializer.h"
 #import "ODRecord_Private.h"
 #import "ODUserRecordID.h"
@@ -22,7 +23,6 @@
 {
     return [[ODRecordDeserializer alloc] init];
 }
-
 
 - (ODRecord *)recordWithDictionary:(NSDictionary *)obj
 {
@@ -48,6 +48,21 @@
     NSString *ownerID = obj[ODRecordSerializationRecordOwnerIDKey];
     if (ownerID.length) {
         record.creatorUserRecordID = [ODUserRecordID recordIDWithUsername:ownerID];
+    }
+
+    id accessControl = obj[ODRecordSerializationRecordAccessControlKey];
+    if (accessControl == nil) {
+        // do nothing
+    } else {
+        ODAccessControlDeserializer *deserializer = [ODAccessControlDeserializer deserializer];
+        NSArray *rawAccessControl;
+        if ([accessControl isKindOfClass:NSNull.class]) {
+            rawAccessControl = nil;
+        } else {
+            rawAccessControl = (NSArray *)accessControl;
+        }
+
+        record.accessControl = [deserializer accessControlWithArray:rawAccessControl];
     }
 
     return record;

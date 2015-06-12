@@ -14,6 +14,8 @@
 - (instancetype)initWithRecordType:(NSString *)type NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_UNAVAILABLE;
 
+- (BOOL)isEqualToUserRecordID:(ODUserRecordID *)recordID;
+
 @property (nonatomic, readonly, copy) NSString *username;
 @property (nonatomic, readonly, copy) NSString *email;
 

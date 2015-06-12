@@ -6,15 +6,14 @@
 //  Copyright (c) 2015 Rocky Chan. All rights reserved.
 //
 
-#import "ODRecord.h"
+#import "ODRecord_Private.h"
 
+#import "ODAccessControl_Private.h"
 #import "ODReference.h"
 
 @interface ODRecord()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
-@property (nonatomic, readwrite, copy) NSDate *creationDate;
-@property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
 
 @end
 
@@ -58,6 +57,7 @@
     if (self) {
         _recordID = [recordId copy];
         _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
+        _accessControl = [ODAccessControl publicReadWriteAccessControl];
     }
     return self;
 }

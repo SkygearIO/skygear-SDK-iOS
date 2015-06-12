@@ -98,7 +98,7 @@ describe(@"register device", ^{
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
                                          @"request_id": @"REQUEST_ID",
-                                         @"id": @"DEVICE_ID"
+                                         @"result": @{@"id": @"DEVICE_ID"},
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
