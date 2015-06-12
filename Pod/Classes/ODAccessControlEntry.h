@@ -36,6 +36,11 @@ NSString * NSStringFromAccessControlEntryLevel(ODAccessControlEntryLevel);
 + (instancetype)writeEntryForRelation:(ODRelation *)relation;
 
 - (instancetype)init NS_UNAVAILABLE;
+// avoid the following initializers, it is here because of deserializer
+- (instancetype)initWithAccessLevel:(ODAccessControlEntryLevel)accessLevel
+                             userID:(ODUserRecordID *)userID NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAccessLevel:(ODAccessControlEntryLevel)accessLevel
+                           relation:(ODRelation *)relation NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, assign) ODAccessControlEntryType entryType;
 @property (nonatomic, readonly, assign) ODAccessControlEntryLevel accessLevel;

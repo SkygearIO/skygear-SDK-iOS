@@ -21,7 +21,9 @@
 {
     NSMutableArray *array = nil;
 
-    if (accessControl.public) {
+    if (accessControl == nil) {
+        return nil;
+    } else if (accessControl.public) {
         // do nothing, let it returns nil
     } else {
         array = [NSMutableArray array];

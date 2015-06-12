@@ -9,13 +9,14 @@
 #import <ODKit/ODKit.h>
 
 #import "ODAccessControl_Private.h"
+#import "ODAccessControlDeserializer.h"
 #import "ODAccessControlEntry.h"
 #import "ODAccessControlSerializer.h"
 #import "ODUserRecordID_Private.h"
 
 // Currently there are no methods to access the internal state of ODAccessControl.
 // Before that comes, use serialization for assertion.
-NSArray *serializedAccessControl(ODAccessControl *accessControl) {
+NSArray* serializedAccessControl(ODAccessControl *accessControl) {
     ODAccessControlSerializer *serializer = [ODAccessControlSerializer serializer];
     return [serializer arrayWithAccessControl:accessControl];
 }
@@ -101,6 +102,41 @@ describe(@"Access Control Entry", ^{
                                                                   @{@"relation": @"$direct", @"level": @"write", @"user_id": @"userid1"},
                                                                   ]);
     });
+});
+
+describe(@"ODAccessControlDeserializer", ^{
+
+    __block ODAccessControlDeserializer *deserializer = nil;
+
+    beforeEach(^{
+        deserializer = [ODAccessControlDeserializer deserializer];
+    });
+
+    it(@"deserializes nil correctly", ^{
+        ODAccessControl *accessControl = [deserializer accessControlWithArray:nil];
+        expect(accessControl.public).to.equal(YES);
+        expect(serializedAccessControl(accessControl)).to.equal(nil);
+    });
+
+    it(@"empty array", ^{
+        ODAccessControl *accessControl = [deserializer accessControlWithArray:@[]];
+        expect(accessControl.public).to.equal(NO);
+        expect(serializedAccessControl(accessControl)).to.equal(@[]);
+    });
+
+    it(@"access control entries", ^{
+        NSArray *undeserialized = @[
+                                    @{@"relation": @"friend", @"level": @"read"},
+                                    @{@"relation": @"follow", @"level": @"write"},
+                                    @{@"relation": @"$direct", @"level": @"read", @"user_id": @"userid0"},
+                                    @{@"relation": @"$direct", @"level": @"write", @"user_id": @"userid1"},
+                                    ];
+        ODAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
+        expect(accessControl.public).to.equal(NO);
+        expect(serializedAccessControl(accessControl)).to.equal(undeserialized);
+    });
+
+
 });
 
 SpecEnd

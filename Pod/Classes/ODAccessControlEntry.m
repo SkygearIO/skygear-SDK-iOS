@@ -19,15 +19,6 @@ NSString * NSStringFromAccessControlEntryLevel(ODAccessControlEntryLevel level) 
     }
 }
 
-@interface ODAccessControlEntry()
-
-- (instancetype)initWithAccessLevel:(ODAccessControlEntryLevel)accessLevel
-                             userID:(ODUserRecordID *)userID NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithAccessLevel:(ODAccessControlEntryLevel)accessLevel
-                           relation:(ODRelation *)relation NS_DESIGNATED_INITIALIZER;
-
-@end
-
 @implementation ODAccessControlEntry
 
 - (BOOL)isEqualToAccessControlEntry:(ODAccessControlEntry *)entry

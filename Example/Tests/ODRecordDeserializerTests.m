@@ -43,7 +43,27 @@ describe(@"deserialize", ^{
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect(record.creatorUserRecordID.username).to.equal(@"ownerUserID");
     });
-    
+
+    it(@"deserialize null access control", ^{
+        NSMutableDictionary* data = [basicPayload mutableCopy];
+        data[@"_access"] = [NSNull null];
+
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        expect(record.accessControl).notTo.beNil();
+        expect(record.accessControl.public).to.equal(YES);
+    });
+
+    it(@"deserialize access control list", ^{
+        NSMutableDictionary* data = [basicPayload mutableCopy];
+        data[@"_access"] = @[
+                             @{@"relation": @"friend", @"level": @"read"},
+                             ];
+
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        expect(record.accessControl).notTo.beNil();
+        expect(record.accessControl.public).to.equal(NO);
+    });
+
     it(@"deserialize string", ^{
         NSString *bookTitle = @"The tale of two cities";
         NSMutableDictionary *data = [basicPayload mutableCopy];
