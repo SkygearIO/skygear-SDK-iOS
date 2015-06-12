@@ -8,6 +8,7 @@
 
 #import "ODRecord_Private.h"
 
+#import "ODAccessControl_Private.h"
 #import "ODReference.h"
 
 @interface ODRecord()
@@ -56,6 +57,7 @@
     if (self) {
         _recordID = [recordId copy];
         _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
+        _accessControl = [ODAccessControl publicReadWriteAccessControl];
     }
     return self;
 }
