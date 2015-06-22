@@ -44,26 +44,11 @@
     payload[@"database_id"] = self.database.databaseID;
     self.request = [[ODRequest alloc] initWithAction:@"record:query"
                                              payload:payload];
+
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)setPerRecordCompletionBlock:(void (^)(ODRecord *))perRecordCompletionBlock
-{
-    [self willChangeValueForKey:@"perRecordCompletionBlock"];
-    _perRecordCompletionBlock = perRecordCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"perRecordCompletionBlock"];
-}
-
-- (void)setQueryRecordsCompletionBlock:(void (^)(NSArray *, ODQueryCursor *, NSError *))queryRecordsCompletionBlock
-{
-    [self willChangeValueForKey:@"queryRecordsCompletionBlock"];
-    _queryRecordsCompletionBlock = queryRecordsCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"queryRecordsCompletionBlock"];
-}
-
-- (NSArray *)processResultArray:(NSArray *)result
+- (NSArray *)processResultArray:(NSArray *)result perRecordBlock:(void (^)(ODRecord *record))perRecordBlock
 {
     NSMutableArray *fetchedRecords = [NSMutableArray array];
     ODRecordDeserializer *deserializer = [ODRecordDeserializer deserializer];
@@ -95,8 +80,8 @@
         
         if (record) {
             [fetchedRecords addObject:record];
-            if (self.perRecordCompletionBlock) {
-                self.perRecordCompletionBlock(record);
+            if (perRecordBlock) {
+                perRecordBlock(record);
             }
         }
     }];
@@ -104,30 +89,46 @@
     return fetchedRecords;
 }
 
-- (void)updateCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (self.perRecordCompletionBlock || self.queryRecordsCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            NSArray *resultArray = nil;
-            NSError *error = weakSelf.error;
-            if (!error) {
-                NSArray *responseArray = weakSelf.response[@"result"];
-                if ([responseArray isKindOfClass:[NSArray class]]) {
-                    resultArray = [weakSelf processResultArray:responseArray];
-                } else {
-                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                                             errorDictionary:nil];
-                    error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
-                                                code:0
-                                            userInfo:userInfo];
-                }
-            }
+    if (self.queryRecordsCompletionBlock) {
+        self.queryRecordsCompletionBlock(nil, nil, error);
+    }
+}
 
-            if (weakSelf.queryRecordsCompletionBlock) {
-                weakSelf.queryRecordsCompletionBlock(resultArray, nil, error);
+- (void)handleResponse:(NSDictionary *)response
+{
+    NSArray *resultArray;
+    NSArray *eagerLoadResultArray;
+    NSError *error = nil;
+    NSArray *responseArray = response[@"result"];
+    NSArray *eagerLoadResponseArray = response[@"other_result"][@"eager_load"];
+    
+    if ([eagerLoadResponseArray isKindOfClass:[NSArray class]]) {
+        eagerLoadResultArray = [self processResultArray:eagerLoadResponseArray perRecordBlock:nil];
+    } else {
+        eagerLoadResultArray = [NSArray array];
+    }
+                                                                
+    if ([responseArray isKindOfClass:[NSArray class]]) {
+        resultArray = [self processResultArray:responseArray perRecordBlock:^(ODRecord *record) {
+            if (self.perRecordCompletionBlock) {
+                self.perRecordCompletionBlock(record);
             }
-        };
+            if (self.perRecordCompletionWithEagerLoadBlock) {
+                self.perRecordCompletionWithEagerLoadBlock(record, eagerLoadResultArray);
+            }
+        }];
+    } else {
+        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                                             errorDictionary:nil];
+        error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                                    code:0
+                                userInfo:userInfo];
+    }
+    
+    if (self.queryRecordsCompletionBlock) {
+        self.queryRecordsCompletionBlock(resultArray, nil, error);
     }
 }
 

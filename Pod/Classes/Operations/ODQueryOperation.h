@@ -20,6 +20,7 @@
 @property (nonatomic, copy) NSArray *results __deprecated;
 
 @property(nonatomic, copy) void (^perRecordCompletionBlock)(ODRecord *record);
+@property(nonatomic, copy) void (^perRecordCompletionWithEagerLoadBlock)(ODRecord *record, NSArray *eagerLoadedRecords);
 @property(nonatomic, copy) void (^queryRecordsCompletionBlock)(NSArray *fetchedRecords, ODQueryCursor *cursor, NSError *operationError);
 
 @end
