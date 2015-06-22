@@ -9,6 +9,7 @@
 #import "ODRecordStorageCoordinator.h"
 #import "ODRecordStorage.h"
 #import "ODContainer.h"
+#import "ODQuery.h"
 #import "ODRecordStorageMemoryStore.h"
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordStorageSqliteStore.h"
@@ -83,7 +84,8 @@ NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
         if (!path) {
             NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
             // TODO: Change file name for different database and query
-            path = [cachePath stringByAppendingPathComponent:@"ODRecordStorage.db"];
+            NSString *dbName = [NSString stringWithFormat:@"%@.db", @(query.hash)];
+            path = [cachePath stringByAppendingPathComponent:dbName];
         }
         backingStore = [[ODRecordStorageSqliteStore alloc] initWithFile:path];
     } else if (!storeName || [storeName isEqual:ODRecordStorageCoordinatorFileBackedMemoryStore]) {
