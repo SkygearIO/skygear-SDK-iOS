@@ -10,6 +10,7 @@
 
 @interface ODReference()
 
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithRecordID:(ODRecordID *)recordID referencedRecord:(ODRecord *)record action:(ODReferenceAction)action NS_DESIGNATED_INITIALIZER;
 
 @end
@@ -60,6 +61,27 @@
 
 - (NSUInteger)hash {
     return _recordID.hash ^ _referenceAction;
+}
+
+#pragma NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)decoder
+{
+    ODRecordID *recordID = [decoder decodeObjectForKey:@"recordID"];
+    ODReferenceAction action = [decoder decodeIntegerForKey:@"referenceAction"];
+    self = [super init];
+    if (self) {
+        _recordID = recordID;
+        _referenceAction = action;
+    }
+    return self;
+
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:_recordID forKey:@"recordID"];
+    [encoder encodeInteger:_referenceAction forKey:@"referenceAction"];
 }
 
 @end
