@@ -83,7 +83,6 @@ NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
         NSString *path = options[ODRecordStorageCoordinatorFilePath];
         if (!path) {
             NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-            // TODO: Change file name for different database and query
             NSString *dbName = [NSString stringWithFormat:@"%@.db", @(query.hash)];
             path = [cachePath stringByAppendingPathComponent:dbName];
         }
