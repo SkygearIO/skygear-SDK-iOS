@@ -16,7 +16,7 @@ typedef enum ODReferenceAction : NSInteger {
     ODReferenceActionDeleteSelf = 1,
 } ODReferenceAction;
 
-@interface ODReference : NSObject
+@interface ODReference : NSObject<NSCoding>
 
 - (instancetype)initWithRecord:(ODRecord *)record;
 - (instancetype)initWithRecord:(ODRecord *)record action:(ODReferenceAction)action;
