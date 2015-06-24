@@ -99,7 +99,7 @@ describe(@"fetch", ^{
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         
-        expect(request.payload[@"eager"][0]).to.equal(@{@"$type": @"keypath", @"$val": @"shelf"});
+        expect(request.payload[@"eager"][0]).to.equal(@{@"$type": @"keypath", @"$val": @"category"});
     });
 
     it(@"make request", ^{
