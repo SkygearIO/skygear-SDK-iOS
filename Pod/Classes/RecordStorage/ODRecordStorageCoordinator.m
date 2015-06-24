@@ -21,6 +21,16 @@ NSString * const ODRecordStorageCoordinatorFileBackedMemoryStore = @"FileBackedM
 NSString * const ODRecordStorageCoordinatorSqliteStore = @"SqliteStore";
 NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
 
+NSString *base64urlEncodeUInteger(NSUInteger i) {
+    NSData *data = [NSData dataWithBytes:&i length:sizeof(i)];
+    NSString *base64Encoded = [data base64EncodedStringWithOptions:0];
+    return [[base64Encoded stringByReplacingOccurrencesOfString:@"+" withString:@"-"] stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+}
+
+NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
+    return [NSString stringWithFormat:@"%@:%@", base64urlEncodeUInteger(userID.hash), base64urlEncodeUInteger(query.hash)];
+}
+
 @implementation ODRecordStorageCoordinator {
     NSMutableArray *_recordStorages;
 }
@@ -83,7 +93,7 @@ NSString * const ODRecordStorageCoordinatorFilePath = @"filePath";
         NSString *path = options[ODRecordStorageCoordinatorFilePath];
         if (!path) {
             NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-            NSString *dbName = [NSString stringWithFormat:@"%@.db", @(query.hash)];
+            NSString *dbName = [NSString stringWithFormat:@"%@.db", storageFileBaseName(database.container.currentUserRecordID, query)];
             path = [cachePath stringByAppendingPathComponent:dbName];
         }
         backingStore = [[ODRecordStorageSqliteStore alloc] initWithFile:path];
