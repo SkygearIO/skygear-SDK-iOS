@@ -11,6 +11,12 @@
 #import "ODDatabase.h"
 #import "ODAccessToken.h"
 
+/**
+ Notification posted by <ODContainer> when the current device
+ has been registered with ourd.
+ */
+extern NSString *const ODContainerDidRegisterDeviceNotification;
+
 @class ODUserRecordID;
 @class ODOperation;
 
@@ -32,6 +38,12 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 
 @property (nonatomic, readonly) ODUserRecordID *currentUserRecordID;
 @property (nonatomic, readonly) ODAccessToken *currentAccessToken;
+
+/**
+ Returns the currently registered device ID.
+ */
+@property (nonatomic, readonly) NSString *registeredDeviceID;
+
 /**
  Returns the API key of the container.
  */

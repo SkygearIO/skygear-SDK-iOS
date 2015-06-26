@@ -18,6 +18,7 @@
 #import "ODRegisterDeviceOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
+NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegisterDeviceNotification";
 
 @interface ODContainer ()
 
@@ -64,6 +65,11 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
 - (ODUserRecordID *)currentUserRecordID {
     return _userRecordID;
+}
+
+- (NSString *)registeredDeviceID
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerDeviceID"];
 }
 
 /**
@@ -225,8 +231,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
 {
 
-    NSString *existingDeviceID = [[NSUserDefaults standardUserDefaults]
-                                  objectForKey:@"ODContainerDeviceID"];
+    NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:deviceToken
                                existingDeviceID:existingDeviceID
                               completionHandler:^(NSString *deviceID, NSError *error) {
@@ -239,6 +244,8 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
                                   if (completionHandler) {
                                       completionHandler(deviceID, error);
                                   }
+                                  
+                                  [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidRegisterDeviceNotification object:self];
                               }];
 }
 

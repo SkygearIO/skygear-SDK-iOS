@@ -14,6 +14,8 @@
 #import "ODRecordStorageFileBackedMemoryStore.h"
 #import "ODRecordStorageSqliteStore.h"
 #import "ODRecordSynchronizer.h"
+#import "ODSubscription.h"
+#import "ODQuery+Caching.h"
 
 NSString * const ODRecordStorageCoordinatorBackingStoreKey = @"backingStore";
 NSString * const ODRecordStorageCoordinatorMemoryStore = @"MemoryStore";
@@ -57,6 +59,11 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     if (self) {
         _container = container;
         _recordStorages = [NSMutableArray array];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(containerDidRegisterDevice:)
+                                                     name:ODContainerDidRegisterDeviceNotification
+                                                   object:container];
     }
     return self;
 }
@@ -71,6 +78,7 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 - (void)registerRecordStorage:(ODRecordStorage *)recordStorage
 {
     [_recordStorages addObject:recordStorage];
+    [self createSubscriptionWithRecordStorage:recordStorage];
 }
 
 - (void)forgetRecordStorage:(ODRecordStorage *)recordStorage
@@ -135,7 +143,45 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     return storage;
 }
 
+- (void)createSubscriptionWithRecordStorage:(ODRecordStorage *)storage
+{
+    if (!self.container.currentUserRecordID) {
+        NSLog(@"Unable to create subscription because current user ID is nil.");
+        return;
+    }
+    
+    if (!self.container.registeredDeviceID) {
+        NSLog(@"Unable to create subscription because registered device ID is nil.");
+        return;
+    }
+    
+    ODQuery *query = storage.synchronizer.query;
+    ODDatabase *database = storage.synchronizer.database;
+    if (query) {
+        NSString *subscriptionID = [@"ODRecordStorage-" stringByAppendingString:query.cacheKey];
+        ODSubscription *subscription = [[ODSubscription alloc] initWithQuery:query
+                                                              subscriptionID:subscriptionID];
+        
+        [database saveSubscription:subscription
+                 completionHandler:^(ODSubscription *subscription, NSError *error) {
+                     if (error) {
+                         NSLog(@"Failed to subscribe for my note: %@", error);
+                         return;
+                     }
+                     
+                     NSLog(@"Subscription successful.");
+                 }];
+    }
+}
+
 #pragma mark - Handle notifications
+
+- (void)containerDidRegisterDevice:(NSNotification *)note
+{
+    for (ODRecordStorage *storage in self.recordStorages) {
+        [self createSubscriptionWithRecordStorage:storage];
+    }
+}
 
 - (BOOL)notification:(ODNotification *)note shouldUpdateRecordStorage:(ODRecordStorage *)storage
 {
