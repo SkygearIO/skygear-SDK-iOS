@@ -59,10 +59,15 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     if (self) {
         _container = container;
         _recordStorages = [NSMutableArray array];
+        _purgeStoragesOnCurrentUserChanges = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(containerDidRegisterDevice:)
                                                      name:ODContainerDidRegisterDeviceNotification
+                                                   object:container];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(containerDidChangeCurrentUser:)
+                                                     name:ODContainerDidChangeCurrentUserNotification
                                                    object:container];
     }
     return self;
@@ -86,11 +91,18 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     [_recordStorages removeObject:recordStorage];
 }
 
+- (void)purgeRecordStorage:(ODRecordStorage *)recordStorage
+{
+    [self forgetRecordStorage:recordStorage];
+    [recordStorage.backingStore purgeWithError:nil];
+}
+
 - (ODRecordStorage *)recordStorageForPrivateDatabase
 {
     return [self recordStorageWithDatabase:_container.privateCloudDatabase
                                      query:nil
-                                   options:nil];
+                                   options:nil
+                                     error:nil];
 }
 
 - (id<ODRecordStorageBackingStore>)_backingStoreWith:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options
@@ -126,11 +138,32 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 
 - (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database options:(NSDictionary *)options
 {
-    return [self recordStorageWithDatabase:database query:nil options:options];
+    return [self recordStorageWithDatabase:database options:options error:nil];
+}
+
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database options:(NSDictionary *)options error:(NSError **)error
+{
+    return [self recordStorageWithDatabase:database query:nil options:options error:nil];
 }
 
 - (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options
 {
+    return [self recordStorageWithDatabase:database query:query options:options error:nil];
+}
+
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options error:(NSError **)error
+{
+    if (![database currentUser]) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
+                                         code:0
+                                     userInfo:@{
+                                                NSLocalizedDescriptionKey: @"Unable to create record storage as the database is not associated with a current user."
+                                                }];
+        }
+        return nil;
+    }
+    
     id<ODRecordStorageBackingStore> backingStore;
     backingStore = [self _backingStoreWith:database
                                      query:query
@@ -172,6 +205,18 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
                      NSLog(@"Subscription successful.");
                  }];
     }
+}
+
+- (void)containerDidChangeCurrentUser:(NSNotification *)note
+{
+    BOOL purge = [self isPurgeStoragesOnCurrentUserChanges];
+    [[self recordStorages] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (purge) {
+            [self purgeRecordStorage:(ODRecordStorage *)obj];
+        } else {
+            [self forgetRecordStorage:(ODRecordStorage *)obj];
+        }
+    }];
 }
 
 #pragma mark - Handle notifications

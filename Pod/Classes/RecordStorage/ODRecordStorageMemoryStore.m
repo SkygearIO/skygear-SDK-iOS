@@ -18,11 +18,17 @@
 {
     self = [super init];
     if (self) {
-        _records = [[NSMutableDictionary alloc] init];
-        _changes = [[NSMutableArray alloc] init];
-        _localRecords = [[NSMutableDictionary alloc] init];
+        [self purgeWithError:nil];
     }
     return self;
+}
+
+- (BOOL)purgeWithError:(NSError **)error
+{
+    _records = [[NSMutableDictionary alloc] init];
+    _changes = [[NSMutableArray alloc] init];
+    _localRecords = [[NSMutableDictionary alloc] init];
+    return YES;
 }
 
 - (void)insertRecord:(ODRecord *)record

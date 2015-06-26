@@ -18,6 +18,8 @@
 #import "ODRegisterDeviceOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
+
+NSString *const ODContainerDidChangeCurrentUserNotification = @"ODContainerDidChangeCurrentUserNotification";
 NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegisterDeviceNotification";
 
 @interface ODContainer ()
@@ -114,6 +116,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 
 - (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken
 {
+    BOOL userRecordIDChanged = !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));
     _userRecordID = userRecord;
     _accessToken = accessToken;
     
@@ -125,6 +128,12 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ODContainerAccessToken"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (userRecordIDChanged) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidChangeCurrentUserNotification
+                                                            object:self
+                                                          userInfo:nil];
+    }
 }
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {

@@ -12,6 +12,12 @@
 #import "ODAccessToken.h"
 
 /**
+ Notification posted by <ODContainer> when the current user
+ has been updated.
+ */
+extern NSString * const ODContainerDidChangeCurrentUserNotification;
+
+/**
  Notification posted by <ODContainer> when the current device
  has been registered with ourd.
  */
