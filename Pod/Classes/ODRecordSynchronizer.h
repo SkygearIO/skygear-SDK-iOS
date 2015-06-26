@@ -55,13 +55,12 @@
 /**
  Instantiate network operations that causes the specified record storage to be updated.
  */
-- (void)recordStorageFetchUpdates:(ODRecordStorage *)storage;
+- (void)recordStorageFetchUpdates:(ODRecordStorage *)storage completionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
 
 /**
  Instantiate network operations that causes the specified changes to be saved.
  */
-- (void)recordStorage:(ODRecordStorage *)storage
-          saveChanges:(NSArray *)changes;
+- (void)recordStorage:(ODRecordStorage *)storage saveChanges:(NSArray *)changes completionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
 
 - (BOOL)isProcessingChange:(ODRecordChange *)change storage:(ODRecordStorage *)storage;
 

@@ -41,9 +41,9 @@
     }
     
     if (storage.hasPendingChanges) {
-        [self recordStorage:storage saveChanges:storage.pendingChanges];
+        [self recordStorage:storage saveChanges:storage.pendingChanges completionHandler:nil];
     } else if (storage.hasUpdateAvailable) {
-        [self recordStorageFetchUpdates:storage];
+        [self recordStorageFetchUpdates:storage completionHandler:nil];
     }
 }
 
@@ -59,11 +59,19 @@
     }
 }
 
-- (void)recordStorageFetchUpdates:(ODRecordStorage *)storage
+- (void)recordStorageFetchUpdates:(ODRecordStorage *)storage completionHandler:(void(^)(BOOL finished, NSError *error))completionHandler
 {
     NSAssert(self.query, @"currently only support syncing with query.");
     
     if (_updating) {
+        if (completionHandler) {
+            NSError *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
+                                                 code:0
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: @"Already updating."
+                                                        }];
+            completionHandler(NO, error);
+        }
         return;
     }
     
@@ -79,6 +87,10 @@
         }
         [storage finishUpdating];
         _updating = NO;
+        
+        if (completionHandler) {
+            completionHandler(YES, nil);
+        }
     };
     _updating = YES;
     [self.database executeOperation:op];
@@ -105,9 +117,18 @@
 }
 
 - (void)recordStorage:(ODRecordStorage *)storage
-          saveChanges:(NSArray *)changes;
+          saveChanges:(NSArray *)changes
+    completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
 {
     if (_updating) {
+        if (completionHandler) {
+            NSError *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
+                                                 code:0
+                                             userInfo:@{
+                                                        NSLocalizedDescriptionKey: @"Already updating."
+                                                        }];
+            completionHandler(NO, error);
+        }
         return;
     }
     
@@ -138,6 +159,9 @@
                 updateCount--;
                 if (updateCount <= 0) {
                     _updating = NO;
+                    if (completionHandler) {
+                        completionHandler(YES, nil);
+                    }
                 }
             };
             [_changesUpdating setObject:change forKey:change.recordID];
@@ -163,6 +187,9 @@
                 updateCount--;
                 if (updateCount <= 0) {
                     _updating = NO;
+                    if (completionHandler) {
+                        completionHandler(YES, nil);
+                    }
                 }
             };
             [_changesUpdating setObject:change forKey:change.recordID];

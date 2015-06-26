@@ -65,7 +65,7 @@ describe(@"ODRecordSynchronizer for query", ^{
             return YES;
         }]]);
         
-        [synchronizer recordStorageFetchUpdates:storage];
+        [synchronizer recordStorageFetchUpdates:storage completionHandler:nil];
         
         OCMVerify([database executeOperation:[OCMArg any]]);
         [(id)storage setExpectationOrderMatters:YES];
@@ -96,7 +96,8 @@ describe(@"ODRecordSynchronizer for query", ^{
         OCMStub([storage updateByApplyingChange:change recordOnRemote:record error:nil]);
         
         [synchronizer recordStorage:storage
-                        saveChanges:@[change]];
+                        saveChanges:@[change]
+                  completionHandler:nil];
         
         OCMVerify([database executeOperation:[OCMArg any]]);
         [(id)storage setExpectationOrderMatters:YES];
@@ -126,7 +127,8 @@ describe(@"ODRecordSynchronizer for query", ^{
         OCMStub([storage updateByApplyingChange:change recordOnRemote:nil error:nil]);
         
         [synchronizer recordStorage:storage
-                        saveChanges:@[change]];
+                        saveChanges:@[change]
+                  completionHandler:nil];
         
         OCMVerify([database executeOperation:[OCMArg any]]);
         [(id)storage setExpectationOrderMatters:YES];

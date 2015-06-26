@@ -110,7 +110,7 @@ describe(@"ODRecordStorage", ^{
         
         storage.enabled = YES;
         
-        OCMVerify([mockSyncher recordStorageFetchUpdates:storage]);
+        OCMVerify([mockSyncher recordStorageFetchUpdates:storage completionHandler:[OCMArg any]]);
     });
     
     it(@"call synchronizer when saving", ^{
@@ -130,9 +130,9 @@ describe(@"ODRecordStorage", ^{
             expect([change class]).to.beSubclassOf([ODRecordChange class]);
             expect(change.recordID).to.equal(record.recordID);
             return YES;
-        }]]);
+        }] completionHandler:nil]);
         
-        OCMVerify([mockSyncher recordStorage:storage saveChanges:[OCMArg any]]);
+        OCMVerify([mockSyncher recordStorage:storage saveChanges:[OCMArg any] completionHandler:nil]);
     });
     
     it(@"update by replacing", ^{

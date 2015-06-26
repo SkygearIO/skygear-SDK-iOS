@@ -76,26 +76,30 @@ NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 #pragma mark - Changing all records with force
 
-- (BOOL)performUpdateWithError:(NSError **)error
+- (void)performUpdateWithCompletionHandler:(void(^)(BOOL finished, NSError *error))completionHandler
 {
-    if (self.hasPendingChanges) {
-        if (error) {
-            NSDictionary *userInfo = @{
-                                      NSLocalizedDescriptionKey: @"Unable to perform update because"
-                                      @" there are pending changes."
-                                      };
-            *error = [NSError errorWithDomain:@"ODRecordStorageErrorDomain"
-                                         code:0
-                                     userInfo:userInfo];
+    void (^mainThreadCompletion)(BOOL finished, NSError *error) = ^(BOOL finished, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(finished, error);
+            });
         }
-        return NO;
+    };
+
+    if (self.hasPendingChanges) {
+        [self.synchronizer recordStorage:self
+                             saveChanges:[self pendingChanges]
+                              completionHandler:^(BOOL finished, NSError *error) {
+                                  if (finished) {
+                                      [self.synchronizer recordStorageFetchUpdates:self
+                                                                        completionHandler:mainThreadCompletion];
+                                  } else {
+                                      mainThreadCompletion(NO, error);
+                                  }
+                              }];
+    } else {
+        [self.synchronizer recordStorageFetchUpdates:self completionHandler:mainThreadCompletion];
     }
-    
-    [self.synchronizer recordStorageFetchUpdates:self];
-    if (error) {
-        *error = nil;
-    }
-    return YES;
 }
 
 #pragma mark - Fetch, save and delete records
@@ -246,7 +250,7 @@ NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 - (void)shouldFetchUpdates
 {
     if (self.enabled) {
-        [self performUpdateWithError:nil];
+        [self performUpdateWithCompletionHandler:nil];
     }
 }
 
@@ -258,7 +262,8 @@ NSString * const ODRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                   " Will ask synchronizer to save changes.",
                   self, (unsigned long)[self.pendingChanges count]);
             [_synchronizer recordStorage:self
-                             saveChanges:self.pendingChanges];
+                             saveChanges:self.pendingChanges
+                       completionHandler:nil];
         } else {
             NSLog(@"%@: Enabled but there are no no pending changes.", self);
         }

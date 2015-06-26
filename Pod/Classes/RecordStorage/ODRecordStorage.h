@@ -105,7 +105,7 @@ typedef enum : NSInteger {
  Update are performed asynchronously. If there are pending changes, the record storage
  cannot be updated. This method returns <NO> when the receiver cannot perform update.
  */
-- (BOOL)performUpdateWithError:(NSError **)error;
+- (void)performUpdateWithCompletionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
 
 #pragma mark - Saving and removing
 
