@@ -19,6 +19,9 @@
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
+NSString *const ODContainerDidChangeCurrentUserNotification = @"ODContainerDidChangeCurrentUserNotification";
+NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegisterDeviceNotification";
+
 @interface ODContainer ()
 
 @property (nonatomic, readonly) NSOperationQueue *operationQueue;
@@ -66,6 +69,11 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
     return _userRecordID;
 }
 
+- (NSString *)registeredDeviceID
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"ODContainerDeviceID"];
+}
+
 /**
  Configurate the End-Point IP:PORT, no scheme is required. i.e. no http://
  */
@@ -108,6 +116,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
 - (void)updateWithUserRecordID:(ODUserRecordID *)userRecord accessToken:(ODAccessToken *)accessToken
 {
+    BOOL userRecordIDChanged = !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));
     _userRecordID = userRecord;
     _accessToken = accessToken;
     
@@ -119,6 +128,12 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ODContainerAccessToken"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (userRecordIDChanged) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidChangeCurrentUserNotification
+                                                            object:self
+                                                          userInfo:nil];
+    }
 }
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {
@@ -225,8 +240,7 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
 {
 
-    NSString *existingDeviceID = [[NSUserDefaults standardUserDefaults]
-                                  objectForKey:@"ODContainerDeviceID"];
+    NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:deviceToken
                                existingDeviceID:existingDeviceID
                               completionHandler:^(NSString *deviceID, NSError *error) {
@@ -239,6 +253,8 @@ NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
                                   if (completionHandler) {
                                       completionHandler(deviceID, error);
                                   }
+                                  
+                                  [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidRegisterDeviceNotification object:self];
                               }];
 }
 

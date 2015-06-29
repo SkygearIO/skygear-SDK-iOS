@@ -15,6 +15,11 @@
 @protocol ODRecordStorageBackingStore <NSObject>
 
 /**
+ Delete data associated with this backing store.
+ */
+- (BOOL)purgeWithError:(NSError **)error;
+
+/**
  Writes data to persistent storage if the backing store supports it.
  */
 - (void)synchronize;

@@ -38,6 +38,11 @@ extern NSString * const ODRecordStorageCoordinatorFilePath;
 @property (nonatomic, readonly) NSArray *recordStorages;
 
 /**
+ Sets or returns whether registered <ODRecordStorage> are auto-purged on user login or logout.
+ */
+@property (nonatomic, readwrite, getter=isPurgeStoragesOnCurrentUserChanges) BOOL purgeStoragesOnCurrentUserChanges;
+
+/**
  Returns the singleton instance of <ODRecordStorageCoordinator>.
  */
 + (instancetype)defaultCoordinator;
@@ -55,8 +60,10 @@ extern NSString * const ODRecordStorageCoordinatorFilePath;
  The coordinator keeps references to all <ODRecordStorage> and
  all of them will synchronize with the remote server.
  */
-- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options;
-- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database options:(NSDictionary *)options;
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options __deprecated;
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database query:(ODQuery *)query options:(NSDictionary *)options error:(NSError **)error;
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database options:(NSDictionary *)options __deprecated;
+- (ODRecordStorage *)recordStorageWithDatabase:(ODDatabase *)database options:(NSDictionary *)options error:(NSError **)error;
 - (ODRecordStorage *)recordStorageForPrivateDatabase;
 
 /**

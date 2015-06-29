@@ -56,7 +56,8 @@
 }
 
 - (ODUser *)currentUser {
-    return [[ODUser alloc] initWithUserRecordID:[self.container currentUserRecordID]];
+    ODUserRecordID *currentUserRecordID = [self.container currentUserRecordID];
+    return currentUserRecordID ? [[ODUser alloc] initWithUserRecordID:currentUserRecordID] : nil;
 }
 
 - (void)saveSubscription:(ODSubscription *)subscription

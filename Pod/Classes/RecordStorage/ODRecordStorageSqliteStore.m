@@ -48,6 +48,12 @@
     _availableRecordTypes = [[self allRecordTypes] mutableCopy];
 }
 
+- (BOOL)purgeWithError:(NSError **)error
+{
+    [_db close];
+    return [[NSFileManager defaultManager] removeItemAtPath:_path error:error];
+}
+
 #pragma mark - 
 
 - (BOOL)existsTable:(NSString *)tableName

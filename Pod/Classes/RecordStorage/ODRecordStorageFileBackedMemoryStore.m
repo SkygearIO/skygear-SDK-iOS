@@ -62,6 +62,12 @@
     [self.changes addObjectsFromArray:dict[@"changes"]];
 }
 
+- (BOOL)purgeWithError:(NSError *__autoreleasing *)error
+{
+    [super purgeWithError:nil];
+    return [[NSFileManager defaultManager] removeItemAtPath:_path error:error];
+}
+
 - (void)synchronize
 {
     NSMutableDictionary *serializedRecords = [[NSMutableDictionary alloc] init];
