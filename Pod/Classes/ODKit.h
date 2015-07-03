@@ -32,6 +32,7 @@
 #import "ODFollowQuery.h"
 #import "ODFollowReference.h"
 #import "ODFollowReference_Private.h"
+#import "ODLambdaOperation.h"
 #import "ODMarkNotificationsReadOperation.h"
 #import "ODModifyRecordsOperation.h"
 #import "ODModifySubscriptionsOperation.h"

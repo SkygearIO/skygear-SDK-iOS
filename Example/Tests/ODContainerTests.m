@@ -124,4 +124,64 @@ describe(@"register device", ^{
     });
 });
 
+describe(@"calls lambda", ^{
+    it(@"calls lambda no arguments", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"result": @{
+                                                 @"message": @"hello bob"
+                                                 }
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [container callLambda:@"hello:world" completionHandler:^(NSDictionary *result, NSError *error) {
+                done();
+            }];
+        });
+    });
+    
+    it(@"calls lambda with arguments", ^{
+        ODContainer *container = [[ODContainer alloc] init];
+        
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"result": @{
+                                                 @"message": @"hello bob"
+                                                 }
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+            
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            [container callLambda:@"hello:world"
+                        arguments:@[@"this", @"is", @"bob"]
+                completionHandler:^(NSDictionary *result, NSError *error) {
+                    done();
+                }];
+        });
+    });
+});
+
 SpecEnd

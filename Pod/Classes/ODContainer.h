@@ -101,6 +101,19 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 
 - (void)uploadAsset:(ODAsset *)asset completionHandler:(void(^)(ODAsset *, NSError*))completionHandler;
 
+/**
+ Calls a registered lambda function without arguments.
+ */
+- (void)callLambda:(NSString *)action
+ completionHandler:(void(^)(NSDictionary *, NSError *))completionHandler;
+
+/**
+ Calls a registered lambda function with arguments.
+ */
+- (void)callLambda:(NSString *)action
+         arguments:(NSArray *)arguments
+ completionHandler:(void(^)(NSDictionary *, NSError *))completionHandler;
+
 @end
 
 @interface ODContainer (ODPushOperation)

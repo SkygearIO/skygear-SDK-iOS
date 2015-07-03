@@ -17,6 +17,7 @@
 #import "ODCreateUserOperation.h"
 #import "ODRegisterDeviceOperation.h"
 #import "ODUploadAssetOperation.h"
+#import "ODLambdaOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
@@ -278,6 +279,28 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         return @"PLACEHOLDER_API_KEY";
     }
     return _APIKey;
+}
+
+- (void)callLambda:(NSString *)action completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+{
+    [self callLambda:action arguments:nil completionHandler:completionHandler];
+}
+
+- (void)callLambda:(NSString *)action arguments:(NSArray *)arguments completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+{
+    arguments = arguments ? arguments : @[];
+    ODLambdaOperation *operation = [[ODLambdaOperation alloc] initWithAction:action
+                                                              arrayArguments:arguments];
+    
+    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler) {
+                completionHandler(result, error);
+            }
+        });
+    };
+    
+    [self addOperation:operation];
 }
 
 # pragma mark - ODPushOperation
