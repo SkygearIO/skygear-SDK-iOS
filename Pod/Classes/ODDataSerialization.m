@@ -7,11 +7,13 @@
 //
 
 #import "ODDataSerialization.h"
-#import "ODDataSerialization.h"
+
+#import "ODAsset_Private.h"
 #import "ODReference.h"
 #import "ODError.h"
 
 NSString * const ODDataSerializationCustomTypeKey = @"$type";
+NSString * const ODDataSerializationAssetType = @"asset";
 NSString * const ODDataSerializationReferenceType = @"ref";
 NSString * const ODDataSerializationDateType = @"date";
 
@@ -27,6 +29,8 @@ NSString * const ODDataSerializationDateType = @"date";
     } else if ([type isEqualToString:ODDataSerializationReferenceType]) {
         ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:data[@"$id"]];
         obj = [[ODReference alloc] initWithRecordID:recordID];
+    } else if ([type isEqualToString:ODDataSerializationAssetType]) {
+        obj = [self deserializeAssetWithDictionary:data];
     }
     return obj;
 }
@@ -58,6 +62,21 @@ NSString * const ODDataSerializationDateType = @"date";
     }
 }
 
++ (ODAsset *)deserializeAssetWithDictionary:(NSDictionary *)data
+{
+    NSString *name = data[@"$name"];
+    NSString *rawURL = data[@"$url"];
+
+    NSURL *url = nil;
+    if (name.length && rawURL.length) {
+        url = [NSURL URLWithString:rawURL];
+    } else {
+        return nil;
+    }
+
+    return [ODAsset assetWithName:name url:url];
+}
+
 + (id)serializeSimpleObject:(id)obj
 {
     id data = nil;
@@ -72,6 +91,11 @@ NSString * const ODDataSerializationDateType = @"date";
         data = @{
                  ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
                  @"$id": [(ODReference*)obj recordID].canonicalString,
+                 };
+    } else if ([obj isKindOfClass:[ODAsset class]]) {
+        data = @{
+                 ODDataSerializationCustomTypeKey: ODDataSerializationAssetType,
+                 @"$name": [obj name],
                  };
     } else {
         data = obj;

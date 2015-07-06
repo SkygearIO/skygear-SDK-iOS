@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ODAsset.h"
+
 extern NSString * const ODDataSerializationCustomTypeKey;
 extern NSString * const ODDataSerializationReferenceType;
 extern NSString * const ODDataSerializationDateType;
@@ -15,7 +17,10 @@ extern NSString * const ODDataSerializationDateType;
 @interface ODDataSerialization : NSObject
 
 + (id)deserializeObjectWithValue:(id)value;
++ (ODAsset *)deserializeAssetWithDictionary:(NSDictionary *)data;
+
 + (id)serializeObject:(id)obj;
+
 + (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict;
 
 @end

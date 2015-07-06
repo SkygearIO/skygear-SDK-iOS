@@ -71,8 +71,21 @@ describe(@"deserialize", ^{
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect(record[@"title"]).to.equal(bookTitle);
     });
-    
-    it(@"serialize reference", ^{
+
+    it(@"deserialize asset", ^{
+        NSMutableDictionary *data = [basicPayload mutableCopy];
+        data[@"asset"] = @{
+                           @"$type": @"asset",
+                           @"$name": @"some-asset",
+                           @"$url": @"http://cit.test/files/some-asset",
+                           };
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        ODAsset *asset = record[@"asset"];
+        expect(asset.name).to.equal(@"some-asset");
+        expect(asset.url).to.equal([NSURL URLWithString:@"http://cit.test/files/some-asset"]);
+    });
+
+    it(@"deserialize reference", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"author"] = @{
                             ODDataSerializationCustomTypeKey: ODDataSerializationReferenceType,
@@ -85,7 +98,7 @@ describe(@"deserialize", ^{
         expect(authorRef.recordID.recordType).to.equal(@"author");
     });
     
-    it(@"serialize date", ^{
+    it(@"deserialize date", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"published"] = @{
                                ODDataSerializationCustomTypeKey: ODDataSerializationDateType,
@@ -97,7 +110,7 @@ describe(@"deserialize", ^{
         expect(publishDate).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
     });
     
-    it(@"serialize array", ^{
+    it(@"deserialize array", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         NSArray *topics = [NSArray arrayWithObjects:@"fiction", @"classic", nil];
         data[@"topics"] = topics;

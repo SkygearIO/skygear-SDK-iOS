@@ -10,9 +10,12 @@
 
 @interface ODAsset : NSObject
 
-- (instancetype)initWithFileURL:(NSURL *)fileURL;
-- (instancetype)initWithData:(NSData *)data;
++ (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;
++ (instancetype)assetWithName:(NSString *)name data:(NSData *)data;
++ (instancetype)assetWithFileURL:(NSURL *)fileURL;
++ (instancetype)assetWithData:(NSData *)data;
 
-@property (nonatomic, readonly, copy) NSURL *fileURL;
+@property (nonatomic, readonly, copy) NSString *name;
+@property (nonatomic, readonly, copy) NSURL *url;
 
 @end
