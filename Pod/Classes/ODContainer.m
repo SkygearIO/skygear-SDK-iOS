@@ -16,6 +16,7 @@
 #import "ODUserRecordID_Private.h"
 #import "ODCreateUserOperation.h"
 #import "ODRegisterDeviceOperation.h"
+#import "ODUploadAssetOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 
@@ -256,6 +257,13 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
                                   
                                   [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidRegisterDeviceNotification object:self];
                               }];
+}
+
+- (void)uploadAsset:(ODAsset *)asset completionHandler:(void(^)(ODAsset *, NSError*))completionHandler
+{
+    ODUploadAssetOperation *operation = [ODUploadAssetOperation operationWithAsset:asset];
+    operation.uploadAssetCompletionBlock = completionHandler;
+    [self addOperation:operation];
 }
 
 - (NSString *)APIKey

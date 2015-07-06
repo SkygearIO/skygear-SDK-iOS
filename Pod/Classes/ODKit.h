@@ -68,6 +68,7 @@
 #import "ODSubscriptionDeserializer.h"
 #import "ODSubscriptionSerialization.h"
 #import "ODSubscriptionSerializer.h"
+#import "ODUploadAssetOperation.h"
 #import "ODUser.h"
 #import "ODUserDeserializer.h"
 #import "ODUserLoginOperation.h"
