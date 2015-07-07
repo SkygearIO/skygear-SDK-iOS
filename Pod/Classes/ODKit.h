@@ -15,6 +15,7 @@
 #import "ODDefaults.h"
 #import "ODDeleteRecordsOperation.h"
 #import "ODDeleteSubscriptionsOperation.h"
+#import "ODDownloadAssetOperation.h"
 #import "ODQueryUsersOperation.h"
 #import "ODRemoveRelationsOperation.h"
 #import "ODError.h"

@@ -10,15 +10,7 @@
 
 #import "ODAsset_Private.h"
 #import "ODDataSerialization.h"
-
-@interface ODOperation (OverrideOperationLifeCycle)
-
-// expose underlying setExecuting: and setFinished: methods as we are handling operation
-// life cycle ourselves
-- (void)setExecuting:(BOOL)aBOOL;
-- (BOOL)setFinished:(BOOL)aBOOL;
-
-@end
+#import "ODOperation+OverrideLifeCycle.h"
 
 @interface ODUploadAssetOperation ()
 

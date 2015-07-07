@@ -17,6 +17,7 @@
 - (instancetype)initWithData:(NSData *)data;
 
 @property (nonatomic, readwrite, copy) NSString *name;
+@property (nonatomic, readwrite, copy) NSURL *url;
 @property (nonatomic, readwrite, copy) NSNumber *fileSize;
 
 @end
