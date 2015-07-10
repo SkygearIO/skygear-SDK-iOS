@@ -11,6 +11,7 @@
 
 #import "ODAccessControl_Private.h"
 #import "ODAccessControlEntry.h"
+#import "ODAsset_Private.h"
 #import "ODRecord_Private.h"
 
 SpecBegin(ODRecordSerializer)
@@ -46,7 +47,17 @@ describe(@"serialize", ^{
         NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
         expect(dictionary[@"title"]).to.equal(bookTitle);
     });
-    
+
+    it(@"serialize asset", ^{
+        ODAsset *asset = [ODAsset assetWithName:@"asset-name" url:[NSURL URLWithString:@"http://ourd.test/files/asset-name"]];
+        [record setObject:asset forKey:@"asset"];
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"asset"]).to.equal(@{
+                                                @"$type": @"asset",
+                                                @"$name": @"asset-name",
+                                                });
+    });
+
     it(@"serialize reference", ^{
         [record setObject:[[ODReference alloc] initWithRecordID:[[ODRecordID alloc] initWithRecordType:@"author" name:@"author1"]]
                    forKey:@"author"];

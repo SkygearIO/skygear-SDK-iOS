@@ -10,6 +10,7 @@
 
 #import "ODDatabase.h"
 #import "ODAccessToken.h"
+#import "ODAsset.h"
 
 /**
  Notification posted by <ODContainer> when the current user
@@ -97,6 +98,8 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
  Registers a device token for push notification.
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler;
+
+- (void)uploadAsset:(ODAsset *)asset completionHandler:(void(^)(ODAsset *, NSError*))completionHandler;
 
 @end
 
