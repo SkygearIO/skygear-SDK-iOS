@@ -18,4 +18,6 @@
  */
 - (void)loadAccessCurrentUserRecordIDAndAccessToken;
 
+@property (nonatomic, copy, setter=setAuthenticationErrorHandler:) void (^authErrorHandler)(ODContainer *container, ODAccessToken *token, NSError *error);
+
 @end

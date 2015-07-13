@@ -210,6 +210,10 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     }
     
     [self setFinished:YES];
+
+    if ([self isAuthFailureError:_error] && _container.authErrorHandler) {
+        _container.authErrorHandler(_container, _container.currentAccessToken, _error);
+    }
 }
 
 - (void)resetCompletionBlock
@@ -233,6 +237,12 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
 - (void)handleResponse:(NSDictionary *)response
 {
     // Do nothing. Subclass should implement this method to define custom behavior.
+}
+
+- (BOOL)isAuthFailureError:(NSError *)error
+{
+    NSDictionary *userInfo = error.userInfo;
+    return [userInfo[ODErrorTypeKey] isEqualToString:@"AuthenticationError"] && [userInfo[ODErrorCodeKey] integerValue] == 101;
 }
 
 @end
