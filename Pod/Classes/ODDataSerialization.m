@@ -148,11 +148,14 @@ NSString * const ODDataSerializationDateType = @"date";
     } else {
         NSLog(@"`message` is missing in error object or it is not a string.");
     }
-    
-    if ([dict[@"info"] isKindOfClass:[NSDictionary class]]) {
-        userInfo[ODErrorInfoKey] = [dict[@"info"] copy];
-    } else {
-        NSLog(@"`info` is missing in error object or it is not a dictionary.");
+
+
+    if (dict[@"info"]) {
+        if ([dict[@"info"] isKindOfClass:[NSDictionary class]]) {
+            userInfo[ODErrorInfoKey] = [dict[@"info"] copy];
+        } else {
+            NSLog(@"`info` is not a dictionary.");
+        }
     }
     
     return userInfo;

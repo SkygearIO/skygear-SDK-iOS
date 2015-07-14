@@ -138,6 +138,11 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
     }
 }
 
+- (void)setAuthenticationErrorHandler:(void(^)(ODContainer *container, ODAccessToken *token, NSError *error))authErrorHandler
+{
+    _authErrorHandler = authErrorHandler;
+}
+
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {
     ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:username password:password];
     operation.container = self;

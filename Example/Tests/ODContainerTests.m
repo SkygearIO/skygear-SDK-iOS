@@ -14,6 +14,35 @@
 
 #import "ODContainer_Private.h"
 
+// an empty ODOperation subclass that does nothing but call its completion handler
+@interface MockOperation : ODOperation
+
+@property (nonatomic, copy) void(^mockCompletion)();
+
+@end
+
+@implementation MockOperation
+
+- (void)prepareForRequest
+{
+    self.request = [[ODRequest alloc] initWithAction:@"do:nothing" payload:@{}];
+}
+
+- (void)handleRequestError:(NSError *)error
+{
+    if (_mockCompletion) {
+        _mockCompletion();
+    }
+}
+
+- (void)handleResponse:(NSDictionary *)response
+{
+    if (_mockCompletion) {
+        _mockCompletion();
+    }
+}
+
+@end
 
 SpecBegin(ODContainer)
 
@@ -84,6 +113,8 @@ describe(@"save current user", ^{
     });
     
     afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+
         NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
         [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     });
@@ -119,8 +150,96 @@ describe(@"register device", ^{
     });
     
     afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+
         NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
         [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    });
+});
+
+describe(@"AuthenticationError callback", ^{
+    __block ODContainer *container = nil;
+
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+    });
+
+    it(@"calls authentication error handler", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithJSONObject:@{
+                                                                 @"error": @{
+                                                                         @"type": @"AuthenticationError",
+                                                                         @"code": @101,
+                                                                         @"message": @"authentication failed",
+                                                                         },
+                                                                 }
+                                                    statusCode:400
+                                                       headers:nil];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            [container setAuthenticationErrorHandler:^(ODContainer *container, ODAccessToken *token, NSError *error) {
+                done();
+            }];
+            [container addOperation:[[MockOperation alloc] init]];
+        });
+    });
+
+    it(@"operation works without setting authentication error handler", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithJSONObject:@{
+                                                                 @"error": @{
+                                                                         @"type": @"AuthenticationError",
+                                                                         @"code": @101,
+                                                                         @"message": @"authentication failed",
+                                                                         },
+                                                                 }
+                                                    statusCode:400
+                                                       headers:nil];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            MockOperation *op = [[MockOperation alloc] init];
+            op.mockCompletion = ^{
+                done();
+            };
+            [container addOperation:op];
+        });
+    });
+
+    it(@"doesn't call authentication error handler on unmatched error", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithJSONObject:@{
+                                                                 @"error": @{
+                                                                         @"type": @"AuthenticationError",
+                                                                         @"code": @102,
+                                                                         @"message": @"invalid authentication information",
+                                                                         },
+                                                                 }
+                                                    statusCode:400
+                                                       headers:nil];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            [container setAuthenticationErrorHandler:^(ODContainer *container, ODAccessToken *token, NSError *error) {
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Thou shalt not call" userInfo:nil];
+            }];
+            MockOperation *op = [[MockOperation alloc] init];
+            op.mockCompletion = ^{
+                done();
+            };
+            [container addOperation:op];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
     });
 });
 
@@ -181,6 +300,10 @@ describe(@"calls lambda", ^{
                     done();
                 }];
         });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
     });
 });
 
