@@ -33,6 +33,15 @@ typedef enum : NSInteger {
 @property (nonatomic, copy) NSArray *recordsToSave;
 
 /**
+ Sets whether the operation should be treated as an atomic operation. An atomic operation saves all the
+ modifications should there be no errors. If some of the <ODRecord>s saves successfully while some are not,
+ the database will treat the save as not happened at all.
+
+ The default value of this property is NO.
+ */
+@property (nonatomic, assign) BOOL atomic;
+
+/**
  Sets or returns a block to be called when progress information is available for saving each record.
  */
 @property (nonatomic, copy) void (^perRecordProgressBlock)(ODRecord *record, double progress);

@@ -51,7 +51,19 @@ describe(@"delete", ^{
         expect(request.payload[@"ids"]).to.equal(@[recordID1.canonicalString, recordID2.canonicalString]);
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
-    
+
+    it(@"set atomic", ^{
+        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[]];
+        operation.atomic = YES;
+
+        operation.database = database;
+        operation.container = container;
+        [operation prepareForRequest];
+
+        ODRequest *request = operation.request;
+        expect(request.payload[@"atomic"]).to.equal(@YES);
+    });
+
     it(@"make request", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
