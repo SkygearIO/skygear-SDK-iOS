@@ -44,7 +44,19 @@ describe(@"modify", ^{
         expect(recordPayload[ODRecordSerializationRecordIDKey]).to.equal(@"book/book2");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
     });
-    
+
+    it(@"set atomic", ^{
+        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        operation.atomic = YES;
+
+        operation.container = container;
+        operation.database = database;
+        [operation prepareForRequest];
+
+        ODRequest *request = operation.request;
+        expect(request.payload[@"atomic"]).to.equal(@YES);
+    });
+
     it(@"make request", ^{
         ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
         

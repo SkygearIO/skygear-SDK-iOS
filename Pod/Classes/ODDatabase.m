@@ -149,6 +149,28 @@
     [self executeOperation:operation];
 }
 
+- (void)saveRecordsAtomically:(NSArray *)records
+            completionHandler:(void (^)(NSArray *savedRecords,
+                                        NSError *operationError))completionHandler
+{
+    [records enumerateObjectsUsingBlock:^(ODRecord *obj, NSUInteger idx, BOOL *stop) {
+        [self od_prepareRecordForSaving:obj];
+    }];
+
+    ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:records];
+    operation.atomic = YES;
+
+    if (completionHandler) {
+        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(savedRecords, operationError);
+            });
+        };
+    }
+
+    [self executeOperation:operation];
+}
+
 - (void)fetchRecordWithID:(ODRecordID *)recordID
         completionHandler:(void (^)(ODRecord *record,
                                     NSError *error))completionHandler {
@@ -240,6 +262,25 @@
     
     [self executeOperation:operation];
 }
+
+- (void)deleteRecordsWithIDsAtomically:(NSArray *)recordIDs
+                     completionHandler:(void (^)(NSArray *deletedRecordIDs,
+                                                 NSError *error))completionHandler
+{
+    ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
+    operation.atomic = YES;
+
+    if (completionHandler) {
+        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordIDs, operationError);
+            });
+        };
+    }
+
+    [self executeOperation:operation];
+}
+
 
 - (void)performQuery:(ODQuery *)query completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {

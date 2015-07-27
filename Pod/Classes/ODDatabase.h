@@ -85,7 +85,7 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
 - (void)saveRecord:(ODRecord *)record completion:(ODRecordSaveCompletion)completion;
 
 /**
- Saves multiple record to Ourd.
+ Saves multiple records to Ourd.
  
  Use this method to save multiple record to Ourd by specifying an array of <ODReord>s. The save will be performed asynchronously and
  <completionHandler> will be called when the operation completes.
@@ -103,6 +103,20 @@ typedef void(^ODRecordSaveCompletion)(ODRecord *record, NSError *error);
                               NSError *operationError))completionHandler
 perRecordErrorHandler:(void (^)(ODRecord *record, NSError *error))errorHandler;
 
+/**
+ Saves multiple records atomically to Ourd.
+ 
+ The behaviour of this method is identical to saveRecords:completionHandler:perRecordErrorHandler:,
+ except that it also sets the atomic flag on the operation.
+ 
+ Since the operation either succeeds or fails as a whole, perRecordErrorHandler is omitted.
+ 
+ @param records the records to save
+ @param completionHandler the block to be called when operation completes. The specified block is also called when an operation error occurred.
+ */
+- (void)saveRecordsAtomically:(NSArray *)records
+            completionHandler:(void (^)(NSArray *savedRecords,
+                                        NSError *operationError))completionHandler;
 
 /**
  Deletes a single record from Ourd.
@@ -120,7 +134,7 @@ perRecordErrorHandler:(void (^)(ODRecord *record, NSError *error))errorHandler;
                                              NSError *error))completionHandler;
 
 /**
- Deletes multiple record from Ourd.
+ Deletes multiple records from Ourd.
  
  Use this method to delete multiple records from Ourd by specifying a <ODRecordID>s. The deletion will be performed asynchronously and
  <completionHandler> will be called when the operation completes.
@@ -135,6 +149,21 @@ perRecordErrorHandler:(void (^)(ODRecord *record, NSError *error))errorHandler;
            completionHandler:(void (^)(NSArray *deletedRecordIDs,
                                        NSError *error))completionHandler
        perRecordErrorHandler:(void (^)(ODRecordID *recordID, NSError *error))errorHandler;
+
+/**
+ Deletes multiple records atomically to Ourd.
+
+ The behaviour of this method is identical to deleteRecordsWithIDs:completionHandler:perRecordErrorHandler:,
+ except that it also sets the atomic flag on the operation.
+
+ Since the operation either succeeds or fails as a whole, perRecordErrorHandler is omitted.
+
+ @param records the records to save
+ @param completionHandler the block to be called when operation completes. The specified block is also called when an operation error occurred.
+ */
+- (void)deleteRecordsWithIDsAtomically:(NSArray *)recordIDs
+                     completionHandler:(void (^)(NSArray *deletedRecordIDs,
+                                                 NSError *error))completionHandler;
 
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *subscriptions,
                                                              NSError *error))completionHandler;

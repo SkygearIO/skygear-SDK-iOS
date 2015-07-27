@@ -34,9 +34,17 @@
         [dictionariesToSave addObject:[serializer dictionaryWithRecord:obj]];
         [recordsByRecordID setObject:obj forKey:[(ODRecord *)obj recordID]];
     }];
+
+    NSMutableDictionary *payload = [@{
+                                      @"records": dictionariesToSave,
+                                      @"database_id": self.database.databaseID,
+                                      } mutableCopy];
+    if (self.atomic) {
+        payload[@"atomic"] = @YES;
+    }
+
     self.request = [[ODRequest alloc] initWithAction:@"record:save"
-                                             payload:@{@"records": dictionariesToSave,
-                                                       @"database_id": self.database.databaseID}];
+                                             payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
 }
 

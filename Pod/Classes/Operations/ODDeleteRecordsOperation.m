@@ -27,10 +27,15 @@
     [self.recordIDs enumerateObjectsUsingBlock:^(ODRecordID *obj, NSUInteger idx, BOOL *stop) {
         [stringIDs addObject:[obj canonicalString]];
     }];
+
     NSMutableDictionary *payload = [@{
                                       @"ids": stringIDs,
                                       @"database_id": self.database.databaseID,
                                       } mutableCopy];
+    if (self.atomic) {
+        payload[@"atomic"] = @YES;
+    }
+
     self.request = [[ODRequest alloc] initWithAction:@"record:delete"
                                              payload:payload];
     self.request.accessToken = self.container.currentAccessToken;

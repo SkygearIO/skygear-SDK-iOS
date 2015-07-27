@@ -29,6 +29,15 @@
 @property (nonatomic, copy) NSArray *recordIDs;
 
 /**
+ Sets whether the operation should be treated as an atomic operation. An atomic operation saves all the
+ modifications should there be no errors. If some of the <ODRecord>s are deleted successfully while some are not,
+ the database will treat the delete as not happened at all.
+
+ The default value of this property is NO.
+ */
+@property (nonatomic, assign) BOOL atomic;
+
+/**
  Sets or returns a block to be called when progress information is available for deleting each record.
  */
 @property (nonatomic, copy) void (^perRecordProgressBlock)(ODRecordID *recordID, double progress);
