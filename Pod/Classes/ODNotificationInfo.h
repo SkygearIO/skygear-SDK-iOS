@@ -10,6 +10,8 @@
 
 @interface ODNotificationInfo : NSObject<NSCopying>
 
++ (instancetype)notificationInfo;
+
 @property(nonatomic, copy) NSString *alertBody;
 @property(nonatomic, copy) NSString *alertLocalizationKey;
 @property(nonatomic, copy) NSArray *alertLocalizationArgs;

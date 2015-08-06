@@ -21,6 +21,11 @@
     return self;
 }
 
++ (instancetype)operationWithRecordIDsToDelete:(NSArray *)recordIDs
+{
+    return [[self alloc] initWithRecordIDsToDelete:recordIDs];
+}
+
 - (void)prepareForRequest
 {
     NSMutableArray *stringIDs = [NSMutableArray array];

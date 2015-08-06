@@ -32,4 +32,15 @@
     return self;
 }
 
++ (instancetype)subscriptionWithQuery:(ODQuery *)query
+{
+    return [[self alloc] initWithQuery:query];
+}
+
++ (instancetype)subscriptionWithQuery:(ODQuery *)query
+                       subscriptionID:(NSString *)subscriptionID
+{
+    return [[self alloc] initWithQuery:query subscriptionID:subscriptionID];
+}
+
 @end

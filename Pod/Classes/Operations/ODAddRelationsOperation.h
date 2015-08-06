@@ -10,13 +10,19 @@
 
 @interface ODAddRelationsOperation : ODOperation
 
-
 /**
  Instantiates an instance of <ODAddRelationsOperation> with a list of user to be related with current user.
  
  @param records An array of users to be related.
  */
 - (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray /* ODUser */ *)users;
+
+/**
+ Creates and returns an instance of <ODAddRelationsOperation> with a list of user to be related with current user.
+
+ @param records An array of users to be related.
+ */
++ (instancetype)operationWithType:(NSString *)relationType usersToRelated:(NSArray /* ODUser */ *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.

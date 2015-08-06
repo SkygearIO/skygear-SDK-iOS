@@ -144,7 +144,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 }
 
 - (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(ODContainerUserOperationActionCompletion)completionHandler {
-    ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:username password:password];
+    ODCreateUserOperation *operation = [ODCreateUserOperation operationWithEmail:username password:password];
     operation.container = self;
     
     __weak typeof(self) weakSelf = self;
@@ -162,7 +162,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 
 - (void)signupUserAnonymouslyWithCompletionHandler:(ODContainerUserOperationActionCompletion)completionHandler
 {
-    ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithAnonymousUserAndPassword:@"CHANGEME"];
+    ODCreateUserOperation *operation = [ODCreateUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
     
     __weak typeof(self) weakSelf = self;
     operation.createCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {

@@ -30,6 +30,16 @@
     return self;
 }
 
++ (instancetype)operationWithAction:(NSString *)action arrayArguments:(NSArray *)arguments
+{
+    return [[self alloc] initWithAction:action arrayArguments:arguments];
+}
+
++ (instancetype)operationWithAction:(NSString *)action dictionaryArguments:(NSDictionary *)arguments
+{
+    return [[self alloc] initWithAction:action dictionaryArguments:arguments];
+}
+
 - (void)prepareForRequest
 {
     NSDictionary *payload = @{

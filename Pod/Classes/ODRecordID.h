@@ -20,7 +20,9 @@
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
 - (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
 
++ (instancetype)recordIDWithRecordType:(NSString *)type;
 + (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
++ (instancetype)recordIDWithRecordType:(NSString *)type name:(NSString *)recordName;
 
 - (BOOL)isEqualToRecordID:(ODRecordID *)recordID;
 

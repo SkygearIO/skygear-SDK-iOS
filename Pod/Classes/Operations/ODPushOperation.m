@@ -63,6 +63,46 @@ ODNotificationInfo *DefaultNotificationInfo;
     return self;
 }
 
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody alertActionLocalizationKey:alertActionLocalizationKey];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertBody:(NSString *)alertBody alertActionLocalizationKey:(NSString *)alertActionLocalizationKey soundName:(NSString *)soundName
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody alertActionLocalizationKey:alertActionLocalizationKey soundName:soundName];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs alertActionLocalizationKey:alertActionLocalizationKey];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs alertActionLocalizationKey:(NSString *)alertActionLocalizationKey soundName:(NSString *)soundName
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs alertActionLocalizationKey:alertActionLocalizationKey soundName:soundName];
+}
+
++ (instancetype)operationWithUserRecordID:(ODUserRecordID *)userRecordID notificationInfo:(ODNotificationInfo *)notificationInfo
+{
+    return [[self alloc] initWithUserRecordID:userRecordID notificationInfo:notificationInfo];
+}
+
++ (instancetype)operationWithUserRecordIDs:(NSArray /* ODUserRecordID */ *)userRecordIDs notificationInfo:(ODNotificationInfo *)notificationInfo
+{
+    return [[self alloc] initWithUserRecordIDs:userRecordIDs notificationInfo:notificationInfo];
+}
+
 + (ODNotificationInfo *)defaultNotificationInfo {
     return [DefaultNotificationInfo copy];
 }

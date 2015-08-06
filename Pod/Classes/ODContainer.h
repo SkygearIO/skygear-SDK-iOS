@@ -33,7 +33,6 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 @interface ODContainer : NSObject
 
 // seems we need a way to authenticate app
-+ (instancetype)init;
 + (ODContainer *)defaultContainer;
 
 @property (nonatomic, nonatomic) NSURL *endPointAddress;

@@ -16,6 +16,18 @@ NSString * const ODRecordTypeUserRecord;
 
 @interface ODRecord : NSObject<NSCopying>
 
+- (instancetype)initWithRecordType:(NSString *)recordType;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId data:(NSDictionary *)data __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data;
+- (instancetype)initWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
+
++ (instancetype)recordWithRecordType:(NSString *)recordType;
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName;
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data;
++ (instancetype)recordWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data;
+
 /**
  Instantiates an instance of <ODRecord> with the specified record type with a randomly generated <ODRecordID>.
  

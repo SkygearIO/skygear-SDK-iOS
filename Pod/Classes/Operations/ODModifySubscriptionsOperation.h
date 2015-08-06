@@ -13,6 +13,8 @@
 
 - (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
 
++ (instancetype)operationWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
+
 @property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
 

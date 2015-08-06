@@ -18,6 +18,8 @@
 
 - (instancetype)initWithNotificationIDsToMarkRead:(NSArray /* ODNotificationID */ *)notificationIDs NS_DESIGNATED_INITIALIZER;
 
++ (instancetype)operationWithNotificationIDsToMarkRead:(NSArray /* ODNotificationID */ *)notificationIDs;
+
 @property(nonatomic, copy) NSArray /* ODNotificationID */ *notificationIDs;
 
 @property(nonatomic, copy) void(^markNotificationsReadCompletionBlock)(NSArray *notificationIDsMarkedRead, NSError *operationError);

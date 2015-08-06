@@ -10,9 +10,12 @@
 
 @interface ODQuery : NSObject <NSSecureCoding>
 
-- (instancetype) init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)recordType
                          predicate:(NSPredicate *)predicate NS_DESIGNATED_INITIALIZER;
+
++ (instancetype)queryWithRecordType:(NSString *)recordType
+                          predicate:(NSPredicate *)predicate;
 
 @property (nonatomic, readonly, copy) NSString *recordType;
 @property (nonatomic, readonly, copy) NSPredicate *predicate;

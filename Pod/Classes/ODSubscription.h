@@ -22,6 +22,10 @@ typedef enum : NSInteger {
 - (instancetype)initWithQuery:(ODQuery *)query
                  subscriptionID:(NSString *)subscriptionID;
 
++ (instancetype)subscriptionWithQuery:(ODQuery *)query;
++ (instancetype)subscriptionWithQuery:(ODQuery *)query
+                       subscriptionID:(NSString *)subscriptionID;
+
 @property (nonatomic, readonly, assign) ODSubscriptionType subscriptionType;
 
 @property (nonatomic, readonly) ODQuery *query;

@@ -28,6 +28,11 @@
     return self;
 }
 
++ (instancetype)operationWithDeviceToken:(NSData *)deviceToken
+{
+    return [[self alloc] initWithDeviceToken:deviceToken];
+}
+
 - (NSString *)hexDeviceToken {
     NSMutableString *token = [NSMutableString stringWithCapacity:2*self.deviceToken.length];
 

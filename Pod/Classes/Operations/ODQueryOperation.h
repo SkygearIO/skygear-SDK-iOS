@@ -16,6 +16,9 @@
 - (instancetype)initWithQuery:(ODQuery *)query;
 - (instancetype)initWithCursor:(ODQueryCursor *)cursor;
 
++ (instancetype)operationWithQuery:(ODQuery *)query;
++ (instancetype)operationWithCursor:(ODQueryCursor *)cursor;
+
 @property (nonatomic, copy) ODQuery *query;
 @property (nonatomic, copy) NSArray *results __deprecated;
 

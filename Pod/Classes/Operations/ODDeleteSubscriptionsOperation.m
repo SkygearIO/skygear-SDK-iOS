@@ -24,6 +24,11 @@
     return self;
 }
 
++ (instancetype)operationWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete
+{
+    return [[self alloc] initWithSubscriptionIDsToDelete:subscriptionIDsToDelete];
+}
+
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{

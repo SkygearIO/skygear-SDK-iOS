@@ -28,6 +28,16 @@
     return self;
 }
 
++ (instancetype)userWithUserRecordID:(ODUserRecordID *)recordID
+{
+    return [[self alloc] initWithUserRecordID:recordID];
+}
+
++ (instancetype)userWithUserRecordID:(ODUserRecordID *)recordID data:(NSDictionary *)data
+{
+    return [[self alloc] initWithUserRecordID:recordID data:data];
+}
+
 - (NSString *)username {
     return self.recordID.username;
 }
