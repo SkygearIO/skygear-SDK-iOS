@@ -23,7 +23,7 @@ describe(@"create", ^{
     });
     
     it(@"normal user request", ^{
-        ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODCreateUserOperation *operation = [ODCreateUserOperation operationWithEmail:@"user@example.com" password:@"password"];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -36,7 +36,7 @@ describe(@"create", ^{
     });
     
     it(@"anonymous user request", ^{
-        ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithAnonymousUserAndPassword:@"password"];
+        ODCreateUserOperation *operation = [ODCreateUserOperation operationWithAnonymousUserAndPassword:@"password"];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -48,7 +48,7 @@ describe(@"create", ^{
     });
     
     it(@"make normal user request", ^{
-        ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODCreateUserOperation *operation = [ODCreateUserOperation operationWithEmail:@"user@example.com" password:@"password"];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -85,7 +85,7 @@ describe(@"create", ^{
     });
     
     it(@"make anonymous user request", ^{
-        ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithAnonymousUserAndPassword:@"password"];
+        ODCreateUserOperation *operation = [ODCreateUserOperation operationWithAnonymousUserAndPassword:@"password"];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -122,7 +122,7 @@ describe(@"create", ^{
     });
     
     it(@"pass error", ^{
-        ODCreateUserOperation *operation = [[ODCreateUserOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODCreateUserOperation *operation = [ODCreateUserOperation operationWithEmail:@"user@example.com" password:@"password"];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {

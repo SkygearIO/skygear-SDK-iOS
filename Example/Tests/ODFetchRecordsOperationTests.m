@@ -23,8 +23,8 @@ describe(@"fetch", ^{
 
     it(@"calls lambda with array args", ^{
         NSArray *args = @[@"bob"];
-        ODLambdaOperation *operation = [[ODLambdaOperation alloc] initWithAction:@"hello:world"
-                                                                  arrayArguments:args];
+        ODLambdaOperation *operation = [ODLambdaOperation operationWithAction:@"hello:world"
+                                                               arrayArguments:args];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -36,8 +36,8 @@ describe(@"fetch", ^{
 
     it(@"calls lambda with dict args", ^{
         NSDictionary *args = @{@"name": @"bob"};
-        ODLambdaOperation *operation = [[ODLambdaOperation alloc] initWithAction:@"hello:world"
-                                                             dictionaryArguments:args];
+        ODLambdaOperation *operation = [ODLambdaOperation operationWithAction:@"hello:world"
+                                                          dictionaryArguments:args];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -49,8 +49,8 @@ describe(@"fetch", ^{
 
     it(@"make request", ^{
         NSDictionary *args = @{@"name": @"bob"};
-        ODLambdaOperation *operation = [[ODLambdaOperation alloc] initWithAction:@"hello:world"
-                                                             dictionaryArguments:args];
+        ODLambdaOperation *operation = [ODLambdaOperation operationWithAction:@"hello:world"
+                                                          dictionaryArguments:args];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -85,7 +85,7 @@ describe(@"fetch", ^{
 
     it(@"pass error", ^{
         NSDictionary *args = @{@"name": @"bob"};
-        ODLambdaOperation *operation = [[ODLambdaOperation alloc] initWithAction:@"hello:world"
+        ODLambdaOperation *operation = [ODLambdaOperation operationWithAction:@"hello:world"
                                                              dictionaryArguments:args];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {

@@ -27,7 +27,7 @@ describe(@"register", ^{
     });
     
     it(@"new device request", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+        ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         operation.container = container;
         [operation prepareForRequest];
         
@@ -40,7 +40,7 @@ describe(@"register", ^{
     });
     
     it(@"update device request", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+        ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         [operation prepareForRequest];
@@ -54,7 +54,7 @@ describe(@"register", ^{
     });
     
     it(@"new device response", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+        ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -86,7 +86,7 @@ describe(@"register", ^{
     });
 
     it(@"error with response without id", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+        ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -115,7 +115,7 @@ describe(@"register", ^{
     });
 
     it(@"pass error", ^{
-        ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+        ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -139,14 +139,14 @@ describe(@"register", ^{
         });
 
         it(@"request with device id", ^{
-            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+            ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
             operation.container = container;
             [operation prepareForRequest];
             expect(operation.request.payload[@"id"]).to.equal(@"EXISTING_DEVICE_ID");
         });
 
         it(@"reqeust be overriden by deviceID property", ^{
-            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+            ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
             operation.container = container;
             operation.deviceID = @"ASSIGNED_DEVICE_ID";
             [operation prepareForRequest];
@@ -154,7 +154,7 @@ describe(@"register", ^{
         });
 
         it(@"update device id from response", ^{
-            ODRegisterDeviceOperation *operation = [[ODRegisterDeviceOperation alloc] initWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
+            ODRegisterDeviceOperation *operation = [ODRegisterDeviceOperation operationWithDeviceToken:[ODHexer dataWithHexString:@"abcdef1234567890"]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

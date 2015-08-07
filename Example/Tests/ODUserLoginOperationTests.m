@@ -23,7 +23,7 @@ describe(@"login", ^{
     });
     
     it(@"make ODRequest", ^{
-        ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODUserLoginOperation *operation = [ODUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
         operation.container = container;
         [operation prepareForRequest];
         ODRequest *request = operation.request;
@@ -36,7 +36,7 @@ describe(@"login", ^{
     });
 
     it(@"make request", ^{
-        ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODUserLoginOperation *operation = [ODUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -70,7 +70,7 @@ describe(@"login", ^{
     });
     
     it(@"pass error", ^{
-        ODUserLoginOperation *operation = [[ODUserLoginOperation alloc] initWithEmail:@"user@example.com" password:@"password"];
+        ODUserLoginOperation *operation = [ODUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {

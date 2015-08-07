@@ -14,7 +14,7 @@ SpecBegin(ODRecordID)
 
 describe(@"ODRecordID", ^{
     it(@"init", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book"];
+        ODRecordID *recordID = [ODRecordID recordIDWithRecordType:@"book"];
         expect(recordID.recordType).to.equal(@"book");
         expect(recordID.recordName).toNot.beNil();
         expect([recordID.recordName class]).to.beSubclassOf([NSString class]);
@@ -22,7 +22,7 @@ describe(@"ODRecordID", ^{
     });
     
     it(@"canonical string", ^{
-        ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:@"book/book1"];
+        ODRecordID *recordID = [ODRecordID recordIDWithCanonicalString:@"book/book1"];
         expect(recordID.recordType).to.equal(@"book");
         expect(recordID.recordName).to.equal(@"book1");
         expect(recordID.canonicalString).to.equal(@"book/book1");
