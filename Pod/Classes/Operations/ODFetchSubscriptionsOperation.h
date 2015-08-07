@@ -13,6 +13,7 @@
 - (instancetype)initWithSubscriptionIDs:(NSArray *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)fetchAllSubscriptionsOperation;
++ (instancetype)operationWithSubscriptionIDs:(NSArray *)subscriptionIDs;
 
 @property(nonatomic, copy) NSString *deviceID;
 

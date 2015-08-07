@@ -12,6 +12,16 @@
 
 @implementation ODCreateUserOperation
 
++ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
+{
+    return [[self alloc] initWithEmail:email password:password];
+}
+
++ (instancetype)operationWithAnonymousUserAndPassword:(NSString *)password
+{
+    return [[self alloc] initWithAnonymousUserAndPassword:password];
+}
+
 - (instancetype)initWithEmail:(NSString *)email password:(NSString *)password
 {
     if ((self = [super init])) {

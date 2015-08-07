@@ -23,6 +23,11 @@
     return self;
 }
 
++ (instancetype)operationWithType:(NSString *)relationType usersToRelated:(NSArray /* ODUser */ *)users
+{
+    return [[self alloc] initWithType:relationType usersToRelated:users];
+}
+
 - (NSArray /* NSString */ *)userStringIDs
 {
     NSMutableArray *ids = [NSMutableArray arrayWithCapacity:self.usersToRelate.count];

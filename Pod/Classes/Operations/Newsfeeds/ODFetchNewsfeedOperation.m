@@ -18,7 +18,12 @@
 
 + (instancetype)operationWithNewsfeedID:(NSString *)newsfeedID
                            userRecordID:(ODUserRecordID *)userRecordID {
-    return [[self.class alloc] initWithNewsfeedID:newsfeedID userRecordID:userRecordID];
+    return [[self alloc] initWithNewsfeedID:newsfeedID userRecordID:userRecordID];
+}
+
++ (instancetype)operationWithCursor:(ODNewsfeedCursor *)cursor
+{
+    return [[self alloc] initWithCursor:cursor];
 }
 
 - (instancetype)initForCurrentUserWithNewsfeedID:(NSString *)newsfeedID {

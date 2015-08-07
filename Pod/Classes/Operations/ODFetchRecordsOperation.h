@@ -19,12 +19,20 @@
 @interface ODFetchRecordsOperation : ODDatabaseOperation
 
 /**
- Instantiates and instance of <ODFetchRecordsOperation> with the desired <ODRecordID>s.
+ Instantiates an instance of <ODFetchRecordsOperation> with the desired <ODRecordID>s.
  
  @param recordIDs An array of <ODRecordID>s of records to be fetched from Ourd.
  @return an instance of ODFetchRecordsOperation.
  */
 - (instancetype)initWithRecordIDs:(NSArray *)recordIDs;
+
+/**
+ Creates and returns an instance of <ODFetchRecordsOperation> with the desired <ODRecordID>s.
+
+ @param recordIDs An array of <ODRecordID>s of records to be fetched from Ourd.
+ @return an instance of ODFetchRecordsOperation.
+ */
++ (instancetype)operationWithRecordIDs:(NSArray *)recordIDs;
 
 /**
  Sets or returns an array of <ODRecordID>s to be fetched from Ourd.

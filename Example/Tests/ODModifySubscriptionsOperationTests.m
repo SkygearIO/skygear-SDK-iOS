@@ -28,7 +28,7 @@ describe(@"modify subscription", ^{
     });
 
     it(@"multiple subscriptions", ^{
-        ODModifySubscriptionsOperation *operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[subscription1, subscription2]];
+        ODModifySubscriptionsOperation *operation = [ODModifySubscriptionsOperation operationWithSubscriptionsToSave:@[subscription1, subscription2]];
         operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         operation.database = database;
@@ -48,7 +48,7 @@ describe(@"modify subscription", ^{
     });
 
     it(@"make request", ^{
-        ODModifySubscriptionsOperation *operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[subscription1, subscription2]];
+        ODModifySubscriptionsOperation *operation = [ODModifySubscriptionsOperation operationWithSubscriptionsToSave:@[subscription1, subscription2]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -92,7 +92,7 @@ describe(@"modify subscription", ^{
     });
 
     it(@"pass error", ^{
-        ODModifySubscriptionsOperation *operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[subscription1, subscription2]];
+        ODModifySubscriptionsOperation *operation = [ODModifySubscriptionsOperation operationWithSubscriptionsToSave:@[subscription1, subscription2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -118,7 +118,7 @@ describe(@"modify subscription", ^{
             OCMStub([odDefaultsMock sharedDefaults]).andReturn(odDefaultsMock);
             OCMStub([odDefaultsMock deviceID]).andReturn(@"EXISTING_DEVICE_ID");
 
-            operation = [[ODModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[]];
+            operation = [ODModifySubscriptionsOperation operationWithSubscriptionsToSave:@[]];
             operation.container = container;
             operation.database = database;
         });

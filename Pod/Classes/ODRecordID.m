@@ -55,6 +55,26 @@
                                name:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
 }
 
++ (instancetype)recordIDWithRecordType:(NSString *)type
+{
+    return [[self alloc] initWithRecordType:type];
+}
+
++ (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString
+{
+    NSArray *components = [canonicalString componentsSeparatedByString:@"/"];
+    if ([components count] == 2) {
+        return [[self alloc] initWithRecordType:components[0] name:components[1]];
+    } else {
+        return nil;
+    }
+}
+
++ (instancetype)recordIDWithRecordType:(NSString *)type name:(NSString *)recordName
+{
+    return [[self alloc] initWithRecordType:type name:recordName];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     ODRecordID *recordID = [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
                                                                           name:[_recordName copyWithZone:zone]];
@@ -106,16 +126,6 @@
 - (NSString *)canonicalString
 {
     return [NSString stringWithFormat:@"%@/%@", self.recordType, self.recordName];
-}
-
-+ (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString
-{
-    NSArray *components = [canonicalString componentsSeparatedByString:@"/"];
-    if ([components count] == 2) {
-        return [[self alloc] initWithRecordType:components[0] name:components[1]];
-    } else {
-        return nil;
-    }
 }
 
 @end

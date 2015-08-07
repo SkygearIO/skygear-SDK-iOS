@@ -40,6 +40,11 @@
     return self;
 }
 
++ (instancetype)operationWithSubscriptionIDs:(NSArray *)subscriptionIDs
+{
+    return [[self alloc] initWithSubscriptionIDs:subscriptionIDs];
+}
+
 + (instancetype)fetchAllSubscriptionsOperation
 {
     return [[self alloc] initFetchAll];

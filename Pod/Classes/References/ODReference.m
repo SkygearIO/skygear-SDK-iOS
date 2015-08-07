@@ -43,6 +43,26 @@
     return self;
 }
 
++ (instancetype)referenceWithRecord:(ODRecord *)record
+{
+    return [[self alloc] initWithRecord:record];
+}
+
++ (instancetype)referenceWithRecord:(ODRecord *)record action:(ODReferenceAction)action
+{
+    return [[self alloc] initWithRecord:record action:action];
+}
+
++ (instancetype)referenceWithRecordID:(ODRecordID *)recordID
+{
+    return [[self alloc] initWithRecordID:recordID];
+}
+
++ (instancetype)referenceWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action
+{
+    return [[self alloc] initWithRecordID:recordID action:action];
+}
+
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;

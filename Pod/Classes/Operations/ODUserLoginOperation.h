@@ -18,5 +18,6 @@
 
 - (instancetype)initWithEmail:(NSString *)email password:(NSString *)password;
 
++ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
 
 @end

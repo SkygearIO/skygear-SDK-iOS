@@ -63,7 +63,7 @@
 
  @return <ODCreateUserOperation> object.
  */
-- (instancetype)initWithEmail:(NSString *)email password:(NSString *)password;
++ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
 
 /**
  Initializes and returns and operation configured to create an anonymous
@@ -73,6 +73,6 @@
 
  @return <ODCreateUserOperation> object.
  */
-- (instancetype)initWithAnonymousUserAndPassword:(NSString *)password;
++ (instancetype)operationWithAnonymousUserAndPassword:(NSString *)password;
 
 @end

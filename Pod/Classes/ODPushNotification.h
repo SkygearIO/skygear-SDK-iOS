@@ -17,6 +17,8 @@
   */
 @interface ODPushNotification : ODNotification
 
++ (instancetype)notificationWithSenderID:(ODUserRecordID *)userID;
+
 /**
  The `ODUserRecordID` of the sender who initiated this push notification. In Ourd, push notification is always sent by a user. This property will never be nil.
  */

@@ -24,6 +24,11 @@
     return self;
 }
 
++ (instancetype)operationWithRecordsToSave:(NSArray *)records
+{
+    return [[self alloc] initWithRecordsToSave:records];
+}
+
 - (void)prepareForRequest
 {
     ODRecordSerializer *serializer = [ODRecordSerializer serializer];

@@ -14,23 +14,23 @@ SpecBegin(ODRecord)
 
 describe(@"ODRecord", ^{
     it(@"init no id", ^{
-        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"];
+        ODRecord *record = [ODRecord recordWithRecordType:@"book"];
         expect(record.recordID).toNot.beNil();
         expect(record.recordType).to.equal(@"book");
     });
     
     it(@"set attribute to nil", ^{
-        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
-                                                           name:@"HelloWorld"
-                                                           data:@{@"title": @"Hello World"}];
+        ODRecord *record = [ODRecord recordWithRecordType:@"book"
+                                                     name:@"HelloWorld"
+                                                     data:@{@"title": @"Hello World"}];
         record[@"title"] = nil;
         expect(record[@"title"]).to.beNil();
     });
 
     it(@"set attribute to NSNull", ^{
-        ODRecord *record = [[ODRecord alloc] initWithRecordType:@"book"
-                                                           name:@"HelloWorld"
-                                                           data:@{@"title": @"Hello World"}];
+        ODRecord *record = [ODRecord recordWithRecordType:@"book"
+                                                     name:@"HelloWorld"
+                                                     data:@{@"title": @"Hello World"}];
         record[@"title"] = [NSNull null];
         expect(record[@"title"]).to.beNil();
     });

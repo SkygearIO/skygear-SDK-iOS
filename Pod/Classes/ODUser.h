@@ -26,6 +26,9 @@
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data NS_UNAVAILABLE;
 - (instancetype)initWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
 
++ (instancetype)userWithUserRecordID:(ODUserRecordID *)recordID;
++ (instancetype)userWithUserRecordID:(ODUserRecordID *)recordID data:(NSDictionary *)data;
+
 /**
  * The properties username, email, authData and isNew will be delegated to 
  * their corresponding methods on ODUserRecordID

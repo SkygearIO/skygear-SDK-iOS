@@ -26,6 +26,11 @@
     return self;
 }
 
++ (instancetype)operationWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
+{
+    return [[self alloc] initWithSubscriptionsToSave:subscriptionsToSave];
+}
+
 - (void)prepareForRequest
 {
     ODSubscriptionSerializer *serializer = [ODSubscriptionSerializer serializer];

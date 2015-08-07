@@ -25,7 +25,7 @@ describe(@"fetch", ^{
     
     it(@"empty predicate", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
@@ -43,7 +43,7 @@ describe(@"fetch", ^{
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@", @"A tale of two cities"];
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book"
                                                    predicate:predicate];
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
@@ -66,7 +66,7 @@ describe(@"fetch", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         query.sortDescriptors = @[
                                   [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
@@ -79,7 +79,7 @@ describe(@"fetch", ^{
     it(@"eager", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         query.eagerLoadKeyPath = @"shelf";
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
@@ -92,7 +92,7 @@ describe(@"fetch", ^{
     it(@"eager", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"note" predicate:nil];
         query.eagerLoadKeyPath = @"category";
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
         operation.database = database;
@@ -104,7 +104,7 @@ describe(@"fetch", ^{
 
     it(@"make request", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.database = database;
         
@@ -233,7 +233,7 @@ describe(@"fetch", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
         query.eagerLoadKeyPath = @"category";
-        ODQueryOperation *operation = [[ODQueryOperation alloc] initWithQuery:query];
+        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

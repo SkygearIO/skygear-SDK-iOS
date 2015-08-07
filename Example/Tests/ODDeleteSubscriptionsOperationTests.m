@@ -24,7 +24,7 @@ describe(@"delete subscription", ^{
     });
 
     it(@"multiple subscriptions", ^{
-        ODDeleteSubscriptionsOperation *operation = [[ODDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
+        ODDeleteSubscriptionsOperation *operation = [ODDeleteSubscriptionsOperation operationWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
         operation.deviceID = @"DEVICE_ID";
         operation.database = database;
         operation.container = container;
@@ -41,7 +41,7 @@ describe(@"delete subscription", ^{
     });
 
     it(@"make request", ^{
-        ODDeleteSubscriptionsOperation *operation = [[ODDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
+        ODDeleteSubscriptionsOperation *operation = [ODDeleteSubscriptionsOperation operationWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -77,7 +77,7 @@ describe(@"delete subscription", ^{
     });
 
     it(@"pass error", ^{
-        ODDeleteSubscriptionsOperation *operation = [[ODDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
+        ODDeleteSubscriptionsOperation *operation = [ODDeleteSubscriptionsOperation operationWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -98,7 +98,7 @@ describe(@"delete subscription", ^{
     });
 
     it(@"pass per item error", ^{
-        ODDeleteSubscriptionsOperation *operation = [[ODDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
+        ODDeleteSubscriptionsOperation *operation = [ODDeleteSubscriptionsOperation operationWithSubscriptionIDsToDelete:@[@"my notes", @"ben's notes"]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

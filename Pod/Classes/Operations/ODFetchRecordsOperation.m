@@ -16,12 +16,18 @@
 
 @implementation ODFetchRecordsOperation
 
-- (instancetype)initWithRecordIDs:(NSArray *)recordIDs {
+- (instancetype)initWithRecordIDs:(NSArray *)recordIDs
+{
     self = [super init];
     if (self) {
         _recordIDs = recordIDs;
     }
     return self;
+}
+
++ (instancetype)operationWithRecordIDs:(NSArray *)recordIDs
+{
+    return [[self alloc] initWithRecordIDs:recordIDs];
 }
 
 - (void)prepareForRequest

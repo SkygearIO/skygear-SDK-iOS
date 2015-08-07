@@ -21,7 +21,8 @@
 
 @implementation ODQueryOperation
 
-- (instancetype)initWithQuery:(ODQuery *)query {
+- (instancetype)initWithQuery:(ODQuery *)query
+{
     self = [super init];
     if (self) {
         _query = query;
@@ -29,12 +30,23 @@
     return self;
 }
 
-- (instancetype)initWithCursor:(ODQueryCursor *)cursor {
+- (instancetype)initWithCursor:(ODQueryCursor *)cursor
+{
     self = [super init];
     if (self) {
         _cursor = cursor;
     }
     return self;
+}
+
++ (instancetype)operationWithQuery:(ODQuery *)query
+{
+    return [[self alloc] initWithQuery:query];
+}
+
++ (instancetype)operationWithCursor:(ODQueryCursor *)cursor
+{
+    return [[self alloc] initWithCursor:cursor];
 }
 
 - (void)prepareForRequest

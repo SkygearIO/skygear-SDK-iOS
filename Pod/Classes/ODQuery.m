@@ -11,13 +11,20 @@
 @implementation ODQuery
 
 - (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate {
+                         predicate:(NSPredicate *)predicate
+{
     self = [super init];
     if (self) {
         _recordType = recordType;
         _predicate = predicate;
     }
     return self;
+}
+
++ (instancetype)queryWithRecordType:(NSString *)recordType
+                          predicate:(NSPredicate *)predicate
+{
+    return [[self alloc] initWithRecordType:recordType predicate:predicate];
 }
 
 #pragma mark - NSSecureCoding protocol

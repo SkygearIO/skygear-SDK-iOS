@@ -18,4 +18,9 @@
     return self;
 }
 
++ (instancetype)operationWithNotificationIDsToMarkRead:(NSArray /* ODNotificationID */ *)notificationIDs
+{
+    return [[self alloc] initWithNotificationIDsToMarkRead:notificationIDs];
+}
+
 @end

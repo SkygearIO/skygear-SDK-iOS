@@ -25,7 +25,7 @@ describe(@"fetch", ^{
 
     it(@"single record", ^{
         ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID]];
+        ODFetchRecordsOperation *operation = [ODFetchRecordsOperation operationWithRecordIDs:@[recordID]];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -41,7 +41,7 @@ describe(@"fetch", ^{
     it(@"multiple record", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
+        ODFetchRecordsOperation *operation = [ODFetchRecordsOperation operationWithRecordIDs:@[recordID1, recordID2]];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -57,7 +57,7 @@ describe(@"fetch", ^{
     it(@"make request", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
+        ODFetchRecordsOperation *operation = [ODFetchRecordsOperation operationWithRecordIDs:@[recordID1, recordID2]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -105,7 +105,7 @@ describe(@"fetch", ^{
     it(@"pass error", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
+        ODFetchRecordsOperation *operation = [ODFetchRecordsOperation operationWithRecordIDs:@[recordID1, recordID2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -127,7 +127,7 @@ describe(@"fetch", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
         ODRecordID *recordID3 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book3"];
-        ODFetchRecordsOperation *operation = [[ODFetchRecordsOperation alloc] initWithRecordIDs:@[recordID1, recordID2]];
+        ODFetchRecordsOperation *operation = [ODFetchRecordsOperation operationWithRecordIDs:@[recordID1, recordID2]];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

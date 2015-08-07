@@ -24,7 +24,7 @@ describe(@"fetch subscription", ^{
     });
 
     it(@"single subscription", ^{
-        ODFetchSubscriptionsOperation *operation = [[ODFetchSubscriptionsOperation alloc] initWithSubscriptionIDs:@[@"sub1"]];
+        ODFetchSubscriptionsOperation *operation = [ODFetchSubscriptionsOperation operationWithSubscriptionIDs:@[@"sub1"]];
         operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         operation.database = database;
@@ -44,7 +44,7 @@ describe(@"fetch subscription", ^{
     });
 
     it(@"multiple subscriptions", ^{
-        ODFetchSubscriptionsOperation *operation = [[ODFetchSubscriptionsOperation alloc] initWithSubscriptionIDs:@[@"sub1", @"sub2"]];
+        ODFetchSubscriptionsOperation *operation = [ODFetchSubscriptionsOperation operationWithSubscriptionIDs:@[@"sub1", @"sub2"]];
         operation.deviceID = @"DEVICE_ID";
         operation.container = container;
         operation.database = database;
@@ -63,7 +63,7 @@ describe(@"fetch subscription", ^{
     });
 
     it(@"make request", ^{
-        ODFetchSubscriptionsOperation *operation = [[ODFetchSubscriptionsOperation alloc] initWithSubscriptionIDs:@[@"sub1", @"sub2"]];
+        ODFetchSubscriptionsOperation *operation = [ODFetchSubscriptionsOperation operationWithSubscriptionIDs:@[@"sub1", @"sub2"]];
         operation.container = container;
         operation.database = database;
 
@@ -122,7 +122,7 @@ describe(@"fetch subscription", ^{
     });
 
     it(@"pass error", ^{
-        ODFetchSubscriptionsOperation *operation = [[ODFetchSubscriptionsOperation alloc] initWithSubscriptionIDs:@[@"sub1", @"sub2"]];
+        ODFetchSubscriptionsOperation *operation = [ODFetchSubscriptionsOperation operationWithSubscriptionIDs:@[@"sub1", @"sub2"]];
         operation.container = container;
         operation.database = database;
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {

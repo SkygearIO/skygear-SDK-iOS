@@ -25,7 +25,7 @@ describe(@"delete", ^{
 
     it(@"single record", ^{
         ODRecordID *recordID = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[recordID]];
         operation.database = database;
         operation.container = container;
         [operation prepareForRequest];
@@ -40,7 +40,7 @@ describe(@"delete", ^{
     it(@"multiple record", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[recordID1, recordID2]];
         operation.database = database;
         operation.container = container;
         [operation prepareForRequest];
@@ -53,7 +53,7 @@ describe(@"delete", ^{
     });
 
     it(@"set atomic", ^{
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[]];
         operation.atomic = YES;
 
         operation.database = database;
@@ -67,7 +67,7 @@ describe(@"delete", ^{
     it(@"make request", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[recordID1, recordID2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -104,7 +104,7 @@ describe(@"delete", ^{
     it(@"pass error", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[recordID1, recordID2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -125,7 +125,7 @@ describe(@"delete", ^{
     it(@"per block", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODRecordID *recordID2 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-        ODDeleteRecordsOperation *operation = [[ODDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[recordID1, recordID2]];
+        ODDeleteRecordsOperation *operation = [ODDeleteRecordsOperation operationWithRecordIDsToDelete:@[recordID1, recordID2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

@@ -24,6 +24,11 @@
     return self;
 }
 
++ (instancetype)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users
+{
+    return [[self alloc] initWithType:relationType usersToRemove:users];
+}
+
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{

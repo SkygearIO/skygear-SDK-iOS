@@ -28,6 +28,13 @@ typedef enum : NSInteger {
 - (instancetype)initWithRecordsToSave:(NSArray *)records;
 
 /**
+ Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to database.
+
+ @param records An array of records to be saved to database.
+ */
++ (instancetype)operationWithRecordsToSave:(NSArray *)records;
+
+/**
  Sets or returns an array of records to be saved to database.
  */
 @property (nonatomic, copy) NSArray *recordsToSave;

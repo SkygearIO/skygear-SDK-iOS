@@ -18,7 +18,13 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2) {
 
 @implementation ODNotificationInfo
 
-- (id)copyWithZone:(NSZone *)zone {
++ (instancetype)notificationInfo
+{
+    return [[self alloc] init];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
     ODNotificationInfo *info = [[self.class allocWithZone:zone] init];
 
     info->_alertBody = [_alertBody copyWithZone:zone];

@@ -23,6 +23,11 @@ typedef enum ODReferenceAction : NSInteger {
 - (instancetype)initWithRecordID:(ODRecordID *)recordID;
 - (instancetype)initWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action;
 
++ (instancetype)referenceWithRecord:(ODRecord *)record;
++ (instancetype)referenceWithRecord:(ODRecord *)record action:(ODReferenceAction)action;
++ (instancetype)referenceWithRecordID:(ODRecordID *)recordID;
++ (instancetype)referenceWithRecordID:(ODRecordID *)recordID action:(ODReferenceAction)action;
+
 - (BOOL)isEqualToReference:(ODReference *)reference;
 
 @property (nonatomic, readonly, assign) ODReferenceAction referenceAction;

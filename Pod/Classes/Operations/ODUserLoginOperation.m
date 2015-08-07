@@ -22,6 +22,11 @@
     return self;
 }
 
++ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
+{
+    return [[self alloc] initWithEmail:email password:password];
+}
+
 - (void)prepareForRequest
 {
     self.request = [[ODRequest alloc] initWithAction:@"auth:login"

@@ -12,6 +12,8 @@
 
 - (instancetype)initWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete;
 
++ (instancetype)operationWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete;
+
 @property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionIDsToDelete;
 

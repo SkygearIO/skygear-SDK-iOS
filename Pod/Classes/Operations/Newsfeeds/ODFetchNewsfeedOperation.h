@@ -16,6 +16,7 @@
 + (instancetype)operationForCurrentUserWithNewsfeedID:(NSString *)newsfeedID;
 + (instancetype)operationWithNewsfeedID:(NSString *)newsfeedID
                            userRecordID:(ODUserRecordID *)userRecordID;
++ (instancetype)operationWithCursor:(ODNewsfeedCursor *)cursor;
 
 - (instancetype)initForCurrentUserWithNewsfeedID:(NSString *)newsfeedID;
 - (instancetype)initWithNewsfeedID:(NSString *)newsfeedID

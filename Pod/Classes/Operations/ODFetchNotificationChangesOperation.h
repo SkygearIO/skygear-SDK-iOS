@@ -15,6 +15,8 @@
 
 - (instancetype)initWithPreviousServerChangeToken:(ODServerChangeToken *)previousServerChangeToken;
 
++ (instancetype)operationWithPreviousServerChangeToken:(ODServerChangeToken *)previousServerChangeToken;
+
 @property (nonatomic, copy) ODServerChangeToken *previousServerChangeToken;
 @property (nonatomic, assign) NSUInteger resultsLimit;
 

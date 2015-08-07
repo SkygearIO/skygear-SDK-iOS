@@ -25,6 +25,16 @@
 - (instancetype)initWithAction:(NSString *)action dictionaryArguments:(NSDictionary *)arguments;
 
 /**
+ Creates and returns an instance of <ODLambdaOperation> with arguments specified as an array.
+ */
++ (instancetype)operationWithAction:(NSString *)action arrayArguments:(NSArray *)arguments;
+
+/**
+ Creates and returns an instance of <ODLambdaOperation> with arguments specified as a dictionary.
+ */
++ (instancetype)operationWithAction:(NSString *)action dictionaryArguments:(NSDictionary *)arguments;
+
+/**
  Sets or returns the action name of the labmda function.
  */
 @property(nonatomic, copy) NSString *action;

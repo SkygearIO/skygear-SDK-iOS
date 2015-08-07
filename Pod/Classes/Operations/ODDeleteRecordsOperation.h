@@ -18,10 +18,17 @@
 
 /**
  Instantiates an instance of <ODDeleteRecordsOperation> with a list of records to be deleted from database.
- 
+
  @param records An array of records to be deleted from database.
  */
 - (instancetype)initWithRecordIDsToDelete:(NSArray *)recordIDs;
+
+/**
+ Creates and returns an instance of <ODDeleteRecordsOperation> with a list of records to be deleted from database.
+
+ @param records An array of records to be deleted from database.
+ */
++ (instancetype)operationWithRecordIDsToDelete:(NSArray *)recordIDs;
 
 /**
  Sets or returns an array of records to be from from database.

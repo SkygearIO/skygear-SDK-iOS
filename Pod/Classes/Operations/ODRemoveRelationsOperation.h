@@ -17,6 +17,11 @@
 - (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
 
 /**
+ Creates and returns an instance of <ODDeleteRelationsOperation> with a list of user to be related with current user.
+ */
++ (instancetype)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
+
+/**
  Type of the relation, default provide `follow` and `friend`.
  */
 @property (nonatomic, copy) NSString *relationType;

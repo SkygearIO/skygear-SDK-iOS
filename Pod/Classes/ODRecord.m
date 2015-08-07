@@ -21,12 +21,14 @@ NSString *const ODRecordTypeUserRecord = @"_User";
 
 @implementation ODRecord
 
-- (instancetype)initWithRecordType:(NSString *)recordType {
+- (instancetype)initWithRecordType:(NSString *)recordType
+{
     return [self initWithRecordID:[[ODRecordID alloc] initWithRecordType:recordType]
                              data:nil];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId {
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(ODRecordID *)recordId
+{
     if (![recordId.recordType isEqualToString:recordId.recordType]) {
         recordId = [[ODRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
     }
@@ -64,6 +66,25 @@ NSString *const ODRecordTypeUserRecord = @"_User";
     return self;
 }
 
++ (instancetype)recordWithRecordType:(NSString *)recordType
+{
+    return [[self alloc] initWithRecordType:recordType];
+}
+
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName
+{
+    return [[self alloc] initWithRecordType:recordType name:recordName];
+}
+
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
+{
+    return [[self alloc] initWithRecordType:recordType name:recordName data:data];
+}
+
++ (instancetype)recordWithRecordID:(ODRecordID *)recordId data:(NSDictionary *)data
+{
+    return [[self alloc] initWithRecordID:recordId data:data];
+}
 
 #pragma mark - NSCopying
 

@@ -28,7 +28,7 @@ describe(@"modify", ^{
     });
     
     it(@"multiple record", ^{
-        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        ODModifyRecordsOperation *operation = [ODModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
         operation.container = container;
         operation.database = database;
         [operation prepareForRequest];
@@ -46,7 +46,7 @@ describe(@"modify", ^{
     });
 
     it(@"set atomic", ^{
-        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        ODModifyRecordsOperation *operation = [ODModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
         operation.atomic = YES;
 
         operation.container = container;
@@ -58,7 +58,7 @@ describe(@"modify", ^{
     });
 
     it(@"make request", ^{
-        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        ODModifyRecordsOperation *operation = [ODModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -104,7 +104,7 @@ describe(@"modify", ^{
     });
     
     it(@"pass error", ^{
-        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        ODModifyRecordsOperation *operation = [ODModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -123,7 +123,7 @@ describe(@"modify", ^{
     });
     
     it(@"per block", ^{
-        ODModifyRecordsOperation *operation = [[ODModifyRecordsOperation alloc] initWithRecordsToSave:@[record1, record2]];
+        ODModifyRecordsOperation *operation = [ODModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
