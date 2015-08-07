@@ -11,6 +11,8 @@
 #import "ODAccessControl_Private.h"
 #import "ODReference.h"
 
+NSString *const ODRecordTypeUserRecord = @"_User";
+
 @interface ODRecord()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;

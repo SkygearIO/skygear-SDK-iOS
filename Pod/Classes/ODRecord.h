@@ -12,7 +12,7 @@
 #import "ODRecordID.h"
 #import "ODUserRecordID.h"
 
-NSString * const ODRecordTypeUserRecord;
+extern NSString * const ODRecordTypeUserRecord;
 
 @interface ODRecord : NSObject<NSCopying>
 
