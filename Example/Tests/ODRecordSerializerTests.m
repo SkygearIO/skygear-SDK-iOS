@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import <ODKit/ODKit.h>
 
 #import "ODAccessControl_Private.h"
@@ -109,6 +110,17 @@ describe(@"serialize", ^{
 
         NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
         expect(dictionary[@"_access"]).to.equal(@[@{@"relation": @"follow", @"level": @"write"}]);
+    });
+
+    it(@"serialize location", ^{
+        record[@"location"] = [[CLLocation alloc] initWithLatitude:1 longitude:2];
+
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"location"]).to.equal(@{
+                                                   @"$type": @"geo",
+                                                   @"$lng": @2,
+                                                   @"$lat": @1,
+                                                   });
     });
 });
 
