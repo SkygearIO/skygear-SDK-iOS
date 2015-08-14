@@ -8,6 +8,8 @@
 
 #import "ODDataSerialization.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 #import "ODAsset_Private.h"
 #import "ODReference.h"
 #import "ODError.h"
@@ -16,6 +18,7 @@ NSString * const ODDataSerializationCustomTypeKey = @"$type";
 NSString * const ODDataSerializationAssetType = @"asset";
 NSString * const ODDataSerializationReferenceType = @"ref";
 NSString * const ODDataSerializationDateType = @"date";
+NSString * const ODDataSerializationLocationType = @"geo";
 
 @implementation ODDataSerialization
 
@@ -31,6 +34,8 @@ NSString * const ODDataSerializationDateType = @"date";
         obj = [[ODReference alloc] initWithRecordID:recordID];
     } else if ([type isEqualToString:ODDataSerializationAssetType]) {
         obj = [self deserializeAssetWithDictionary:data];
+    } else if ([type isEqualToString:ODDataSerializationLocationType]) {
+        obj = [self deserializeLocationWithDictionary:data];
     }
     return obj;
 }
@@ -77,6 +82,14 @@ NSString * const ODDataSerializationDateType = @"date";
     return [ODAsset assetWithName:name url:url];
 }
 
++ (CLLocation *)deserializeLocationWithDictionary:(NSDictionary *)data
+{
+    double lng = [data[@"$lng"] doubleValue];
+    double lat = [data[@"$lat"] doubleValue];
+
+    return [[CLLocation alloc] initWithLatitude:lat longitude:lng];
+}
+
 + (id)serializeSimpleObject:(id)obj
 {
     id data = nil;
@@ -96,6 +109,13 @@ NSString * const ODDataSerializationDateType = @"date";
         data = @{
                  ODDataSerializationCustomTypeKey: ODDataSerializationAssetType,
                  @"$name": [obj name],
+                 };
+    } else if ([obj isKindOfClass:[CLLocation class]]) {
+        CLLocationCoordinate2D coordinate = [obj coordinate];
+        data = @{
+                 ODDataSerializationCustomTypeKey: ODDataSerializationLocationType,
+                 @"$lng": @(coordinate.longitude),
+                 @"$lat": @(coordinate.latitude),
                  };
     } else {
         data = obj;

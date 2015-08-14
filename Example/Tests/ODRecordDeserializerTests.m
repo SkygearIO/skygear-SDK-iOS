@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+
 #import <ODKit/ODKit.h>
 
 SpecBegin(ODRecordDeserializer)
@@ -117,7 +119,18 @@ describe(@"deserialize", ^{
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect(record[@"topics"]).to.equal(topics);
     });
-    
+
+    it(@"deserialize location", ^{
+        NSMutableDictionary *data = [basicPayload mutableCopy];
+        data[@"location"] = @{
+                              @"$type": @"geo",
+                              @"$lng": @2,
+                              @"$lat": @1,
+                              };
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        expect([record[@"location"] coordinate]).to.equal([[[CLLocation alloc] initWithLatitude:1 longitude:2] coordinate]);
+
+    });
 });
 
 SpecEnd
