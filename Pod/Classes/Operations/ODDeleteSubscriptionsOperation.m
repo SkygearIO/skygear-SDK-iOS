@@ -104,8 +104,9 @@
     }
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)responseObject
 {
+    NSDictionary *response = responseObject.responseDictionary;
     if (self.deleteSubscriptionsCompletionBlock) {
         NSArray *deletedSubscriptions = nil;
         NSError *error = nil;

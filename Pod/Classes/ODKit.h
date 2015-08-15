@@ -79,3 +79,5 @@
 #import "ODUserRecordID_Private.h"
 #import "NSURLRequest+ODRequest.h"
 #import "NSError+ODError.h"
+#import "ODResponse.h"
+#import "ODResultArrayResponse.h"

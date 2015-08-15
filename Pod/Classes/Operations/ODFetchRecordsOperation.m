@@ -107,8 +107,9 @@
     }
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)responseObject
 {
+    NSDictionary *response = responseObject.responseDictionary;
     NSDictionary *resultDictionary = nil;
     NSError *error = nil;
     NSArray *responseArray = response[@"result"];
