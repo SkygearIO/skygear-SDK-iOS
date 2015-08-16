@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Kwok-kuen Cheung. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
 #import <ODKit/ODKit.h>
 
@@ -143,6 +144,32 @@ describe(@"deserialize predicate", ^{
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
         expect(predicate).to.equal([NSPredicate predicateWithFormat:@"name <> %@", @12]);
+    });
+
+    it(@"func distance", ^{
+        NSArray *predicateArray = @[@"lt",
+                                    @[@"func",
+                                      @"distance",
+                                      @{@"$type": @"keypath", @"$val": @"location"},
+                                      @{@"$type": @"geo", @"$lng": @2, @"$lat": @1}
+                                      ],
+                                    @3,
+                                    ];
+
+        // CLLocation doesn't implement isEqualTo, checking it manually here
+
+        id predicate = [deserializer predicateWithArray:predicateArray];
+        expect(predicate).to.beInstanceOf([NSComparisonPredicate class]);
+
+        NSExpression *leftExpression = [predicate leftExpression];
+        expect(leftExpression.function).to.equal(@"distanceToLocation:fromLocation:");
+
+        expect(leftExpression.arguments.count).to.equal(2);
+        expect(leftExpression.arguments[0]).to.equal([NSExpression expressionForKeyPath:@"location"]);
+        CLLocation *loc = [leftExpression.arguments[1] constantValue];
+        expect(loc.coordinate).to.equal(CLLocationCoordinate2DMake(1, 2));
+
+        expect([predicate rightExpression]).to.equal([NSExpression expressionForConstantValue:@3]);
     });
 
     it(@"and", ^{

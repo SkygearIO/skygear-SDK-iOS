@@ -20,7 +20,39 @@ NSString * const ODDataSerializationReferenceType = @"ref";
 NSString * const ODDataSerializationDateType = @"date";
 NSString * const ODDataSerializationLocationType = @"geo";
 
+static NSDictionary *remoteFunctionNameDict;
+static NSDictionary *localFunctionNameDict;
+
+NSString *remoteFunctionName(NSString *localFunctionName) {
+    NSString *remoteName = remoteFunctionNameDict[localFunctionName];
+    if (!remoteName.length) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"Unrecgonized local function name `%@`", localFunctionName] userInfo:nil];
+    }
+    return remoteName;
+}
+
+NSString *localFunctionName(NSString *remoteFunctionName) {
+    NSString *localName = localFunctionNameDict[remoteFunctionName];
+    if (!localName.length) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"Unrecgonized remote function name `%@`", remoteFunctionName] userInfo:nil];
+    }
+    return localName;
+}
+
 @implementation ODDataSerialization
+
++ (void)initialize
+{
+    remoteFunctionNameDict = @{@"distanceToLocation:fromLocation:": @"distance"};
+
+    NSMutableDictionary *localFunctionNameMutableDict = [NSMutableDictionary dictionary];
+    [remoteFunctionNameDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        localFunctionNameMutableDict[obj] = key;
+    }];
+    localFunctionNameDict = localFunctionNameMutableDict;
+}
 
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data
 {
@@ -87,7 +119,11 @@ NSString * const ODDataSerializationLocationType = @"geo";
     double lng = [data[@"$lng"] doubleValue];
     double lat = [data[@"$lat"] doubleValue];
 
-    return [[CLLocation alloc] initWithLatitude:lat longitude:lng];
+    return [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(lat, lng)
+                                         altitude:0
+                               horizontalAccuracy:0
+                                 verticalAccuracy:0
+                                        timestamp:[NSDate dateWithTimeIntervalSince1970:0]];
 }
 
 + (id)serializeSimpleObject:(id)obj

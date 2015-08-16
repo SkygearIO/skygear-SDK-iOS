@@ -14,6 +14,10 @@ extern NSString * const ODDataSerializationCustomTypeKey;
 extern NSString * const ODDataSerializationReferenceType;
 extern NSString * const ODDataSerializationDateType;
 
+NSString *remoteFunctionName(NSString *localFunctionName);
+NSString *localFunctionName(NSString *remoteFunctionName);
+
+
 @interface ODDataSerialization : NSObject
 
 + (id)deserializeObjectWithValue:(id)value;

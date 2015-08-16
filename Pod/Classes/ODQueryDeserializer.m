@@ -143,6 +143,20 @@
         }
     }
 
+    if ([obj isKindOfClass:[NSArray class]]) {
+        NSArray *arr = obj;
+
+        NSString *funcName = arr[1];
+        NSString *ocFuncName = localFunctionName(funcName);
+
+        NSMutableArray *args = [NSMutableArray arrayWithCapacity:arr.count-1];
+        for (NSUInteger i = 2; i < arr.count; ++i) {
+            [args addObject:[self expressionWithObject:arr[i]]];
+        }
+
+        return [NSExpression expressionForFunction:ocFuncName arguments:args];
+    }
+
     id constantValue = [ODDataSerialization deserializeObjectWithValue:obj];
     return [NSExpression expressionForConstantValue:constantValue];
 }
