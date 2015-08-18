@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import <ODKit/ODKit.h>
 
 SpecBegin(ODQuerySerializer)
@@ -202,6 +203,21 @@ describe(@"serialize predicate", ^{
         expect(result[0]).to.equal(@"not");
         expect([result[1] class]).to.beSubclassOf([NSArray class]);
         expect(result[1][0]).to.equal(@"eq");
+    });
+
+    it(@"distanceToLocation:fromLocation:", ^{
+        CLLocation *loc = [[CLLocation alloc] initWithLatitude:1 longitude:2];
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", loc, 3.f]];
+
+        expect(result).to.equal(@[@"lt",
+                                  @[@"func",
+                                    @"distance",
+                                    @{@"$type": @"keypath", @"$val": @"location"},
+                                    @{@"$type": @"geo", @"$lng": @2, @"$lat": @1}
+                                    ],
+                                  @3,
+                                ]);
     });
 });
 

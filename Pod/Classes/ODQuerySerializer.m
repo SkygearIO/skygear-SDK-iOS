@@ -93,12 +93,26 @@
                      };
         case NSConstantValueExpressionType:
             return [ODDataSerialization serializeObject:expression.constantValue];
+        case NSFunctionExpressionType:
+            return [self serializeWithFunctionExpression:expression];
         default:
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:[NSString stringWithFormat:@"Given NSExpressionType `%u` is not supported.", (unsigned int)expression.expressionType]
                                          userInfo:nil];
             break;
     }
+}
+
+- (id)serializeWithFunctionExpression:(NSExpression *)expression
+{
+    NSMutableArray *arr = [@[@"func"] mutableCopy];
+
+    [arr addObject:remoteFunctionName(expression.function)];
+    for (id obj in expression.arguments) {
+        [arr addObject:[self serializeWithExpression:obj]];
+    }
+
+    return arr;
 }
 
 - (id)serializeWithPredicate:(NSPredicate *)predicate
