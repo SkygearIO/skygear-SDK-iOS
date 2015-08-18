@@ -58,8 +58,9 @@
     }
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)responseObject
 {
+    NSDictionary *response = responseObject.responseDictionary;
     NSArray *result = response[@"result"];
     if (![result isKindOfClass:[NSArray class]]) {
         NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."

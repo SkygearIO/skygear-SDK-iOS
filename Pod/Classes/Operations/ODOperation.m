@@ -12,6 +12,7 @@
 #import "NSError+ODError.h"
 #import "ODError.h"
 #import "ODDataSerialization.h"
+#import "ODResponse.h"
 
 NSString * const ODOperationErrorDomain = @"ODOperationErrorDomain";
 NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatusCodeKey";
@@ -22,6 +23,11 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     NSError *_error;
     NSDictionary *_response;
     NSHTTPURLResponse *_httpResponse;
+}
+
++ (Class)responseClass
+{
+    return [ODResponse class];
 }
 
 - (instancetype)init
@@ -209,6 +215,7 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
         _response = responseDictionary;
     }
     
+    NSAssert(_error != nil || _response != nil, @"either error or response must be non nil");
     [self setFinished:YES];
 
     if ([self isAuthFailureError:_error] && _container.authErrorHandler) {
@@ -223,8 +230,9 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
         __typeof__(self) strongSelf = weakSelf;
         if (strongSelf->_error) {
             [strongSelf handleRequestError:strongSelf->_error];
-        } else {
-            [strongSelf handleResponse:strongSelf->_response];
+        } else if (strongSelf->_response && [[strongSelf class] responseClass] != nil) {
+            ODResponse *response = [strongSelf createResponseWithDictionary:strongSelf->_response];
+            [strongSelf handleResponse:response];
         }
     };
 }
@@ -234,7 +242,7 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     // Do nothing. Subclass should implement this method to define custom behavior.
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)response
 {
     // Do nothing. Subclass should implement this method to define custom behavior.
 }
@@ -243,6 +251,13 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
 {
     NSDictionary *userInfo = error.userInfo;
     return [userInfo[ODErrorTypeKey] isEqualToString:@"AuthenticationError"] && [userInfo[ODErrorCodeKey] integerValue] == 101;
+}
+
+- (ODResponse *)createResponseWithDictionary:(NSDictionary *)responseDictionary
+{
+    Class ODResponseClass = [[self class] responseClass];
+    return [[ODResponseClass alloc] initWithDictionary:responseDictionary];
+
 }
 
 @end

@@ -10,6 +10,7 @@
 
 #import "ODContainer.h"
 #import "ODRequest.h"
+#import "ODResponse.h"
 
 extern NSString * const ODOperationErrorDomain;
 extern NSString * const ODOperationErrorHTTPStatusCodeKey;
@@ -55,10 +56,12 @@ extern NSString * const ODOperationErrorHTTPStatusCodeKey;
  The default implementation of this method does nothing. Subclass is expected to implement this
  method.
  */
-- (void)handleResponse:(NSDictionary *)response;
+- (void)handleResponse:(ODResponse *)response;
 
 - (void)operationWillStart;
 
 - (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description errorDictionary:(NSDictionary *)dict;
+
++ (Class)responseClass;
 
 @end

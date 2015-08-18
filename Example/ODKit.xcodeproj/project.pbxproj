@@ -42,6 +42,9 @@
 		3867EA331AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */; };
 		38A115351B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */; };
 		38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */; };
+		38D3E2281B7ED41E00CCD28D /* ODResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2271B7ED41E00CCD28D /* ODResponseTest.m */; };
+		38D3E22A1B7ED83600CCD28D /* ODResultArrayResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2291B7ED83600CCD28D /* ODResultArrayResponseTest.m */; };
+		38D3E2341B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2331B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m */; };
 		38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */; };
 		3ED0BE5EFF5C701B898ED1F8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */; };
 		5F9F71411B0B131A00F7ADDD /* ODAddRelationsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F71401B0B131A00F7ADDD /* ODAddRelationsOperationTests.m */; };
@@ -115,6 +118,9 @@
 		3867EA321AFC5B7100962100 /* ODRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
 		38A115341B02EC4E00D3BAFB /* ODRecordSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordSynchronizerTests.m; sourceTree = "<group>"; };
 		38CBC3721B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
+		38D3E2271B7ED41E00CCD28D /* ODResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODResponseTest.m; sourceTree = "<group>"; };
+		38D3E2291B7ED83600CCD28D /* ODResultArrayResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODResultArrayResponseTest.m; sourceTree = "<group>"; };
+		38D3E2331B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODSendPushNotificationOperationTests.m; sourceTree = "<group>"; };
 		38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODRegisterDeviceOperationTests.m; sourceTree = "<group>"; };
 		3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5F9F71401B0B131A00F7ADDD /* ODAddRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODAddRelationsOperationTests.m; sourceTree = "<group>"; };
@@ -314,6 +320,9 @@
 				CD42FE0F1AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 				383D272A1B46EBA300AE8606 /* ODLambdaOperationTests.m */,
+				38D3E2271B7ED41E00CCD28D /* ODResponseTest.m */,
+				38D3E2291B7ED83600CCD28D /* ODResultArrayResponseTest.m */,
+				38D3E2331B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -533,6 +542,7 @@
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* ODDeleteRecordsOperationTests.m in Sources */,
 				38CBC3731B0B23E200CA21B6 /* ODRecordStorageBackingStoreTests.m in Sources */,
+				38D3E22A1B7ED83600CCD28D /* ODResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* ODContainerTests.m in Sources */,
 				38E053D91AC1489A00850988 /* ODRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* ODRecordTests.m in Sources */,
@@ -556,9 +566,11 @@
 				383510EA1AFB4DF5009DD3E2 /* ODRecordChangeTests.m in Sources */,
 				37B10B191B1C5E1F00052740 /* ODDiscoverUsersOperationTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* ODDatabaseTest.m in Sources */,
+				38D3E2341B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m in Sources */,
 				3745755A1B08C682004539C3 /* ODDeleteSubscriptionsOperationTests.m in Sources */,
 				5F9F71431B0B349700F7ADDD /* ODRemoveRelationsOperationTests.m in Sources */,
 				CD42FE101AA3DB0A0079B3DA /* ODUserLogoutOperationTests.m in Sources */,
+				38D3E2281B7ED41E00CCD28D /* ODResponseTest.m in Sources */,
 				3785584F1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m in Sources */,
 				CD7FE26D1A9DBB9F002C076E /* ODUserLoginOperationTests.m in Sources */,
 				372E77911B28338A001F1972 /* ODAccessControlTests.m in Sources */,

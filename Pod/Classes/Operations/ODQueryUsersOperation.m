@@ -110,8 +110,9 @@ NSString * NSStringFromRelationDirection(ODRelationDirection direction) {
     }
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)responseObject
 {
+    NSDictionary *response = responseObject.responseDictionary;
     NSArray *result = response[@"result"];
     NSArray *userDicts = [self.class itemDictsFromResult:result];
     NSMutableArray *users = [NSMutableArray arrayWithCapacity:userDicts.count];

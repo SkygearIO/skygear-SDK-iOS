@@ -35,7 +35,7 @@
     }
 }
 
-- (void)handleResponse:(NSDictionary *)response
+- (void)handleResponse:(ODResponse *)response
 {
     if (_mockCompletion) {
         _mockCompletion();
