@@ -24,6 +24,11 @@
     return [[ODRecordDeserializer alloc] init];
 }
 
+- (BOOL)isRecordDictionary:(NSDictionary *)obj
+{
+    return [obj isKindOfClass:[NSDictionary class]] && [obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"record"];
+}
+
 - (ODRecord *)recordWithDictionary:(NSDictionary *)obj
 {
     NSMutableDictionary *recordData = [NSMutableDictionary dictionary];
@@ -68,7 +73,13 @@
     NSDictionary *transient = obj[ODRecordSerializationRecordTransientKey];
     if ([transient isKindOfClass:[NSDictionary class]]) {
         [transient enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [record.transient setObject:[ODDataSerialization deserializeObjectWithValue:obj]
+            id deserializedObject = nil;
+            if ([self isRecordDictionary:obj]) {
+                deserializedObject = [self recordWithDictionary:obj];
+            } else {
+                deserializedObject = [ODDataSerialization deserializeObjectWithValue:obj];
+            }
+            [record.transient setObject:deserializedObject
                                  forKey:key];
         }];
     } else {

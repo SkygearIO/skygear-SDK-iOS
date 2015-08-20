@@ -27,17 +27,20 @@ describe(@"deserialize query", ^{
         expect([deserializer class]).to.beSubclassOf([ODQueryDeserializer class]);
     });
 
-    it(@"deserialize eager load path", ^{
+    it(@"deserialize transient includes", ^{
         NSDictionary *queryDict = @{
                                     @"record_type": @"recordType",
-                                    @"eager": @[
-                                            @{@"$type": @"keypath", @"$val": @"name"},
-                                            ]
+                                    @"include": @{
+                                            @"city": @{@"$type": @"keypath", @"$val": @"city"},
+                                            }
                                     };
 
         ODQuery *query = [deserializer queryWithDictionary:queryDict];
         expect(query.recordType).to.equal(@"recordType");
-        expect(query.eagerLoadKeyPath).to.equal(@"name");
+        NSExpression *cityKeyPath = query.transientIncludes[@"city"];
+        expect([cityKeyPath class]).to.beSubclassOf([NSExpression class]);
+        expect(cityKeyPath.expressionType).to.equal(NSKeyPathExpressionType);
+        expect(cityKeyPath.keyPath).to.equal(@"city");
         expect(query.predicate).to.equal(nil);
     });
 

@@ -32,13 +32,15 @@ describe(@"serialize query", ^{
         expect(result).to.equal(@{});
     });
 
-    it(@"serialize predicate", ^{
-        query.eagerLoadKeyPath = @"name";
+    it(@"serialize transient", ^{
+        query.transientIncludes = @{
+                                    @"city": [NSExpression expressionForKeyPath:@"city"],
+                                    };
 
         NSDictionary *result = [serializer serializeWithQuery:query];
         expect(result).to.equal(@{
                                   @"record_type": @"recordType",
-                                  @"eager": @[@{@"$type": @"keypath", @"$val": @"name"}],
+                                  @"include": @{@"city":@{@"$type": @"keypath", @"$val": @"city"}},
                                   });
     });
 

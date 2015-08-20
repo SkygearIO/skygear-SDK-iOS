@@ -70,15 +70,16 @@
     if (query.sortDescriptors.count > 0) {
         result[@"sort"] = [self serializeWithSortDescriptors:query.sortDescriptors];
     }
-    if (query.eagerLoadKeyPath) {
-        NSArray *keys = [query.eagerLoadKeyPath componentsSeparatedByString:@"."];
-        if ([keys count] > 1) {
-            NSLog(@"Eager loading doesn't support key paths with length more than 1.");
+    __block NSMutableDictionary *include = nil;
+    [query.transientIncludes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (!include) {
+            include = [NSMutableDictionary dictionary];
         }
-        if ([keys count] > 0) {
-            result[@"eager"] = @[[self serializeWithExpression:
-                                   [NSExpression expressionForKeyPath:keys[0]]]];
-        }
+        
+        include[key] = [self serializeWithExpression:obj];
+    }];
+    if (include) {
+        result[@"include"] = include;
     }
     return result;
 }

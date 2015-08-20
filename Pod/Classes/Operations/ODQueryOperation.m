@@ -112,24 +112,13 @@
 {
     NSDictionary *response = responseObject.responseDictionary;
     NSArray *resultArray;
-    NSArray *eagerLoadResultArray;
     NSError *error = nil;
     NSArray *responseArray = response[@"result"];
-    NSArray *eagerLoadResponseArray = response[@"other_result"][@"eager_load"];
     
-    if ([eagerLoadResponseArray isKindOfClass:[NSArray class]]) {
-        eagerLoadResultArray = [self processResultArray:eagerLoadResponseArray perRecordBlock:nil];
-    } else {
-        eagerLoadResultArray = [NSArray array];
-    }
-                                                                
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray perRecordBlock:^(ODRecord *record) {
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(record);
-            }
-            if (self.perRecordCompletionWithEagerLoadBlock) {
-                self.perRecordCompletionWithEagerLoadBlock(record, eagerLoadResultArray);
             }
         }];
     } else {
