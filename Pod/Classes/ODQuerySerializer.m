@@ -10,6 +10,7 @@
 #import "ODRecordSerialization.h"
 #import "ODReference.h"
 #import "ODDataSerialization.h"
+#import "ODLocationSortDescriptor.h"
 
 @implementation ODQuerySerializer
 
@@ -143,9 +144,16 @@
 {
     NSMutableArray *result = [NSMutableArray array];
     [sortDescriptors enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
-        
-        [result addObject:@[[self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
-                            obj.ascending ? @"asc" : @"desc"]];
+        if ([obj isKindOfClass:[ODLocationSortDescriptor class]]) {
+            ODLocationSortDescriptor *sd = (ODLocationSortDescriptor *)obj;
+            NSExpression *expr = [NSExpression expressionForFunction:@"distanceToLocation:fromLocation:"
+                                                           arguments:@[[NSExpression expressionForKeyPath:sd.key],
+                                                                       [NSExpression expressionForConstantValue:sd.relativeLocation]]];
+            [result addObject:@[[self serializeWithExpression:expr], sd.ascending ? @"asc" : @"desc"]];
+        } else {
+            [result addObject:@[[self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
+                                obj.ascending ? @"asc" : @"desc"]];
+        }
     }];
     return [result copy];
 }

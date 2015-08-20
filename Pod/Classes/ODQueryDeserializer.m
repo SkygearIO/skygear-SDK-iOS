@@ -8,6 +8,7 @@
 
 #import "ODQueryDeserializer.h"
 #import "ODDataSerialization.h"
+#import "ODLocationSortDescriptor.h"
 
 @implementation ODQueryDeserializer
 
@@ -61,13 +62,7 @@
     if (array.count < 2) {
         return nil;
     }
-
-    NSDictionary *keyPathDict = array[0];
-    NSString *keyPath = [self keyPathWithDictionary:keyPathDict];
-    if (!keyPath.length) {
-        return nil;
-    }
-
+    
     NSString *ordering = array[1];
     BOOL ascending;
     if ([ordering isEqualToString:@"asc"]) {
@@ -79,7 +74,32 @@
         return nil;
     }
 
-    return [NSSortDescriptor sortDescriptorWithKey:keyPath ascending:ascending];
+    NSExpression *expr = [self expressionWithObject:array[0]];
+    switch (expr.expressionType) {
+        case NSKeyPathExpressionType:
+            if (expr.keyPath.length) {
+                return [NSSortDescriptor sortDescriptorWithKey:expr.keyPath
+                                                     ascending:ascending];
+            } else {
+                return nil;
+            }
+            break;
+        case NSFunctionExpressionType:
+            if ([expr.function isEqualToString:@"distanceToLocation:fromLocation:"]) {
+                NSExpression *arg1 = expr.arguments[0];
+                NSExpression *arg2 = expr.arguments[1];
+                return [ODLocationSortDescriptor locationSortDescriptorWithKey:arg1.keyPath
+                                                              relativeLocation:arg2.constantValue
+                                                                     ascending:ascending];
+            } else {
+                NSLog(@"Function name %@ is not supported.", expr.function);
+                return nil;
+            }
+            break;
+        default:
+            NSLog(@"Unsupport expression of type %lu.", expr.expressionType);
+            return nil;
+    }
 }
 
 - (NSPredicate *)predicateWithArray:(NSArray *)array
