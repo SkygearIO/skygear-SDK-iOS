@@ -122,6 +122,21 @@ describe(@"serialize", ^{
                                                    @"$lat": @1,
                                                    });
     });
+    
+    it(@"serialize transient fields (enabled)", ^{
+        record.transient[@"hello"] = @"world";
+        
+        serializer.serializeTransientDictionary = YES;
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"_transient"]).to.equal(@{@"hello": @"world"});
+    });
+    
+    it(@"serialize transient fields (disabled)", ^{
+        record.transient[@"hello"] = @"world";
+        
+        NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+        expect(dictionary[@"_transient"]).to.beNil();
+    });
 });
 
 SpecEnd

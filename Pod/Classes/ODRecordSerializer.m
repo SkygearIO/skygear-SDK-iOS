@@ -23,7 +23,6 @@
     return [[ODRecordSerializer alloc] init];
 }
 
-
 - (NSDictionary *)dictionaryWithRecord:(ODRecord *)record
 {
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
@@ -44,6 +43,20 @@
             serializedAccessControl = [NSNull null];
         }
         payload[ODRecordSerializationRecordAccessControlKey] = serializedAccessControl;
+    }
+    
+    // Serialize each value in transient dictionary
+    if (self.serializeTransientDictionary) {
+        __block NSMutableDictionary *transientPayload = nil;
+        [record.transient enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if (!transientPayload) {
+                transientPayload = [NSMutableDictionary dictionary];
+            }
+            transientPayload[key] = [ODDataSerialization serializeObject:obj];
+        }];
+        if (transientPayload) {
+            payload[ODRecordSerializationRecordTransientKey] = transientPayload;
+        }
     }
 
     NSAssert(payload, @"payload is nil");

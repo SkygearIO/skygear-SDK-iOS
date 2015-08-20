@@ -64,6 +64,16 @@
 
         record.accessControl = [deserializer accessControlWithArray:rawAccessControl];
     }
+    
+    NSDictionary *transient = obj[ODRecordSerializationRecordTransientKey];
+    if ([transient isKindOfClass:[NSDictionary class]]) {
+        [transient enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [record.transient setObject:[ODDataSerialization deserializeObjectWithValue:obj]
+                                 forKey:key];
+        }];
+    } else {
+        NSLog(@"Transient dictionary is nil or of unexpected type.");
+    }
 
     return record;
 }

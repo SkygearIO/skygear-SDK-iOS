@@ -169,10 +169,12 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         record = [[ODRecord alloc] initWithRecordID:recordID
                                                data:nil];
         record[@"title"] = @"Hello World";
+        record.transient[@"temporary"] = @YES;
         
         localRecord = [[ODRecord alloc] initWithRecordID:recordID
                                                     data:nil];
         localRecord[@"title"] = @"Hello World 2";
+        localRecord.transient[@"temporary"] = @NO;
     });
     
     it(@"save, fetch, delete", ^{
@@ -186,6 +188,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         // Fetch record
         ODRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:record.recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(@YES);
         
         // Modify record
         record[@"title"] = @"Bye World";
@@ -193,7 +196,8 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore synchronize];
         fetchedRecord = [backingStore fetchRecordWithRecordID:record.recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
-        
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(record.transient[@"temporary"]);
+
         // Delete record
         [backingStore deleteRecord:record];
         [backingStore synchronize];
@@ -217,6 +221,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         // Fetch record
         ODRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(localRecord[@"title"]);
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(localRecord.transient[@"temporary"]);
         
         // Modify local record
         localRecord[@"title"] = @"Bye World 2";
@@ -224,7 +229,8 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         [backingStore synchronize];
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(localRecord[@"title"]);
-        
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(localRecord.transient[@"temporary"]);
+
         // Revert local record
         [backingStore revertRecordLocallyWithRecordID:recordID];
         [backingStore synchronize];
@@ -233,6 +239,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         expect(recordIDs).to.haveCountOf(1);
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(record.transient[@"temporary"]);
     });
     
     it(@"delete locally then revert", ^{
@@ -257,6 +264,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         expect(recordIDs).to.haveCountOf(1);
         fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(record.transient[@"temporary"]);
     });
     
     it(@"save overwrite local", ^{
@@ -273,6 +281,7 @@ sharedExamples(@"ODRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         expect(recordIDs).to.haveCountOf(1);
         ODRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
+        expect(fetchedRecord.transient[@"temporary"]).to.equal(record.transient[@"temporary"]);
     });
     
     it(@"delete overwrite local", ^{
