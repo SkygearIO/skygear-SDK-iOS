@@ -33,6 +33,7 @@
 #import "ODFollowReference.h"
 #import "ODFollowReference_Private.h"
 #import "ODLambdaOperation.h"
+#import "ODLocationSortDescriptor.h"
 #import "ODMarkNotificationsReadOperation.h"
 #import "ODModifyRecordsOperation.h"
 #import "ODModifySubscriptionsOperation.h"

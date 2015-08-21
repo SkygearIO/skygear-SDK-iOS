@@ -266,6 +266,25 @@ describe(@"serialize sort descriptors", ^{
         expect(result[1][0]).to.equal(@{@"$type": @"keypath", @"$val": @"age"});
         expect(result[1][1]).to.equal(@"asc");
     });
+    
+    it(@"sort by distance", ^{
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:42 longitude:24];
+        NSArray *sd = @[[ODLocationSortDescriptor locationSortDescriptorWithKey:@"latlng"
+                                                               relativeLocation:location
+                                                                      ascending:YES]
+                        ];
+        NSArray *result = [serializer serializeWithSortDescriptors:sd];
+        NSArray *expected = @[@[
+                                  @[@"func", @"distance",
+                                    @{@"$type": @"keypath", @"$val": @"latlng"},
+                                    @{@"$type": @"geo", @"$lng": @24, @"$lat": @42},
+                                    ],
+                                  @"asc"
+                                  ]];
+        
+        expect(result).to.equal(expected);
+    });
+
 });
 
 SpecEnd

@@ -204,7 +204,7 @@ describe(@"deserialize predicate", ^{
     });
 });
 
-describe(@"serialize sort descriptors", ^{
+describe(@"deserialize sort descriptors", ^{
     __block ODQueryDeserializer *deserializer = nil;
 
     beforeEach(^{
@@ -240,12 +240,34 @@ describe(@"serialize sort descriptors", ^{
                              @[@{@"$type": @"keypath", @"$val": @"name"}, @"desc"],
                              @[@{@"$type": @"keypath", @"$val": @"age"}, @"asc"],
                              ];
-
+        
         NSArray *sortDescriptors = [deserializer sortDescriptorsWithArray:sdArray];
         expect(sortDescriptors).to.equal(@[
                                            [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO],
                                            [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:YES],
                                            ]);
+    });
+    
+    it(@"sort distance", ^{
+        NSArray *sdArray = @[
+                             @[
+                               @[@"func", @"distance",
+                                 @{@"$type": @"keypath", @"$val": @"latlng"},
+                                 @{@"$type": @"geo", @"$lng": @2, @"$lat": @1}
+                                 ],
+                               @"asc"],
+                             ];
+        
+        NSArray *sortDescriptors = [deserializer sortDescriptorsWithArray:sdArray];
+        expect(sortDescriptors).to.haveCountOf(1);
+        expect([sortDescriptors[0] class]).to.beSubclassOf([ODLocationSortDescriptor class]);
+        
+        ODLocationSortDescriptor *sd = sortDescriptors[0];
+        CLLocation *expectedLocation = [[CLLocation alloc] initWithLatitude:1 longitude:2];
+        expect(sd.key).to.equal(@"latlng");
+        expect([sd.relativeLocation distanceFromLocation:expectedLocation]).to.beLessThan(0.00001);
+        expect(sd.ascending).to.equal(YES);
+        
     });
 });
 
