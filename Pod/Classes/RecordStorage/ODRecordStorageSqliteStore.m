@@ -27,6 +27,7 @@
     if (self) {
         _path = path;
         _serializer = [ODRecordSerializer serializer];
+        _serializer.serializeTransientDictionary = YES;
         _deserializer = [ODRecordDeserializer deserializer];
         _availableRecordTypes = [NSMutableArray array];
         [self prepareForPersistentStorage];

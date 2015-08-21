@@ -62,6 +62,7 @@ NSString *const ODRecordTypeUserRecord = @"_User";
         _recordID = [recordId copy];
         _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
         _accessControl = [ODAccessControl publicReadWriteAccessControl];
+        _transient = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -91,7 +92,8 @@ NSString *const ODRecordTypeUserRecord = @"_User";
 - (id)copyWithZone:(NSZone *)zone {
     ODRecord *record = [[self.class allocWithZone:zone] init];
     record->_recordID = [_recordID copyWithZone:zone];
-    record->_object = [[_object copyWithZone:zone] mutableCopy];
+    record->_object = [_object mutableCopyWithZone:zone];
+    record->_transient = [_transient mutableCopyWithZone:zone];
     return record;
 }
 

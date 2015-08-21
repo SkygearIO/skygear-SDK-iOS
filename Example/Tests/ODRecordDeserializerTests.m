@@ -119,7 +119,7 @@ describe(@"deserialize", ^{
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect(record[@"topics"]).to.equal(topics);
     });
-
+    
     it(@"deserialize location", ^{
         NSMutableDictionary *data = [basicPayload mutableCopy];
         data[@"location"] = @{
@@ -129,7 +129,14 @@ describe(@"deserialize", ^{
                               };
         ODRecord *record = [deserializer recordWithDictionary:data];
         expect([record[@"location"] coordinate]).to.equal([[[CLLocation alloc] initWithLatitude:1 longitude:2] coordinate]);
-
+        
+    });
+    
+    it(@"deserialize transient fields", ^{
+        NSMutableDictionary *data = [basicPayload mutableCopy];
+        data[@"_transient"] = @{ @"hello": @"world" };
+        ODRecord *record = [deserializer recordWithDictionary:data];
+        expect(record.transient).to.equal(@{@"hello": @"world"});
     });
 });
 

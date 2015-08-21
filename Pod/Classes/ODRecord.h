@@ -68,4 +68,12 @@ extern NSString * const ODRecordTypeUserRecord;
 @property (strong, nonatomic, readonly) ODAccessControl *accessControl;
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 
+/**
+ Returns an NSDictionary of transient fields.
+ 
+ Transient fields are attached to an instance of ODRecord and it is never persisted on server,
+ but they maybe returned as extra data about the record when fetched or queried from server.
+ */
+@property (nonatomic, readonly, copy) NSMutableDictionary *transient;
+
 @end

@@ -11,6 +11,13 @@
 
 @interface ODRecordSerializer : NSObject
 
+/**
+ Sets or return whether the serializer will serialize transient dictionary.
+
+ Default is NO.
+ */
+@property (nonatomic, readwrite) BOOL serializeTransientDictionary;
+
 + (instancetype)serializer;
 
 - (NSDictionary *)dictionaryWithRecord:(ODRecord *)record;

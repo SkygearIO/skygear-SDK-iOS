@@ -76,9 +76,9 @@ describe(@"fetch", ^{
         expect(request.payload[@"sort"][0]).to.equal(@[@{@"$type": @"keypath", @"$val": @"name"}, @"asc"]);
     });
     
-    it(@"eager", ^{
+    it(@"transient", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
-        query.eagerLoadKeyPath = @"shelf";
+        query.transientIncludes = @{@"shelf": [NSExpression expressionForKeyPath:@"shelf"]};
         ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
@@ -86,20 +86,7 @@ describe(@"fetch", ^{
         [operation prepareForRequest];
         ODRequest *request = operation.request;
         
-        expect(request.payload[@"eager"][0]).to.equal(@{@"$type": @"keypath", @"$val": @"shelf"});
-    });
-    
-    it(@"eager", ^{
-        ODQuery *query = [[ODQuery alloc] initWithRecordType:@"note" predicate:nil];
-        query.eagerLoadKeyPath = @"category";
-        ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
-        ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
-        operation.container = container;
-        operation.database = database;
-        [operation prepareForRequest];
-        ODRequest *request = operation.request;
-        
-        expect(request.payload[@"eager"][0]).to.equal(@{@"$type": @"keypath", @"$val": @"category"});
+        expect(request.payload[@"include"]).to.equal(@{@"shelf": @{@"$type": @"keypath", @"$val": @"shelf"}});
     });
 
     it(@"make request", ^{
@@ -232,7 +219,7 @@ describe(@"fetch", ^{
     it(@"per block with eager load", ^{
         ODRecordID *recordID1 = [[ODRecordID alloc] initWithRecordType:@"book" name:@"book1"];
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
-        query.eagerLoadKeyPath = @"category";
+        query.transientIncludes = @{@"category": [NSExpression expressionForKeyPath:@"category"]};
         ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -246,18 +233,17 @@ describe(@"fetch", ^{
                                                      @"_id": @"book/book1",
                                                      @"_type": @"record",
                                                      @"title": @"A tale of two cities",
-                                                     @"category": @{@"$type": @"ref", @"$id": @"category/important"}
+                                                     @"category": @{@"$type": @"ref", @"$id": @"category/important"},
+                                                     @"_transient": @{
+                                                             @"category": @{
+                                                                 @"_id": @"category/important",
+                                                                 @"_type": @"record",
+                                                                 @"title": @"Important",
+                                                                 }
+
+                                                             }
                                                      },
                                                  ],
-                                         @"other_result": @{
-                                                 @"eager_load": @[
-                                                         @{
-                                                             @"_id": @"category/important",
-                                                             @"_type": @"record",
-                                                             @"title": @"Important",
-                                                             }
-                                                         ]
-                                                 }
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
@@ -270,17 +256,17 @@ describe(@"fetch", ^{
         
         waitUntil(^(DoneCallback done) {
             NSMutableArray *remainingRecordIDs = [@[recordID1] mutableCopy];
-            operation.perRecordCompletionWithEagerLoadBlock = ^(ODRecord *record, NSArray *eagerLoadedRecords) {
+            operation.perRecordCompletionBlock = ^(ODRecord *record) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    expect(eagerLoadedRecords).to.haveCountOf(1);
-                    expect(eagerLoadedRecords[0][@"title"]).to.equal(@"Important");
-                    
                     expect(record).toNot.beNil();
                     ODRecordID *recordID = record.recordID;
                     if ([recordID isEqual:recordID1]) {
                         expect([record class]).to.beSubclassOf([ODRecord class]);
                         expect(record.recordID).to.equal(recordID1);
                     }
+                    ODRecord *categoryRecord = record.transient[@"category"];
+                    expect([categoryRecord class]).to.beSubclassOf([ODRecord class]);
+                    expect(categoryRecord[@"title"]).to.equal(@"Important");
                     [remainingRecordIDs removeObject:recordID];
                 });
             };

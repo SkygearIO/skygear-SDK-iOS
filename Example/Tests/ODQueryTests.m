@@ -26,11 +26,11 @@ describe(@"ODQuery", ^{
         ODQuery *query1 = [ODQuery queryWithRecordType:[recordType copy]
                                              predicate:[predicate copy]];
         query1.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES]];
-        query1.eagerLoadKeyPath = @"title";
+        query1.transientIncludes = @{@"city": [NSExpression expressionForKeyPath:@"city"]};
         ODQuery *query2 = [[ODQuery alloc] initWithRecordType:[recordType copy]
                                                     predicate:[predicate copy]];
         query2.sortDescriptors = [query1.sortDescriptors copy];
-        query2.eagerLoadKeyPath = [query1.eagerLoadKeyPath copy];
+        query2.transientIncludes = [query1.transientIncludes copy];
         expect(query1).to.equal(query2);
     });
     

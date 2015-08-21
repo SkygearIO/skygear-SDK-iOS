@@ -39,8 +39,8 @@
         self.sortDescriptors = [aDecoder decodeObjectOfClasses:set
                                                         forKey:@"sortDescriptors"];
         set = [NSSet setWithArray:@[[NSArray class], [NSString class]]];
-        self.eagerLoadKeyPath = [aDecoder decodeObjectOfClasses:set
-                                                         forKey:@"eagerLoadKeyPath"];
+        self.transientIncludes = [aDecoder decodeObjectOfClasses:set
+                                                         forKey:@"transientIncludes"];
     }
     return self;
 }
@@ -50,7 +50,7 @@
     [aCoder encodeObject:self.predicate forKey:@"predicate"];
     [aCoder encodeObject:self.recordType forKey:@"recordType"];
     [aCoder encodeObject:self.sortDescriptors forKey:@"sortDescriptors"];
-    [aCoder encodeObject:self.eagerLoadKeyPath forKey:@"eagerLoadKeyPath"];
+    [aCoder encodeObject:self.transientIncludes forKey:@"transientIncludes"];
 }
 
 + (BOOL)supportsSecureCoding
@@ -67,12 +67,12 @@
     return ((self.predicate == nil && other.predicate == nil) || [self.predicate isEqual:other.predicate]) &&
         ((self.recordType == nil && other.recordType == nil) || [self.recordType isEqual:other.recordType]) &&
         ((self.sortDescriptors == nil && other.sortDescriptors == nil) || [self.sortDescriptors isEqual:other.sortDescriptors]) &&
-        ((self.eagerLoadKeyPath == nil && other.eagerLoadKeyPath == nil) || [self.eagerLoadKeyPath isEqual:other.eagerLoadKeyPath]);
+        ((self.transientIncludes == nil && other.transientIncludes == nil) || [self.transientIncludes isEqual:other.transientIncludes]);
 }
 
 - (NSUInteger)hash
 {
-    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^ [self.eagerLoadKeyPath hash];
+    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^ [self.transientIncludes hash];
 }
 
 

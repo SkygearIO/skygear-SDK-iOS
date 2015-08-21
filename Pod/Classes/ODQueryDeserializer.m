@@ -31,10 +31,12 @@
 
     ODQuery *query = [[ODQuery alloc] initWithRecordType:recordType predicate:predicate];
 
-    // currently only one eager load key path is supported
-    NSDictionary *eagerKeyPathDict = [dictionary[@"eager"] objectAtIndex:0];
-    if (eagerKeyPathDict.count) {
-        query.eagerLoadKeyPath = [self keyPathWithDictionary:eagerKeyPathDict];
+    if ([dictionary[@"include"] isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *include = [NSMutableDictionary dictionary];
+        [dictionary[@"include"] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            include[key] = [self expressionWithObject:obj];
+        }];
+        query.transientIncludes = include;
     }
 
     NSArray *sortDescriptorArrays = dictionary[@"sort"];

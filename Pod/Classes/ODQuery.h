@@ -20,6 +20,11 @@
 @property (nonatomic, readonly, copy) NSString *recordType;
 @property (nonatomic, readonly, copy) NSPredicate *predicate;
 @property (nonatomic, copy) NSArray *sortDescriptors;
-@property (strong, nonatomic) NSString *eagerLoadKeyPath;
+
+/**
+ An NSDictionary of expression to be evaluated on the server side and returned as transient
+ dictionary in ODRecord.
+ */
+@property (strong, nonatomic) NSDictionary *transientIncludes;
 
 @end
