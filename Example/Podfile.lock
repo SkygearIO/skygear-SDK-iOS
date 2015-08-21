@@ -8,9 +8,11 @@ PODS:
   - OCMock (3.1.2)
   - ODKit (0.1.0):
     - FMDB (~> 2.5)
+    - SocketRocket (~> 0.4)
   - OHHTTPStubs (3.1.10):
     - OHHTTPStubs/Core (= 3.1.10)
   - OHHTTPStubs/Core (3.1.10)
+  - SocketRocket (0.4)
   - Specta (1.0.1)
 
 DEPENDENCIES:
@@ -22,14 +24,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   ODKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  ODKit: 4967175114434966499ead74081f8a8cea62a9d3
+  ODKit: 68e90305407d2067fe24491762438131d5821a00
   OHHTTPStubs: 00152a63400246fcbc4b772a2a547ea34c97cbd6
+  SocketRocket: 01443933b7bc362621325f4607b80b4286a99707
   Specta: 097be314a75de103703a3bf9a529dc1a398509d7
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
