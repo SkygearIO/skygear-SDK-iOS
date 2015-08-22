@@ -12,14 +12,16 @@
 #import "ODDataSerialization.h"
 #import "ODError.h"
 #import "ODResultArrayResponse.h"
+#import "ODNotificationInfo.h"
+#import "ODNotificationInfoSerializer.h"
 
 @implementation ODSendPushNotificationOperation
 
-- (instancetype)initWithNotificationPayload:(NSDictionary *)payload pushTarget:(ODPushTarget)pushTarget IDsToSend:(NSArray *)IDsToSend
+- (instancetype)initWithNotificationInfo:(ODNotificationInfo *)notificationInfo pushTarget:(ODPushTarget)pushTarget IDsToSend:(NSArray *)IDsToSend
 {
     self = [super init];
     if (self) {
-        _payload = [payload copy];
+        _notificationInfo = [notificationInfo copy];
         _IDsToSend = [IDsToSend copy];
         _pushTarget = pushTarget;
         
@@ -35,14 +37,18 @@
     return self;
 }
 
-+ (instancetype)operationWithNotificationPayload:(NSDictionary *)payload userIDsToSend:(NSArray *)userIDsToSend
++ (instancetype)operationWithNotificationInfo:(ODNotificationInfo *)noteInfo userIDsToSend:(NSArray *)userIDsToSend
 {
-    return [[self alloc] initWithNotificationPayload:payload pushTarget:ODPushTargetIsUser IDsToSend:userIDsToSend];
+    return [[self alloc] initWithNotificationInfo:noteInfo
+                                       pushTarget:ODPushTargetIsUser
+                                        IDsToSend:userIDsToSend];
 }
 
-+ (instancetype)operationWithNotificationPayload:(NSDictionary *)payload deviceIDsToSend:(NSArray *)deviceIDsToSend
++ (instancetype)operationWithNotificationInfo:(ODNotificationInfo *)noteInfo deviceIDsToSend:(NSArray *)deviceIDsToSend
 {
-    return [[self alloc] initWithNotificationPayload:payload pushTarget:ODPushTargetIsDevice IDsToSend:deviceIDsToSend];
+    return [[self alloc] initWithNotificationInfo:noteInfo
+                                       pushTarget:ODPushTargetIsDevice
+                                        IDsToSend:deviceIDsToSend];
 }
 
 + (Class)responseClass
@@ -55,19 +61,22 @@
     NSString *action;
     NSMutableDictionary *payload;
     
+    ODNotificationInfoSerializer *serializer = [ODNotificationInfoSerializer serializer];
+    NSDictionary *serializedNotification = [serializer dictionaryWithNotificationInfo:self.notificationInfo];
+
     switch (self.pushTarget) {
         case ODPushTargetIsUser:
             action = @"push:user";
             payload = [@{
                          @"user_ids": self.IDsToSend,
-                         @"notification": self.payload,
+                         @"notification": serializedNotification,
                          } mutableCopy];
             break;
         case ODPushTargetIsDevice:
             action = @"push:device";
             payload = [@{
                          @"device_ids": self.IDsToSend,
-                         @"notification": self.payload,
+                         @"notification": serializedNotification,
                          } mutableCopy];
             break;
         default: {

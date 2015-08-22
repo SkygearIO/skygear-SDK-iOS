@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <ODKit/ODKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "ODNotificationInfo.h"
 
 SpecBegin(ODSendPushNotificationOperation)
 
 describe(@"send push", ^{
     __block ODContainer *container = nil;
-    NSDictionary *notificationPayload = @{ @"aps": @{ @"alert": @"Hello World!" } };
+    ODNotificationInfo *notificationInfo = [ODNotificationInfo notificationInfo];
+    notificationInfo.alertBody = @"Hello World!";
+    NSDictionary *expectedNotificationPayload = @{@"aps": @{@"alert": @{@"body": @"Hello World!"}}};
     
     beforeEach(^{
         container = [[ODContainer alloc] init];
@@ -23,7 +26,7 @@ describe(@"send push", ^{
     });
     
     it(@"send to device", ^{
-        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationPayload:notificationPayload deviceIDsToSend:@[ @"johndoe" ]];
+        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationInfo:notificationInfo deviceIDsToSend:@[ @"johndoe" ]];
         operation.container = container;
         [operation prepareForRequest];
         
@@ -33,12 +36,12 @@ describe(@"send push", ^{
         expect(request.action).to.equal(@"push:device");
         expect(request.payload).to.equal(@{
                                            @"device_ids": @[@"johndoe"],
-                                           @"notification": notificationPayload,
+                                           @"notification": expectedNotificationPayload,
                                            });
     });
     
     it(@"send to user", ^{
-        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationPayload:notificationPayload userIDsToSend:@[ @"johndoe" ]];
+        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationInfo:notificationInfo userIDsToSend:@[ @"johndoe" ]];
         operation.container = container;
         [operation prepareForRequest];
         
@@ -48,12 +51,12 @@ describe(@"send push", ^{
         expect(request.action).to.equal(@"push:user");
         expect(request.payload).to.equal(@{
                                            @"user_ids": @[@"johndoe"],
-                                           @"notification": notificationPayload,
+                                           @"notification": expectedNotificationPayload,
                                            });
     });
     
     it(@"send multiple", ^{
-        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationPayload:notificationPayload userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationInfo:notificationInfo userIDsToSend:@[ @"johndoe", @"janedoe" ]];
         operation.container = container;
         [operation prepareForRequest];
         
@@ -63,12 +66,12 @@ describe(@"send push", ^{
         expect(request.action).to.equal(@"push:user");
         expect(request.payload).to.equal(@{
                                            @"user_ids": @[@"johndoe", @"janedoe"],
-                                           @"notification": notificationPayload,
+                                           @"notification": expectedNotificationPayload,
                                            });
     });
     
     it(@"make request", ^{
-        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationPayload:notificationPayload userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationInfo:notificationInfo userIDsToSend:@[ @"johndoe", @"janedoe" ]];
         operation.container = container;
         
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -120,7 +123,7 @@ describe(@"send push", ^{
     });
     
     it(@"pass error", ^{
-        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationPayload:notificationPayload userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+        ODSendPushNotificationOperation *operation = [ODSendPushNotificationOperation operationWithNotificationInfo:notificationInfo userIDsToSend:@[ @"johndoe", @"janedoe" ]];
         operation.container = container;
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;

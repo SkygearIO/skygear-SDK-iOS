@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "ODOperation.h"
 
+@class ODNotificationInfo;
+
 typedef enum : NSUInteger {
     ODPushTargetIsDevice,
     ODPushTargetIsUser,
@@ -16,15 +18,15 @@ typedef enum : NSUInteger {
 
 @interface ODSendPushNotificationOperation : ODOperation
 
-- (instancetype)initWithNotificationPayload:(NSDictionary *)payload
-                                 pushTarget:(ODPushTarget)pushTarget
-                                  IDsToSend:(NSArray *)IDsToSend;
-+ (instancetype)operationWithNotificationPayload:(NSDictionary *)payload
-                                   userIDsToSend:(NSArray *)userIDsToSend;
-+ (instancetype)operationWithNotificationPayload:(NSDictionary *)payload
-                                 deviceIDsToSend:(NSArray *)deviceIDsToSend;
+- (instancetype)initWithNotificationInfo:(ODNotificationInfo *)noteInfo
+                              pushTarget:(ODPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend;
++ (instancetype)operationWithNotificationInfo:(ODNotificationInfo *)noteInfo
+                                userIDsToSend:(NSArray *)userIDsToSend;
++ (instancetype)operationWithNotificationInfo:(ODNotificationInfo *)noteInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend;
 
-@property (nonatomic, readwrite, copy) NSDictionary *payload;
+@property (nonatomic, readwrite, copy) ODNotificationInfo *notificationInfo;
 @property (nonatomic, readwrite) ODPushTarget pushTarget;
 @property (nonatomic, readwrite, copy) NSArray *IDsToSend;
 @property (nonatomic, copy) void (^perSendCompletionHandler)(NSString *userID, NSError *error);
