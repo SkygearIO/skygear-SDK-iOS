@@ -32,7 +32,7 @@ double const ODPubsubReconnectWait = 1.0;
     self = [super init];
     if (self)
     {
-        _endPointAddress = endPoint;
+        _endPointAddress = [endPoint copy];
         _channelHandlers = [[NSMutableDictionary alloc] init];
         _pendingPublish = [[NSMutableArray alloc] init];
         _opened = false;
@@ -49,7 +49,7 @@ double const ODPubsubReconnectWait = 1.0;
 
 - (void)setEndPointAddress:(NSURL *)endPointAddress
 {
-    _endPointAddress = endPointAddress;
+    _endPointAddress = [endPointAddress copy];
     if (_opened) {
         [_webSocket close];
         [self connect];
@@ -77,7 +77,7 @@ double const ODPubsubReconnectWait = 1.0;
 
 - (void)subscribeTo:(NSString *)channel handler:(void(^)(NSDictionary *))messageHandler
 {
-    [_channelHandlers setObject:messageHandler forKey:channel];
+    [_channelHandlers setObject:[messageHandler copy] forKey:channel];
     if (!_opened) {
         [self connect];
     }
@@ -172,6 +172,12 @@ double const ODPubsubReconnectWait = 1.0;
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
 {
+    if (![message isKindOfClass:[NSString class]]) {
+        NSLog(@"%@ only support websocket message of class NSData. Got %@.",
+              NSStringFromClass([self class]), message);
+        return;
+    }
+    
     NSData *objectData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:objectData

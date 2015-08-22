@@ -10,7 +10,7 @@
 
 @interface ODPubsub : NSObject
 
-@property (nonatomic, strong) NSURL *endPointAddress;
+@property (nonatomic, copy) NSURL *endPointAddress;
 
 /**
  In normal usage, you will not need to init the PubsubClient by yourself. You just get the pubsubClient from the default
