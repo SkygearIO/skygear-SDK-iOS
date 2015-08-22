@@ -42,9 +42,9 @@
 - (void)subscribeTo:(NSString *)channel handler:(void(^)(NSDictionary *))messageHandler;
 
 /**
- Unscubscrtibe a channel without closing connection.
+ Unscubscribe a channel without closing connection.
  */
-- (void)unSubscribe:(NSString *)channel;
+- (void)unsubscribe:(NSString *)channel;
 
 /**
  Publish message to a channel. 

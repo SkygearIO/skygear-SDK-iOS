@@ -89,7 +89,7 @@ double const ODPubsubReconnectWait = 1.0;
     }
 }
 
-- (void)unSubscribe:(NSString *)channel
+- (void)unsubscribe:(NSString *)channel
 {
     [_channelHandlers removeObjectForKey:channel];
     [self send:@{
