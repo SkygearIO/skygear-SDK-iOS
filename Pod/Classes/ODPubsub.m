@@ -56,12 +56,17 @@ double const ODPubsubReconnectWait = 1.0;
     }
 }
 
+- (SRWebSocket *)makeWebSocket
+{
+    return [[SRWebSocket alloc] initWithURL:_endPointAddress];
+}
+
 - (void)connect
 {
     if (!_opened && !_connecting) {
         _closing = false;
         _connecting = true;
-        _webSocket = [[SRWebSocket alloc] initWithURL:_endPointAddress];
+        _webSocket = [self makeWebSocket];
         _webSocket.delegate = self;
         [_webSocket open];
     }
