@@ -45,6 +45,7 @@
 #import "ODNotificationInfoDeserializer.h"
 #import "ODNotificationInfoSerializer.h"
 #import "ODOperation.h"
+#import "ODPubsub.h"
 #import "ODPushNewsfeedOperation.h"
 #import "ODPushNotification.h"
 #import "ODPushOperation.h"

@@ -11,6 +11,7 @@
 #import "ODDatabase.h"
 #import "ODAccessToken.h"
 #import "ODAsset.h"
+#import "ODPubsub.h"
 
 /**
  Notification posted by <ODContainer> when the current user
@@ -44,6 +45,8 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 
 @property (nonatomic, readonly) ODUserRecordID *currentUserRecordID;
 @property (nonatomic, readonly) ODAccessToken *currentAccessToken;
+
+@property (nonatomic, strong) ODPubsub *pubsubClient;
 
 /**
  Returns the currently registered device ID.

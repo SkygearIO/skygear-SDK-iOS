@@ -52,6 +52,7 @@ describe(@"config End Point address", ^{
         [container configAddress:@"newpoint.com:4321"];
         NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
         expect(container.endPointAddress).to.equal(expectEndPoint);
+        expect(container.pubsubClient.endPointAddress).to.equal([NSURL URLWithString:@"ws://newpoint.com:4321/pubsub"]);
     });
 });
 

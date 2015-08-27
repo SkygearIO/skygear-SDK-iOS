@@ -33,4 +33,5 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.4'
   s.dependency 'FMDB', '~> 2.5'
+  s.dependency 'SocketRocket', '~> 0.4'
 end

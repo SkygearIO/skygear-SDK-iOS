@@ -20,6 +20,7 @@
 #import "ODLambdaOperation.h"
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
+NSString *const ODContainerPubsubBaseURL = @"ws://localhost:5000/pubsub";
 
 NSString *const ODContainerDidChangeCurrentUserNotification = @"ODContainerDidChangeCurrentUserNotification";
 NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegisterDeviceNotification";
@@ -48,6 +49,8 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         _privateCloudDatabase = [[ODDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
         _APIKey = nil;
+        NSURL *pubsubEndPoint = [NSURL URLWithString:ODContainerPubsubBaseURL];
+        _pubsubClient = [[ODPubsub alloc] initWithEndPoint:pubsubEndPoint];
         
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
@@ -82,6 +85,8 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 - (void)configAddress:(NSString *)address {
     NSString *url = [NSString stringWithFormat:@"http://%@/", address];
     _endPointAddress = [NSURL URLWithString:url];
+    NSString *pubsubUrl = [NSString stringWithFormat:@"ws://%@/pubsub", address];
+    _pubsubClient.endPointAddress = [NSURL URLWithString:pubsubUrl];
 }
 
 - (void)configureWithAPIKey:(NSString *)APIKey
