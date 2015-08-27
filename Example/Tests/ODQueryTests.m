@@ -31,6 +31,8 @@ describe(@"ODQuery", ^{
                                                     predicate:[predicate copy]];
         query2.sortDescriptors = [query1.sortDescriptors copy];
         query2.transientIncludes = [query1.transientIncludes copy];
+        query1.limit = query2.limit;
+        query1.offset = query2.offset;
         expect(query1).to.equal(query2);
     });
     

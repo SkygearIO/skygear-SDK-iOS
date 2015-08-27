@@ -41,6 +41,8 @@
         set = [NSSet setWithArray:@[[NSArray class], [NSString class]]];
         self.transientIncludes = [aDecoder decodeObjectOfClasses:set
                                                          forKey:@"transientIncludes"];
+        self.limit = [aDecoder decodeIntegerForKey:@"limit"];
+        self.offset = [aDecoder decodeIntegerForKey:@"offset"];
     }
     return self;
 }
@@ -51,6 +53,8 @@
     [aCoder encodeObject:self.recordType forKey:@"recordType"];
     [aCoder encodeObject:self.sortDescriptors forKey:@"sortDescriptors"];
     [aCoder encodeObject:self.transientIncludes forKey:@"transientIncludes"];
+    [aCoder encodeInteger:self.limit forKey:@"limit"];
+    [aCoder encodeInteger:self.offset forKey:@"offset"];
 }
 
 + (BOOL)supportsSecureCoding
@@ -67,12 +71,14 @@
     return ((self.predicate == nil && other.predicate == nil) || [self.predicate isEqual:other.predicate]) &&
         ((self.recordType == nil && other.recordType == nil) || [self.recordType isEqual:other.recordType]) &&
         ((self.sortDescriptors == nil && other.sortDescriptors == nil) || [self.sortDescriptors isEqual:other.sortDescriptors]) &&
-        ((self.transientIncludes == nil && other.transientIncludes == nil) || [self.transientIncludes isEqual:other.transientIncludes]);
+        ((self.transientIncludes == nil && other.transientIncludes == nil) || [self.transientIncludes isEqual:other.transientIncludes]) &&
+        (self.limit == other.limit) &&
+        (self.offset == other.offset);
 }
 
 - (NSUInteger)hash
 {
-    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^ [self.transientIncludes hash];
+    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^ [self.transientIncludes hash] ^ self.limit ^ self.offset;
 }
 
 

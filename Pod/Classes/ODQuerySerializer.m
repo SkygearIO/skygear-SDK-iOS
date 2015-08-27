@@ -82,6 +82,12 @@
     if (include) {
         result[@"include"] = include;
     }
+    if (query.offset > 0) {
+        result[@"offset"] = @(query.offset);
+    }
+    if (query.limit > 0) {
+        result[@"limit"] = @(query.limit);
+    }
     return result;
 }
 
