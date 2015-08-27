@@ -174,6 +174,13 @@ describe(@"deserialize predicate", ^{
 
         expect([predicate rightExpression]).to.equal([NSExpression expressionForConstantValue:@3]);
     });
+    
+    it(@"like", ^{
+        NSArray *predicateArray = @[@"like", @{@"$type": @"keypath", @"$val": @"content"}, @"%hello_"];
+        
+        NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
+        expect(predicate).to.equal([NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]);
+    });
 
     it(@"and", ^{
         NSArray *predicateArray = @[@"and", @[@"eq", @{@"$type": @"keypath", @"$val": @"name"}, @"Peter"], @[@"gte", @{@"$type": @"keypath", @"$val": @"age"}, @12]];
