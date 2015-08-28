@@ -35,7 +35,7 @@ extern NSString * const ODRecordStorageCoordinatorFilePath;
 /**
  Returns an array of registered <ODRecordStorage>.
  */
-@property (nonatomic, readonly) NSArray *recordStorages;
+@property (nonatomic, readonly) NSArray *registeredRecordStorages;
 
 /**
  Sets or returns whether registered <ODRecordStorage> are auto-purged on user login or logout.
@@ -73,6 +73,11 @@ extern NSString * const ODRecordStorageCoordinatorFilePath;
  record updates to the specified <ODRecordStorage>
  */
 - (void)forgetRecordStorage:(ODRecordStorage *)recordStorage;
+
+/**
+ Removes all <ODRecordStorage> from an internal registry of local storage.
+ */
+- (void)forgetAllRecordStorages;
 
 /**
  Handles remote notification payload so that all registered <ODRecordStorage>

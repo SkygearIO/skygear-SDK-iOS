@@ -21,6 +21,7 @@ describe(@"ODRecordStorageCoordinator", ^{
     beforeEach(^{
         container = [ODContainer defaultContainer];
         coordinator = [[ODRecordStorageCoordinator alloc] initWithContainer:container];
+        [coordinator forgetAllRecordStorages];
     });
     
     it(@"init", ^{
@@ -28,26 +29,27 @@ describe(@"ODRecordStorageCoordinator", ^{
     });
     
     it(@"manage record storage", ^{
-        expect([coordinator recordStorages]).to.haveCountOf(0);
+        expect([coordinator registeredRecordStorages]).to.haveCountOf(0);
         ODRecordStorage *storage = [coordinator recordStorageForPrivateDatabase];
-        expect([coordinator recordStorages]).to.haveCountOf(1);
-        expect([coordinator recordStorages]).to.contain(storage);
+        expect([coordinator registeredRecordStorages]).to.haveCountOf(1);
+        expect([coordinator registeredRecordStorages]).to.contain(storage);
         [coordinator forgetRecordStorage:storage];
-        expect([coordinator recordStorages]).to.haveCountOf(0);
+        expect([coordinator registeredRecordStorages]).to.haveCountOf(0);
     });
     
     it(@"create private record storage", ^{
         ODRecordStorage *storage = [coordinator recordStorageForPrivateDatabase];
         expect([storage class]).to.beSubclassOf([ODRecordStorage class]);
-    });
-    
-    it(@"create record storage", ^{
-        ODRecordStorage *storage = [coordinator recordStorageWithDatabase:[container privateCloudDatabase]
-                                                                  options:nil];
-        expect([storage class]).to.beSubclassOf([ODRecordStorage class]);
         expect([storage backingStore]).to.conformTo(@protocol(ODRecordStorageBackingStore));
         expect([[storage synchronizer] class]).to.beSubclassOf([ODRecordSynchronizer class]);
     });
+
+    it(@"reusing existing record storage", ^{
+        ODRecordStorage *storage1 = [coordinator recordStorageForPrivateDatabase];
+        ODRecordStorage *storage2 = [coordinator recordStorageForPrivateDatabase];
+        expect(storage1).to.equal(storage2);
+    });
+
 });
 
 SpecEnd
