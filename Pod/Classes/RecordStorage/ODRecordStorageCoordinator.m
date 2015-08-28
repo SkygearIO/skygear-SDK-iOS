@@ -34,7 +34,8 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 }
 
 @implementation ODRecordStorageCoordinator {
-    NSMutableArray *_recordStorages;
+    NSMutableArray *_registeredRecordStorages;
+    NSMapTable *_cachedStorages;
 }
 
 + (instancetype)defaultCoordinator
@@ -58,7 +59,8 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     self = [super init];
     if (self) {
         _container = container;
-        _recordStorages = [NSMutableArray array];
+        _registeredRecordStorages = [NSMutableArray array];
+        _cachedStorages = [NSMapTable strongToWeakObjectsMapTable];
         _purgeStoragesOnCurrentUserChanges = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -75,20 +77,41 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 
 #pragma mark - Manage record storages
 
-- (NSArray *)recordStorages
+- (NSString *)storageCacheKeyWithDatabase:(ODDatabase *)database query:(ODQuery *)query
 {
-    return [_recordStorages copy];
+    return [NSString stringWithFormat:@"%@/%@", database.databaseID, query.cacheKey];
+}
+
+- (NSString *)storageCacheKeyWithRecordStorage:(ODRecordStorage *)storage
+{
+    return [self storageCacheKeyWithDatabase:storage.synchronizer.database
+                                       query:storage.synchronizer.query];
+}
+
+- (NSArray *)registeredRecordStorages
+{
+    return [_registeredRecordStorages copy];
 }
 
 - (void)registerRecordStorage:(ODRecordStorage *)recordStorage
 {
-    [_recordStorages addObject:recordStorage];
+    [_registeredRecordStorages addObject:recordStorage];
+    [_cachedStorages setObject:recordStorage
+                        forKey:[self storageCacheKeyWithRecordStorage:recordStorage]];
     [self createSubscriptionWithRecordStorage:recordStorage];
 }
 
 - (void)forgetRecordStorage:(ODRecordStorage *)recordStorage
 {
-    [_recordStorages removeObject:recordStorage];
+    [_registeredRecordStorages removeObject:recordStorage];
+    [_cachedStorages removeObjectForKey:[self storageCacheKeyWithRecordStorage:recordStorage]];
+}
+
+- (void)forgetAllRecordStorages
+{
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(ODRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+        [self forgetRecordStorage:obj];
+    }];
 }
 
 - (void)purgeRecordStorage:(ODRecordStorage *)recordStorage
@@ -164,14 +187,19 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
         return nil;
     }
     
-    id<ODRecordStorageBackingStore> backingStore;
-    backingStore = [self _backingStoreWith:database
-                                     query:query
-                                   options:options];
-    ODRecordStorage *storage = [[ODRecordStorage alloc] initWithBackingStore:backingStore];
-    storage.synchronizer = [[ODRecordSynchronizer alloc] initWithContainer:self.container
-                                                                  database:database
-                                                                     query:query];
+    NSString *cacheKey = [self storageCacheKeyWithDatabase:database query:query];
+    ODRecordStorage *storage = [_cachedStorages objectForKey:cacheKey];
+    if (!storage) {
+        id<ODRecordStorageBackingStore> backingStore;
+        backingStore = [self _backingStoreWith:database
+                                         query:query
+                                       options:options];
+        storage = [[ODRecordStorage alloc] initWithBackingStore:backingStore];
+        storage.synchronizer = [[ODRecordSynchronizer alloc] initWithContainer:self.container
+                                                                      database:database
+                                                                         query:query];
+    }
+    
     [self registerRecordStorage:storage];
     return storage;
 }
@@ -210,7 +238,7 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 - (void)containerDidChangeCurrentUser:(NSNotification *)note
 {
     BOOL purge = [self isPurgeStoragesOnCurrentUserChanges];
-    [[self recordStorages] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (purge) {
             [self purgeRecordStorage:(ODRecordStorage *)obj];
         } else {
@@ -223,9 +251,9 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 
 - (void)containerDidRegisterDevice:(NSNotification *)note
 {
-    for (ODRecordStorage *storage in self.recordStorages) {
-        [self createSubscriptionWithRecordStorage:storage];
-    }
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(ODRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+        [self createSubscriptionWithRecordStorage:obj];
+    }];
 }
 
 - (BOOL)notification:(ODNotification *)note shouldUpdateRecordStorage:(ODRecordStorage *)storage
@@ -243,7 +271,7 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
 {
     __block BOOL handled = NO;
     
-    [_recordStorages enumerateObjectsUsingBlock:^(ODRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(ODRecordStorage *obj, NSUInteger idx, BOOL *stop) {
         if ([self notification:note shouldUpdateRecordStorage:obj]) {
             [obj.synchronizer setUpdateAvailableWithRecordStorage:obj
                                                      notification:note];
