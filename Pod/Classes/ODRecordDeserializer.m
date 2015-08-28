@@ -82,8 +82,9 @@
             [record.transient setObject:deserializedObject
                                  forKey:key];
         }];
-    } else {
-        NSLog(@"Transient dictionary is nil or of unexpected type.");
+    } else if (transient != nil) {
+        NSLog(@"Ignored transient field when deserializing record %@ because of unexpected object %@.",
+              recordID.canonicalString, NSStringFromClass([transient class]));
     }
 
     return record;
