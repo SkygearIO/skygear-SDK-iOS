@@ -19,6 +19,7 @@
     ODRecordSerializer *_serializer;
     ODRecordDeserializer *_deserializer;
     NSMutableArray *_availableRecordTypes;
+    BOOL _opened;
 }
 
 - (instancetype)initWithFile:(NSString *)path
@@ -43,15 +44,44 @@
 
 - (void)load
 {
-    [_db open];
-    [self createPendingChangesTableWithError:nil];
-    [self _purgeFinishedChangesWithError:nil];
-    _availableRecordTypes = [[self allRecordTypes] mutableCopy];
+    if (_opened) {
+        NSLog(@"Attempting to load RecordStorage backing store %@ but it is already in opened state. Continue anyway.", self);
+    }
+
+    NSLog(@"Loading RecordStorage sqlite backing store at path '%@'.", _path);
+    if ([_db open]) {
+        _opened = YES;
+        NSError *error;
+        BOOL success = [self createPendingChangesTableWithError:&error];
+        if (!success) {
+            NSLog(@"There was an error creating tables at path %@: %@", _path, error);
+            return;
+        }
+        
+        NSLog(@"RecordStorage backing store will purge changes that have successfully synchronized.");
+        success = [self _purgeFinishedChangesWithError:&error];
+        if (!success) {
+            NSLog(@"There was an error purging finished changes: %@", error);
+            return;
+        }
+        
+        _availableRecordTypes = [[self allRecordTypes] mutableCopy];
+        NSLog(@"Record types in database: %@", _availableRecordTypes);
+    } else {
+        NSLog(@"Unable to open RecordStorage sqlite backing store: %@",
+              [_db lastError]);
+    }
 }
 
 - (BOOL)purgeWithError:(NSError **)error
 {
-    [_db close];
+    NSLog(@"Closing RecordStorage sqlite backing store at path '%@'.", _path);
+    if ([_db close]) {
+        _opened = NO;
+    } else {
+        NSLog(@"Unable to open RecordStorage sqlite backing store: %@",
+              [_db lastError]);
+    }
     return [[NSFileManager defaultManager] removeItemAtPath:_path error:error];
 }
 
@@ -105,9 +135,13 @@
 
 - (BOOL)createPendingChangesTableWithError:(NSError **)error
 {
-    if ([self existsTable:@"_pendingChanges"]) {
+    NSString *probeTable = @"_pendingChanges";
+    if ([self existsTable:probeTable]) {
         return YES;
     }
+    
+    NSLog(@"Table '%@' not found in database. Creating tables.", probeTable);
+    
     NSString *stmt = @"CREATE TABLE _pendingChanges ("
                       "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                       "recordID TEXT, "
