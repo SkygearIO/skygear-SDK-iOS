@@ -59,7 +59,6 @@ describe(@"serialize query", ^{
 
 describe(@"serialize predicate", ^{
     __block ODQuerySerializer *serializer = nil;
-    __block NSDictionary *basicPayload = nil;
     __block NSDateFormatter *dateFormatter = nil;
     
     beforeEach(^{
@@ -206,12 +205,12 @@ describe(@"serialize predicate", ^{
         expect([result[1] class]).to.beSubclassOf([NSArray class]);
         expect(result[1][0]).to.equal(@"eq");
     });
-
+    
     it(@"distanceToLocation:fromLocation:", ^{
         CLLocation *loc = [[CLLocation alloc] initWithLatitude:1 longitude:2];
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", loc, 3.f]];
-
+        
         expect(result).to.equal(@[@"lt",
                                   @[@"func",
                                     @"distance",
@@ -219,7 +218,47 @@ describe(@"serialize predicate", ^{
                                     @{@"$type": @"geo", @"$lng": @2, @"$lat": @1}
                                     ],
                                   @3,
-                                ]);
+                                  ]);
+    });
+    
+    it(@"serialize beginswith", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
+        
+        expect(result).to.equal(@[@"like",
+                                  @{@"$type": @"keypath", @"$val": @"content"},
+                                  @"hello%"
+                                  ]);
+    });
+    
+    it(@"serialize endswith", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
+        
+        expect(result).to.equal(@[@"like",
+                                  @{@"$type": @"keypath", @"$val": @"content"},
+                                  @"%hello"
+                                  ]);
+    });
+    
+    it(@"serialize contains", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"content CONTAINS %@", @"hello"]];
+        
+        expect(result).to.equal(@[@"like",
+                                  @{@"$type": @"keypath", @"$val": @"content"},
+                                  @"%hello%"
+                                  ]);
+    });
+    
+    it(@"serialize like", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]];
+        
+        expect(result).to.equal(@[@"like",
+                                  @{@"$type": @"keypath", @"$val": @"content"},
+                                  @"%hello_"
+                                  ]);
     });
 });
 

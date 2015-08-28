@@ -34,6 +34,11 @@
             return @"lte";
         case NSNotEqualToPredicateOperatorType:
             return @"neq";
+        case NSLikePredicateOperatorType:
+        case NSBeginsWithPredicateOperatorType:
+        case NSEndsWithPredicateOperatorType:
+        case NSContainsPredicateOperatorType:
+            return @"like";
         default:
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:[NSString stringWithFormat:@"Given NSPredicateOperatorType `%u` is not supported.", (unsigned int)operatorType]
@@ -56,6 +61,19 @@
                                            reason:[NSString stringWithFormat:@"Given NSCompoundPredicateType `%u` is not supported.", (unsigned int)predicateType]
                                          userInfo:nil];
             break;
+    }
+}
+
+- (BOOL)isStringMatchingPredicateOperatorType:(NSPredicateOperatorType)operatorType
+{
+    switch (operatorType) {
+        case NSLikePredicateOperatorType:
+        case NSBeginsWithPredicateOperatorType:
+        case NSEndsWithPredicateOperatorType:
+        case NSContainsPredicateOperatorType:
+            return YES;
+        default:
+            return NO;
     }
 }
 
@@ -127,9 +145,43 @@
 {
     if ([predicate isKindOfClass:[NSComparisonPredicate class]]) {
         NSComparisonPredicate *comparison = (NSComparisonPredicate *)predicate;
-        return @[[self nameWithPredicateOperatorType:[comparison predicateOperatorType]],
-                 [self serializeWithExpression:[comparison leftExpression]],
-                 [self serializeWithExpression:[comparison rightExpression]],
+        NSPredicateOperatorType operatorType = comparison.predicateOperatorType;
+        NSExpression *lhs = [comparison leftExpression];
+        NSExpression *rhs = [comparison rightExpression];
+        
+        if ([self isStringMatchingPredicateOperatorType:operatorType]) {
+            NSMutableString *matchPattern = [[rhs constantValue] mutableCopy];
+            switch (operatorType) {
+                case NSBeginsWithPredicateOperatorType:
+                    [matchPattern appendString:@"%"];
+                    break;
+                case NSEndsWithPredicateOperatorType:
+                    [matchPattern insertString:@"%" atIndex:0];
+                    break;
+                case NSContainsPredicateOperatorType:
+                    [matchPattern appendString:@"%"];
+                    [matchPattern insertString:@"%" atIndex:0];
+                    break;
+                case NSLikePredicateOperatorType:
+                    [matchPattern replaceOccurrencesOfString:@"?"
+                                                  withString:@"_"
+                                                     options:0
+                                                       range:NSMakeRange(0, [matchPattern length])];
+                    [matchPattern replaceOccurrencesOfString:@"*"
+                                                  withString:@"%"
+                                                     options:0
+                                                       range:NSMakeRange(0, [matchPattern length])];
+                    break;
+                default:
+                    @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                                   reason:@"Operator type is not supported."
+                                                 userInfo:nil];
+            }
+            rhs = [NSExpression expressionForConstantValue:[matchPattern copy]];
+        }
+        return @[[self nameWithPredicateOperatorType:operatorType],
+                 [self serializeWithExpression:lhs],
+                 [self serializeWithExpression:rhs],
                  ];
     } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
         NSCompoundPredicate *compound = (NSCompoundPredicate *)predicate;

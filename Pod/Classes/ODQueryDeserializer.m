@@ -122,7 +122,7 @@
 
     NSPredicate *predicate;
     NSString *op = array[0];
-    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq"] containsObject:op]) {
+    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like"] containsObject:op]) {
         predicate = [self comparisonPredicateWithArray:array];
     } else if ([@[@"and", @"or", @"not"] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
@@ -138,6 +138,8 @@
     }
 
     NSString *predicateOperatorTypeName = array[0];
+    id lhs = array[1];
+    id rhs = array[2];
     NSPredicateOperatorType predicateOperatorType;
     if ([predicateOperatorTypeName isEqualToString:@"eq"]) {
         predicateOperatorType = NSEqualToPredicateOperatorType;
@@ -151,13 +153,27 @@
         predicateOperatorType = NSLessThanOrEqualToPredicateOperatorType;
     } else if ([predicateOperatorTypeName isEqualToString:@"neq"]) {
         predicateOperatorType = NSNotEqualToPredicateOperatorType;
+    } else if ([predicateOperatorTypeName isEqualToString:@"like"]) {
+        predicateOperatorType = NSLikePredicateOperatorType;
+        if ([rhs isKindOfClass:[NSString class]]) {
+            NSMutableString *matchPattern = [rhs mutableCopy];
+            [matchPattern replaceOccurrencesOfString:@"_"
+                                          withString:@"?"
+                                             options:0
+                                               range:NSMakeRange(0, [matchPattern length])];
+            [matchPattern replaceOccurrencesOfString:@"%"
+                                          withString:@"*"
+                                             options:0
+                                               range:NSMakeRange(0, [matchPattern length])];
+            rhs = [matchPattern copy];
+        }
     } else {
         NSLog(@"Unrecgonized predicateOperatorType = %@", predicateOperatorTypeName);
         return nil;
     }
 
-    NSExpression *leftExpression = [self expressionWithObject:array[1]];
-    NSExpression *rightExpression = [self expressionWithObject:array[2]];
+    NSExpression *leftExpression = [self expressionWithObject:lhs];
+    NSExpression *rightExpression = [self expressionWithObject:rhs];
 
     return [NSComparisonPredicate predicateWithLeftExpression:leftExpression
                                               rightExpression:rightExpression
