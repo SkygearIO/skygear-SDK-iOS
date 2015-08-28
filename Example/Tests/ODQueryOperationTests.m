@@ -25,6 +25,8 @@ describe(@"fetch", ^{
     
     it(@"empty predicate", ^{
         ODQuery *query = [[ODQuery alloc] initWithRecordType:@"book" predicate:nil];
+        query.limit = 10;
+        query.offset = 100;
         ODQueryOperation *operation = [ODQueryOperation operationWithQuery:query];
         ODDatabase *database = [[ODContainer defaultContainer] publicCloudDatabase];
         operation.container = container;
@@ -37,6 +39,8 @@ describe(@"fetch", ^{
         expect(request.payload[@"record_type"]).to.equal(@"book");
         expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         expect(request.payload[@"predicate"]).to.equal(nil);
+        expect(request.payload[@"limit"]).to.equal(10);
+        expect(request.payload[@"offset"]).to.equal(100);
     });
     
     it(@"simple query", ^{

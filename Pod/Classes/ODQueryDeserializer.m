@@ -44,6 +44,16 @@
     if (sortDescriptorArrays.count) {
         query.sortDescriptors = [self sortDescriptorsWithArray:sortDescriptorArrays];
     }
+    
+    NSNumber *limit = dictionary[@"limit"];
+    if ([limit isKindOfClass:[NSNumber class]]) {
+        query.limit = [limit integerValue];
+    }
+    
+    NSNumber *offset = dictionary[@"offset"];
+    if ([offset isKindOfClass:[NSNumber class]]) {
+        query.offset = [offset integerValue];
+    }
 
     return query;
 }

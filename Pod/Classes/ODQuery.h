@@ -22,6 +22,20 @@
 @property (nonatomic, copy) NSArray *sortDescriptors;
 
 /**
+ Gets or sets the number of records after which records will be returned.
+ 
+ Default is zero, meaning that the results contain record from the beginning of the result set.
+ */
+@property (nonatomic, readwrite) NSInteger offset;
+
+/**
+ Gets or sets the maximum number of records to be returned from the query.
+
+ Default is zero, meaning that there is no limit.
+ */
+@property (nonatomic, readwrite) NSInteger limit;
+
+/**
  An NSDictionary of expression to be evaluated on the server side and returned as transient
  dictionary in ODRecord.
  */
