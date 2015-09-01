@@ -18,6 +18,7 @@ describe(@"delete subscription", ^{
 
     beforeEach(^{
         container = [[ODContainer alloc] init];
+        [container configureWithAPIKey:@"API_KEY"];
         [container updateWithUserRecordID:[ODUserRecordID recordIDWithUsername:@"USER_ID"]
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         database = [container publicCloudDatabase];
@@ -32,6 +33,7 @@ describe(@"delete subscription", ^{
         ODRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([ODRequest class]);
         expect(request.action).to.equal(@"subscription:delete");
+        expect(request.APIKey).to.equal(@"API_KEY");
         expect(request.accessToken).to.equal(container.currentAccessToken);
         expect(request.payload).to.equal(@{
                                            @"device_id": @"DEVICE_ID",

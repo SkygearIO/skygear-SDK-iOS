@@ -61,6 +61,7 @@
 
     self.request = [[ODRequest alloc] initWithAction:@"subscription:save"
                                              payload:payload];
+    self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.currentAccessToken;
 }
 
