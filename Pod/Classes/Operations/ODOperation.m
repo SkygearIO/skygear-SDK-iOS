@@ -139,6 +139,17 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     [task resume];
 }
 
+- (NSError *)errorFromURLSessionError:(NSError *)error
+{
+    NSDictionary *userInfo = @{
+                               NSUnderlyingErrorKey: error,
+                               NSLocalizedDescriptionKey: error.localizedDescription,
+                               };
+    return [NSError errorWithDomain:ODOperationErrorDomain
+                               code:ODErrorNetworkFailure
+                           userInfo:userInfo];
+}
+
 - (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description errorDictionary:(NSDictionary *)dict
 {
     NSMutableDictionary *userInfo = [dict isKindOfClass:[NSDictionary class]] ? [ODDataSerialization userInfoWithErrorDictionary:dict] : [NSMutableDictionary dictionary];
@@ -156,7 +167,7 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
     _httpResponse = [response isKindOfClass:[NSHTTPURLResponse class]] ? (NSHTTPURLResponse *)response : nil;
 
     if (error) {
-        _error = error;
+        _error = [self errorFromURLSessionError:error];
     } else if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
         // A NSHTTPURLResponse is required to check the HTTP status code of the response, which
         // is required to determine if an error occurred.
@@ -191,7 +202,7 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
                 }
             }
             
-            error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+            error = [NSError errorWithDomain:ODOperationErrorDomain
                                         code:0
                                     userInfo:userInfo];
         } else {
@@ -204,7 +215,7 @@ NSString * const ODOperationErrorHTTPStatusCodeKey = @"ODOperationErrorHTTPStatu
                 if (jsonError) {
                     userInfo[NSUnderlyingErrorKey] = jsonError;
                 }
-                error = [NSError errorWithDomain:(NSString *)ODOperationErrorDomain
+                error = [NSError errorWithDomain:ODOperationErrorDomain
                                             code:0
                                         userInfo:userInfo];
                 responseDictionary = nil;

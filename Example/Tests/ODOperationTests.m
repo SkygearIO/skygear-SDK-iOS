@@ -81,8 +81,12 @@ describe(@"request", ^{
             operation.completionBlock = ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(blockOp.finished).to.equal(YES);
-                    expect([blockOp.error class]).to.beSubclassOf([NSError class]);
-                    expect(blockOp.error.code).to.equal(-1001);
+
+                    NSError *error = blockOp.error;
+                    expect([error class]).to.beSubclassOf([NSError class]);
+                    expect(error.domain).to.equal(ODOperationErrorDomain);
+                    expect(error.code).to.equal(ODErrorNetworkFailure);
+                    expect([error.userInfo[NSUnderlyingErrorKey] code]).to.equal(-1001);
                     done();
                 });
             };
