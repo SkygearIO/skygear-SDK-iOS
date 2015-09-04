@@ -50,7 +50,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         _privateCloudDatabase.databaseID = @"_private";
         _APIKey = nil;
         NSURL *pubsubEndPoint = [NSURL URLWithString:ODContainerPubsubBaseURL];
-        _pubsubClient = [[ODPubsub alloc] initWithEndPoint:pubsubEndPoint];
+        _pubsubClient = [[ODPubsub alloc] initWithEndPoint:pubsubEndPoint APIKey:self.APIKey];
         
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
@@ -99,6 +99,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
     [self willChangeValueForKey:@"applicationIdentifier"];
     _APIKey = [APIKey copy];
     [self didChangeValueForKey:@"applicationIdentifier"];
+    _pubsubClient.APIKey = _APIKey;
 }
 
 - (void)addOperation:(ODOperation *)operation {

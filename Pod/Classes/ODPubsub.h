@@ -11,6 +11,7 @@
 @interface ODPubsub : NSObject
 
 @property (nonatomic, copy) NSURL *endPointAddress;
+@property (nonatomic, copy) NSString *APIKey;
 
 /**
  In normal usage, you will not need to init the PubsubClient by yourself. You just get the pubsubClient from the default
@@ -25,7 +26,7 @@
  Unsubscribe a channel
  [[ODContainer defaultContainer].pubsubClient publishMessage:@{@"note":@"cool"} toChannel:@"noteapp"];
  */
-- (instancetype)initWithEndPoint:(NSURL *)endPoint;
+- (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just

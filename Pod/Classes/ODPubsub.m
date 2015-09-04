@@ -6,9 +6,10 @@
 //
 //
 
-#import "SRWebSocket.h"
-
 #import "ODPubsub.h"
+
+#import "SRWebSocket.h"
+#import "NSURLRequest+ODRequest.h"
 
 double const ODPubsubPingInterval = 10.0;
 double const ODPubsubReconnectWait = 1.0;
@@ -27,12 +28,13 @@ double const ODPubsubReconnectWait = 1.0;
 }
 
 
-- (instancetype)initWithEndPoint:(NSURL *)endPoint
+- (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey
 {
     self = [super init];
     if (self)
     {
         _endPointAddress = [endPoint copy];
+        _APIKey = [APIKey copy];
         _channelHandlers = [[NSMutableDictionary alloc] init];
         _pendingPublish = [[NSMutableArray alloc] init];
         _opened = false;
@@ -47,18 +49,31 @@ double const ODPubsubReconnectWait = 1.0;
     return self;
 }
 
-- (void)setEndPointAddress:(NSURL *)endPointAddress
+- (void)reconnectIfOpen
 {
-    _endPointAddress = [endPointAddress copy];
-    if (_opened) {
+    if (_opened && _endPointAddress != nil && _APIKey != nil) {
         [_webSocket close];
         [self connect];
     }
 }
 
+- (void)setEndPointAddress:(NSURL *)endPointAddress
+{
+    _endPointAddress = [endPointAddress copy];
+    [self reconnectIfOpen];
+}
+
+- (void)setAPIKey:(NSString *)APIKey
+{
+    _APIKey = [APIKey copy];
+    [self reconnectIfOpen];
+}
+
 - (SRWebSocket *)makeWebSocket
 {
-    return [[SRWebSocket alloc] initWithURL:_endPointAddress];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:_endPointAddress];
+    [request setValue:self.APIKey forHTTPHeaderField:ODRequestHeaderAPIKey];
+    return [[SRWebSocket alloc] initWithURLRequest:request];
 }
 
 - (void)connect
