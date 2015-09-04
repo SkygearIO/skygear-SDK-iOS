@@ -8,6 +8,9 @@
 
 #import "NSURLRequest+ODRequest.h"
 
+NSString * const ODRequestHeaderAPIKey = @"X-Ourd-API-Key";
+NSString * const ODRequestHeaderAccessTokenKey = @"X-Ourd-Access-Token";
+
 @implementation NSURLRequest (ODRequest)
 
 + (NSURLRequest *)requestWithODRequest:(ODRequest *)request

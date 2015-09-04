@@ -11,6 +11,7 @@
 #import "ODAsset_Private.h"
 #import "ODDataSerialization.h"
 #import "ODOperation+OverrideLifeCycle.h"
+#import "NSURLRequest+ODRequest.h"
 
 @interface ODUploadAssetOperation ()
 
@@ -101,11 +102,11 @@
     // ODKit-related headers
     NSString *apiKey = self.container.APIKey;
     if (apiKey.length) {
-        [request setValue:self.container.APIKey forHTTPHeaderField:@"X-Ourd-API-Key"];
+        [request setValue:self.container.APIKey forHTTPHeaderField:ODRequestHeaderAPIKey];
     }
     NSString *accessTokenString = self.container.currentAccessToken.tokenString;
     if (accessTokenString) {
-        [request setValue:accessTokenString forHTTPHeaderField:@"X-Ourd-Access-Token"];
+        [request setValue:accessTokenString forHTTPHeaderField:ODRequestHeaderAccessTokenKey];
     }
 
     return request;

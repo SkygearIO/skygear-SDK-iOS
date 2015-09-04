@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "ODRequest.h"
 
+extern NSString * const ODRequestHeaderAPIKey;
+extern NSString * const ODRequestHeaderAccessTokenKey;
+
+
 @interface NSURLRequest (ODRequest)
 
 + (NSURLRequest *)requestWithODRequest:(ODRequest *)request;
