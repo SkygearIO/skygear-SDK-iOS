@@ -11,7 +11,15 @@
 #import "ODDatabase.h"
 #import "ODAccessToken.h"
 #import "ODAsset.h"
+#import "ODNotification.h"
 #import "ODPubsub.h"
+
+
+@protocol ODContainerDelegate <NSObject>
+
+- (void)container:(ODContainer *)container didReceiveNotification:(ODNotification *)notification;
+
+@end
 
 /**
  Notification posted by <ODContainer> when the current user
@@ -67,6 +75,12 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
  Set a new API key to the container.
  */
 - (void)configureWithAPIKey:(NSString *)APIKey;
+
+/**
+ Acknowledge the container that a remote notification is received. If the notification is sent by Ourd, container
+ would invoke container:didReceiveNotification: on its delegate.
+ */
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
 
 - (void)addOperation:(ODOperation *)operation;
 

@@ -82,15 +82,6 @@ extern NSString * const ODRecordStorageCoordinatorFilePath;
 /**
  Handles remote notification payload so that all registered <ODRecordStorage>
  have a chance to updates its local storage.
-
- This is a convenient method. This is effectively calling -handleUpdateWithRemoteNotification:
- with the specified dictionary converted into <ODNotifiction>.
- */
-- (BOOL)handleUpdateWithRemoteNotificationDictionary:(NSDictionary *)info;
-
-/**
- Handles remote notification payload so that all registered <ODRecordStorage>
- have a chance to updates its local storage.
  
  You are expecte to call this method when in your implementation of
  -[UIApplicationDelegate application:didReceiveRemoteNotification:].

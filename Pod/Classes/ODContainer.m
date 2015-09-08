@@ -30,6 +30,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 @interface ODContainer ()
 
 @property (nonatomic, readonly) NSOperationQueue *operationQueue;
+@property (nonatomic, readonly) NSMutableDictionary *subscriptionSeqNumDict;
 
 @end
 
@@ -46,6 +47,7 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         _endPointAddress = [NSURL URLWithString:ODContainerRequestBaseURL];
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"ODContainerOperationQueue";
+        _subscriptionSeqNumDict = [NSMutableDictionary dictionary];
         _publicCloudDatabase = [[ODDatabase alloc] initWithContainer:self];
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[ODDatabase alloc] initWithContainer:self];
@@ -90,7 +92,6 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
     _pubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/pubsub", address]];
 
     _internalPubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/_/pubsub", address]];
-    [_internalPubsubClient connect];
     [self configInternalPubsubClient];
 }
 
@@ -100,17 +101,8 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 
     NSString *deviceID = self.registeredDeviceID;
     if (deviceID.length) {
-        __block NSMutableDictionary *subscriptionSeqNumDict = [NSMutableDictionary dictionary];
         [_internalPubsubClient subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID] handler:^(NSDictionary *data) {
-            NSString *subscriptionID = data[@"subscription-id"];
-            NSNumber *seqNum = data[@"seq-num"];
-            if (subscriptionID.length && seqNum) {
-                NSNumber *lastSeqNum = subscriptionSeqNumDict[subscriptionID];
-                if (seqNum.integerValue > lastSeqNum.integerValue) {
-                    subscriptionSeqNumDict[subscriptionID] = seqNum;
-                    [self handleSubscriptionNoticeWithData:data];
-                }
-            }
+            [weakSelf handleSubscriptionNoticeWithData:data];
         }];
     } else {
         __block id observer;
@@ -123,8 +115,25 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 
 - (void)handleSubscriptionNoticeWithData:(NSDictionary *)data
 {
-    ODNotification *notification = [[ODNotification alloc] initWithSubscriptionID:data[@"subscription-id"]];
+    NSString *subscriptionID = data[@"subscription-id"];
+    NSNumber *seqNum = data[@"seq-num"];
+    if (subscriptionID.length && seqNum) {
+        [self handleSubscriptionNoticeWithSubscriptionID:subscriptionID seqenceNumber:seqNum];
+    }
+}
 
+- (void)handleSubscriptionNoticeWithSubscriptionID:(NSString *)subscriptionID seqenceNumber:(NSNumber *)seqNum
+{
+    NSMutableDictionary *dict = self.subscriptionSeqNumDict;
+    NSNumber *lastSeqNum = dict[subscriptionID];
+    if (seqNum.unsignedLongLongValue > lastSeqNum.unsignedLongLongValue) {
+        dict[subscriptionID] = seqNum;
+        [self handleSubscriptionNotification:[[ODNotification alloc] initWithSubscriptionID:subscriptionID]];
+    }
+}
+
+- (void)handleSubscriptionNotification:(ODNotification *)notification
+{
     id<ODContainerDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(container:didReceiveNotification:)]) {
         [delegate container:self didReceiveNotification:notification];
@@ -144,6 +153,14 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 
     _pubsubClient.APIKey = _APIKey;
     _internalPubsubClient.APIKey = _APIKey;
+}
+
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info
+{
+    NSDictionary *data = info[@"_ourd"];
+    if (data) {
+        [self handleSubscriptionNoticeWithData:data];
+    }
 }
 
 - (void)addOperation:(ODOperation *)operation {

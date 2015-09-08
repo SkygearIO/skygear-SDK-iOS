@@ -328,7 +328,6 @@ describe(@"maintains a private pubsub", ^{
 
     it(@"sets endpoint correct address", ^{
         OCMExpect([pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
-        OCMExpect([pubsub connect]);
 
         [container configAddress:@"newpoint.com:4321"];
 

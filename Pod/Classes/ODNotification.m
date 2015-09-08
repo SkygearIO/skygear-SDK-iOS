@@ -10,16 +10,6 @@
 
 @implementation ODNotification
 
-+ (instancetype)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary
-{
-    NSDictionary *info = notificationDictionary[@"_ourd"];
-    if (!info) {
-        return nil;
-    }
-
-    return [[self alloc] initWithSubscriptionID:info[@"subscription-id"]];
-}
-
 - (instancetype)initWithSubscriptionID:(NSString *)subscriptionID
 {
     self = [super init];
