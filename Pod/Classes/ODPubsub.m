@@ -51,7 +51,14 @@ double const ODPubsubReconnectWait = 1.0;
 
 - (void)reconnectIfOpen
 {
-    if (_opened && _endPointAddress != nil && _APIKey != nil) {
+    if (_connecting) {
+        _connecting = false;
+        _webSocket.delegate = nil;
+        [_webSocket close];
+        [self connect];
+        return;
+    }
+    else if (_opened && _endPointAddress != nil && _APIKey != nil) {
         [_webSocket close];
         [self connect];
     }
