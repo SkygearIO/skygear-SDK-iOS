@@ -10,6 +10,10 @@
 
 @interface ODNotification()
 
+- (instancetype)initWithSubscriptionID:(NSString *)subscriptionID;
+
+@property (nonatomic, readwrite, copy) ODNotificationID *notificationID;
+@property (nonatomic, readwrite, assign) ODNotificationType notificationType;
 @property (nonatomic, readwrite, copy) NSString *subscriptionID;
 
 @end

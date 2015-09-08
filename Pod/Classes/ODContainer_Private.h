@@ -18,6 +18,8 @@
  */
 - (void)loadAccessCurrentUserRecordIDAndAccessToken;
 
+@property (nonatomic, strong) ODPubsub *internalPubsubClient;
+
 @property (nonatomic, copy, setter=setAuthenticationErrorHandler:) void (^authErrorHandler)(ODContainer *container, ODAccessToken *token, NSError *error);
 
 @end

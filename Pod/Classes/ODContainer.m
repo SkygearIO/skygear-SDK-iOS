@@ -9,6 +9,7 @@
 #import "ODContainer.h"
 #import "ODContainer_Private.h"
 #import "ODDatabase_Private.h"
+#import "ODNotification_Private.h"
 #import "ODOperation.h"
 #import "ODPushOperation.h"
 #import "ODUserLoginOperation.h"
@@ -21,6 +22,7 @@
 
 NSString *const ODContainerRequestBaseURL = @"http://localhost:5000/v1";
 NSString *const ODContainerPubsubBaseURL = @"ws://localhost:5000/pubsub";
+NSString *const ODContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubsub";
 
 NSString *const ODContainerDidChangeCurrentUserNotification = @"ODContainerDidChangeCurrentUserNotification";
 NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegisterDeviceNotification";
@@ -49,9 +51,9 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
         _privateCloudDatabase = [[ODDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
         _APIKey = nil;
-        NSURL *pubsubEndPoint = [NSURL URLWithString:ODContainerPubsubBaseURL];
-        _pubsubClient = [[ODPubsub alloc] initWithEndPoint:pubsubEndPoint APIKey:self.APIKey];
-        
+        _pubsubClient = [[ODPubsub alloc] initWithEndPoint:[NSURL URLWithString:ODContainerPubsubBaseURL] APIKey:self.APIKey];
+        _internalPubsubClient = [[ODPubsub alloc] initWithEndPoint:[NSURL URLWithString:ODContainerInternalPubsubBaseURL] APIKey:self.APIKey];
+
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
     return self;
@@ -85,8 +87,48 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
 - (void)configAddress:(NSString *)address {
     NSString *url = [NSString stringWithFormat:@"http://%@/", address];
     _endPointAddress = [NSURL URLWithString:url];
-    NSString *pubsubUrl = [NSString stringWithFormat:@"ws://%@/pubsub", address];
-    _pubsubClient.endPointAddress = [NSURL URLWithString:pubsubUrl];
+    _pubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/pubsub", address]];
+
+    _internalPubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/_/pubsub", address]];
+    [_internalPubsubClient connect];
+    [self configInternalPubsubClient];
+}
+
+- (void)configInternalPubsubClient
+{
+    __weak typeof(self)weakSelf = self;
+
+    NSString *deviceID = self.registeredDeviceID;
+    if (deviceID.length) {
+        __block NSMutableDictionary *subscriptionSeqNumDict = [NSMutableDictionary dictionary];
+        [_internalPubsubClient subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID] handler:^(NSDictionary *data) {
+            NSString *subscriptionID = data[@"subscription-id"];
+            NSNumber *seqNum = data[@"seq-num"];
+            if (subscriptionID.length && seqNum) {
+                NSNumber *lastSeqNum = subscriptionSeqNumDict[subscriptionID];
+                if (seqNum.integerValue > lastSeqNum.integerValue) {
+                    subscriptionSeqNumDict[subscriptionID] = seqNum;
+                    [self handleSubscriptionNoticeWithData:data];
+                }
+            }
+        }];
+    } else {
+        __block id observer;
+        observer = [[NSNotificationCenter defaultCenter] addObserverForName:ODContainerDidRegisterDeviceNotification object:nil queue:self.operationQueue usingBlock:^(NSNotification *note) {
+            [weakSelf configInternalPubsubClient];
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+        }];
+    }
+}
+
+- (void)handleSubscriptionNoticeWithData:(NSDictionary *)data
+{
+    ODNotification *notification = [[ODNotification alloc] initWithSubscriptionID:data[@"subscription-id"]];
+
+    id<ODContainerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(container:didReceiveNotification:)]) {
+        [delegate container:self didReceiveNotification:notification];
+    }
 }
 
 - (void)configureWithAPIKey:(NSString *)APIKey
@@ -99,7 +141,9 @@ NSString *const ODContainerDidRegisterDeviceNotification = @"ODContainerDidRegis
     [self willChangeValueForKey:@"applicationIdentifier"];
     _APIKey = [APIKey copy];
     [self didChangeValueForKey:@"applicationIdentifier"];
+
     _pubsubClient.APIKey = _APIKey;
+    _internalPubsubClient.APIKey = _APIKey;
 }
 
 - (void)addOperation:(ODOperation *)operation {

@@ -36,6 +36,8 @@ typedef void(^ODContainerUserOperationActionCompletion)(ODUserRecordID *user, NS
 // seems we need a way to authenticate app
 + (ODContainer *)defaultContainer;
 
+@property (nonatomic, weak) id<ODContainerDelegate> delegate;
+
 @property (nonatomic, nonatomic) NSURL *endPointAddress;
 
 @property (nonatomic, readonly) ODDatabase *publicCloudDatabase;
