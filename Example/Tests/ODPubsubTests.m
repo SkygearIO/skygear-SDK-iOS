@@ -24,7 +24,7 @@ describe(@"Pubsub connection", ^{
     
     beforeEach(^{
         NSURL *endPoint = [NSURL URLWithString:@"ws://localhost:3000/pubsub"];
-        pubsubClient = [[ODPubsub alloc] initWithEndPoint:endPoint];
+        pubsubClient = [[ODPubsub alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
         mockPubsub = [OCMockObject partialMockForObject:pubsubClient];
         mockWS = [OCMockObject mockForClass:[SRWebSocket class]];
         OCMStub([mockWS setDelegate:[OCMArg isNotNil]]);
@@ -98,7 +98,7 @@ describe(@"Pubsub message", ^{
     
     beforeEach(^{
         NSURL *endPoint = [NSURL URLWithString:@"ws://localhost:3000/pubsub"];
-        pubsubClient = [[ODPubsub alloc] initWithEndPoint:endPoint];
+        pubsubClient = [[ODPubsub alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
         mockPubsub = [OCMockObject partialMockForObject:pubsubClient];
         mockWS = [OCMockObject mockForClass:[SRWebSocket class]];
         OCMStub([mockWS setDelegate:[OCMArg isNotNil]]);
