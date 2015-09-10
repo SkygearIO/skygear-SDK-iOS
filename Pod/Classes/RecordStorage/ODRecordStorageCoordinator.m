@@ -261,12 +261,6 @@ NSString *storageFileBaseName(ODUserRecordID *userID, ODQuery *query) {
     return YES; // TODO
 }
 
-- (BOOL)handleUpdateWithRemoteNotificationDictionary:(NSDictionary *)info
-{
-    ODNotification *note = [ODNotification notificationFromRemoteNotificationDictionary:info];
-    return [self handleUpdateWithRemoteNotification:note];
-}
-
 - (BOOL)handleUpdateWithRemoteNotification:(ODNotification *)note
 {
     __block BOOL handled = NO;

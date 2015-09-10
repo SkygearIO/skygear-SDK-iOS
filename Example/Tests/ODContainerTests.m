@@ -13,6 +13,7 @@
 #import "ODHexer.h"
 
 #import "ODContainer_Private.h"
+#import "ODNotification_Private.h"
 
 // an empty ODOperation subclass that does nothing but call its completion handler
 @interface MockOperation : ODOperation
@@ -305,6 +306,117 @@ describe(@"calls lambda", ^{
 
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
+    });
+});
+
+describe(@"maintains a private pubsub", ^{
+    __block ODContainer *container = nil;
+    __block id pubsub = nil;
+
+
+    beforeEach(^{
+        container = [[ODContainer alloc] init];
+
+        pubsub = OCMClassMock([ODPubsub class]);
+        container.internalPubsubClient = pubsub;
+    });
+
+    afterEach(^{
+        container.internalPubsubClient = nil;
+        pubsub = nil;
+    });
+
+    it(@"sets endpoint correct address", ^{
+        OCMExpect([pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
+
+        [container configAddress:@"newpoint.com:4321"];
+
+        OCMVerifyAll(pubsub);
+    });
+    
+    it(@"subscribes without deviceID", ^{
+        OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
+
+        [container configAddress:@"newpoint.com:4321"];
+
+        [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
+                                                  forKey:@"ODContainerDeviceID"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:ODContainerDidRegisterDeviceNotification object:nil];
+        
+        OCMVerifyAllWithDelay(pubsub, 100);
+    });
+    
+    it(@"subscribes with deviceID", ^{
+        OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
+
+        [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
+                                                  forKey:@"ODContainerDeviceID"];
+        [container configAddress:@"newpoint.com:4321"];
+
+        OCMVerifyAll(pubsub);
+    });
+
+    describe(@"subscribed with delegate", ^{
+        __block id delegate = nil;
+        __block void (^handler)(NSDictionary *);
+
+        beforeEach(^{
+            delegate = OCMProtocolMock(@protocol(ODContainerDelegate));
+            container.delegate = delegate;
+
+            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid" forKey:@"ODContainerDeviceID"];
+            OCMStub([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]).andDo(^(NSInvocation *invocation) {
+                void (^h)(NSDictionary *);
+                [invocation getArgument:&h atIndex:3];
+                handler = h;
+            });
+            [container configAddress:@"newpoint.com:4321"];
+        });
+
+        afterEach(^{
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"ODContainerDeviceID"];
+            delegate = nil;
+        });
+
+        it(@"sends message to delegate", ^{
+            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(ODNotification *n) {
+                return [n.subscriptionID isEqualToString:@"subscriptionid"];
+            }]]);
+
+            handler(@{
+                      @"subscription-id": @"subscriptionid",
+                      @"seq-num": @1,
+                      });
+
+            OCMVerifyAll(delegate);
+        });
+
+        it(@"deduplicates message to delegate", ^{
+            [delegate setExpectationOrderMatters:YES];
+
+            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(ODNotification *n) {
+                return [n.subscriptionID isEqualToString:@"subscription0"];
+            }]]);
+            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(ODNotification *n) {
+                return [n.subscriptionID isEqualToString:@"subscription1"];
+            }]]);
+            OCMExpect([[delegate reject] container:[OCMArg any] didReceiveNotification:[OCMArg any]]);
+
+            handler(@{
+                      @"subscription-id": @"subscription0",
+                      @"seq-num": @1,
+                      });
+            handler(@{
+                      @"subscription-id": @"subscription1",
+                      @"seq-num": @2,
+                      });
+            handler(@{
+                      @"subscription-id": @"subscription1",
+                      @"seq-num": @1,
+                      });
+
+            OCMVerifyAll(delegate);
+        });
     });
 });
 

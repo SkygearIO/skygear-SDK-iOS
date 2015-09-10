@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		372DFF0F1B0AEA2E00E797CE /* ODNotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 372DFF0E1B0AEA2E00E797CE /* ODNotificationTests.m */; };
 		372E77911B28338A001F1972 /* ODAccessControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 372E77901B28338A001F1972 /* ODAccessControlTests.m */; };
 		372FD24E1AF79F59008128EC /* ODHexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 372FD24D1AF79F59008128EC /* ODHexer.m */; };
 		3745755A1B08C682004539C3 /* ODDeleteSubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 374575591B08C682004539C3 /* ODDeleteSubscriptionsOperationTests.m */; };
@@ -98,7 +97,6 @@
 		0AA14A77F7B5805A52640ECF /* Pods-ODKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ODKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ODKit/Pods-ODKit.debug.xcconfig"; sourceTree = "<group>"; };
 		1FD295B3CF4DEAAEC58DA4F3 /* libPods-ODKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ODKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C525CB7BEDCD9C5F745CECD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		372DFF0E1B0AEA2E00E797CE /* ODNotificationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODNotificationTests.m; sourceTree = "<group>"; };
 		372E77901B28338A001F1972 /* ODAccessControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODAccessControlTests.m; sourceTree = "<group>"; };
 		372FD24C1AF79F59008128EC /* ODHexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODHexer.h; sourceTree = "<group>"; };
 		372FD24D1AF79F59008128EC /* ODHexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODHexer.m; sourceTree = "<group>"; };
@@ -297,10 +295,8 @@
 				37CDD6061B4C040F007B9FE1 /* ODDownloadAssetOperationTests.m */,
 				CD98A8A51A9F34390056420F /* ODFetchRecordsOperationTests.m */,
 				376CB11C1AE906B600FA0324 /* ODFetchSubscriptionsOperationTests.m */,
-				383D272A1B46EBA300AE8606 /* ODLambdaOperationTests.m */,
 				CD48CE0E1AA06C7900A1CD04 /* ODModifyRecordsOperationTests.m */,
 				3785584E1AE6CF5D00685319 /* ODModifySubscriptionsOperationTests.m */,
-				372DFF0E1B0AEA2E00E797CE /* ODNotificationTests.m */,
 				CD7FE2681A9D9F31002C076E /* ODOperationTests.m */,
 				5F0532C01B8D912E00DA4D8B /* ODPubsubTests.m */,
 				37B477B61AE8A9C100B8566D /* ODQueryDeserializerTests.m */,
@@ -318,9 +314,6 @@
 				CD56972D1AAC7E2500AE596B /* ODRecordTests.m */,
 				38E053D81AC1489A00850988 /* ODRegisterDeviceOperationTests.m */,
 				5F9F71421B0B349700F7ADDD /* ODRemoveRelationsOperationTests.m */,
-				38D3E2271B7ED41E00CCD28D /* ODResponseTest.m */,
-				38D3E2291B7ED83600CCD28D /* ODResultArrayResponseTest.m */,
-				38D3E2331B7EDFD300CCD28D /* ODSendPushNotificationOperationTests.m */,
 				376CB11A1AE8F8E100FA0324 /* ODSubscriptionDeserializerTests.m */,
 				378558491AE63FEC00685319 /* ODSubscriptionSerializerTests.m */,
 				37CDD6031B4BF1F8007B9FE1 /* ODUploadAssetOperationTests.m */,
@@ -570,7 +563,6 @@
 				CD56972A1AAC7D3700AE596B /* ODRecordIDTests.m in Sources */,
 				372FD24E1AF79F59008128EC /* ODHexer.m in Sources */,
 				385633851AC82F5100F1FD84 /* NSErrorODErrorTests.m in Sources */,
-				372DFF0F1B0AEA2E00E797CE /* ODNotificationTests.m in Sources */,
 				5F0532C11B8D912E00DA4D8B /* ODPubsubTests.m in Sources */,
 				37CDD6071B4C040F007B9FE1 /* ODDownloadAssetOperationTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* ODQuerySerializerTests.m in Sources */,

@@ -8,31 +8,21 @@
 
 #import "ODNotification_Private.h"
 
-@interface ODNotification()
-
-@property (nonatomic, readwrite, copy) ODNotificationID *notificationID;
-@property (nonatomic, readwrite, assign) ODNotificationType notificationType;
-
-@end
-
 @implementation ODNotification
 
-+ (instancetype)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary
+- (instancetype)initWithSubscriptionID:(NSString *)subscriptionID
 {
-    NSDictionary *info = notificationDictionary[@"_ourd"];
-    if (!info) {
-        return nil;
+    self = [super init];
+    if (self) {
+        // notificationID not implemented, every notification is different.
+        // TODO(limouren): implement notificationID when fetch notification is needed.
+        self.notificationID = [[ODNotificationID alloc] init];
+        // we only have query notification at the moment
+        self.notificationType = ODNotificationTypeQuery;
+
+        self.subscriptionID = subscriptionID;
     }
-
-    ODNotification *notification = [[self alloc] init];
-    // notificationID not implemented, every notification is different.
-    // TODO(limouren): implement notificationID when fetch notification is needed.
-    notification.notificationID = [[ODNotificationID alloc] init];
-    // we only have query notification at the moment
-    notification.notificationType = ODNotificationTypeQuery;
-
-    notification.subscriptionID = info[@"subscription-id"];
-    return notification;
+    return self;
 }
 
 @end

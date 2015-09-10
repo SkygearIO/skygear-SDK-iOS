@@ -20,8 +20,6 @@ typedef enum ODNotificationType : NSInteger {
 
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary;
-
 @property (nonatomic, readonly, copy) ODNotificationID *notificationID;
 @property (nonatomic, readonly, assign) ODNotificationType notificationType;
 @property (nonatomic, readonly, copy) NSString *containerIdentifier;
