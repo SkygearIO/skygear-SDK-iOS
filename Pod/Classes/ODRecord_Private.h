@@ -11,8 +11,11 @@
 @interface ODRecord()
 
 @property (nonatomic, readwrite, copy) ODRecordID *recordID;
+@property (nonatomic, readwrite, copy) ODUserRecordID *ownerUserRecordID;
 @property (nonatomic, readwrite, copy) NSDate *creationDate;
 @property (nonatomic, readwrite, copy) ODUserRecordID *creatorUserRecordID;
+@property (nonatomic, readwrite, copy) NSDate *modificationDate;
+@property (nonatomic, readwrite, copy) ODUserRecordID *lastModifiedUserRecordID;
 @property (strong, nonatomic, readwrite) ODAccessControl *accessControl;
 
 @end

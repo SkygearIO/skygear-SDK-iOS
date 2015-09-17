@@ -60,6 +60,7 @@ extern NSString * const ODRecordTypeUserRecord;
 
 @property (nonatomic, readonly, copy) ODRecordID *recordID;
 @property (nonatomic, readonly, copy) NSString *recordType;
+@property (nonatomic, readonly, copy) ODUserRecordID *ownerUserRecordID;
 @property (nonatomic, readonly, copy) NSDate *creationDate;
 @property (nonatomic, readonly, copy) ODUserRecordID *creatorUserRecordID;
 @property (nonatomic, readonly, copy) NSDate *modificationDate;

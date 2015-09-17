@@ -40,10 +40,18 @@ describe(@"deserialize", ^{
     
     it(@"deserialize meta data", ^{
         NSMutableDictionary* data = [basicPayload mutableCopy];
-        data[ODRecordSerializationRecordOwnerIDKey] = @"ownerUserID";
+        data[ODRecordSerializationRecordOwnerIDKey] = @"ownerID";
+        data[ODRecordSerializationRecordCreatedAtKey] = @"2006-01-02T15:04:05Z";
+        data[ODRecordSerializationRecordCreatorIDKey] = @"creatorID";
+        data[ODRecordSerializationRecordUpdatedAtKey] = @"2006-01-02T15:04:06Z";
+        data[ODRecordSerializationRecordUpdaterIDKey] = @"updaterID";
 
         ODRecord *record = [deserializer recordWithDictionary:data];
-        expect(record.creatorUserRecordID.username).to.equal(@"ownerUserID");
+        expect(record.ownerUserRecordID.username).to.equal(@"ownerID");
+        expect(record.creationDate).to.equal([NSDate dateWithTimeIntervalSince1970:1136214245]);
+        expect(record.creatorUserRecordID.username).to.equal(@"creatorID");
+        expect(record.modificationDate).to.equal([NSDate dateWithTimeIntervalSince1970:1136214246]);
+        expect(record.lastModifiedUserRecordID.username).to.equal(@"updaterID");
     });
 
     it(@"deserialize null access control", ^{
