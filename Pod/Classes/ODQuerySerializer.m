@@ -19,7 +19,7 @@
     return [[ODQuerySerializer alloc] init];
 }
 
-- (NSString *)nameWithPredicateOperatorType:(NSPredicateOperatorType)operatorType
+- (NSString *)nameWithPredicateOperatorType:(NSPredicateOperatorType)operatorType andOptions:(NSComparisonPredicateOptions)options
 {
     switch (operatorType) {
         case NSEqualToPredicateOperatorType:
@@ -38,7 +38,11 @@
         case NSBeginsWithPredicateOperatorType:
         case NSEndsWithPredicateOperatorType:
         case NSContainsPredicateOperatorType:
-            return @"like";
+            if (options&NSCaseInsensitivePredicateOption) {
+                return @"ilike";
+            } else {
+                return @"like";
+            }
         default:
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:[NSString stringWithFormat:@"Given NSPredicateOperatorType `%u` is not supported.", (unsigned int)operatorType]
@@ -179,7 +183,7 @@
             }
             rhs = [NSExpression expressionForConstantValue:[matchPattern copy]];
         }
-        return @[[self nameWithPredicateOperatorType:operatorType],
+        return @[[self nameWithPredicateOperatorType:operatorType andOptions:comparison.options],
                  [self serializeWithExpression:lhs],
                  [self serializeWithExpression:rhs],
                  ];

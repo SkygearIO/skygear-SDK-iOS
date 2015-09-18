@@ -122,7 +122,7 @@
 
     NSPredicate *predicate;
     NSString *op = array[0];
-    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like"] containsObject:op]) {
+    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike"] containsObject:op]) {
         predicate = [self comparisonPredicateWithArray:array];
     } else if ([@[@"and", @"or", @"not"] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
@@ -140,7 +140,10 @@
     NSString *predicateOperatorTypeName = array[0];
     id lhs = array[1];
     id rhs = array[2];
+
     NSPredicateOperatorType predicateOperatorType;
+    NSComparisonPredicateOptions options = 0;
+
     if ([predicateOperatorTypeName isEqualToString:@"eq"]) {
         predicateOperatorType = NSEqualToPredicateOperatorType;
     } else if ([predicateOperatorTypeName isEqualToString:@"gt"]) {
@@ -156,16 +159,13 @@
     } else if ([predicateOperatorTypeName isEqualToString:@"like"]) {
         predicateOperatorType = NSLikePredicateOperatorType;
         if ([rhs isKindOfClass:[NSString class]]) {
-            NSMutableString *matchPattern = [rhs mutableCopy];
-            [matchPattern replaceOccurrencesOfString:@"_"
-                                          withString:@"?"
-                                             options:0
-                                               range:NSMakeRange(0, [matchPattern length])];
-            [matchPattern replaceOccurrencesOfString:@"%"
-                                          withString:@"*"
-                                             options:0
-                                               range:NSMakeRange(0, [matchPattern length])];
-            rhs = [matchPattern copy];
+            rhs = [self likePatternWithString:rhs];
+        }
+    } else if ([predicateOperatorTypeName isEqualToString:@"ilike"]) {
+        predicateOperatorType = NSLikePredicateOperatorType;
+        options = NSCaseInsensitivePredicateOption;
+        if ([rhs isKindOfClass:[NSString class]]) {
+            rhs = [self likePatternWithString:rhs];
         }
     } else {
         NSLog(@"Unrecgonized predicateOperatorType = %@", predicateOperatorTypeName);
@@ -179,7 +179,21 @@
                                               rightExpression:rightExpression
                                                      modifier:NSDirectPredicateModifier
                                                          type:predicateOperatorType
-                                                      options:0];
+                                                      options:options];
+}
+
+- (NSString *)likePatternWithString:(NSString *)s
+{
+    NSMutableString *matchPattern = [s mutableCopy];
+    [matchPattern replaceOccurrencesOfString:@"_"
+                                  withString:@"?"
+                                     options:0
+                                       range:NSMakeRange(0, [matchPattern length])];
+    [matchPattern replaceOccurrencesOfString:@"%"
+                                  withString:@"*"
+                                     options:0
+                                       range:NSMakeRange(0, [matchPattern length])];
+    return [matchPattern copy];
 }
 
 - (NSExpression *)expressionWithObject:(id)obj

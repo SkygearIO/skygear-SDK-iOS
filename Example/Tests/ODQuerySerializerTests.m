@@ -224,38 +224,48 @@ describe(@"serialize predicate", ^{
     it(@"serialize beginswith", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
-        
+
         expect(result).to.equal(@[@"like",
                                   @{@"$type": @"keypath", @"$val": @"content"},
                                   @"hello%"
                                   ]);
     });
-    
+
     it(@"serialize endswith", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
-        
+
         expect(result).to.equal(@[@"like",
                                   @{@"$type": @"keypath", @"$val": @"content"},
                                   @"%hello"
                                   ]);
     });
-    
+
     it(@"serialize contains", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"content CONTAINS %@", @"hello"]];
-        
+
         expect(result).to.equal(@[@"like",
                                   @{@"$type": @"keypath", @"$val": @"content"},
                                   @"%hello%"
                                   ]);
     });
-    
+
     it(@"serialize like", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]];
-        
+
         expect(result).to.equal(@[@"like",
+                                  @{@"$type": @"keypath", @"$val": @"content"},
+                                  @"%hello_"
+                                  ]);
+    });
+
+    it(@"serialize like[c]", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
+
+        expect(result).to.equal(@[@"ilike",
                                   @{@"$type": @"keypath", @"$val": @"content"},
                                   @"%hello_"
                                   ]);
