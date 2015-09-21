@@ -24,6 +24,19 @@
     return [[ODRecordDeserializer alloc] init];
 }
 
++ (NSDateFormatter *)dateFormatter
+{
+    static NSDateFormatter *formatter;
+    static dispatch_once_t onceToken;
+
+    dispatch_once (&onceToken, ^{
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+    });
+
+    return formatter;
+}
+
 - (BOOL)isRecordDictionary:(NSDictionary *)obj
 {
     return [obj isKindOfClass:[NSDictionary class]] && [obj[ODRecordSerializationRecordTypeKey] isEqualToString:@"record"];
@@ -52,8 +65,27 @@
 
     NSString *ownerID = obj[ODRecordSerializationRecordOwnerIDKey];
     if (ownerID.length) {
-        record.creatorUserRecordID = [ODUserRecordID recordIDWithUsername:ownerID];
+        record.ownerUserRecordID = [ODUserRecordID recordIDWithUsername:ownerID];
     }
+
+    NSDateFormatter *formatter = [self.class dateFormatter];
+    NSString *createdAt = obj[ODRecordSerializationRecordCreatedAtKey];
+    if (createdAt.length) {
+        record.creationDate = [formatter dateFromString:createdAt];
+    }
+    NSString *creatorID = obj[ODRecordSerializationRecordCreatorIDKey];
+    if (creatorID.length) {
+        record.creatorUserRecordID = [ODUserRecordID recordIDWithUsername:creatorID];
+    }
+    NSString *updatedAt = obj[ODRecordSerializationRecordUpdatedAtKey];
+    if (updatedAt.length) {
+        record.modificationDate = [formatter dateFromString:updatedAt];
+    }
+    NSString *updaterID = obj[ODRecordSerializationRecordUpdaterIDKey];
+    if (updaterID.length) {
+        record.lastModifiedUserRecordID = [ODUserRecordID recordIDWithUsername:updaterID];
+    }
+
 
     id accessControl = obj[ODRecordSerializationRecordAccessControlKey];
     if (accessControl == nil) {
