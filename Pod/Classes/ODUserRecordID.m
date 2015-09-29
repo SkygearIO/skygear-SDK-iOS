@@ -48,7 +48,7 @@
 
 - (instancetype)initWithUsername:(NSString *)username email:(NSString *)email authData:(NSDictionary *)authData
 {
-    self = [super initWithRecordType:@"user" name:username];
+    self = [super initWithRecordType:@"_user" name:username];
     if (self) {
         _email = [email copy];
         _authData = [authData copy];

@@ -57,7 +57,7 @@ describe(@"login", ^{
         waitUntil(^(DoneCallback done) {
             operation.loginCompletionBlock = ^(ODUserRecordID *recordID, ODAccessToken *accessToken, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    expect(recordID.recordType).to.equal(@"user");
+                    expect(recordID.recordType).to.equal(@"_user");
                     expect(recordID.recordName).to.equal(@"user@example.com");
                     expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                     expect(error).to.beNil();

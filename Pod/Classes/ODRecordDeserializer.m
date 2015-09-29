@@ -54,7 +54,7 @@
     
     ODRecordID *recordID = [[ODRecordID alloc] initWithCanonicalString:obj[ODRecordSerializationRecordIDKey]];
     ODRecord *record;
-    if ([recordID.recordType isEqualToString:@"user"]) {
+    if ([recordID.recordType isEqualToString:@"_user"]) {
         ODUserRecordID *userRecordID = [[ODUserRecordID alloc] initWithCanonicalString:recordID.canonicalString];
         record = [[ODUser alloc] initWithUserRecordID:userRecordID
                                                        data:recordData];

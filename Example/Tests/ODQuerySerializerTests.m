@@ -121,7 +121,16 @@ describe(@"serialize predicate", ^{
         expect(result[0]).to.equal(@"eq");
         expect(result[2]).to.equal(@{@"$type": @"ref", @"$id": @"city/hongkong"});
     });
-    
+
+    it(@"equal ref to user record id", ^{
+        ODReference *ref = [[ODReference alloc] initWithRecordID:[[ODUserRecordID alloc] initWithUsername:@"john.doe@example.com"]];
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"_created_by = %@", ref]];
+        expect([result class]).to.beSubclassOf([NSArray class]);
+        expect(result[0]).to.equal(@"eq");
+        expect(result[2]).to.equal(@{@"$type": @"ref", @"$id": @"_user/john.doe@example.com"});
+    });
+
     it(@"greater than integer", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"name > %d", 12]];

@@ -99,7 +99,7 @@ describe(@"save current user", ^{
                               accessToken:[[ODAccessToken alloc] initWithTokenString:@"accesstoken1"]];
         
         container = [[ODContainer alloc] init];
-        expect(container.currentUserRecordID.recordType).to.equal(@"user");
+        expect(container.currentUserRecordID.recordType).to.equal(@"_user");
         expect(container.currentUserRecordID.recordName).to.equal(@"user1");
         expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
