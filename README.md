@@ -1,2 +1,2 @@
-# ODKit
-iOS SDK for Ourd project
+# SkyKit
+iOS SDK for Skygear

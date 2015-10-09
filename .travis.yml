@@ -9,7 +9,7 @@ before_install:
 - sudo pip install lizard
 - pod install --project-directory=Example
 script:
-- xctool test -workspace Example/ODKit.xcworkspace -scheme ODKit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+- xctool test -workspace Example/SkyKit.xcworkspace -scheme SkyKit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 - pod lib lint --quick
 - lizard Pod/ -C 15 -w -i 0
 notifications:
