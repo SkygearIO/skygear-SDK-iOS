@@ -41,9 +41,9 @@ describe(@"deserialize", ^{
     it(@"deserialize meta data", ^{
         NSMutableDictionary* data = [basicPayload mutableCopy];
         data[SKYRecordSerializationRecordOwnerIDKey] = @"ownerID";
-        data[SKYRecordSerializationRecordCreatedAtKey] = @"2006-01-02T15:04:05Z";
+        data[SKYRecordSerializationRecordCreatedAtKey] = @"2006-01-02T15:04:05.000000Z";
         data[SKYRecordSerializationRecordCreatorIDKey] = @"creatorID";
-        data[SKYRecordSerializationRecordUpdatedAtKey] = @"2006-01-02T15:04:06Z";
+        data[SKYRecordSerializationRecordUpdatedAtKey] = @"2006-01-02T15:04:06.000000Z";
         data[SKYRecordSerializationRecordUpdaterIDKey] = @"updaterID";
 
         SKYRecord *record = [deserializer recordWithDictionary:data];

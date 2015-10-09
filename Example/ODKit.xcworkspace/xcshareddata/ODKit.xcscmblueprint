@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "25B4C02200FE66A08DDA23335E67733CF60CAB76",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8C8DFD6471CA3421376417CC704F5F96EBB55385" : 0,
+    "25B4C02200FE66A08DDA23335E67733CF60CAB76" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9F5DDABA-DC0B-4C8F-818B-64A9D34A6ABF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8C8DFD6471CA3421376417CC704F5F96EBB55385" : "",
+    "25B4C02200FE66A08DDA23335E67733CF60CAB76" : "ODKit\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ODKit",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/ODKit.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:limouren\/ODKit.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "25B4C02200FE66A08DDA23335E67733CF60CAB76"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:limouren\/note-app.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8C8DFD6471CA3421376417CC704F5F96EBB55385"
+    }
+  ]
+}
