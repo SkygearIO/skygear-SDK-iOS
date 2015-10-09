@@ -1,11 +1,11 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'ODKit', :exclusive => true do
-  pod "ODKit", :path => "../"
+target 'SkyKit', :exclusive => true do
+  pod "SkyKit", :path => "../"
 end
 
 target 'Tests', :exclusive => true do
-  pod "ODKit", :path => "../"
+  pod "SkyKit", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'
