@@ -9,14 +9,15 @@
 #import "SKYDatabase.h"
 
 #import "SKYDatabaseOperation.h"
-#import "SKYRecord_Private.h"
-#import "SKYRecordID.h"
+#import "SKYDeleteRecordsOperation.h"
+#import "SKYDeleteSubscriptionsOperation.h"
 #import "SKYFetchRecordsOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYModifySubscriptionsOperation.h"
-#import "SKYDeleteRecordsOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYQueryCache.h"
+#import "SKYRecord_Private.h"
+#import "SKYRecordID.h"
 
 @interface SKYDatabase()
 
@@ -79,6 +80,28 @@
 
     [self executeOperation:operation];
 }
+
+- (void)deleteSubscriptionWithID:(NSString *)subscriptionID
+               completionHandler:(void (^)(NSString *subscriptionID,
+                                           NSError *error))completionHandler {
+    SKYDeleteSubscriptionsOperation *operation = [[SKYDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[subscriptionID]];
+    if (completionHandler) {
+        operation.deleteSubscriptionsCompletionBlock = ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *subscriptionID = nil;
+                if (!operationError) {
+                    subscriptionID = deletedSubscriptionIDs[0];
+                }
+
+                completionHandler(subscriptionID, operationError);
+            });
+        };
+    }
+
+    [self executeOperation:operation];
+
+}
+
 
 #pragma mark - Convenient methods for record operations
 
