@@ -132,7 +132,7 @@ describe(@"register device", ^{
         notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SKYContainerDidRegisterDeviceNotification
                                                                                  object:container
                                                                                   queue:[NSOperationQueue mainQueue]
-                                                                             usingBlock:^(NSNotification * _Nonnull note) {
+                                                                             usingBlock:^(NSNotification *note) {
                                                                                  notificationPosted = YES;
                                                                              }];
     });
