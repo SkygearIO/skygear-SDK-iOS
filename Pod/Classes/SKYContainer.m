@@ -83,6 +83,17 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerDeviceID"];
 }
 
+- (void)setRegisteredDeviceID:(NSString *)deviceID
+{
+    if (deviceID) {
+        [[NSUserDefaults standardUserDefaults] setObject:deviceID
+                                                  forKey:@"SKYContainerDeviceID"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification object:self];
+}
+
 /**
  Configurate the End-Point IP:PORT, no scheme is required. i.e. no http://
  */
@@ -300,7 +311,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
                 willRetry = YES;
             }
         }
-        
+
         if (!willRetry) {
             if (completionHandler) {
                 completionHandler(deviceID, error);
@@ -313,22 +324,33 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
 {
-
     NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:deviceToken
                                existingDeviceID:existingDeviceID
                               completionHandler:^(NSString *deviceID, NSError *error) {
-                                  if (deviceID) {
-                                      [[NSUserDefaults standardUserDefaults] setObject:deviceID
-                                                                                forKey:@"SKYContainerDeviceID"];
-                                      [[NSUserDefaults standardUserDefaults] synchronize];
+                                  if (!error) {
+                                      [self setRegisteredDeviceID:deviceID];
                                   }
                                   
                                   if (completionHandler) {
                                       completionHandler(deviceID, error);
                                   }
-                                  
-                                  [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification object:self];
+                              }];
+}
+
+- (void)registerDeviceCompletionHandler:(void(^)(NSString *, NSError *))completionHandler
+{
+    NSString *existingDeviceID = [self registeredDeviceID];
+    [self registerRemoteNotificationDeviceToken:nil
+                               existingDeviceID:existingDeviceID
+                              completionHandler:^(NSString *deviceID, NSError *error) {
+                                  if (!error) {
+                                      [self setRegisteredDeviceID:deviceID];
+                                  }
+
+                                  if (completionHandler) {
+                                      completionHandler(deviceID, error);
+                                  }
                               }];
 }
 

@@ -30,12 +30,27 @@ describe(@"register", ^{
         SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
         operation.container = container;
         [operation prepareForRequest];
-        
+
         SKYRequest *request = operation.request;
         expect([request class]).to.beSubclassOf([SKYRequest class]);
         expect(request.action).to.equal(@"device:register");
         expect(request.accessToken).to.equal(container.currentAccessToken);
+        expect(request.payload[@"type"]).to.equal(@"ios");
         expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
+        expect(request.payload[@"id"]).to.beNil();
+    });
+
+    it(@"new device request without device token", ^{
+        SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation operationWithDeviceToken:nil];
+        operation.container = container;
+        [operation prepareForRequest];
+
+        SKYRequest *request = operation.request;
+        expect([request class]).to.beSubclassOf([SKYRequest class]);
+        expect(request.action).to.equal(@"device:register");
+        expect(request.accessToken).to.equal(container.currentAccessToken);
+        expect(request.payload[@"type"]).to.equal(@"ios");
+        expect(request.payload[@"device_token"]).to.beNil();
         expect(request.payload[@"id"]).to.beNil();
     });
     
@@ -49,6 +64,7 @@ describe(@"register", ^{
         expect([request class]).to.beSubclassOf([SKYRequest class]);
         expect(request.action).to.equal(@"device:register");
         expect(request.accessToken).to.equal(container.currentAccessToken);
+        expect(request.payload[@"type"]).to.equal(@"ios");
         expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
         expect(request.payload[@"id"]).to.equal(@"DEVICE_ID");
     });

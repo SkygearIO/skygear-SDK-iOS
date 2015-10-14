@@ -28,12 +28,21 @@
     return self;
 }
 
++ (instancetype)operation
+{
+    return [[self alloc] initWithDeviceToken:nil];
+}
+
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
 {
     return [[self alloc] initWithDeviceToken:deviceToken];
 }
 
 - (NSString *)hexDeviceToken {
+    if (!self.deviceToken) {
+        return nil;
+    }
+
     NSMutableString *token = [NSMutableString stringWithCapacity:2*self.deviceToken.length];
 
     [self.deviceToken enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
@@ -51,8 +60,12 @@
 {
     NSMutableDictionary *payload = [@{
                                       @"type": @"ios",
-                                      @"device_token": self.hexDeviceToken,
                                       } mutableCopy];
+
+    NSString *deviceToken = self.hexDeviceToken;
+    if (deviceToken) {
+        payload[@"device_token"] = deviceToken;
+    }
 
     NSString *deviceID;
     if (self.deviceID.length) {

@@ -123,9 +123,21 @@ describe(@"save current user", ^{
 });
 
 describe(@"register device", ^{
+    __block id notificationObserver = nil;
+    __block SKYContainer *container = nil;
+    __block bool notificationPosted = NO;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SKYContainerDidRegisterDeviceNotification
+                                                                                 object:container
+                                                                                  queue:[NSOperationQueue mainQueue]
+                                                                             usingBlock:^(NSNotification * _Nonnull note) {
+                                                                                 notificationPosted = YES;
+                                                                             }];
+    });
+
     it(@"new device", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
-        
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
@@ -136,26 +148,59 @@ describe(@"register device", ^{
             NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
                                                               options:0
                                                                 error:nil];
-            
+
             return [OHHTTPStubsResponse responseWithData:payload
                                               statusCode:200
                                                  headers:@{}];
         }];
-        
+
         waitUntil(^(DoneCallback done) {
             [container registerRemoteNotificationDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
                                            completionHandler:^(NSString *deviceID, NSError *error) {
                                                expect(deviceID).to.equal(@"DEVICE_ID");
+                                               expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                                               expect(notificationPosted).to.beTruthy();
                                                done();
                                            }];
         });
     });
-    
+
+    it(@"new device without device token", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *parameters = @{
+                                         @"request_id": @"REQUEST_ID",
+                                         @"result": @{@"id": @"DEVICE_ID"},
+                                         };
+            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
+                                                              options:0
+                                                                error:nil];
+
+            return [OHHTTPStubsResponse responseWithData:payload
+                                              statusCode:200
+                                                 headers:@{}];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            [container registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                    expect(deviceID).to.equal(@"DEVICE_ID");
+                    expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                    expect(notificationPosted).to.beTruthy();
+                    done();
+                }];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
 
         NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
         [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+
+        [[NSNotificationCenter defaultCenter] removeObserver:notificationObserver];
+        container = nil;
+        notificationPosted = NO;
     });
 });
 

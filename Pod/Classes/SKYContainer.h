@@ -131,6 +131,15 @@ typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, 
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler;
 
+/**
+ Registers a device without device token.
+
+ This method should be called to register the current device on remote server at the time when
+ the application launches. It is okay to call this on subsequent launches, even if a device
+ token is already associated with this device.
+ */
+- (void)registerDeviceCompletionHandler:(void(^)(NSString *, NSError *))completionHandler;
+
 - (void)uploadAsset:(SKYAsset *)asset completionHandler:(void(^)(SKYAsset *, NSError*))completionHandler;
 
 /**
