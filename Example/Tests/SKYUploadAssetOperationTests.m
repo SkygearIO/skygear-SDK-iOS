@@ -47,8 +47,8 @@ describe(@"upload asset", ^{
         expect(request.HTTPMethod).to.equal(@"PUT");
         expect(request.URL).to.equal([NSURL URLWithString:@"http://ourd.test/files/boy.txt"]);
         expect(request.allHTTPHeaderFields).to.equal(@{
-                                                       @"X-Ourd-API-Key": @"API_KEY",
-                                                       @"X-Ourd-Access-Token": @"ACCESS_TOKEN",
+                                                       @"X-Skygear-API-Key": @"API_KEY",
+                                                       @"X-Skygear-Access-Token": @"ACCESS_TOKEN",
                                                        });
     });
 

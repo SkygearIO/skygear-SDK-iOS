@@ -8,8 +8,8 @@
 
 #import "NSURLRequest+SKYRequest.h"
 
-NSString * const SKYRequestHeaderAPIKey = @"X-Ourd-API-Key";
-NSString * const SKYRequestHeaderAccessTokenKey = @"X-Ourd-Access-Token";
+NSString * const SKYRequestHeaderAPIKey = @"X-Skygear-API-Key";
+NSString * const SKYRequestHeaderAccessTokenKey = @"X-Skygear-Access-Token";
 
 @implementation NSURLRequest (SKYRequest)
 
