@@ -13,27 +13,38 @@
 
 @implementation SKYUserLoginOperation
 
-- (instancetype)initWithEmail:(NSString *)email password:(NSString *)password
+- (instancetype)initWithEmail:(NSString *)email username:(NSString *)username password:(NSString *)password
 {
     if ((self = [super init])) {
+        self.username = username;
         self.email = email;
         self.password = password;
     }
     return self;
 }
 
++ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
+{
+    return [[self alloc] initWithEmail:nil username:username password:password];
+}
+
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
 {
-    return [[self alloc] initWithEmail:email password:password];
+    return [[self alloc] initWithEmail:email username:nil password:password];
 }
 
 - (void)prepareForRequest
 {
+    NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
+    if (self.username) {
+        payload[@"username"] = self.username;
+    }
+    if (self.email) {
+        payload[@"email"] = self.email;
+    }
+    payload[@"password"] = self.password;
     self.request = [[SKYRequest alloc] initWithAction:@"auth:login"
-                                             payload:@{
-                                                       @"user_id": self.email,
-                                                       @"password": self.password,
-                                                       }];
+                                             payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
 

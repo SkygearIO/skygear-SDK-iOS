@@ -12,12 +12,12 @@
 
 @interface SKYUserLoginOperation : SKYOperation
 
+@property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) void (^loginCompletionBlock)(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
 
-- (instancetype)initWithEmail:(NSString *)email password:(NSString *)password;
-
++ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
 
 @end

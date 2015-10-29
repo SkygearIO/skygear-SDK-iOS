@@ -84,7 +84,6 @@ typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, 
 
 - (void)addOperation:(SKYOperation *)operation;
 
-- (void)signupUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also stored in persistent
  storage.
@@ -116,15 +115,29 @@ typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, 
  Use this to create a user that is not associated with an email address. This is a convenient method for
  <SKYCreateUserOperation>.
  */
-- (void)signupUserAnonymouslyWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-- (void)loginUserWithUsername:(NSString *)username password:(NSString *)password completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)signupAnonymouslyWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+
+- (void)signup:(NSString *)username
+      password:(NSString *)password
+completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)signupWithEmail:(NSString *)email
+               password:(NSString *)password
+       completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)login:(NSString *)username
+     password:(NSString *)password
+completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+- (void)loginWithEmail:(NSString *)email
+     password:(NSString *)password
+completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Logs out the current user of this container.
  
  This is a convenient method for <SKYUserLogoutOperation>.
  */
-- (void)logoutUserWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)logoutWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Registers a device token for push notification.
