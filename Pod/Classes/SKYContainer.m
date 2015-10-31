@@ -386,14 +386,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 
 - (NSString *)APIKey
 {
-    if (!_APIKey) {
+    static BOOL warnedOnce;
+
+    if (!_APIKey && !warnedOnce) {
         NSLog(@"Warning: Container is not configured with an API key. Please call -[%@ %@].",
               NSStringFromClass([SKYContainer class]),
               NSStringFromSelector(@selector(configureWithAPIKey:)));
-        
-        // TODO: This warning and early return should be removed when all apps are modified to call -configureWithAPIKey:.
-        NSLog(@"Warning: A placeholder string is returned as an API key instead. This workaround will be removed in the future and SKYOperation is required to check for its existence.");
-        return @"PLACEHOLDER_API_KEY";
+        warnedOnce = YES;
     }
     return _APIKey;
 }
