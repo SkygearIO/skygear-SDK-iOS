@@ -269,14 +269,24 @@ describe(@"serialize predicate", ^{
                                   @"%hello_"
                                   ]);
     });
-
+    
     it(@"serialize like[c]", ^{
         NSArray *result = [serializer serializeWithPredicate:
                            [NSPredicate predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
-
+        
         expect(result).to.equal(@[@"ilike",
                                   @{@"$type": @"keypath", @"$val": @"content"},
                                   @"%hello_"
+                                  ]);
+    });
+    
+    it(@"serialize in", ^{
+        NSArray *result = [serializer serializeWithPredicate:
+                           [NSPredicate predicateWithFormat:@"category IN %@", @[@"recipe", @"fiction"]]];
+        
+        expect(result).to.equal(@[@"in",
+                                  @{@"$type": @"keypath", @"$val": @"category"},
+                                  @[@"recipe", @"fiction"]
                                   ]);
     });
 });

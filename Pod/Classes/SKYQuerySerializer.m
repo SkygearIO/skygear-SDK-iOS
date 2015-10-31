@@ -43,6 +43,8 @@
             } else {
                 return @"like";
             }
+        case NSInPredicateOperatorType:
+            return @"in";
         default:
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:[NSString stringWithFormat:@"Given NSPredicateOperatorType `%u` is not supported.", (unsigned int)operatorType]

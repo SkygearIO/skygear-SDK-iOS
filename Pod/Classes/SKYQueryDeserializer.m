@@ -122,7 +122,7 @@
 
     NSPredicate *predicate;
     NSString *op = array[0];
-    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike"] containsObject:op]) {
+    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike", @"in"] containsObject:op]) {
         predicate = [self comparisonPredicateWithArray:array];
     } else if ([@[@"and", @"or", @"not"] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
@@ -167,6 +167,8 @@
         if ([rhs isKindOfClass:[NSString class]]) {
             rhs = [self likePatternWithString:rhs];
         }
+    } else if ([predicateOperatorTypeName isEqualToString:@"in"]) {
+        predicateOperatorType = NSInPredicateOperatorType;
     } else {
         NSLog(@"Unrecgonized predicateOperatorType = %@", predicateOperatorTypeName);
         return nil;
@@ -205,7 +207,7 @@
         }
     }
 
-    if ([obj isKindOfClass:[NSArray class]]) {
+    if ([obj isKindOfClass:[NSArray class]] && [obj[0] isEqualToString:@"func"]) {
         NSArray *arr = obj;
 
         NSString *funcName = arr[1];
