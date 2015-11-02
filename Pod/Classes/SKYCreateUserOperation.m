@@ -12,9 +12,14 @@
 
 @implementation SKYCreateUserOperation
 
++ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
+{
+    return [[self alloc] initWithEmail:nil username:username password:password];
+}
+
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
 {
-    return [[self alloc] initWithEmail:email password:password];
+    return [[self alloc] initWithEmail:email username:nil password:password];
 }
 
 + (instancetype)operationWithAnonymousUserAndPassword:(NSString *)password
@@ -22,9 +27,10 @@
     return [[self alloc] initWithAnonymousUserAndPassword:password];
 }
 
-- (instancetype)initWithEmail:(NSString *)email password:(NSString *)password
+- (instancetype)initWithEmail:(NSString *)email username:(NSString *)username password:(NSString *)password
 {
     if ((self = [super init])) {
+        self.username = username;
         self.email = email;
         self.password = password;
         self.anonymousUser = NO;
@@ -35,6 +41,7 @@
 - (instancetype)initWithAnonymousUserAndPassword:(NSString *)password
 {
     if ((self = [super init])) {
+        self.username = nil;
         self.email = nil;
         self.password = nil;
         self.anonymousUser = YES;
@@ -46,7 +53,7 @@
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     if (!self.anonymousUser) {
-        payload[@"user_id"] = self.email;
+        payload[@"username"] = self.username;
         payload[@"email"] = self.email;
         payload[@"password"] = self.password;
     }

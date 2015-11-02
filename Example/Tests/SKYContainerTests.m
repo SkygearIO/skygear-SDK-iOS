@@ -87,7 +87,7 @@ describe(@"save current user", ^{
         }];
         
         waitUntil(^(DoneCallback done) {
-            [container logoutUserWithcompletionHandler:^(SKYUserRecordID *user, NSError *error) {
+            [container logoutWithcompletionHandler:^(SKYUserRecordID *user, NSError *error) {
                 done();
             }];
         });

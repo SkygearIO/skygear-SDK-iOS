@@ -29,6 +29,11 @@
 @interface SKYCreateUserOperation : SKYOperation
 
 /**
+ Username of the user. This username is unique across system.
+ */
+@property (nonatomic, copy) NSString *username;
+
+/**
  Email address of the user. The email address is ignored when creating
  an anonymous user account.
  */
@@ -53,6 +58,17 @@
  - *error*: If an error occurred, this object describes the error.
  */
 @property (nonatomic, copy) void (^createCompletionBlock)(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
+
+/**
+ Initializes and returns and operation configured to create a user account
+ with the specified email address and password.
+ 
+ @param email An email address provided by the user.
+ @param password A password provided by the user.
+ 
+ @return <SKYCreateUserOperation> object.
+ */
++ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;
 
 /**
  Initializes and returns and operation configured to create a user account

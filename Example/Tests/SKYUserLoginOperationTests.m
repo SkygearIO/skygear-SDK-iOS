@@ -22,7 +22,20 @@ describe(@"login", ^{
                               accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
     });
     
-    it(@"make SKYRequest", ^{
+    it(@"make SKYRequest with username login", ^{
+        SKYUserLoginOperation *operation = [SKYUserLoginOperation operationWithUsername:@"username" password:@"password"];
+        operation.container = container;
+        [operation prepareForRequest];
+        SKYRequest *request = operation.request;
+        expect([request class]).to.beSubclassOf([SKYRequest class]);
+        expect(request.action).to.equal(@"auth:login");
+        expect(request.accessToken).to.beNil();
+        expect(request.APIKey).to.equal(@"API_KEY");
+        expect(request.payload[@"username"]).to.equal(@"username");
+        expect(request.payload[@"password"]).to.equal(@"password");
+    });
+    
+    it(@"make SKYRequest with email login", ^{
         SKYUserLoginOperation *operation = [SKYUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
         operation.container = container;
         [operation prepareForRequest];
@@ -31,7 +44,7 @@ describe(@"login", ^{
         expect(request.action).to.equal(@"auth:login");
         expect(request.accessToken).to.beNil();
         expect(request.APIKey).to.equal(@"API_KEY");
-        expect(request.payload[@"user_id"]).to.equal(@"user@example.com");
+        expect(request.payload[@"email"]).to.equal(@"user@example.com");
         expect(request.payload[@"password"]).to.equal(@"password");
     });
 
@@ -42,7 +55,7 @@ describe(@"login", ^{
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
             NSDictionary *parameters = @{
-                                         @"user_id": @"user@example.com",
+                                         @"user_id": @"UUID",
                                          @"access_token": @"ACCESS_TOKEN",
                                          };
             NSData *payload = [NSJSONSerialization dataWithJSONObject:@{@"result": parameters}
@@ -58,7 +71,7 @@ describe(@"login", ^{
             operation.loginCompletionBlock = ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect(recordID.recordType).to.equal(@"_user");
-                    expect(recordID.recordName).to.equal(@"user@example.com");
+                    expect(recordID.recordName).to.equal(@"UUID");
                     expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                     expect(error).to.beNil();
                     done();
