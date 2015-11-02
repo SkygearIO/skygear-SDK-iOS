@@ -8,6 +8,6 @@
 
 #import "SKYDatabase+FacebookExtension.h"
 
-@implementation SKYDatabase(FacebookExtension)
+@implementation SKYDatabase (FacebookExtension)
 
 @end

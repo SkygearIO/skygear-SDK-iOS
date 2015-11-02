@@ -60,16 +60,15 @@
     [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [toBeCached addObject:[serializer dictionaryWithRecord:obj]];
     }];
-    [NSKeyedArchiver archiveRootObject:toBeCached
-                                toFile:[self cacheFilePathWithQuery:query]];
+    [NSKeyedArchiver archiveRootObject:toBeCached toFile:[self cacheFilePathWithQuery:query]];
 }
 
 - (NSArray *)cachedResultsWithQuery:(SKYQuery *)query
 {
     NSMutableArray *cachedResults = [NSMutableArray array];
     SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
-    NSArray *results = [NSKeyedUnarchiver unarchiveObjectWithFile:
-                        [self cacheFilePathWithQuery:query]];
+    NSArray *results =
+        [NSKeyedUnarchiver unarchiveObjectWithFile:[self cacheFilePathWithQuery:query]];
     if ([results isKindOfClass:[NSArray class]]) {
         [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [cachedResults addObject:[deserializer recordWithDictionary:obj]];

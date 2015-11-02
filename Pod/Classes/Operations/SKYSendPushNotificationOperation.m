@@ -17,17 +17,20 @@
 
 @implementation SKYSendPushNotificationOperation
 
-- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo pushTarget:(SKYPushTarget)pushTarget IDsToSend:(NSArray *)IDsToSend
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              pushTarget:(SKYPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend
 {
     self = [super init];
     if (self) {
         _notificationInfo = [notificationInfo copy];
         _IDsToSend = [IDsToSend copy];
         _pushTarget = pushTarget;
-        
+
         [_IDsToSend enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if (![obj isKindOfClass:[NSString class]]) {
-                NSString *reason = [NSString stringWithFormat:@"User ID must be NSString. Got %@", NSStringFromClass([obj class])];
+                NSString *reason = [NSString stringWithFormat:@"User ID must be NSString. Got %@",
+                                                              NSStringFromClass([obj class])];
                 @throw [NSException exceptionWithName:NSInvalidArgumentException
                                                reason:reason
                                              userInfo:nil];
@@ -37,14 +40,16 @@
     return self;
 }
 
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo userIDsToSend:(NSArray *)userIDsToSend
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
+                                userIDsToSend:(NSArray *)userIDsToSend
 {
     return [[self alloc] initWithNotificationInfo:noteInfo
                                        pushTarget:SKYPushTargetIsUser
                                         IDsToSend:userIDsToSend];
 }
 
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo deviceIDsToSend:(NSArray *)deviceIDsToSend
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend
 {
     return [[self alloc] initWithNotificationInfo:noteInfo
                                        pushTarget:SKYPushTargetIsDevice
@@ -60,34 +65,35 @@
 {
     NSString *action;
     NSMutableDictionary *payload;
-    
+
     SKYNotificationInfoSerializer *serializer = [SKYNotificationInfoSerializer serializer];
-    NSDictionary *serializedNotification = [serializer dictionaryWithNotificationInfo:self.notificationInfo];
+    NSDictionary *serializedNotification =
+        [serializer dictionaryWithNotificationInfo:self.notificationInfo];
 
     switch (self.pushTarget) {
         case SKYPushTargetIsUser:
             action = @"push:user";
             payload = [@{
-                         @"user_ids": self.IDsToSend,
-                         @"notification": serializedNotification,
-                         } mutableCopy];
+                @"user_ids" : self.IDsToSend,
+                @"notification" : serializedNotification,
+            } mutableCopy];
             break;
         case SKYPushTargetIsDevice:
             action = @"push:device";
             payload = [@{
-                         @"device_ids": self.IDsToSend,
-                         @"notification": serializedNotification,
-                         } mutableCopy];
+                @"device_ids" : self.IDsToSend,
+                @"notification" : serializedNotification,
+            } mutableCopy];
             break;
         default: {
-            NSString *reason = [NSString stringWithFormat:@"unexpected push target %d", (int)self.pushTarget];
+            NSString *reason =
+                [NSString stringWithFormat:@"unexpected push target %d", (int)self.pushTarget];
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:reason
                                          userInfo:nil];
         }
     }
-    self.request = [[SKYRequest alloc] initWithAction:action
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:action payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
 
@@ -107,8 +113,9 @@
     } else {
         successIDs = [NSMutableArray array];
         NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
-        [response enumerateResultsUsingBlock:^(NSString *resultKey, NSDictionary *result, NSError *error, NSUInteger idx, BOOL *stop) {
-            
+        [response enumerateResultsUsingBlock:^(NSString *resultKey, NSDictionary *result,
+                                               NSError *error, NSUInteger idx, BOOL *stop) {
+
             if (error && resultKey) {
                 errorsByID[resultKey] = error;
             } else {
@@ -118,17 +125,17 @@
                 self.perSendCompletionHandler(resultKey, error);
             }
         }];
-        
+
         if ([errorsByID count] > 0) {
             NSDictionary *errorUserInfo = @{
-                                            SKYPartialErrorsByItemIDKey: errorsByID,
-                                            };
+                SKYPartialErrorsByItemIDKey : errorsByID,
+            };
             error = [NSError errorWithDomain:SKYOperationErrorDomain
                                         code:SKYErrorPartialFailure
                                     userInfo:errorUserInfo];
         }
     }
-    
+
     if (self.sendCompletionHandler) {
         self.sendCompletionHandler(successIDs, error);
     }

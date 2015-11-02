@@ -46,8 +46,11 @@
             dict = [self dictionaryWithDirectAccessControlEntry:entry];
             break;
         default:
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unrecgonized access control entry type" userInfo:@{@"SKYAccessControlEntryType": @(entry.entryType)}];
-
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Unrecgonized access control entry type"
+                                         userInfo:@{
+                                             @"SKYAccessControlEntryType" : @(entry.entryType)
+                                         }];
     }
     return dict;
 }

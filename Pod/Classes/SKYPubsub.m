@@ -27,12 +27,10 @@ double const SKYPubsubReconnectWait = 1.0;
     bool _closing;
 }
 
-
 - (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey
 {
     self = [super init];
-    if (self)
-    {
+    if (self) {
         _endPointAddress = [endPoint copy];
         _APIKey = [APIKey copy];
         _channelHandlers = [[NSMutableDictionary alloc] init];
@@ -57,8 +55,7 @@ double const SKYPubsubReconnectWait = 1.0;
         [_webSocket close];
         [self connect];
         return;
-    }
-    else if (_opened && _endPointAddress != nil && _APIKey != nil) {
+    } else if (_opened && _endPointAddress != nil && _APIKey != nil) {
         [_webSocket close];
         [self connect];
     }
@@ -102,45 +99,33 @@ double const SKYPubsubReconnectWait = 1.0;
     }
 }
 
-- (void)subscribeTo:(NSString *)channel handler:(void(^)(NSDictionary *))messageHandler
+- (void)subscribeTo:(NSString *)channel handler:(void (^)(NSDictionary *))messageHandler
 {
     [_channelHandlers setObject:[messageHandler copy] forKey:channel];
     if (!_opened) {
         [self connect];
-    }
-    else {
-        [self send:@{
-                     @"action": @"sub",
-                     @"channel": channel
-                     }];
+    } else {
+        [self send:@{ @"action" : @"sub", @"channel" : channel }];
     }
 }
 
 - (void)unsubscribe:(NSString *)channel
 {
     [_channelHandlers removeObjectForKey:channel];
-    [self send:@{
-                 @"action": @"unsub",
-                 @"channel": channel
-                 }];
+    [self send:@{ @"action" : @"unsub", @"channel" : channel }];
 }
 
 - (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel
 {
-    [_pendingPublish addObject:@{
-                                 @"action": @"pub",
-                                 @"channel": channel,
-                                 @"data": message
-                                 }];
+    [_pendingPublish addObject:@{ @"action" : @"pub", @"channel" : channel, @"data" : message }];
     if (!_opened) {
         [self connect];
-    }
-    else {
+    } else {
         [self publishPending];
     }
 }
 
--(void)publishPending
+- (void)publishPending
 {
     for (NSDictionary *msg in _pendingPublish) {
         [self send:msg];
@@ -148,16 +133,13 @@ double const SKYPubsubReconnectWait = 1.0;
     [_pendingPublish removeAllObjects];
 }
 
--(void)send:(NSDictionary *)payload
+- (void)send:(NSDictionary *)payload
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload
-                                                       options:0
-                                                         error:&error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:&error];
     if (!jsonData) {
         NSLog(@"Encoding error: %@", error.localizedDescription);
-    }
-    else {
+    } else {
         [_webSocket send:[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]];
     }
 }
@@ -176,10 +158,7 @@ double const SKYPubsubReconnectWait = 1.0;
     _opened = true;
     _connecting = false;
     for (NSString *key in _channelHandlers) {
-        [self send:@{
-                     @"action": @"sub",
-                     @"channel": key
-                     }];
+        [self send:@{ @"action" : @"sub", @"channel" : key }];
     }
     [self publishPending];
 }
@@ -204,23 +183,20 @@ double const SKYPubsubReconnectWait = 1.0;
               NSStringFromClass([self class]), message);
         return;
     }
-    
+
     NSData *objectData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
-    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:objectData
-                                                             options:0
-                                                               error:&error];
+    NSDictionary *jsonData =
+        [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
     if (jsonData && jsonData[@"channel"]) {
-        void(^cb)(NSDictionary *message) = [_channelHandlers objectForKey:jsonData[@"channel"]];
+        void (^cb)(NSDictionary *message) = [_channelHandlers objectForKey:jsonData[@"channel"]];
         if (cb) {
-            cb(jsonData[@"data" ]);
+            cb(jsonData[@"data"]);
         }
-    }
-    else {
+    } else {
         if (error) {
             NSLog(@"JSON Decoding error: %@", error.localizedDescription);
-        }
-        else {
+        } else {
             NSLog(@"Unhandled action: %@", message);
         }
     }
@@ -236,8 +212,7 @@ double const SKYPubsubReconnectWait = 1.0;
     if (!_closing) {
         NSLog(@"Websocket unexpected handup by remote, trying to reconnect");
         [self connect];
-    }
-    else {
+    } else {
         _closing = false;
     }
 }
@@ -247,6 +222,5 @@ double const SKYPubsubReconnectWait = 1.0;
     // Nothing to do. Ping pong just to keep alive.
     return;
 }
-
 
 @end

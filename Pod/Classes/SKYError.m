@@ -8,9 +8,9 @@
 
 #import "SKYError.h"
 
-NSString * const SKYErrorMessageKey = @"SKYErrorMessage";
-NSString * const SKYErrorCodeKey = @"SKYErrorCode";
-NSString * const SKYErrorTypeKey = @"SKYErrorType";
-NSString * const SKYErrorInfoKey = @"SKYErrorInfo";
-NSString * const SKYPartialErrorsByItemIDKey = @"SKYPartialErrorsByItemIDKey";
-NSString * const SKYPartialEmailsNotFoundKey = @"SKYPartialEmailsNotFoundKey";
+NSString *const SKYErrorMessageKey = @"SKYErrorMessage";
+NSString *const SKYErrorCodeKey = @"SKYErrorCode";
+NSString *const SKYErrorTypeKey = @"SKYErrorType";
+NSString *const SKYErrorInfoKey = @"SKYErrorInfo";
+NSString *const SKYPartialErrorsByItemIDKey = @"SKYPartialErrorsByItemIDKey";
+NSString *const SKYPartialEmailsNotFoundKey = @"SKYPartialEmailsNotFoundKey";

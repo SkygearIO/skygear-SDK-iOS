@@ -12,12 +12,15 @@
 
 @implementation SKYFetchNewsfeedOperation
 
-+ (instancetype)operationForCurrentUserWithNewsfeedID:(NSString *)newsfeedID {
-    return [self operationWithNewsfeedID:newsfeedID userRecordID:[SKYContainer defaultContainer].currentUserRecordID];
++ (instancetype)operationForCurrentUserWithNewsfeedID:(NSString *)newsfeedID
+{
+    return [self operationWithNewsfeedID:newsfeedID
+                            userRecordID:[SKYContainer defaultContainer].currentUserRecordID];
 }
 
 + (instancetype)operationWithNewsfeedID:(NSString *)newsfeedID
-                           userRecordID:(SKYUserRecordID *)userRecordID {
+                           userRecordID:(SKYUserRecordID *)userRecordID
+{
     return [[self alloc] initWithNewsfeedID:newsfeedID userRecordID:userRecordID];
 }
 
@@ -26,12 +29,14 @@
     return [[self alloc] initWithCursor:cursor];
 }
 
-- (instancetype)initForCurrentUserWithNewsfeedID:(NSString *)newsfeedID {
-    return [self initWithNewsfeedID:newsfeedID userRecordID:[SKYContainer defaultContainer].currentUserRecordID];
+- (instancetype)initForCurrentUserWithNewsfeedID:(NSString *)newsfeedID
+{
+    return [self initWithNewsfeedID:newsfeedID
+                       userRecordID:[SKYContainer defaultContainer].currentUserRecordID];
 }
 
-- (instancetype)initWithNewsfeedID:(NSString *)newsfeedID
-                      userRecordID:userRecordID {
+- (instancetype)initWithNewsfeedID:(NSString *)newsfeedID userRecordID:userRecordID
+{
     self = [super init];
     if (self) {
         _newsfeedID = newsfeedID;
@@ -40,7 +45,8 @@
     return self;
 }
 
-- (instancetype)initWithCursor:(SKYNewsfeedCursor *)cursor {
+- (instancetype)initWithCursor:(SKYNewsfeedCursor *)cursor
+{
     self = [super init];
     if (self) {
         _cursor = cursor;
@@ -53,7 +59,8 @@
     return NO;
 }
 
-- (void)main {
+- (void)main
+{
     NSAssert(self.userRecordID != nil, @"userRecordID cannot be nil");
 
     if (self.newsfeedItemFetchedBlock) {

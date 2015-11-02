@@ -44,12 +44,12 @@
     if (sortDescriptorArrays.count) {
         query.sortDescriptors = [self sortDescriptorsWithArray:sortDescriptorArrays];
     }
-    
+
     NSNumber *limit = dictionary[@"limit"];
     if ([limit isKindOfClass:[NSNumber class]]) {
         query.limit = [limit integerValue];
     }
-    
+
     NSNumber *offset = dictionary[@"offset"];
     if ([offset isKindOfClass:[NSNumber class]]) {
         query.offset = [offset integerValue];
@@ -63,7 +63,8 @@
     return query;
 }
 
-- (NSArray *)sortDescriptorsWithArray:(NSArray *)array {
+- (NSArray *)sortDescriptorsWithArray:(NSArray *)array
+{
     NSMutableArray *sortDescriptors = [NSMutableArray arrayWithCapacity:array.count];
     for (NSArray *sortDescriptorArray in array) {
         NSSortDescriptor *sortDescriptor = [self sortDescriptorWithArray:sortDescriptorArray];
@@ -79,7 +80,7 @@
     if (array.count < 2) {
         return nil;
     }
-    
+
     NSString *ordering = array[1];
     BOOL ascending;
     if ([ordering isEqualToString:@"asc"]) {
@@ -95,8 +96,7 @@
     switch (expr.expressionType) {
         case NSKeyPathExpressionType:
             if (expr.keyPath.length) {
-                return [NSSortDescriptor sortDescriptorWithKey:expr.keyPath
-                                                     ascending:ascending];
+                return [NSSortDescriptor sortDescriptorWithKey:expr.keyPath ascending:ascending];
             } else {
                 return nil;
             }
@@ -106,8 +106,8 @@
                 NSExpression *arg1 = expr.arguments[0];
                 NSExpression *arg2 = expr.arguments[1];
                 return [SKYLocationSortDescriptor locationSortDescriptorWithKey:arg1.keyPath
-                                                              relativeLocation:arg2.constantValue
-                                                                     ascending:ascending];
+                                                               relativeLocation:arg2.constantValue
+                                                                      ascending:ascending];
             } else {
                 NSLog(@"Function name %@ is not supported.", expr.function);
                 return nil;
@@ -127,9 +127,10 @@
 
     NSPredicate *predicate;
     NSString *op = array[0];
-    if ([@[@"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike", @"in"] containsObject:op]) {
+    if ([@[ @"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike", @"in" ]
+            containsObject:op]) {
         predicate = [self comparisonPredicateWithArray:array];
-    } else if ([@[@"and", @"or", @"not"] containsObject:op]) {
+    } else if ([@[ @"and", @"or", @"not" ] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
     }
 
@@ -208,7 +209,8 @@
     if ([obj isKindOfClass:[NSDictionary class]]) {
         NSString *objType = (NSString *)obj[@"$type"];
         if ([objType isEqualToString:@"keypath"]) {
-            return [NSExpression expressionForKeyPath:[self keyPathWithDictionary:(NSDictionary *)obj]];
+            return [NSExpression
+                expressionForKeyPath:[self keyPathWithDictionary:(NSDictionary *)obj]];
         }
     }
 
@@ -218,7 +220,7 @@
         NSString *funcName = arr[1];
         NSString *ocFuncName = localFunctionName(funcName);
 
-        NSMutableArray *args = [NSMutableArray arrayWithCapacity:arr.count-1];
+        NSMutableArray *args = [NSMutableArray arrayWithCapacity:arr.count - 1];
         for (NSUInteger i = 2; i < arr.count; ++i) {
             [args addObject:[self expressionWithObject:arr[i]]];
         }
@@ -265,7 +267,8 @@
         }
     }
 
-    return [[NSCompoundPredicate alloc] initWithType:compoundOperatorType subpredicates:subpredicates];
+    return
+        [[NSCompoundPredicate alloc] initWithType:compoundOperatorType subpredicates:subpredicates];
 }
 
 @end

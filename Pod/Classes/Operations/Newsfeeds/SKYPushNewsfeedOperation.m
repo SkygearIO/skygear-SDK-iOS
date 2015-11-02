@@ -12,15 +12,17 @@
 
 - (instancetype)initWithNewsfeedItem:(SKYNewsfeedItem *)feedItem
                   pushingToReference:(SKYReference *)reference
-                       forNewsfeedID:(NSString *)newsfeedID {
-    return [self initWithNewsfeedItems:@[feedItem]
+                       forNewsfeedID:(NSString *)newsfeedID
+{
+    return [self initWithNewsfeedItems:@[ feedItem ]
                     pushingToReference:reference
                          forNewsfeedID:newsfeedID];
 }
 
 - (instancetype)initWithNewsfeedItems:(NSArray /* SKYNewsfeedItem */ *)feedItems
                    pushingToReference:(SKYReference *)reference
-                        forNewsfeedID:(NSString *)newsfeedID {
+                        forNewsfeedID:(NSString *)newsfeedID
+{
     self = [super init];
     if (self) {
         _newfeedItems = feedItems;

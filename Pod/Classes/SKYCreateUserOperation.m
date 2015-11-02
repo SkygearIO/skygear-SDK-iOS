@@ -27,7 +27,9 @@
     return [[self alloc] initWithAnonymousUserAndPassword:password];
 }
 
-- (instancetype)initWithEmail:(NSString *)email username:(NSString *)username password:(NSString *)password
+- (instancetype)initWithEmail:(NSString *)email
+                     username:(NSString *)username
+                     password:(NSString *)password
 {
     if ((self = [super init])) {
         self.username = username;
@@ -54,9 +56,10 @@
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     if (!self.anonymousUser) {
         if (self.username == nil && self.email == nil) {
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"Username and email cannot be both nil for anonymous user."
-                                         userInfo:nil];
+            @throw [NSException
+                exceptionWithName:NSInvalidArgumentException
+                           reason:@"Username and email cannot be both nil for anonymous user."
+                         userInfo:nil];
         }
         if (self.password == nil) {
             @throw [NSException exceptionWithName:NSInvalidArgumentException
@@ -73,8 +76,7 @@
     if (self.password) {
         payload[@"password"] = self.password;
     }
-    self.request = [[SKYRequest alloc] initWithAction:@"auth:signup"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"auth:signup" payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
 
@@ -88,16 +90,20 @@
     }
 }
 
-- (void)setCreateCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *, NSError *))createCompletionBlock
+- (void)setCreateCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
+                                           NSError *))createCompletionBlock
 {
     if (createCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                SKYUserRecordID *recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
-                SKYAccessToken *accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
-                NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"], response[@"access_token"]);
+                SKYUserRecordID *recordID =
+                    [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
+                SKYAccessToken *accessToken =
+                    [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+                NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
+                      response[@"access_token"]);
                 createCompletionBlock(recordID, accessToken, nil);
             } else {
                 createCompletionBlock(nil, nil, weakSelf.error);
@@ -107,7 +113,5 @@
         self.completionBlock = nil;
     }
 }
-
-
 
 @end

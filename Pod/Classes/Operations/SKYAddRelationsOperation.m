@@ -23,7 +23,8 @@
     return self;
 }
 
-+ (instancetype)operationWithType:(NSString *)relationType usersToRelated:(NSArray /* SKYUser */ *)users
++ (instancetype)operationWithType:(NSString *)relationType
+                   usersToRelated:(NSArray /* SKYUser */ *)users
 {
     return [[self alloc] initWithType:relationType usersToRelated:users];
 }
@@ -39,9 +40,7 @@
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [@{
-                                     @"name": self.relationType
-                                     } mutableCopy];
+    NSMutableDictionary *payload = [@{ @"name" : self.relationType } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (SKYUser *user in self.usersToRelate) {
         [targets addObject:user.username];
@@ -63,11 +62,10 @@
     NSDictionary *response = responseObject.responseDictionary;
     NSArray *result = response[@"result"];
     if (![result isKindOfClass:[NSArray class]]) {
-        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                             errorDictionary:nil];
-        NSError *error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                    code:0
-                                userInfo:userInfo];
+        NSDictionary *userInfo =
+            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                        errorDictionary:nil];
+        NSError *error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         if (self.addRelationsCompletionBlock) {
             self.addRelationsCompletionBlock(nil, error);
         }
@@ -86,35 +84,30 @@
 
         if (!itemDict.count) {
             NSDictionary *info = @{
-                                   SKYErrorCodeKey: @104,
-                                   SKYErrorTypeKey: @"ResourceNotFound",
-                                   SKYErrorMessageKey: @"User missing in response",
-                                   SKYErrorInfoKey: @{@"id": user.username},
-                                   };
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:info];
+                SKYErrorCodeKey : @104,
+                SKYErrorTypeKey : @"ResourceNotFound",
+                SKYErrorMessageKey : @"User missing in response",
+                SKYErrorInfoKey : @{@"id" : user.username},
+            };
+            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
         } else {
             NSString *itemType = itemDict[@"type"];
             if ([itemType isEqualToString:@"error"]) {
-                NSDictionary *info = [SKYDataSerialization userInfoWithErrorDictionary:itemDict[@"data"]];
-                error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:info];
+                NSDictionary *info =
+                    [SKYDataSerialization userInfoWithErrorDictionary:itemDict[@"data"]];
+                error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
             } else {
                 returnedUserID = [SKYUserRecordID recordIDWithUsername:user.username];
                 if (returnedUserID == nil) {
-                    NSDictionary *info = [self errorUserInfoWithLocalizedDescription:@"User does not conform with expected format." errorDictionary:nil];
-                    error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                                code:0
-                                            userInfo:info];
+                    NSDictionary *info = [self errorUserInfoWithLocalizedDescription:
+                                                   @"User does not conform with expected format."
+                                                                     errorDictionary:nil];
+                    error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
                 }
             }
         }
 
-        NSAssert(
-                 (returnedUserID == nil && error != nil) ||
-                 (returnedUserID != nil && error == nil),
+        NSAssert((returnedUserID == nil && error != nil) || (returnedUserID != nil && error == nil),
                  @"either one from user and error is not nil");
 
         if (self.perUserCompletionBlock) {
@@ -134,8 +127,8 @@
             operationError = [NSError errorWithDomain:SKYOperationErrorDomain
                                                  code:SKYErrorPartialFailure
                                              userInfo:@{
-                                                        SKYPartialErrorsByItemIDKey: errorsByStringUserID,
-                                                        }];
+                                                 SKYPartialErrorsByItemIDKey : errorsByStringUserID,
+                                             }];
         }
 
         self.addRelationsCompletionBlock(savedUsers, operationError);

@@ -14,30 +14,38 @@
 #import "SKYReference.h"
 #import "SKYError.h"
 
-NSString * const SKYDataSerializationCustomTypeKey = @"$type";
-NSString * const SKYDataSerializationAssetType = @"asset";
-NSString * const SKYDataSerializationReferenceType = @"ref";
-NSString * const SKYDataSerializationDateType = @"date";
-NSString * const SKYDataSerializationLocationType = @"geo";
+NSString *const SKYDataSerializationCustomTypeKey = @"$type";
+NSString *const SKYDataSerializationAssetType = @"asset";
+NSString *const SKYDataSerializationReferenceType = @"ref";
+NSString *const SKYDataSerializationDateType = @"date";
+NSString *const SKYDataSerializationLocationType = @"geo";
 
 static NSDictionary *remoteFunctionNameDict;
 static NSDictionary *localFunctionNameDict;
 
-NSString *remoteFunctionName(NSString *localFunctionName) {
+NSString *remoteFunctionName(NSString *localFunctionName)
+{
     if ([localFunctionName isEqualToString:@"distanceToLocation:fromLocation:"]) {
         return @"distance";
     } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:[NSString stringWithFormat:@"Unrecgonized local function name `%@`", localFunctionName] userInfo:nil];
+        @throw [NSException
+            exceptionWithName:NSInvalidArgumentException
+                       reason:[NSString stringWithFormat:@"Unrecgonized local function name `%@`",
+                                                         localFunctionName]
+                     userInfo:nil];
     }
 }
 
-NSString *localFunctionName(NSString *remoteFunctionName) {
+NSString *localFunctionName(NSString *remoteFunctionName)
+{
     if ([remoteFunctionName isEqualToString:@"distance"]) {
         return @"distanceToLocation:fromLocation:";
     } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:[NSString stringWithFormat:@"Unrecgonized remote function name `%@`", remoteFunctionName] userInfo:nil];
+        @throw [NSException
+            exceptionWithName:NSInvalidArgumentException
+                       reason:[NSString stringWithFormat:@"Unrecgonized remote function name `%@`",
+                                                         remoteFunctionName]
+                     userInfo:nil];
     }
 }
 
@@ -67,9 +75,10 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
         return nil;
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *newArray = [NSMutableArray array];
-        [(NSArray *)value enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
-            [newArray addObject:[self deserializeObjectWithValue:valueInArray]];
-        }];
+        [(NSArray *)value
+            enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
+                [newArray addObject:[self deserializeObjectWithValue:valueInArray]];
+            }];
         return newArray;
     } else if ([value isKindOfClass:[NSDictionary class]]) {
         NSString *type = [(NSDictionary *)value objectForKey:SKYDataSerializationCustomTypeKey];
@@ -77,10 +86,11 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
             return [self deserializeSimpleObjectWithType:type value:value];
         } else {
             NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-            [(NSDictionary *)value enumerateKeysAndObjectsUsingBlock:^(id key, id valueInDictionary, BOOL *stop) {
-                [newDictionary setObject:[self deserializeObjectWithValue:valueInDictionary]
-                                  forKey:key];
-            }];
+            [(NSDictionary *)value
+                enumerateKeysAndObjectsUsingBlock:^(id key, id valueInDictionary, BOOL *stop) {
+                    [newDictionary setObject:[self deserializeObjectWithValue:valueInDictionary]
+                                      forKey:key];
+                }];
             return newDictionary;
         }
     } else {
@@ -122,26 +132,26 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         data = @{
-                 SKYDataSerializationCustomTypeKey: SKYDataSerializationDateType,
-                 @"$date": [formatter stringFromDate:obj],
-                 };
+            SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
+            @"$date" : [formatter stringFromDate:obj],
+        };
     } else if ([obj isKindOfClass:[SKYReference class]]) {
         data = @{
-                 SKYDataSerializationCustomTypeKey: SKYDataSerializationReferenceType,
-                 @"$id": [(SKYReference*)obj recordID].canonicalString,
-                 };
+            SKYDataSerializationCustomTypeKey : SKYDataSerializationReferenceType,
+            @"$id" : [(SKYReference *)obj recordID].canonicalString,
+        };
     } else if ([obj isKindOfClass:[SKYAsset class]]) {
         data = @{
-                 SKYDataSerializationCustomTypeKey: SKYDataSerializationAssetType,
-                 @"$name": [obj name],
-                 };
+            SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType,
+            @"$name" : [obj name],
+        };
     } else if ([obj isKindOfClass:[CLLocation class]]) {
         CLLocationCoordinate2D coordinate = [obj coordinate];
         data = @{
-                 SKYDataSerializationCustomTypeKey: SKYDataSerializationLocationType,
-                 @"$lng": @(coordinate.longitude),
-                 @"$lat": @(coordinate.latitude),
-                 };
+            SKYDataSerializationCustomTypeKey : SKYDataSerializationLocationType,
+            @"$lng" : @(coordinate.longitude),
+            @"$lat" : @(coordinate.latitude),
+        };
     } else {
         data = obj;
     }
@@ -153,7 +163,7 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
     if (!obj) {
         return nil;
     }
-    
+
     if ([obj isKindOfClass:[NSArray class]]) {
         NSMutableArray *newArray = [NSMutableArray array];
         [(NSArray *)obj enumerateObjectsUsingBlock:^(id objInArray, NSUInteger idx, BOOL *stop) {
@@ -162,10 +172,10 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
         return newArray;
     } else if ([obj isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-        [(NSDictionary *)obj enumerateKeysAndObjectsUsingBlock:^(id key, id objInDictionary, BOOL *stop) {
-            [newDictionary setObject:[self serializeObject:objInDictionary]
-                              forKey:key];
-        }];
+        [(NSDictionary *)obj
+            enumerateKeysAndObjectsUsingBlock:^(id key, id objInDictionary, BOOL *stop) {
+                [newDictionary setObject:[self serializeObject:objInDictionary] forKey:key];
+            }];
         return newDictionary;
     } else {
         return [self serializeSimpleObject:obj];
@@ -175,25 +185,24 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
 + (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    
+
     if ([dict[@"code"] isKindOfClass:[NSNumber class]]) {
         userInfo[SKYErrorCodeKey] = [NSNumber numberWithInteger:[dict[@"code"] integerValue]];
     } else {
         NSLog(@"`code` is missing in error object or it is not a number.");
     }
-    
+
     if ([dict[@"type"] isKindOfClass:[NSString class]]) {
         userInfo[SKYErrorTypeKey] = [dict[@"type"] copy];
     } else {
         NSLog(@"`type` is missing in error object or it is not a string.");
     }
-    
+
     if ([dict[@"message"] isKindOfClass:[NSString class]]) {
         userInfo[SKYErrorMessageKey] = [dict[@"message"] copy];
     } else {
         NSLog(@"`message` is missing in error object or it is not a string.");
     }
-
 
     if (dict[@"info"]) {
         if ([dict[@"info"] isKindOfClass:[NSDictionary class]]) {
@@ -202,7 +211,7 @@ NSString *localFunctionName(NSString *remoteFunctionName) {
             NSLog(@"`info` is not a dictionary.");
         }
     }
-    
+
     return userInfo;
 }
 

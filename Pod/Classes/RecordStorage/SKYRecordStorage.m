@@ -13,14 +13,17 @@
 #import "SKYRecordStorageFileBackedMemoryStore.h"
 #import "SKYRecordSynchronizer.h"
 
-NSString * const SKYRecordStorageDidUpdateNotification = @"SKYRecordStorageDidUpdateNotification";
-NSString * const SKYRecordStorageWillSynchronizeChangesNotification = @"SKYRecordStorageWillSynchronizeChangesNotification";
-NSString * const SKYRecordStorageDidSynchronizeChangesNotification = @"SKYRecordStorageDidSynchronizeChangesNotification";
-NSString * const SKYRecordStorageUpdateAvailableNotification = @"SKYRecordStorageUpdateAvailableNotification";
-NSString * const SKYRecordStoragePendingChangesCountKey = @"pendingChangesCount";
-NSString * const SKYRecordStorageFailedChangesCountKey = @"failedChangesCount";
-NSString * const SKYRecordStorageSavedRecordIDsKey = @"savedRecordIDs";
-NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
+NSString *const SKYRecordStorageDidUpdateNotification = @"SKYRecordStorageDidUpdateNotification";
+NSString *const SKYRecordStorageWillSynchronizeChangesNotification =
+    @"SKYRecordStorageWillSynchronizeChangesNotification";
+NSString *const SKYRecordStorageDidSynchronizeChangesNotification =
+    @"SKYRecordStorageDidSynchronizeChangesNotification";
+NSString *const SKYRecordStorageUpdateAvailableNotification =
+    @"SKYRecordStorageUpdateAvailableNotification";
+NSString *const SKYRecordStoragePendingChangesCountKey = @"pendingChangesCount";
+NSString *const SKYRecordStorageFailedChangesCountKey = @"failedChangesCount";
+NSString *const SKYRecordStorageSavedRecordIDsKey = @"savedRecordIDs";
+NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 @interface SKYRecordStorage ()
 
@@ -55,7 +58,7 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
         [self willChangeValueForKey:@"enabled"];
         _enabled = enabled;
         [self didChangeValueForKey:@"enabled"];
-        
+
         if (_enabled) {
             [self shouldFetchUpdates];
             [self shouldProcessChanges];
@@ -76,7 +79,8 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 #pragma mark - Changing all records with force
 
-- (void)performUpdateWithCompletionHandler:(void(^)(BOOL finished, NSError *error))completionHandler
+- (void)performUpdateWithCompletionHandler:(void (^)(BOOL finished,
+                                                     NSError *error))completionHandler
 {
     void (^mainThreadCompletion)(BOOL finished, NSError *error) = ^(BOOL finished, NSError *error) {
         if (completionHandler) {
@@ -89,14 +93,14 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     if (self.hasPendingChanges) {
         [self.synchronizer recordStorage:self
                              saveChanges:[self pendingChanges]
-                              completionHandler:^(BOOL finished, NSError *error) {
-                                  if (finished) {
-                                      [self.synchronizer recordStorageFetchUpdates:self
-                                                                        completionHandler:mainThreadCompletion];
-                                  } else {
-                                      mainThreadCompletion(NO, error);
-                                  }
-                              }];
+                       completionHandler:^(BOOL finished, NSError *error) {
+                           if (finished) {
+                               [self.synchronizer recordStorageFetchUpdates:self
+                                                          completionHandler:mainThreadCompletion];
+                           } else {
+                               mainThreadCompletion(NO, error);
+                           }
+                       }];
     } else {
         [self.synchronizer recordStorageFetchUpdates:self completionHandler:mainThreadCompletion];
     }
@@ -111,7 +115,7 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 }
 
 - (SKYRecord *)_getCacheRecordWithRecordID:(SKYRecordID *)recordID
-                         orSetCacheRecord:(SKYRecord *)record
+                          orSetCacheRecord:(SKYRecord *)record
 {
     SKYRecord *cachedRecord = [_records objectForKey:recordID];
     if (!cachedRecord) {
@@ -145,14 +149,16 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     [self saveRecord:record whenConflict:_defaultResolveMethod completionHandler:nil];
 }
 
-- (void)saveRecord:(SKYRecord *)record whenConflict:(SKYRecordResolveMethod)resolution completionHandler:(id)handler
+- (void)saveRecord:(SKYRecord *)record
+      whenConflict:(SKYRecordResolveMethod)resolution
+ completionHandler:(id)handler
 {
     NSDictionary *attributesToSave = [self attributesToSaveWithRecord:record];
     SKYRecordChange *change = [[SKYRecordChange alloc] initWithRecord:record
-                                                             action:SKYRecordChangeSave
-                                                      resolveMethod:resolution
-                                                   attributesToSave:attributesToSave];
-    
+                                                               action:SKYRecordChangeSave
+                                                        resolveMethod:resolution
+                                                     attributesToSave:attributesToSave];
+
     [self _setCacheRecord:record recordID:record.recordID];
     [self _appendChange:change record:record completion:handler];
 }
@@ -169,12 +175,14 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     [self deleteRecord:record whenConflict:_defaultResolveMethod completionHandler:nil];
 }
 
-- (void)deleteRecord:(SKYRecord *)record whenConflict:(SKYRecordResolveMethod)resolution completionHandler:(id)handler
+- (void)deleteRecord:(SKYRecord *)record
+        whenConflict:(SKYRecordResolveMethod)resolution
+   completionHandler:(id)handler
 {
     SKYRecordChange *change = [[SKYRecordChange alloc] initWithRecord:record
-                                                             action:SKYRecordChangeDelete
-                                                      resolveMethod:resolution
-                                                   attributesToSave:nil];
+                                                               action:SKYRecordChangeDelete
+                                                        resolveMethod:resolution
+                                                     attributesToSave:nil];
 
     [self _setCacheRecord:nil recordID:record.recordID];
     [self _appendChange:change record:record completion:handler];
@@ -183,7 +191,9 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 - (void)deleteRecords:(NSArray *)records
 {
     [records enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [self deleteRecord:(SKYRecord *)obj whenConflict:_defaultResolveMethod completionHandler:nil];
+        [self deleteRecord:(SKYRecord *)obj
+                 whenConflict:_defaultResolveMethod
+            completionHandler:nil];
     }];
 }
 
@@ -212,7 +222,9 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     return [self recordsWithType:recordType predicate:nil sortDescriptors:nil];
 }
 
-- (NSArray *)recordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
+- (NSArray *)recordsWithType:(NSString *)recordType
+                   predicate:(NSPredicate *)predicate
+             sortDescriptors:(NSArray *)sortDescriptors
 {
     NSMutableArray *records = [[NSMutableArray alloc] init];
     [self enumerateRecordsWithType:recordType
@@ -221,19 +233,22 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                         usingBlock:^(SKYRecord *record, BOOL *stop) {
                             [records addObject:record];
                         }];
-    
-    NSLog(@"%@: Query for record type `%@` returns %lu records. Predicate: %@",
-          self, recordType, (unsigned long)[records count], predicate);
+
+    NSLog(@"%@: Query for record type `%@` returns %lu records. Predicate: %@", self, recordType,
+          (unsigned long)[records count], predicate);
 
     return records;
 }
 
-- (void)enumerateRecordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors usingBlock:(void (^)(SKYRecord *, BOOL *))block
+- (void)enumerateRecordsWithType:(NSString *)recordType
+                       predicate:(NSPredicate *)predicate
+                 sortDescriptors:(NSArray *)sortDescriptors
+                      usingBlock:(void (^)(SKYRecord *, BOOL *))block
 {
     if (!block) {
         return;
     }
-    
+
     [_backingStore enumerateRecordsWithType:recordType
                                   predicate:predicate
                             sortDescriptors:sortDescriptors
@@ -259,7 +274,7 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     if (self.enabled) {
         if (self.hasPendingChanges) {
             NSLog(@"%@: Enabled and detected %lu pending changes."
-                  " Will ask synchronizer to save changes.",
+                   " Will ask synchronizer to save changes.",
                   self, (unsigned long)[self.pendingChanges count]);
             [_synchronizer recordStorage:self
                              saveChanges:self.pendingChanges
@@ -280,8 +295,7 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     [record.dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         id oldValue = [oldDictionary objectForKey:key];
         if (![oldValue isEqual:obj]) {
-            difference[key] = @[oldValue ? oldValue : [NSNull null],
-                                obj ? obj : [NSNull null]];
+            difference[key] = @[ oldValue ? oldValue : [NSNull null], obj ? obj : [NSNull null] ];
         }
     }];
     return difference;
@@ -325,7 +339,7 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     }
     [self shouldProcessChanges];
 }
-        
+
 - (BOOL)_dismissExistingChangeIfAnyWithRecord:(SKYRecord *)record error:(NSError **)error
 {
     BOOL success;
@@ -350,11 +364,12 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     } else {
         if ([_synchronizer isProcessingChange:item storage:self]) {
             if (error) {
-                *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
-                                             code:0
-                                         userInfo:@{
-                                                    NSLocalizedDescriptionKey: @"Cannot dismiss a started change."
-                                                    }];
+                *error = [NSError
+                    errorWithDomain:@"SKYRecordStorageErrorDomain"
+                               code:0
+                           userInfo:@{
+                               NSLocalizedDescriptionKey : @"Cannot dismiss a started change."
+                           }];
                 return NO;
             }
         }
@@ -370,7 +385,8 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 {
     if (block) {
         NSArray *failedChangesCopy = [_backingStore failedChanges];
-        [failedChangesCopy enumerateObjectsUsingBlock:^(SKYRecordChange *obj, NSUInteger idx, BOOL *stop) {
+        [failedChangesCopy enumerateObjectsUsingBlock:^(SKYRecordChange *obj, NSUInteger idx,
+                                                        BOOL *stop) {
             NSAssert([obj isKindOfClass:[SKYRecordChange class]],
                      @"%@ is expected to be an SKYRecordChange.", NSStringFromClass([obj class]));
             SKYRecord *record = [self recordWithRecordID:obj.recordID];
@@ -391,14 +407,14 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     [_backingStore enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
         [oldRecordIDs addObject:record.recordID];
     }];
-    
+
     [records enumerateObjectsUsingBlock:^(SKYRecord *obj, NSUInteger idx, BOOL *stop) {
         [_backingStore saveRecord:obj];
         [_savedRecordIDs addObject:obj.recordID];
         [_records setObject:obj forKey:obj.recordID];
         [oldRecordIDs removeObject:obj.recordID];
     }];
-    
+
     [oldRecordIDs enumerateObjectsUsingBlock:^(SKYRecordID *obj, NSUInteger idx, BOOL *stop) {
         [_backingStore deleteRecordWithRecordID:obj];
         [_deletedRecordIDs addObject:obj];
@@ -407,8 +423,8 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 }
 
 - (void)updateByApplyingChange:(SKYRecordChange *)change
-                     recordOnRemote:(SKYRecord *)remoteRecord
-                              error:(NSError *)error
+                recordOnRemote:(SKYRecord *)remoteRecord
+                         error:(NSError *)error
 {
     if (error) {
         [_backingStore setFinishedWithError:error change:change];
@@ -447,9 +463,9 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
         [noteCenter postNotificationName:SKYRecordStorageWillSynchronizeChangesNotification
                                   object:self
                                 userInfo:@{
-                                           SKYRecordStoragePendingChangesCountKey:
-                                               @([self.backingStore pendingChangesCount])
-                                           }];
+                                    SKYRecordStoragePendingChangesCountKey :
+                                        @([self.backingStore pendingChangesCount])
+                                }];
     }
     [self willChangeValueForKey:@"updating"];
     _updating = YES;
@@ -462,25 +478,25 @@ NSString * const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     [self willChangeValueForKey:@"updating"];
     _updating = NO;
     [self didChangeValueForKey:@"updating"];
- 
+
     NSNotificationCenter *noteCenter = [NSNotificationCenter defaultCenter];
     if (_updatingForChanges) {
         [noteCenter postNotificationName:SKYRecordStorageDidSynchronizeChangesNotification
                                   object:self
                                 userInfo:@{
-                                           SKYRecordStorageFailedChangesCountKey:
-                                               @([[self.backingStore failedChanges] count])
-                                           }];
+                                    SKYRecordStorageFailedChangesCountKey :
+                                        @([[self.backingStore failedChanges] count])
+                                }];
         _updatingForChanges = NO;
     }
-    
+
     [noteCenter postNotificationName:SKYRecordStorageDidUpdateNotification
                               object:self
                             userInfo:@{
-                                       SKYRecordStorageSavedRecordIDsKey: [_savedRecordIDs copy],
-                                       SKYRecordStorageSavedRecordIDsKey: [_deletedRecordIDs copy],
-                                       }];
-    
+                                SKYRecordStorageSavedRecordIDsKey : [_savedRecordIDs copy],
+                                SKYRecordStorageSavedRecordIDsKey : [_deletedRecordIDs copy],
+                            }];
+
     _savedRecordIDs = nil;
     _deletedRecordIDs = nil;
 }

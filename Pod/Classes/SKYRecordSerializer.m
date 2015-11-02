@@ -27,8 +27,7 @@
 {
     NSMutableDictionary *payload = [NSMutableDictionary dictionary];
     [record.dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [payload setObject:[SKYDataSerialization serializeObject:obj]
-                    forKey:key];
+        [payload setObject:[SKYDataSerialization serializeObject:obj] forKey:key];
     }];
 
     payload[SKYRecordSerializationRecordIDKey] = record.recordID.canonicalString;
@@ -38,13 +37,14 @@
     // It is not expected for a record deserialized from web response to have
     // nil accessControl.
     if (record.accessControl) {
-        id serializedAccessControl = [[SKYAccessControlSerializer serializer] arrayWithAccessControl:record.accessControl];
+        id serializedAccessControl =
+            [[SKYAccessControlSerializer serializer] arrayWithAccessControl:record.accessControl];
         if (serializedAccessControl == nil) {
             serializedAccessControl = [NSNull null];
         }
         payload[SKYRecordSerializationRecordAccessControlKey] = serializedAccessControl;
     }
-    
+
     // Serialize each value in transient dictionary
     if (self.serializeTransientDictionary) {
         __block NSMutableDictionary *transientPayload = nil;

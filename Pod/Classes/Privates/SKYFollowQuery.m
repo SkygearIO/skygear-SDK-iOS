@@ -12,19 +12,24 @@
 
 @implementation SKYFollowQuery
 
-- (instancetype)initFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID {
+- (instancetype)initFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID
+{
     return [self initWithUserRecordID:userRecordID followQueryType:SKYFollowQueryTypeFollower];
 }
 
-- (instancetype)initFollowingQueryWithUserRecordID:(SKYUserRecordID *)userRecordID {
+- (instancetype)initFollowingQueryWithUserRecordID:(SKYUserRecordID *)userRecordID
+{
     return [self initWithUserRecordID:userRecordID followQueryType:SKYFollowQueryTypeFollowing];
 }
 
-- (instancetype)initMutualFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID {
+- (instancetype)initMutualFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID
+{
     return [self initWithUserRecordID:userRecordID followQueryType:SKYFollowQueryTypeMutual];
 }
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID followQueryType:(SKYFollowQueryType)followQueryType {
+- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+                     followQueryType:(SKYFollowQueryType)followQueryType
+{
     self = [super initWithRecordType:SKYRecordTypeUserRecord predicate:nil];
     if (self) {
         _userRecordID = userRecordID;

@@ -42,9 +42,7 @@
 
 - (void)prepareForRequest
 {
-    NSDictionary *payload = @{
-                              @"args": _arrayArguments ? _arrayArguments : _dictionaryArguments
-                              };
+    NSDictionary *payload = @{ @"args" : _arrayArguments ? _arrayArguments : _dictionaryArguments };
     self.request = [[SKYRequest alloc] initWithAction:self.action payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
 }
@@ -61,18 +59,18 @@
     NSDictionary *response = responseObject.responseDictionary;
     NSDictionary *resultDictionary = nil;
     NSError *error = nil;
-    
+
     NSDictionary *responseDictionary = response[@"result"];
     if ([responseDictionary isKindOfClass:[NSDictionary class]]) {
         resultDictionary = responseDictionary;
     } else {
-        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                             errorDictionary:nil];
-        error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                    code:0
-                                userInfo:userInfo];
+        NSDictionary *userInfo =
+            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                        errorDictionary:nil];
+        error =
+            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
     }
-    
+
     if (self.lambdaCompletionBlock) {
         self.lambdaCompletionBlock(resultDictionary, error);
     }

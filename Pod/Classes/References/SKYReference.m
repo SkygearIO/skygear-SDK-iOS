@@ -8,32 +8,41 @@
 
 #import "SKYReference.h"
 
-@interface SKYReference()
+@interface SKYReference ()
 
 - (instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID referencedRecord:(SKYRecord *)record action:(SKYReferenceAction)action NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+                referencedRecord:(SKYRecord *)record
+                          action:(SKYReferenceAction)action NS_DESIGNATED_INITIALIZER;
 
 @end
 
 @implementation SKYReference
 
-- (instancetype)initWithRecord:(SKYRecord *)record {
+- (instancetype)initWithRecord:(SKYRecord *)record
+{
     return [self initWithRecord:record action:SKYReferenceActionNone];
 }
 
-- (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action {
+- (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action
+{
     return [self initWithRecordID:record.recordID referencedRecord:record action:action];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID {
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+{
     return [self initWithRecordID:recordID action:SKYReferenceActionNone];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action {
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action
+{
     return [self initWithRecordID:recordID referencedRecord:nil action:action];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID referencedRecord:(SKYRecord *)record action:(SKYReferenceAction)action {
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+                referencedRecord:(SKYRecord *)record
+                          action:(SKYReferenceAction)action
+{
     self = [super init];
     if (self) {
         _record = record;
@@ -63,7 +72,8 @@
     return [[self alloc] initWithRecordID:recordID action:action];
 }
 
-- (BOOL)isEqual:(id)object {
+- (BOOL)isEqual:(id)object
+{
     if (self == object) {
         return YES;
     }
@@ -75,11 +85,14 @@
     return [self isEqualToReference:(SKYReference *)object];
 }
 
-- (BOOL)isEqualToReference:(SKYReference *)reference {
-    return [_recordID isEqualToRecordID:reference.recordID] && _referenceAction == reference.referenceAction;
+- (BOOL)isEqualToReference:(SKYReference *)reference
+{
+    return [_recordID isEqualToRecordID:reference.recordID] &&
+           _referenceAction == reference.referenceAction;
 }
 
-- (NSUInteger)hash {
+- (NSUInteger)hash
+{
     return _recordID.hash ^ _referenceAction;
 }
 
@@ -95,7 +108,6 @@
         _referenceAction = action;
     }
     return self;
-
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder

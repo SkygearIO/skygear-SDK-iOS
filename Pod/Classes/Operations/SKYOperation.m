@@ -14,8 +14,8 @@
 #import "SKYDataSerialization.h"
 #import "SKYResponse.h"
 
-NSString * const SKYOperationErrorDomain = @"SKYOperationErrorDomain";
-NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStatusCodeKey";
+NSString *const SKYOperationErrorDomain = @"SKYOperationErrorDomain";
+NSString *const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStatusCodeKey";
 
 @implementation SKYOperation {
     BOOL _executing;
@@ -100,16 +100,19 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
 
 - (void)prepareForRequest
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
+    @throw [NSException
+        exceptionWithName:NSInternalInconsistencyException
+                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass",
+                                                     NSStringFromSelector(_cmd)]
+                 userInfo:nil];
 }
 
 - (void)operationWillStart
 {
     if (![self container]) {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:@"The operation being started does not have a SKYContainer set to the `container` property."
+                                       reason:@"The operation being started does not have a "
+                                              @"SKYContainer set to the `container` property."
                                      userInfo:nil];
     }
 }
@@ -120,21 +123,23 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
         [super start];
         return;
     }
-    
+
     if (self.cancelled || self.executing || self.finished) {
         return;
     }
-    
+
     [self operationWillStart];
-    
+
     [self setExecuting:YES];
-    
+
     NSURLSessionConfiguration *myConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:myConfig];
     NSURLSessionTask *task;
     task = [session dataTaskWithRequest:[self makeURLRequest]
                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                          [self SKYOperation_handleRequestCompletionWithData:data response:response error:error];
+                          [self SKYOperation_handleRequestCompletionWithData:data
+                                                                    response:response
+                                                                       error:error];
                       }];
     [task resume];
 }
@@ -142,29 +147,35 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
 - (NSError *)errorFromURLSessionError:(NSError *)error
 {
     NSDictionary *userInfo = @{
-                               NSUnderlyingErrorKey: error,
-                               NSLocalizedDescriptionKey: error.localizedDescription,
-                               };
+        NSUnderlyingErrorKey : error,
+        NSLocalizedDescriptionKey : error.localizedDescription,
+    };
     return [NSError errorWithDomain:SKYOperationErrorDomain
                                code:SKYErrorNetworkFailure
                            userInfo:userInfo];
 }
 
-- (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description errorDictionary:(NSDictionary *)dict
+- (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description
+                                               errorDictionary:(NSDictionary *)dict
 {
-    NSMutableDictionary *userInfo = [dict isKindOfClass:[NSDictionary class]] ? [SKYDataSerialization userInfoWithErrorDictionary:dict] : [NSMutableDictionary dictionary];
+    NSMutableDictionary *userInfo = [dict isKindOfClass:[NSDictionary class]]
+                                        ? [SKYDataSerialization userInfoWithErrorDictionary:dict]
+                                        : [NSMutableDictionary dictionary];
     userInfo[NSLocalizedDescriptionKey] = [description copy];
     if (_httpResponse) {
         userInfo[NSURLErrorFailingURLErrorKey] = [_httpResponse.URL copy];
         userInfo[SKYOperationErrorHTTPStatusCodeKey] = @(_httpResponse.statusCode);
     }
-    
+
     return userInfo;
 }
 
-- (void)SKYOperation_handleRequestCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error
+- (void)SKYOperation_handleRequestCompletionWithData:(NSData *)data
+                                            response:(NSURLResponse *)response
+                                               error:(NSError *)error
 {
-    _httpResponse = [response isKindOfClass:[NSHTTPURLResponse class]] ? (NSHTTPURLResponse *)response : nil;
+    _httpResponse =
+        [response isKindOfClass:[NSHTTPURLResponse class]] ? (NSHTTPURLResponse *)response : nil;
 
     if (error) {
         _error = [self errorFromURLSessionError:error];
@@ -175,49 +186,51 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
                                        reason:@"Returned response is not NSHTTPURLResponse."
                                      userInfo:nil];
     } else {
-        BOOL httpStatusCodeIsError = (_httpResponse.statusCode >= 400 && _httpResponse.statusCode < 600);
+        BOOL httpStatusCodeIsError =
+            (_httpResponse.statusCode >= 400 && _httpResponse.statusCode < 600);
         NSError *jsonError;
-        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data
-                                                             options:0
-                                                               error:&jsonError];
-        
+        NSDictionary *responseDictionary =
+            [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+
         if (httpStatusCodeIsError) {
             NSMutableDictionary *userInfo = nil;
             NSDictionary *errorDictionary = responseDictionary[@"error"];
             if ([errorDictionary isKindOfClass:[NSDictionary class]]) {
-                userInfo = [self errorUserInfoWithLocalizedDescription:@"An error occurred while processing the request."
+                userInfo = [self errorUserInfoWithLocalizedDescription:
+                                     @"An error occurred while processing the request."
                                                        errorDictionary:errorDictionary];
             } else {
-                // An error occurred but the error dictionary does not exists or is of incorrect type.
+                // An error occurred but the error dictionary does not exists or is of incorrect
+                // type.
                 NSString *localizedDescription = nil;
                 if (_httpResponse.statusCode < 500) {
                     localizedDescription = @"An unknown error occurred due to client error.";
                 } else {
                     localizedDescription = @"An unknown error occurred due to server error.";
                 }
-                NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:localizedDescription
-                                                                            errorDictionary:nil];
+                NSMutableDictionary *userInfo =
+                    [self errorUserInfoWithLocalizedDescription:localizedDescription
+                                                errorDictionary:nil];
                 if (jsonError) {
                     userInfo[NSUnderlyingErrorKey] = jsonError;
                 }
             }
-            
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+
+            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         } else {
-            // If there is no error occurred in JSON decoding, and if response dictionary exists, there is no problem with
-            // the response (so far). Otherwise, create an NSError stating that there is a malformed response.
+            // If there is no error occurred in JSON decoding, and if response dictionary exists,
+            // there is no problem with
+            // the response (so far). Otherwise, create an NSError stating that there is a malformed
+            // response.
             if (jsonError || ![responseDictionary isKindOfClass:[NSDictionary class]]) {
                 NSMutableDictionary *userInfo = nil;
-                userInfo = [self errorUserInfoWithLocalizedDescription:@"The server sent a malformed response."
-                                                       errorDictionary:nil];
+                userInfo = [self
+                    errorUserInfoWithLocalizedDescription:@"The server sent a malformed response."
+                                          errorDictionary:nil];
                 if (jsonError) {
                     userInfo[NSUnderlyingErrorKey] = jsonError;
                 }
-                error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:userInfo];
+                error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
                 responseDictionary = nil;
             }
         }
@@ -225,7 +238,7 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
         _error = error;
         _response = responseDictionary;
     }
-    
+
     NSAssert(_error != nil || _response != nil, @"either error or response must be non nil");
     [self setFinished:YES];
 
@@ -261,14 +274,14 @@ NSString * const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPSta
 - (BOOL)isAuthFailureError:(NSError *)error
 {
     NSDictionary *userInfo = error.userInfo;
-    return [userInfo[SKYErrorTypeKey] isEqualToString:@"AuthenticationError"] && [userInfo[SKYErrorCodeKey] integerValue] == 101;
+    return [userInfo[SKYErrorTypeKey] isEqualToString:@"AuthenticationError"] &&
+           [userInfo[SKYErrorCodeKey] integerValue] == 101;
 }
 
 - (SKYResponse *)createResponseWithDictionary:(NSDictionary *)responseDictionary
 {
     Class SKYResponseClass = [[self class] responseClass];
     return [[SKYResponseClass alloc] initWithDictionary:responseDictionary];
-
 }
 
 @end

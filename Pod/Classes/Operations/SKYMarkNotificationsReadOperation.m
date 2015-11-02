@@ -10,7 +10,8 @@
 
 @implementation SKYMarkNotificationsReadOperation
 
-- (instancetype)initWithNotificationIDsToMarkRead:(NSArray *)notificationIDs {
+- (instancetype)initWithNotificationIDsToMarkRead:(NSArray *)notificationIDs
+{
     self = [super init];
     if (self) {
         _notificationIDs = notificationIDs;
@@ -18,7 +19,8 @@
     return self;
 }
 
-+ (instancetype)operationWithNotificationIDsToMarkRead:(NSArray /* SKYNotificationID */ *)notificationIDs
++ (instancetype)operationWithNotificationIDsToMarkRead:
+    (NSArray /* SKYNotificationID */ *)notificationIDs
 {
     return [[self alloc] initWithNotificationIDsToMarkRead:notificationIDs];
 }

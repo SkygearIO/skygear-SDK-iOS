@@ -10,15 +10,19 @@
 
 #import "SKYFollowQuery.h"
 
-NSString * const SKYFollowerReferenceFollowTypeDefault = @"_followings";
+NSString *const SKYFollowerReferenceFollowTypeDefault = @"_followings";
 
 @implementation SKYFollowReference
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID {
-    return [self initWithUserRecordID:userRecordID followType:SKYFollowerReferenceFollowTypeDefault];
+- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+{
+    return
+        [self initWithUserRecordID:userRecordID followType:SKYFollowerReferenceFollowTypeDefault];
 }
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID followType:(NSString *)followType {
+- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+                          followType:(NSString *)followType
+{
     self = [super init];
     if (self) {
         _userRecordID = userRecordID;
@@ -27,16 +31,18 @@ NSString * const SKYFollowerReferenceFollowTypeDefault = @"_followings";
     return self;
 }
 
-
-- (SKYQuery *)followerQuery {
+- (SKYQuery *)followerQuery
+{
     return [[SKYFollowQuery alloc] initFollowerQueryWithUserRecordID:self.userRecordID];
 }
 
-- (SKYQuery *)followingQuery {
+- (SKYQuery *)followingQuery
+{
     return [[SKYFollowQuery alloc] initFollowingQueryWithUserRecordID:self.userRecordID];
 }
 
-- (SKYQuery *)mutualFollowerQuery {
+- (SKYQuery *)mutualFollowerQuery
+{
     return [[SKYFollowQuery alloc] initMutualFollowerQueryWithUserRecordID:self.userRecordID];
 }
 

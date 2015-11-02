@@ -8,9 +8,9 @@
 
 #import "SKYDefaults.h"
 
-NSString * const SKYDefaultsDeviceIDKey = @"_ourdDeviceID";
+NSString *const SKYDefaultsDeviceIDKey = @"_ourdDeviceID";
 
-@interface SKYDefaults()
+@interface SKYDefaults ()
 
 @property (nonatomic, readonly, assign) NSUserDefaults *defaults;
 

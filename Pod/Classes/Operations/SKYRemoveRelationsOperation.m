@@ -14,7 +14,6 @@
 
 @implementation SKYRemoveRelationsOperation
 
-
 - (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users
 {
     if ((self = [super init])) {
@@ -31,9 +30,7 @@
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [@{
-                                      @"name": self.relationType
-                                      } mutableCopy];
+    NSMutableDictionary *payload = [@{ @"name" : self.relationType } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (SKYUser *user in self.usersToRemove) {
         [targets addObject:user.username];
@@ -54,11 +51,11 @@
         NSString *userID = obj[@"id"];
         NSString *objType = obj[@"type"];
         if ([objType isEqual:@"error"]) {
-            NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj[@"data"]];
+            NSMutableDictionary *userInfo =
+                [SKYDataSerialization userInfoWithErrorDictionary:obj[@"data"]];
             userInfo[NSLocalizedDescriptionKey] = @"An error occurred while deleting relation.";
-            errorByUserID[userID] = [NSError errorWithDomain:SKYOperationErrorDomain
-                                                        code:0
-                                                    userInfo:userInfo];
+            errorByUserID[userID] =
+                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         } else if (userID.length) {
             userRecordID = [SKYUserRecordID recordIDWithUsername:userID];
             [deletedUserIDs addObject:userRecordID];
@@ -66,13 +63,11 @@
 
         if (userRecordID == nil && error == nil) {
             NSDictionary *info = @{
-                                   SKYErrorCodeKey: @104,
-                                   SKYErrorTypeKey: @"MalformedResponse",
-                                   SKYErrorMessageKey: @"Per-item response is malformed",
-                                   };
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:info];
+                SKYErrorCodeKey : @104,
+                SKYErrorTypeKey : @"MalformedResponse",
+                SKYErrorMessageKey : @"Per-item response is malformed",
+            };
+            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
         }
 
         if (self.perUserCompletionBlock) {
@@ -84,8 +79,8 @@
         *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
                                               code:SKYErrorPartialFailure
                                           userInfo:@{
-                                                     SKYPartialErrorsByItemIDKey: errorByUserID,
-                                                     }];
+                                              SKYPartialErrorsByItemIDKey : errorByUserID,
+                                          }];
     }
     return deletedUserIDs;
 }
@@ -107,11 +102,10 @@
         userIDs = [self processResultArray:result operationError:&error];
     } else {
         userIDs = [NSArray array];
-        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                             errorDictionary:nil];
-        error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                    code:0
-                                userInfo:userInfo];
+        NSDictionary *userInfo =
+            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                        errorDictionary:nil];
+        error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
     }
     if (self.removeRelationsCompletionBlock) {
         self.removeRelationsCompletionBlock(userIDs, error);

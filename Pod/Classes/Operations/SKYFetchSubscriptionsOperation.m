@@ -12,7 +12,7 @@
 #import "SKYSubscriptionDeserializer.h"
 #import "SKYSubscriptionSerialization.h"
 
-@interface SKYFetchSubscriptionsOperation()
+@interface SKYFetchSubscriptionsOperation ()
 
 - (instancetype)initFetchAll NS_DESIGNATED_INITIALIZER;
 
@@ -57,8 +57,8 @@
         [subscriptionIDs addObject:subscription];
     }
     NSMutableDictionary *payload = [@{
-                                      @"database_id": self.database.databaseID,
-                                      } mutableCopy];
+        @"database_id" : self.database.databaseID,
+    } mutableCopy];
 
     NSString *deviceID = nil;
     if (self.deviceID) {
@@ -67,24 +67,25 @@
         deviceID = [SKYDefaults sharedDefaults].deviceID;
     }
     if (deviceID.length) {
-            payload[@"device_id"] = deviceID;
+        payload[@"device_id"] = deviceID;
     }
 
     if (self.isFetchAll) {
-        self.request = [[SKYRequest alloc] initWithAction:@"subscription:fetch_all"
-                                                 payload:payload];
+        self.request =
+            [[SKYRequest alloc] initWithAction:@"subscription:fetch_all" payload:payload];
     } else {
         if (subscriptionIDs.count) {
             payload[@"ids"] = subscriptionIDs;
         }
-        self.request = [[SKYRequest alloc] initWithAction:@"subscription:fetch"
-                                                 payload:payload];
+        self.request = [[SKYRequest alloc] initWithAction:@"subscription:fetch" payload:payload];
     }
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)setFetchSubscriptionCompletionBlock:(void (^)(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError))fetchSubscriptionCompletionBlock
+- (void)setFetchSubscriptionCompletionBlock:
+    (void (^)(NSDictionary *subscriptionsBySubscriptionID,
+              NSError *operationError))fetchSubscriptionCompletionBlock
 {
     [self willChangeValueForKey:@"fetchSubscriptionCompletionBlock"];
     _fetchSubscriptionCompletionBlock = fetchSubscriptionCompletionBlock;
@@ -94,7 +95,7 @@
 
 - (NSDictionary *)processResultArray:(NSArray *)result
 {
-    SKYSubscriptionDeserializer* deserializer = [SKYSubscriptionDeserializer deserializer];
+    SKYSubscriptionDeserializer *deserializer = [SKYSubscriptionDeserializer deserializer];
     NSMutableDictionary *subscriptionsBySubscriptionID = [NSMutableDictionary dictionary];
 
     for (NSDictionary *dict in result) {
@@ -110,7 +111,7 @@
                 subscription = [deserializer subscriptionWithDictionary:dict];
             }
         }
-        
+
         if (subscription) {
             subscriptionsBySubscriptionID[subscriptionID] = subscription;
         }
@@ -130,8 +131,9 @@
                 if ([responseArray isKindOfClass:[NSArray class]]) {
                     resultDictionary = [weakSelf processResultArray:responseArray];
                 } else {
-                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                                             errorDictionary:nil];
+                    NSDictionary *userInfo = [weakSelf
+                        errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                              errorDictionary:nil];
                     error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                                 code:0
                                             userInfo:userInfo];

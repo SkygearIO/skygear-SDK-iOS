@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @implementation SKYLocationSortDescriptor {
-    NSString * _key;
+    NSString *_key;
     BOOL _ascending;
 }
 
@@ -21,7 +21,8 @@
     self = [super init];
     if (self) {
         if (![relativeLocation isKindOfClass:[CLLocation class]]) {
-            NSString *reason = [NSString stringWithFormat:@"location must be of class CLLocation. Got %@", relativeLocation];
+            NSString *reason = [NSString
+                stringWithFormat:@"location must be of class CLLocation. Got %@", relativeLocation];
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:reason
                                          userInfo:nil];
@@ -45,10 +46,9 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _key = [aDecoder decodeObjectOfClass:[NSString class]
-                                      forKey:@"key"];
-        _relativeLocation = [aDecoder decodeObjectOfClass:[CLLocation class]
-                                                   forKey:@"relativeLocation"];
+        _key = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"key"];
+        _relativeLocation =
+            [aDecoder decodeObjectOfClass:[CLLocation class] forKey:@"relativeLocation"];
         _ascending = [aDecoder decodeBoolForKey:@"ascending"];
     }
     return self;
@@ -77,7 +77,8 @@
     CLLocation *location2 = [object2 valueForKey:self.key];
     CLLocationDistance distance1 = [self.relativeLocation distanceFromLocation:location1];
     CLLocationDistance distance2 = [self.relativeLocation distanceFromLocation:location2];
-    return distance1 < distance2 ? NSOrderedAscending : (distance2 < distance1 ? NSOrderedDescending : NSOrderedSame);
+    return distance1 < distance2 ? NSOrderedAscending
+                                 : (distance2 < distance1 ? NSOrderedDescending : NSOrderedSame);
 }
 
 - (id)reversedSortDescriptor

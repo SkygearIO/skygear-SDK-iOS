@@ -34,15 +34,14 @@
     }];
 
     NSMutableDictionary *payload = [@{
-                                      @"ids": stringIDs,
-                                      @"database_id": self.database.databaseID,
-                                      } mutableCopy];
+        @"ids" : stringIDs,
+        @"database_id" : self.database.databaseID,
+    } mutableCopy];
     if (self.atomic) {
         payload[@"atomic"] = @YES;
     }
 
-    self.request = [[SKYRequest alloc] initWithAction:@"record:delete"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"record:delete" payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
 }
 
@@ -67,24 +66,27 @@
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
-        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
-        
+        SKYRecordID *recordID =
+            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+
         if (recordID) {
             if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj];
+                NSMutableDictionary *userInfo =
+                    [SKYDataSerialization userInfoWithErrorDictionary:obj];
                 userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
                 error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                             code:0
                                         userInfo:userInfo];
             }
         } else {
-            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                                                        errorDictionary:nil];
+            NSMutableDictionary *userInfo = [self
+                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
+                                      errorDictionary:nil];
             error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                         code:0
                                     userInfo:userInfo];
         }
-        
+
         if (recordID) {
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(recordID, error);
@@ -94,9 +96,10 @@
     }];
 
     if (self.perRecordCompletionBlock) {
-        [deletedRecordIDs enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
-            self.perRecordCompletionBlock(recordID, nil);
-        }];
+        [deletedRecordIDs
+            enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
+                self.perRecordCompletionBlock(recordID, nil);
+            }];
     }
 
     return deletedRecordIDs;
@@ -114,20 +117,20 @@
                 if ([responseArray isKindOfClass:[NSArray class]]) {
                     resultArray = [weakSelf processResultArray:responseArray];
                 } else {
-                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                                             errorDictionary:nil];
+                    NSDictionary *userInfo = [weakSelf
+                        errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                              errorDictionary:nil];
                     error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                                 code:0
                                             userInfo:userInfo];
                 }
             }
-            
+
             if (weakSelf.deleteRecordsCompletionBlock) {
                 weakSelf.deleteRecordsCompletionBlock(resultArray, error);
             }
         };
     }
-
 }
 
 @end

@@ -8,15 +8,17 @@
 
 #import "SKYNewsfeedItem.h"
 
-NSString * const SKYRecordTypeNewsfeedItem = @"_NewsfeedItem";
+NSString *const SKYRecordTypeNewsfeedItem = @"_NewsfeedItem";
 
 @implementation SKYNewsfeedItem
 
-- (instancetype)init {
+- (instancetype)init
+{
     return [self initWithRecordID:nil];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID {
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+{
     self = [super initWithRecordType:SKYRecordTypeNewsfeedItem recordID:recordID];
     return self;
 }
