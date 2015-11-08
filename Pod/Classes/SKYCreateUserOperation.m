@@ -53,8 +53,24 @@
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     if (!self.anonymousUser) {
+        if (self.username == nil && self.email == nil) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Username and email cannot be both nil for anonymous user."
+                                         userInfo:nil];
+        }
+        if (self.password == nil) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Password cannot be nil for anonymous user."
+                                         userInfo:nil];
+        }
+    }
+    if (self.username) {
         payload[@"username"] = self.username;
+    }
+    if (self.email) {
         payload[@"email"] = self.email;
+    }
+    if (self.password) {
         payload[@"password"] = self.password;
     }
     self.request = [[SKYRequest alloc] initWithAction:@"auth:signup"
