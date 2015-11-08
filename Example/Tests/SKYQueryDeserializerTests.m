@@ -69,6 +69,21 @@ describe(@"deserialize query", ^{
                                                  [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES],
                                                  ]);
     });
+
+    it(@"deserialize limit, offset and overallCount", ^{
+        NSDictionary *queryDict = @{
+                                    @"record_type": @"recordType",
+                                    @"limit": @30,
+                                    @"offset": @5,
+                                    @"count": @YES,
+                                    };
+        
+        SKYQuery *query = [deserializer queryWithDictionary:queryDict];
+        expect(query.recordType).to.equal(@"recordType");
+        expect(query.limit).to.equal(30);
+        expect(query.offset).to.equal(5);
+        expect(query.overallCount).to.equal(YES);
+    });
 });
 
 describe(@"deserialize predicate", ^{

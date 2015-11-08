@@ -102,6 +102,17 @@
     return fetchedRecords;
 }
 
+- (void)processResultInfo:(NSDictionary *)resultInfo
+{
+    if (![resultInfo isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    
+    [self willChangeValueForKey:@"overallCount"];
+    _overallCount = [resultInfo[@"count"] unsignedIntegerValue];
+    [self didChangeValueForKey:@"overallCount"];
+}
+
 - (void)handleRequestError:(NSError *)error
 {
     if (self.queryRecordsCompletionBlock) {
@@ -116,6 +127,8 @@
     NSError *error = nil;
     NSArray *responseArray = response[@"result"];
     
+    [self processResultInfo:response[@"info"]];
+
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray perRecordBlock:^(SKYRecord *record) {
             if (self.perRecordCompletionBlock) {

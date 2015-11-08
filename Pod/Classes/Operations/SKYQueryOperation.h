@@ -22,6 +22,11 @@
 @property (nonatomic, copy) SKYQuery *query;
 @property (nonatomic, copy) NSArray *results __deprecated;
 
+/**
+ Returns the nubmer of all matching records if the original query requested this info.
+ */
+@property (nonatomic, readonly) NSUInteger overallCount;
+
 @property(nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record);
 @property(nonatomic, copy) void (^queryRecordsCompletionBlock)(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError);
 

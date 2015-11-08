@@ -108,6 +108,9 @@ describe(@"fetch", ^{
             NSDictionary *parameters = @{
                                          @"request_id": @"REQUEST_ID",
                                          @"database_id": database.databaseID,
+                                         @"info": @{
+                                                 @"count": @2
+                                                 },
                                          @"result": @[
                                                  @{
                                                      @"_id": @"book/book1",
@@ -131,12 +134,14 @@ describe(@"fetch", ^{
         }];
         
         waitUntil(^(DoneCallback done) {
+            __weak SKYQueryOperation *weakOperation = operation;
             operation.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     expect([fetchedRecords class]).to.beSubclassOf([NSArray class]);
                     expect(fetchedRecords).to.haveCountOf(2);
                     expect([[fetchedRecords[0] recordID] recordName]).to.equal(@"book1");
                     expect([[fetchedRecords[1] recordID] recordName]).to.equal(@"book2");
+                    expect(weakOperation.overallCount).to.equal(2);
                     done();
                 });
             };

@@ -112,6 +112,9 @@
     if (query.limit > 0) {
         result[@"limit"] = @(query.limit);
     }
+    if (query.overallCount) {
+        result[@"count"] = @(YES);
+    }
     return result;
 }
 

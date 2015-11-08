@@ -55,6 +55,11 @@
         query.offset = [offset integerValue];
     }
 
+    NSNumber *overallCount = dictionary[@"count"];
+    if ([overallCount isKindOfClass:[NSNumber class]]) {
+        query.overallCount = [overallCount boolValue];
+    }
+
     return query;
 }
 

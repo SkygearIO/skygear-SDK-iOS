@@ -36,6 +36,11 @@
 @property (nonatomic, readwrite) NSInteger limit;
 
 /**
+ Gets or sets whether to return the number of all matching records.
+ */
+@property (nonatomic, readwrite) BOOL overallCount;
+
+/**
  An NSDictionary of expression to be evaluated on the server side and returned as transient
  dictionary in SKYRecord.
  */

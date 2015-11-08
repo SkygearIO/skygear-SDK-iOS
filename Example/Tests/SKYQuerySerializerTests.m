@@ -55,6 +55,19 @@ describe(@"serialize query", ^{
                                           ],
                                   });
     });
+
+    it(@"serialize limit, offset and overallCount", ^{
+        query.limit = 30;
+        query.offset = 5;
+        query.overallCount = YES;
+        NSDictionary *result = [serializer serializeWithQuery:query];
+        expect(result).to.equal(@{
+                                  @"record_type": @"recordType",
+                                  @"limit": @30,
+                                  @"offset": @5,
+                                  @"count": @YES,
+                                  });
+    });
 });
 
 describe(@"serialize predicate", ^{
