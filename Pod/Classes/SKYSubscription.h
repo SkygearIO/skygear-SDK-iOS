@@ -12,19 +12,17 @@
 #import "SKYQuery.h"
 
 typedef enum : NSInteger {
-    SKYSubscriptionTypeQuery      = 1,
+    SKYSubscriptionTypeQuery = 1,
     SKYSubscriptionTypeRecordZone = 2,
 } SKYSubscriptionType;
 
 @interface SKYSubscription : NSObject
 
 - (instancetype)initWithQuery:(SKYQuery *)query;
-- (instancetype)initWithQuery:(SKYQuery *)query
-                 subscriptionID:(NSString *)subscriptionID;
+- (instancetype)initWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
 
 + (instancetype)subscriptionWithQuery:(SKYQuery *)query;
-+ (instancetype)subscriptionWithQuery:(SKYQuery *)query
-                       subscriptionID:(NSString *)subscriptionID;
++ (instancetype)subscriptionWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
 
 @property (nonatomic, readonly, assign) SKYSubscriptionType subscriptionType;
 
@@ -34,7 +32,7 @@ typedef enum : NSInteger {
 @property (nonatomic, readonly, copy) NSString *recordType;
 @property (nonatomic, readonly, copy) NSPredicate *predicate;
 
-@property(nonatomic, copy) SKYNotificationInfo *notificationInfo;
+@property (nonatomic, copy) SKYNotificationInfo *notificationInfo;
 
 @property (nonatomic, readonly, copy) NSString *subscriptionID;
 

@@ -14,8 +14,7 @@
 - (instancetype)initWithRecordType:(NSString *)recordType
                          predicate:(NSPredicate *)predicate NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)queryWithRecordType:(NSString *)recordType
-                          predicate:(NSPredicate *)predicate;
++ (instancetype)queryWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate;
 
 @property (nonatomic, readonly, copy) NSString *recordType;
 @property (nonatomic, readonly, copy) NSPredicate *predicate;
@@ -23,7 +22,7 @@
 
 /**
  Gets or sets the number of records after which records will be returned.
- 
+
  Default is zero, meaning that the results contain record from the beginning of the result set.
  */
 @property (nonatomic, readwrite) NSInteger offset;

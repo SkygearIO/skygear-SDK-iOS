@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const SKYRecordSerializationRecordIDKey;
-extern NSString * const SKYRecordSerializationRecordTypeKey;
-extern NSString * const SKYRecordSerializationRecordOwnerIDKey;
-extern NSString * const SKYRecordSerializationRecordCreatedAtKey;
-extern NSString * const SKYRecordSerializationRecordCreatorIDKey;
-extern NSString * const SKYRecordSerializationRecordUpdatedAtKey;
-extern NSString * const SKYRecordSerializationRecordUpdaterIDKey;
-extern NSString * const SKYRecordSerializationRecordAccessControlKey;
-extern NSString * const SKYRecordSerializationRecordTransientKey;
+extern NSString *const SKYRecordSerializationRecordIDKey;
+extern NSString *const SKYRecordSerializationRecordTypeKey;
+extern NSString *const SKYRecordSerializationRecordOwnerIDKey;
+extern NSString *const SKYRecordSerializationRecordCreatedAtKey;
+extern NSString *const SKYRecordSerializationRecordCreatorIDKey;
+extern NSString *const SKYRecordSerializationRecordUpdatedAtKey;
+extern NSString *const SKYRecordSerializationRecordUpdaterIDKey;
+extern NSString *const SKYRecordSerializationRecordAccessControlKey;
+extern NSString *const SKYRecordSerializationRecordTransientKey;

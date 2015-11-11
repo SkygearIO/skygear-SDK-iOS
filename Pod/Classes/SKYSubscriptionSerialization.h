@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const SKYSubscriptionSerializationSubscriptionIDKey;
-extern NSString * const SKYSubscriptionSerializationSubscriptionTypeKey;
-extern NSString * const SKYSubscriptionSerializationSubscriptionTypeQuery;
-extern NSString * const SKYSubscriptionSerializationSubscriptionTypeError;
+extern NSString *const SKYSubscriptionSerializationSubscriptionIDKey;
+extern NSString *const SKYSubscriptionSerializationSubscriptionTypeKey;
+extern NSString *const SKYSubscriptionSerializationSubscriptionTypeQuery;
+extern NSString *const SKYSubscriptionSerializationSubscriptionTypeError;

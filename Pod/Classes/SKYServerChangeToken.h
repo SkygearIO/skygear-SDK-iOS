@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SKYServerChangeToken : NSObject<NSCopying>
+@interface SKYServerChangeToken : NSObject <NSCopying>
 
 @end

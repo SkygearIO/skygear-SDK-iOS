@@ -7,14 +7,14 @@
 //
 
 typedef enum : NSInteger {
-    SKYErrorUnknownError            = 1,
-    SKYErrorPartialFailure          = 2,
-    SKYErrorNetworkFailure          = 3,
+    SKYErrorUnknownError = 1,
+    SKYErrorPartialFailure = 2,
+    SKYErrorNetworkFailure = 3,
 } SKYErrorCode;
 
-extern NSString * const SKYErrorMessageKey;
-extern NSString * const SKYErrorCodeKey;
-extern NSString * const SKYErrorTypeKey;
-extern NSString * const SKYErrorInfoKey;
-extern NSString * const SKYPartialErrorsByItemIDKey;
-extern NSString * const SKYPartialEmailsNotFoundKey;
+extern NSString *const SKYErrorMessageKey;
+extern NSString *const SKYErrorCodeKey;
+extern NSString *const SKYErrorTypeKey;
+extern NSString *const SKYErrorInfoKey;
+extern NSString *const SKYPartialErrorsByItemIDKey;
+extern NSString *const SKYPartialEmailsNotFoundKey;

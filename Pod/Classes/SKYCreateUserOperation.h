@@ -57,15 +57,16 @@
  - *accessToken*: An <SKYAccessToken> object for performing other operations on behalf of this user.
  - *error*: If an error occurred, this object describes the error.
  */
-@property (nonatomic, copy) void (^createCompletionBlock)(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
+@property (nonatomic, copy) void (^createCompletionBlock)
+    (SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Initializes and returns and operation configured to create a user account
  with the specified email address and password.
- 
+
  @param email An email address provided by the user.
  @param password A password provided by the user.
- 
+
  @return <SKYCreateUserOperation> object.
  */
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;

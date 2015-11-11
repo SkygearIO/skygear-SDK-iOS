@@ -33,7 +33,7 @@
 
 /**
  The <SKYQuery> that this this synchronzier synchronizes with.
- 
+
  Returns <nil> when the synchronizer synchronizes with the entire database.
  */
 @property (nonatomic, readonly, strong) SKYQuery *query;
@@ -45,7 +45,6 @@
                          database:(SKYDatabase *)database
                             query:(SKYQuery *)query;
 
-
 /**
  Notifies the synchronizer that update is available to the specified record storage.
  */
@@ -55,12 +54,15 @@
 /**
  Instantiate network operations that causes the specified record storage to be updated.
  */
-- (void)recordStorageFetchUpdates:(SKYRecordStorage *)storage completionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
+- (void)recordStorageFetchUpdates:(SKYRecordStorage *)storage
+                completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
 
 /**
  Instantiate network operations that causes the specified changes to be saved.
  */
-- (void)recordStorage:(SKYRecordStorage *)storage saveChanges:(NSArray *)changes completionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
+- (void)recordStorage:(SKYRecordStorage *)storage
+          saveChanges:(NSArray *)changes
+    completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
 
 - (BOOL)isProcessingChange:(SKYRecordChange *)change storage:(SKYRecordStorage *)storage;
 

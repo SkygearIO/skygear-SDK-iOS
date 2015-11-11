@@ -38,13 +38,15 @@ typedef enum : NSInteger {
 + (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation;
 
 /**
- Returns an operation object that queries users by their relation to the current user with the specified direction.
+ Returns an operation object that queries users by their relation to the current user with the
+ specified direction.
  */
-+ (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation direction:(SKYRelationDirection)direction;
++ (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation
+                                    direction:(SKYRelationDirection)direction;
 
 /**
  Initializes and returns a email-based user discovery operation object.
- 
+
  @param emails An array of emails to be used for user discovery.
  */
 - (instancetype)initWithEmails:(NSArray /* NSString */ *)emails NS_DESIGNATED_INITIALIZER;
@@ -57,30 +59,36 @@ typedef enum : NSInteger {
 - (instancetype)initWithRelation:(SKYRelation *)relation;
 
 /**
- Initializes and returns a relation-based user query operation object with relation direction specified.
+ Initializes and returns a relation-based user query operation object with relation direction
+ specified.
 
  @param relation The relation object to be used for user discovery.
  */
-- (instancetype)initWithRelation:(SKYRelation *)relation direction:(SKYRelationDirection)direction NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRelation:(SKYRelation *)relation
+                       direction:(SKYRelationDirection)direction NS_DESIGNATED_INITIALIZER;
 
 /**
  Sets or returns an array of emails to be used to discover users.
- 
- The value in this property is used only if the discoveryMethod is set to SKYUserDiscoveryMethodEmail; otherwise, it is ignored.
+
+ The value in this property is used only if the discoveryMethod is set to
+ SKYUserDiscoveryMethodEmail; otherwise, it is ignored.
  */
 @property (nonatomic, copy) NSArray /* NSString */ *emails;
 
 /**
  Sets or returns the relation object used to query for users.
- 
- The value in this property is used only if the discoveryMethod is set to SKYUserDiscoveryMethodRelation; otherwise, it is ignored.
+
+ The value in this property is used only if the discoveryMethod is set to
+ SKYUserDiscoveryMethodRelation; otherwise, it is ignored.
  */
 @property (strong, nonatomic) SKYRelation *relation;
 
 /**
  Sets or returns the relation direction used for query. Defaults to SKYRelationDirectionOutgoing.
 
- The value in this property is used only if the discoveryMethod is set to SKYUserDiscoveryMethodRelation or the relation assigned to this operation is directional (like follow); otherwise, it is ignored.
+ The value in this property is used only if the discoveryMethod is set to
+ SKYUserDiscoveryMethodRelation or the relation assigned to this operation is directional (like
+ follow); otherwise, it is ignored.
  */
 @property (nonatomic, assign) SKYRelationDirection relationDirection;
 
@@ -95,14 +103,18 @@ typedef enum : NSInteger {
 
  This block is not called when the entire operation results in an error.
  */
-@property(nonatomic, copy) void (^perUserCompletionBlock)(SKYUser *user);
+@property (nonatomic, copy) void (^perUserCompletionBlock)(SKYUser *user);
 
 /**
  Sets or returns a block to be called when the entire operation completes. If
  the entire operation results in an error, the <NSError> will be specified.
- 
- This block reports an error with code SKYErrorPartialFailure if the operation disocvers users by emails and no users can be found by some of the emails. The userInfo dictionary of the error contains a SKYPartialEmailsNotFoundKey key, whose value is a NSArray object containing all emails that no users can be found.
+
+ This block reports an error with code SKYErrorPartialFailure if the operation disocvers users by
+ emails and no users can be found by some of the emails. The userInfo dictionary of the error
+ contains a SKYPartialEmailsNotFoundKey key, whose value is a NSArray object containing all emails
+ that no users can be found.
  */
-@property (nonatomic, copy) void (^queryUserCompletionBlock)(NSArray /* SKYUser */ *users, NSError *operationError);
+@property (nonatomic, copy) void (^queryUserCompletionBlock)
+    (NSArray /* SKYUser */ *users, NSError *operationError);
 
 @end
