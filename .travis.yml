@@ -7,10 +7,13 @@ before_install:
 - export LANG=en_US.UTF-8
 - gem install cocoapods -v '~>0.37.2' # Since Travis is not always on latest version
 - sudo pip install lizard
+- brew update
+- brew install clang-format
 - pod install --project-directory=Example
 script:
 - xctool test -workspace Example/SkyKit.xcworkspace -scheme SkyKit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 - pod lib lint --quick
+- ./clang-check.sh
 - lizard Pod/ -C 15 -w -i 0
 notifications:
   slack: oursky:PxqsclRADehuWEs51vpgxeUh
