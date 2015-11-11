@@ -14,14 +14,14 @@
 #import "SKYRecordStorageBackingStore.h"
 #import "SKYNotification.h"
 
-extern NSString * const SKYRecordStorageDidUpdateNotification;
-extern NSString * const SKYRecordStorageWillSynchronizeChangesNotification;
-extern NSString * const SKYRecordStorageDidSynchronizeChangesNotification;
-extern NSString * const SKYRecordStorageUpdateAvailableNotification;
-extern NSString * const SKYRecordStoragePendingChangesCountKey;
-extern NSString * const SKYRecordStorageFailedChangesCountKey;
-extern NSString * const SKYRecordStorageSavedRecordIDsKey;
-extern NSString * const SKYRecordStorageDeletedRecordIDsKey;
+extern NSString *const SKYRecordStorageDidUpdateNotification;
+extern NSString *const SKYRecordStorageWillSynchronizeChangesNotification;
+extern NSString *const SKYRecordStorageDidSynchronizeChangesNotification;
+extern NSString *const SKYRecordStorageUpdateAvailableNotification;
+extern NSString *const SKYRecordStoragePendingChangesCountKey;
+extern NSString *const SKYRecordStorageFailedChangesCountKey;
+extern NSString *const SKYRecordStorageSavedRecordIDsKey;
+extern NSString *const SKYRecordStorageDeletedRecordIDsKey;
 
 @class SKYRecordSynchronizer;
 
@@ -30,33 +30,32 @@ typedef enum : NSInteger {
      Record is in the same state as the last known state on server.
      */
     SKYRecordStateSynchronized,
-    
+
     /**
      Record is changed locally and is yet to be saved on server.
      */
     SKYRecordStateNotSynchronized,
-    
+
     /**
      Record is changed locally and is yet to be saved on server.
      */
     SKYRecordStateSynchronizing,
-    
+
     /**
      Record is in a state that is in conflict with the state on server.
      */
     SKYRecordStateConflicted,
 } SKYRecordState;
 
-
 /**
  <SKYRecordStorage> provides a local storage for records that is synchronized
  with a subset of records on remote server. Changes made remotely are
  reflected on the local storage and vice versa.
- 
+
  This class is useful for applications in which records are available
  offline, and that user may modify data when device is offline to
  have changes uploaded to remote server when device becomes online again.
- 
+
  User should not instantiate an instance of this class directly. An
  instance of <SKYRecordStorage> should be obtained from
  <SKYRecordStorageCoordinator>.
@@ -66,7 +65,7 @@ typedef enum : NSInteger {
 /**
  Returns whether the <SKYRecordStorage> should synchronizes changes
  from remote to local and vice versa.
- 
+
  When this is YES, any pending changes will be performed at an appropriate
  time. When this is set to NO, any changes will be kept in pending state
  until this is set to YES again.
@@ -75,7 +74,7 @@ typedef enum : NSInteger {
 
 /**
  Returns whether the <SKYRecordStorage> is currently updating the backing store.
- 
+
  When the backing store is being updated, calling -beginUpdating is not allowed.
  */
 @property (nonatomic, readonly, getter=isUpdating) BOOL updating;
@@ -101,38 +100,43 @@ typedef enum : NSInteger {
 
 /**
  Manually trigger an update to be performed on the receiver.
- 
+
  Update are performed asynchronously. If there are pending changes, the record storage
  cannot be updated. This method returns <NO> when the receiver cannot perform update.
  */
-- (void)performUpdateWithCompletionHandler:(void(^)(BOOL finished, NSError *error))completionHandler;
+- (void)performUpdateWithCompletionHandler:(void (^)(BOOL finished,
+                                                     NSError *error))completionHandler;
 
 #pragma mark - Saving and removing
 
 /**
  Save specified record.
- 
+
  If the record is also modified on the remote, you can specify
  an automatic conflict resolution method. If not specified, the
  default method is SKYRecordStorageResolveByReplacing.
- 
+
  The completion handler is called when the change is synchronized to remote.
  */
 - (void)saveRecord:(SKYRecord *)record;
-- (void)saveRecord:(SKYRecord *)record whenConflict:(SKYRecordResolveMethod)resolution completionHandler:(id)handler;
+- (void)saveRecord:(SKYRecord *)record
+      whenConflict:(SKYRecordResolveMethod)resolution
+ completionHandler:(id)handler;
 - (void)saveRecords:(NSArray *)records;
 
 /**
  Remove specified record.
- 
+
  If the record is also modified on the remote, you can specify
  an automatic conflict resolution method. If not specified, the
  default method is SKYRecordStorageResolveByReplacing.
- 
+
  The completion handler is called when the change is synchronized to remote.
  */
 - (void)deleteRecord:(SKYRecord *)record;
-- (void)deleteRecord:(SKYRecord *)record whenConflict:(SKYRecordResolveMethod)resolution completionHandler:(id)handler;
+- (void)deleteRecord:(SKYRecord *)record
+        whenConflict:(SKYRecordResolveMethod)resolution
+   completionHandler:(id)handler;
 - (void)deleteRecords:(NSArray *)records;
 
 #pragma mark - Fetching and querying multiple records
@@ -151,17 +155,24 @@ typedef enum : NSInteger {
  Returns an array of <SKYRecord> with the specified type, filtered
  using the specified predicate.
  */
-- (NSArray *)recordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
+- (NSArray *)recordsWithType:(NSString *)recordType
+                   predicate:(NSPredicate *)predicate
+             sortDescriptors:(NSArray *)sortDescriptors;
 
 /**
  Enumerate SKYRecords in the local storage.
  */
-- (void)enumerateRecordsWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors usingBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
+- (void)enumerateRecordsWithType:(NSString *)recordType
+                       predicate:(NSPredicate *)predicate
+                 sortDescriptors:(NSArray *)sortDescriptors
+                      usingBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
 
 /**
  Returns SKYRecordResultController.
  */
-- (SKYRecordResultController *)recordResultControllerWithType:(NSString *)recordType predicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
+- (SKYRecordResultController *)recordResultControllerWithType:(NSString *)recordType
+                                                    predicate:(NSPredicate *)predicate
+                                              sortDescriptors:(NSArray *)sortDescriptors;
 
 #pragma mark - Managing Record changes
 
@@ -172,11 +183,11 @@ typedef enum : NSInteger {
  permanent error
  refers to an error that is likely to reoccur if the change is performed
  again without modification.
- 
+
  The application should use this property to detect if there
  are failed changes in this storage. Failed changes should
  be acknowledged or resolved.
- 
+
  @returns YES if there exists failed changes
  */
 @property (nonatomic, assign) BOOL hasFailedChanges;
@@ -188,14 +199,14 @@ typedef enum : NSInteger {
 
 /**
  Returns an array of pending record changes.
- 
+
  Changes are pending when they have not been sent to server for persistence.
  */
 - (NSArray *)pendingChanges;
 
 /**
  Returns an array of failed record changes.
- 
+
  Changes are failed when persistence result in error from server.
  */
 - (NSArray *)failedChanges;
@@ -210,7 +221,7 @@ typedef enum : NSInteger {
 /**
  Dismisses a record change. Dismissing a change prevents such change
  from being submitted to the remote server.
- 
+
  Specifying a change that is currently processed by the remote server
  will result in an error.
  */
@@ -219,7 +230,7 @@ typedef enum : NSInteger {
 /**
  Returns a dictionary of modified attributes that will be saved to
  remote server.
- 
+
  For each entry in the dictionary, the key is the key of the attribute
  that is changed with an array containing both the old and new value of
  the attribute. The object at index 0 correspond to the old value while
@@ -227,10 +238,9 @@ typedef enum : NSInteger {
  */
 - (NSDictionary *)attributesToSaveWithRecord:(SKYRecord *)record;
 
-
 /*
  Handle failed changes.
- 
+
  <SKYRecordStorage> will call the specified block for each failed record.
  */
 - (void)dismissFailedChangesWithBlock:(BOOL (^)(SKYRecordChange *item, SKYRecord *record))block;
@@ -245,7 +255,7 @@ typedef enum : NSInteger {
 
 /**
  Notifies the storage that it has received all record updates.
- 
+
  Call this method when the you have finished sending remote record updates to the storage. The
  storage uses this opportunity to commit updates to backing store and fires notification that
  the storage is updated.
@@ -261,7 +271,7 @@ typedef enum : NSInteger {
  Apply a pending change to the backing store.
  */
 - (void)updateByApplyingChange:(SKYRecordChange *)change
-                     recordOnRemote:(SKYRecord *)remoteRecord
-                              error:(NSError *)error;
+                recordOnRemote:(SKYRecord *)remoteRecord
+                         error:(NSError *)error;
 
 @end

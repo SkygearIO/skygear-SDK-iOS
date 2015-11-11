@@ -26,7 +26,8 @@
 {
     self = [super init];
     if (self) {
-        _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        _session = [NSURLSession
+            sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         _asset = asset;
     }
     return self;
@@ -53,21 +54,30 @@
 
     NSURLRequest *request = [self makeRequest];
     __weak typeof(self) weakSelf = self;
-    self.task = [self.session uploadTaskWithRequest:request fromFile:self.asset.url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
+    self.task = [self.session
+        uploadTaskWithRequest:request
+                     fromFile:self.asset.url
+            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                __strong typeof(self) strongSelf = weakSelf;
 
-        [strongSelf handleCompletionWithData:data response:response error:error];
+                [strongSelf handleCompletionWithData:data response:response error:error];
 
-        if (shouldObserveProgress) {
-            [strongSelf.task removeObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesSent)) context:nil];
-        }
+                if (shouldObserveProgress) {
+                    [strongSelf.task
+                        removeObserver:self
+                            forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
+                               context:nil];
+                }
 
-        [strongSelf setExecuting:NO];
-        [strongSelf setFinished:YES];
-    }];
+                [strongSelf setExecuting:NO];
+                [strongSelf setFinished:YES];
+            }];
 
     if (shouldObserveProgress) {
-        [self.task addObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesSent)) options:0 context:nil];
+        [self.task addObserver:self
+                    forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
+                       options:0
+                       context:nil];
     }
 
     [self.task resume];
@@ -83,8 +93,10 @@
             NSURLSessionUploadTask *task = object;
 
             // task.countOfBytesExpectedToSend sometimes returns zero for unknown reason
-            // since we are saving asset data in file anyway, we access the value from asset instead.
-            self.uploadAssetProgressBlock(self.asset, task.countOfBytesSent*1.0 / self.asset.fileSize.integerValue);
+            // since we are saving asset data in file anyway, we access the value from asset
+            // instead.
+            self.uploadAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 /
+                                                          self.asset.fileSize.integerValue);
         }
     }
 }
@@ -112,7 +124,9 @@
     return request;
 }
 
-- (void)handleCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error
+- (void)handleCompletionWithData:(NSData *)data
+                        response:(NSURLResponse *)response
+                           error:(NSError *)error
 {
     NSDictionary *result = nil;
     if (!error) {

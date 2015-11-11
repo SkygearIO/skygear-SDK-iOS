@@ -30,6 +30,7 @@
 // reference to push to
 @property (nonatomic, copy) SKYReference *reference;
 
-@property (nonatomic, copy) void(^pushNewsfeedCompletionBlock)(NSArray /* SKYNewsfeedItem */ *newsfeedItems, NSError *error);
+@property (nonatomic, copy) void (^pushNewsfeedCompletionBlock)
+    (NSArray /* SKYNewsfeedItem */ *newsfeedItems, NSError *error);
 
 @end

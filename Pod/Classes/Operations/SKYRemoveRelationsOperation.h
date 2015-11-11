@@ -10,14 +10,15 @@
 
 @interface SKYRemoveRelationsOperation : SKYOperation
 
-
 /**
- Instantiates an instance of <SKYDeleteRelationsOperation> with a list of user to be related with current user.
+ Instantiates an instance of <SKYDeleteRelationsOperation> with a list of user to be related with
+ current user.
  */
 - (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
 
 /**
- Creates and returns an instance of <SKYDeleteRelationsOperation> with a list of user to be related with current user.
+ Creates and returns an instance of <SKYDeleteRelationsOperation> with a list of user to be related
+ with current user.
  */
 + (instancetype)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
 
@@ -31,7 +32,6 @@
  */
 @property (nonatomic, copy) NSArray *usersToRemove;
 
-
 /**
  Sets or returns a block to be called when the save operation for individual record is completed.
  If an error occurred during the delete, the <NSError> will be specified.
@@ -42,6 +42,7 @@
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^removeRelationsCompletionBlock)(NSArray *deletedUserIDs, NSError *operationError);
+@property (nonatomic, copy) void (^removeRelationsCompletionBlock)
+    (NSArray *deletedUserIDs, NSError *operationError);
 
 @end

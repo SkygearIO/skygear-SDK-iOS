@@ -32,5 +32,4 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) void (^perSendCompletionHandler)(NSString *userID, NSError *error);
 @property (nonatomic, copy) void (^sendCompletionHandler)(NSArray *userIDs, NSError *error);
 
-
 @end

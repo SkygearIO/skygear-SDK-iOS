@@ -13,6 +13,6 @@
 
 @interface SKYFacebookOperation : SKYDatabaseOperation
 
-@property (nonatomic, copy) SKYUserRecordID* userRecordID;
+@property (nonatomic, copy) SKYUserRecordID *userRecordID;
 
 @end

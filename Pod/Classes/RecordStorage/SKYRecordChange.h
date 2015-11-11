@@ -17,20 +17,20 @@ typedef enum : NSInteger {
      you have to check for failed changes and handle the error manually.
      */
     SKYRecordResolveManually,
-    
+
     /**
      SKYRecordStorage will replace the remote record by saving with
      the local copy of the record, ignoring all existing attributes
      on remote.
      */
     SKYRecordResolveByReplacing,
-    
+
     /**
      SKYRecordStorage will update the remote record by updating
      the remote copy with only the modified attributes.
      */
     SKYRecordResolveByUpdatingDelta,
-    
+
     /**
      SKYRecordStorage will update the remote record if the modified
      attributes were not also modified on the remote.

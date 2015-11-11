@@ -14,11 +14,11 @@
 @class SKYContainer;
 @class SKYNotification;
 
-extern NSString * const SKYRecordStorageCoordinatorBackingStoreKey;
-extern NSString * const SKYRecordStorageCoordinatorMemoryStore;
-extern NSString * const SKYRecordStorageCoordinatorFileBackedMemoryStore;
-extern NSString * const SKYRecordStorageCoordinatorSqliteStore;
-extern NSString * const SKYRecordStorageCoordinatorFilePath;
+extern NSString *const SKYRecordStorageCoordinatorBackingStoreKey;
+extern NSString *const SKYRecordStorageCoordinatorMemoryStore;
+extern NSString *const SKYRecordStorageCoordinatorFileBackedMemoryStore;
+extern NSString *const SKYRecordStorageCoordinatorSqliteStore;
+extern NSString *const SKYRecordStorageCoordinatorFilePath;
 
 /**
  The <SKYRecordStorageCoordinator> is responsible for keeping
@@ -31,7 +31,6 @@ extern NSString * const SKYRecordStorageCoordinatorFilePath;
 
 @property (nonatomic, readonly) SKYContainer *container;
 
-
 /**
  Returns an array of registered <SKYRecordStorage>.
  */
@@ -40,7 +39,8 @@ extern NSString * const SKYRecordStorageCoordinatorFilePath;
 /**
  Sets or returns whether registered <SKYRecordStorage> are auto-purged on user login or logout.
  */
-@property (nonatomic, readwrite, getter=isPurgeStoragesOnCurrentUserChanges) BOOL purgeStoragesOnCurrentUserChanges;
+@property (nonatomic, readwrite, getter=isPurgeStoragesOnCurrentUserChanges)
+    BOOL purgeStoragesOnCurrentUserChanges;
 
 /**
  Returns the singleton instance of <SKYRecordStorageCoordinator>.
@@ -52,23 +52,31 @@ extern NSString * const SKYRecordStorageCoordinatorFilePath;
 /**
  Returns an instance of SKYRecordStorage that is set up to be synchronized
  with the specified scope.
- 
+
  If the instance of SKYRecordStorage has been created previously with
  <SKYRecord> persisted in the local storage, the same set of <SKYRecord>
  will be available to the returned <SKYRecordStorage>.
- 
+
  The coordinator keeps references to all <SKYRecordStorage> and
  all of them will synchronize with the remote server.
  */
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database query:(SKYQuery *)query options:(NSDictionary *)options __deprecated;
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database query:(SKYQuery *)query options:(NSDictionary *)options error:(NSError **)error;
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database options:(NSDictionary *)options __deprecated;
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database options:(NSDictionary *)options error:(NSError **)error;
+- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
+                                          query:(SKYQuery *)query
+                                        options:(NSDictionary *)options __deprecated;
+- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
+                                          query:(SKYQuery *)query
+                                        options:(NSDictionary *)options
+                                          error:(NSError **)error;
+- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
+                                        options:(NSDictionary *)options __deprecated;
+- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
+                                        options:(NSDictionary *)options
+                                          error:(NSError **)error;
 - (SKYRecordStorage *)recordStorageForPrivateDatabase;
 
 /**
  Removes an <SKYRecordStorage> from an internal registry of local storage.
- 
+
  When this method is called, the coordinator will not propagate remote
  record updates to the specified <SKYRecordStorage>
  */
@@ -82,10 +90,10 @@ extern NSString * const SKYRecordStorageCoordinatorFilePath;
 /**
  Handles remote notification payload so that all registered <SKYRecordStorage>
  have a chance to updates its local storage.
- 
+
  You are expecte to call this method when in your implementation of
  -[UIApplicationDelegate application:didReceiveRemoteNotification:].
- 
+
  If this method returns YES, it means the remote notification
  has been handled by <SKYRecordStorageCoordinator>.
  */

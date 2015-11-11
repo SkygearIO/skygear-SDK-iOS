@@ -11,7 +11,7 @@
 #import "SKYDatabase.h"
 #import "SKYUserRecordID.h"
 
-@interface SKYDatabase(FacebookExtension)
+@interface SKYDatabase (FacebookExtension)
 
 - (void)findUserByFacebookFriendsOfUser:(SKYUserRecordID *)userRecordID
                       completionHandler:(void (^)(NSArray *users, NSError *error))completionHandler;

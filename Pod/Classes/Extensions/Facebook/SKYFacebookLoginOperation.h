@@ -12,9 +12,12 @@
 
 @interface SKYFacebookLoginOperation : SKYFacebookAuthOperation
 
-- (instancetype)initWithAccessToken:(NSString *)accessToken expirationDate:(NSDate *)expirationDate facebookUserID:(NSString *)userID;
+- (instancetype)initWithAccessToken:(NSString *)accessToken
+                     expirationDate:(NSDate *)expirationDate
+                     facebookUserID:(NSString *)userID;
 
 // profileInfo is the profile dictionary obtained via Facebook Graph API (i.e. "/me")
-@property (nonatomic, copy) void (^loginCompletionBlock)(SKYUserRecordID *recordID, NSDictionary *profileInfo, NSError *error);
+@property (nonatomic, copy) void (^loginCompletionBlock)
+    (SKYUserRecordID *recordID, NSDictionary *profileInfo, NSError *error);
 
 @end

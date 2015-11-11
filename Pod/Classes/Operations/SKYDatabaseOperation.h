@@ -12,6 +12,6 @@
 
 @interface SKYDatabaseOperation : SKYOperation
 
-@property(strong, nonatomic) SKYDatabase *database;
+@property (strong, nonatomic) SKYDatabase *database;
 
 @end

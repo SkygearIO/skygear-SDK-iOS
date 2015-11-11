@@ -26,6 +26,7 @@ typedef enum : NSInteger {
 
 @property (nonatomic, readonly) SKYFacebookLinkageAction action;
 
-@property (nonatomic, copy) void (^linkageCompletionBlock)(SKYUserRecordID *userRecordID, NSDictionary *profileInfo, NSError *error);
+@property (nonatomic, copy) void (^linkageCompletionBlock)
+    (SKYUserRecordID *userRecordID, NSDictionary *profileInfo, NSError *error);
 
 @end

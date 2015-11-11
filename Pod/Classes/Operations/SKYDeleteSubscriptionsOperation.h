@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionIDsToDelete;
 
-@property (nonatomic, copy) void(^deleteSubscriptionsCompletionBlock)(NSArray *deletedSubscriptionIDs, NSError *operationError);
+@property (nonatomic, copy) void (^deleteSubscriptionsCompletionBlock)
+    (NSArray *deletedSubscriptionIDs, NSError *operationError);
 
 @end

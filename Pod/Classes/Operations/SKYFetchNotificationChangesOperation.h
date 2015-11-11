@@ -15,7 +15,8 @@
 
 - (instancetype)initWithPreviousServerChangeToken:(SKYServerChangeToken *)previousServerChangeToken;
 
-+ (instancetype)operationWithPreviousServerChangeToken:(SKYServerChangeToken *)previousServerChangeToken;
++ (instancetype)operationWithPreviousServerChangeToken:
+    (SKYServerChangeToken *)previousServerChangeToken;
 
 @property (nonatomic, copy) SKYServerChangeToken *previousServerChangeToken;
 @property (nonatomic, assign) NSUInteger resultsLimit;
@@ -24,6 +25,7 @@
 @property (nonatomic, readonly) BOOL moreComing;
 
 @property (nonatomic, copy) void (^notificationChangedBlock)(SKYNotification *notification);
-@property(nonatomic, copy) void (^fetchNotificationChangesCompletionBlock)( SKYServerChangeToken *serverChangeToken, NSError *operationError);
+@property (nonatomic, copy) void (^fetchNotificationChangesCompletionBlock)
+    (SKYServerChangeToken *serverChangeToken, NSError *operationError);
 
 @end

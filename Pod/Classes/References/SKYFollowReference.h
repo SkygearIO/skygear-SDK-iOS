@@ -12,7 +12,7 @@
 #import "SKYUser.h"
 #import "SKYUserRecordID.h"
 
-extern NSString * const SKYFollowerReferenceFollowTypeDefault;
+extern NSString *const SKYFollowerReferenceFollowTypeDefault;
 
 @interface SKYFollowReference : SKYReference
 

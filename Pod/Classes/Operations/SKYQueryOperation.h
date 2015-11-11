@@ -27,7 +27,8 @@
  */
 @property (nonatomic, readonly) NSUInteger overallCount;
 
-@property(nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record);
-@property(nonatomic, copy) void (^queryRecordsCompletionBlock)(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError);
+@property (nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record);
+@property (nonatomic, copy) void (^queryRecordsCompletionBlock)
+    (NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError);
 
 @end
