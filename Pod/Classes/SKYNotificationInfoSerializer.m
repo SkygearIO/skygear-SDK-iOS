@@ -19,7 +19,22 @@
 {
     NSMutableDictionary *infoDict = [NSMutableDictionary dictionary];
 
+    NSDictionary *apsDict = [self apsDictionaryWithNotificationInfo:n.apsNotificationInfo];
+    if (apsDict.count) {
+        infoDict[@"aps"] = apsDict;
+    }
+
+    if (n.desiredKeys.count) {
+        infoDict[@"desired_keys"] = [n.desiredKeys copy];
+    }
+
+    return infoDict;
+}
+
+- (NSDictionary *)apsDictionaryWithNotificationInfo:(SKYAPSNotificationInfo *)n
+{
     NSMutableDictionary *apsDict = [NSMutableDictionary dictionary];
+
     NSDictionary *alertDict = [self alertDictionaryWithNotificationInfo:n];
     if (alertDict.count) {
         apsDict[@"alert"] = alertDict;
@@ -33,26 +48,10 @@
     if (n.shouldSendContentAvailable) {
         apsDict[@"should-send-content-available"] = @YES;
     }
-    if (apsDict.count) {
-        infoDict[@"aps"] = apsDict;
-    }
-
-    if (n.desiredKeys.count) {
-        NSMutableArray *desiredKeys = [NSMutableArray array];
-        for (NSString *key in n.desiredKeys) {
-            if (key.length) {
-                [desiredKeys addObject:key];
-            }
-        }
-        if (desiredKeys.count) {
-            infoDict[@"desired_keys"] = desiredKeys;
-        }
-    }
-
-    return infoDict;
+    return apsDict;
 }
 
-- (NSDictionary *)alertDictionaryWithNotificationInfo:(SKYNotificationInfo *)n
+- (NSDictionary *)alertDictionaryWithNotificationInfo:(SKYAPSNotificationInfo *)n
 {
     NSMutableDictionary *alertDict = [[NSMutableDictionary alloc] init];
     if (n.alertBody) {

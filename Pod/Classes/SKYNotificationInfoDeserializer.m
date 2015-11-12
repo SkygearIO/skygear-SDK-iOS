@@ -8,6 +8,8 @@
 
 #import "SKYNotificationInfoDeserializer.h"
 
+#import "SKYAPSNotificationInfo.h"
+
 @implementation SKYNotificationInfoDeserializer
 
 + (instancetype)deserializer
@@ -21,19 +23,20 @@
         return nil;
     }
 
-    SKYNotificationInfo *info = [self notificationInfoWithApsDictionary:dictionary[@"aps"]];
+    SKYNotificationInfo *info = [SKYNotificationInfo notificationInfo];
+    info.apsNotificationInfo = [self notificationInfoWithApsDictionary:dictionary[@"aps"]];
     info.desiredKeys = dictionary[@"desired_keys"];
 
     return info;
 }
 
-- (SKYNotificationInfo *)notificationInfoWithApsDictionary:(NSDictionary *)dictionary
+- (SKYAPSNotificationInfo *)notificationInfoWithApsDictionary:(NSDictionary *)dictionary
 {
     if (!dictionary.count) {
         return nil;
     }
 
-    SKYNotificationInfo *info = [[SKYNotificationInfo alloc] init];
+    SKYAPSNotificationInfo *info = [[SKYAPSNotificationInfo alloc] init];
 
     NSDictionary *alertDict = dictionary[@"alert"];
     info.alertBody = alertDict[@"body"];

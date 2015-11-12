@@ -107,15 +107,19 @@ describe(@"deserialize subscription", ^{
         expect(subscription.subscriptionType).to.equal(SKYSubscriptionTypeQuery);
         expect(subscription.subscriptionID).to.equal(@"subscriptionID");
 
+        SKYAPSNotificationInfo *expectedAPSNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
+        expectedAPSNotificationInfo.alertBody = @"alertBody";
+        expectedAPSNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        expectedAPSNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
+        expectedAPSNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        expectedAPSNotificationInfo.alertLaunchImage = @"alertLaunchImage";
+        expectedAPSNotificationInfo.soundName = @"soundName";
+        expectedAPSNotificationInfo.shouldBadge = YES;
+        expectedAPSNotificationInfo.shouldSendContentAvailable = YES;
+
         SKYNotificationInfo *expectedNotificationInfo = [[SKYNotificationInfo alloc] init];
-        expectedNotificationInfo.alertBody = @"alertBody";
-        expectedNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        expectedNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
-        expectedNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
-        expectedNotificationInfo.alertLaunchImage = @"alertLaunchImage";
-        expectedNotificationInfo.soundName = @"soundName";
-        expectedNotificationInfo.shouldBadge = YES;
-        expectedNotificationInfo.shouldSendContentAvailable = YES;
+        expectedNotificationInfo.apsNotificationInfo = expectedAPSNotificationInfo;
+
         expect(subscription.notificationInfo).to.equal(expectedNotificationInfo);
     });
 });
@@ -156,16 +160,20 @@ describe(@"deserialize notification info", ^{
 
         SKYNotificationInfo *notificationInfo = [deserializer notificationInfoWithDictionary:notificationInfoDict];
 
+        SKYAPSNotificationInfo *expectedAPSNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
+        expectedAPSNotificationInfo.alertBody = @"alertBody";
+        expectedAPSNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        expectedAPSNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
+        expectedAPSNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        expectedAPSNotificationInfo.alertLaunchImage = @"alertLaunchImage";
+        expectedAPSNotificationInfo.soundName = @"soundName";
+        expectedAPSNotificationInfo.shouldBadge = YES;
+        expectedAPSNotificationInfo.shouldSendContentAvailable = YES;
+
         SKYNotificationInfo *expectedNotificationInfo = [[SKYNotificationInfo alloc] init];
-        expectedNotificationInfo.alertBody = @"alertBody";
-        expectedNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        expectedNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
-        expectedNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
-        expectedNotificationInfo.alertLaunchImage = @"alertLaunchImage";
-        expectedNotificationInfo.soundName = @"soundName";
-        expectedNotificationInfo.shouldBadge = YES;
-        expectedNotificationInfo.shouldSendContentAvailable = YES;
+        expectedNotificationInfo.apsNotificationInfo = expectedAPSNotificationInfo;
         expectedNotificationInfo.desiredKeys = @[@"key0", @"key1"];
+
         expect(notificationInfo).to.equal(expectedNotificationInfo);
     });
 

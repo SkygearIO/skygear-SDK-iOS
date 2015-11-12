@@ -1,6 +1,7 @@
 #import "SKYAccessToken.h"
 #import "SKYAccessControl.h"
 #import "SKYAddRelationsOperation.h"
+#import "SKYAPSNotificationInfo.h"
 #import "SKYAsset.h"
 #import "SKYContainer+FacebookAuth.h"
 #import "SKYContainer.h"

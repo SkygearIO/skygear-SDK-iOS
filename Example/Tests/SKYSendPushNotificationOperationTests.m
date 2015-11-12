@@ -15,8 +15,12 @@ SpecBegin(SKYSendPushNotificationOperation)
 
 describe(@"send push", ^{
     __block SKYContainer *container = nil;
+    SKYAPSNotificationInfo *apsNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
+    apsNotificationInfo.alertBody = @"Hello World!";
+
     SKYNotificationInfo *notificationInfo = [SKYNotificationInfo notificationInfo];
-    notificationInfo.alertBody = @"Hello World!";
+    notificationInfo.apsNotificationInfo = apsNotificationInfo;
+
     NSDictionary *expectedNotificationPayload = @{@"aps": @{@"alert": @{@"body": @"Hello World!"}}};
     
     beforeEach(^{

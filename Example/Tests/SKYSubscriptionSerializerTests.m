@@ -51,15 +51,18 @@ describe(@"serialize subscription", ^{
     it(@"serialize subscription with notificatoin info", ^{
         SKYSubscription *subscription = [[SKYSubscription alloc] initWithQuery:[[SKYQuery alloc] initWithRecordType:@"recordType" predicate:nil]];
 
-        SKYNotificationInfo *notificationInfo = [[SKYNotificationInfo alloc] init];
-        notificationInfo.alertBody = @"alertBody";
-        notificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        notificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
-        notificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        notificationInfo.alertLaunchImage = @"alertLaunchImage";
-        notificationInfo.soundName = @"soundName";
-        notificationInfo.shouldBadge = YES;
-        notificationInfo.shouldSendContentAvailable = YES;
+        SKYAPSNotificationInfo *apsNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
+        apsNotificationInfo.alertBody = @"alertBody";
+        apsNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        apsNotificationInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        apsNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        apsNotificationInfo.alertLaunchImage = @"alertLaunchImage";
+        apsNotificationInfo.soundName = @"soundName";
+        apsNotificationInfo.shouldBadge = YES;
+        apsNotificationInfo.shouldSendContentAvailable = YES;
+
+        SKYNotificationInfo *notificationInfo = [SKYNotificationInfo notificationInfo];
+        notificationInfo.apsNotificationInfo = apsNotificationInfo;
         notificationInfo.desiredKeys = @[@"key0", @"key1"];
 
         subscription.notificationInfo = notificationInfo;
@@ -95,15 +98,18 @@ describe(@"serialize notification info", ^{
     });
 
     it(@"serialize notification info", ^{
-        SKYNotificationInfo *info = [[SKYNotificationInfo alloc] init];
-        info.alertBody = @"alertBody";
-        info.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        info.alertLocalizationArgs = @[@"arg0", @"arg1"];
-        info.alertActionLocalizationKey = @"alertActionLocalizationKey";
-        info.alertLaunchImage = @"alertLaunchImage";
-        info.soundName = @"soundName";
-        info.shouldBadge = YES;
-        info.shouldSendContentAvailable = YES;
+        SKYAPSNotificationInfo *apsInfo = [SKYAPSNotificationInfo notificationInfo];
+        apsInfo.alertBody = @"alertBody";
+        apsInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        apsInfo.alertLocalizationArgs = @[@"arg0", @"arg1"];
+        apsInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
+        apsInfo.alertLaunchImage = @"alertLaunchImage";
+        apsInfo.soundName = @"soundName";
+        apsInfo.shouldBadge = YES;
+        apsInfo.shouldSendContentAvailable = YES;
+
+        SKYNotificationInfo *info = [SKYNotificationInfo notificationInfo];
+        info.apsNotificationInfo = apsInfo;
         info.desiredKeys = @[@"key0", @"key1"];
 
         NSDictionary *result = [serializer dictionaryWithNotificationInfo:info];
@@ -130,8 +136,11 @@ describe(@"serialize notification info", ^{
     });
 
     it(@"keep empty loc-args item", ^{
-        SKYNotificationInfo *info = [[SKYNotificationInfo alloc] init];
-        info.alertLocalizationArgs = @[@"arg0", @"", @"arg2"];
+        SKYAPSNotificationInfo *apsInfo = [SKYAPSNotificationInfo notificationInfo];
+        apsInfo.alertLocalizationArgs = @[@"arg0", @"", @"arg2"];
+
+        SKYNotificationInfo *info = [SKYNotificationInfo notificationInfo];
+        info.apsNotificationInfo = apsInfo;
 
         NSDictionary *result = [serializer dictionaryWithNotificationInfo:info];
         expect(result).to.equal(@{
@@ -139,28 +148,6 @@ describe(@"serialize notification info", ^{
                                           @"alert": @{
                                                   @"loc-args": @[@"arg0", @"", @"arg2"],
                                                   },
-                                          },
-                                  });
-    });
-
-    it(@"skip empty desired keys", ^{
-        SKYNotificationInfo *info = [[SKYNotificationInfo alloc] init];
-        info.desiredKeys = @[@"key0", @"", @"key2"];
-
-        NSDictionary *result = [serializer dictionaryWithNotificationInfo:info];
-        expect(result).to.equal(@{
-                                  @"desired_keys": @[@"key0", @"key2"],
-                                  });
-    });
-
-    it(@"skip empty alert", ^{
-        SKYNotificationInfo *info = [[SKYNotificationInfo alloc] init];
-        info.shouldSendContentAvailable = YES;
-
-        NSDictionary *result = [serializer dictionaryWithNotificationInfo:info];
-        expect(result).to.equal(@{
-                                  @"aps": @{
-                                          @"should-send-content-available": @YES,
                                           },
                                   });
     });
