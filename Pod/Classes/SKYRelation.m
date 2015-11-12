@@ -8,7 +8,7 @@
 
 #import "SKYRelation.h"
 
-@interface SKYRelation()
+@interface SKYRelation ()
 
 - (instancetype)initWithName:(NSString *)name NS_DESIGNATED_INITIALIZER;
 

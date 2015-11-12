@@ -32,7 +32,7 @@
         "id":"100000046709394"
     }
  }
- 
+
  Implementor of 3rd-party authentication method is free to
  design their own data structure stored behind their key.
  */

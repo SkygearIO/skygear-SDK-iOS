@@ -112,7 +112,7 @@
     if (!block) {
         return;
     }
-    
+
     [_records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([_localRecords objectForKey:key]) {
             return;
@@ -135,10 +135,11 @@
     if (!block) {
         return;
     }
-    
+
     NSMutableArray *result = [[NSMutableArray alloc] init];
     [self enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
-        if ([recordType isEqualToString:record.recordType] && (!predicate || [predicate evaluateWithObject:record])) {
+        if ([recordType isEqualToString:record.recordType] &&
+            (!predicate || [predicate evaluateWithObject:record])) {
             if ([sortDescriptors count]) {
                 [result addObject:record];
             } else {
@@ -146,7 +147,7 @@
             }
         }
     }];
-    
+
     if ([sortDescriptors count]) {
         [result sortUsingDescriptors:sortDescriptors];
         [result enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -198,12 +199,15 @@
 
 - (NSArray *)pendingChanges
 {
-    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = NO"]];
+    return
+        [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = NO"]];
 }
 
 - (NSArray *)failedChanges
 {
-    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = YES AND error != NULL"]];
+    return [_changes
+        filteredArrayUsingPredicate:[NSPredicate
+                                        predicateWithFormat:@"finished = YES AND error != NULL"]];
 }
 
 @end

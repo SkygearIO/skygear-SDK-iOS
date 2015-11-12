@@ -10,7 +10,7 @@
 
 #import "SKYDefaults.h"
 
-@interface SKYRegisterDeviceOperation()
+@interface SKYRegisterDeviceOperation ()
 
 @property (readonly) NSString *hexDeviceToken;
 
@@ -38,20 +38,22 @@
     return [[self alloc] initWithDeviceToken:deviceToken];
 }
 
-- (NSString *)hexDeviceToken {
+- (NSString *)hexDeviceToken
+{
     if (!self.deviceToken) {
         return nil;
     }
 
-    NSMutableString *token = [NSMutableString stringWithCapacity:2*self.deviceToken.length];
+    NSMutableString *token = [NSMutableString stringWithCapacity:2 * self.deviceToken.length];
 
-    [self.deviceToken enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
-        const unsigned char *bytePtr = bytes + byteRange.location,
-            *endPtr = bytePtr + byteRange.length;
-        for (;bytePtr < endPtr; ++bytePtr) {
-            [token appendFormat:@"%02x", *bytePtr];
-        }
-    }];
+    [self.deviceToken
+        enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
+            const unsigned char *bytePtr = bytes + byteRange.location,
+                                *endPtr = bytePtr + byteRange.length;
+            for (; bytePtr < endPtr; ++bytePtr) {
+                [token appendFormat:@"%02x", *bytePtr];
+            }
+        }];
 
     return token;
 }
@@ -59,8 +61,8 @@
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{
-                                      @"type": @"ios",
-                                      } mutableCopy];
+        @"type" : @"ios",
+    } mutableCopy];
 
     NSString *deviceToken = self.hexDeviceToken;
     if (deviceToken) {
@@ -77,8 +79,7 @@
         payload[@"id"] = deviceID;
     }
 
-    self.request = [[SKYRequest alloc] initWithAction:@"device:register"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"device:register" payload:payload];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.currentAccessToken;
 }
@@ -112,11 +113,13 @@
         return nil;
     }
 
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     NSString *deviceID = self.response[@"result"][@"id"];
     if (!deviceID.length) {
-        NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Response missing device id." errorDictionary:nil];
+        NSDictionary *userInfo =
+            [self errorUserInfoWithLocalizedDescription:@"Response missing device id."
+                                        errorDictionary:nil];
         *error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         return dict;
     }
@@ -125,6 +128,5 @@
 
     return dict;
 }
-
 
 @end

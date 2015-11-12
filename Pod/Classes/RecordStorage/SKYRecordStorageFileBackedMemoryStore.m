@@ -73,10 +73,12 @@
     NSMutableDictionary *serializedRecords = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *serializedLocalRecords = [[NSMutableDictionary alloc] init];
     SKYRecordSerializer *serializer = [SKYRecordSerializer serializer];
-    [self.records enumerateKeysAndObjectsUsingBlock:^(SKYRecordID *key, SKYRecord *obj, BOOL *stop) {
-        serializedRecords[[key canonicalString]] = [serializer dictionaryWithRecord:obj];
-    }];
-    [self.localRecords enumerateKeysAndObjectsUsingBlock:^(SKYRecordID *key, SKYRecord *obj, BOOL *stop) {
+    [self.records
+        enumerateKeysAndObjectsUsingBlock:^(SKYRecordID *key, SKYRecord *obj, BOOL *stop) {
+            serializedRecords[[key canonicalString]] = [serializer dictionaryWithRecord:obj];
+        }];
+    [self.localRecords enumerateKeysAndObjectsUsingBlock:^(SKYRecordID *key, SKYRecord *obj,
+                                                           BOOL *stop) {
         if ([[NSNull null] isEqual:obj]) {
             serializedLocalRecords[[key canonicalString]] = obj;
         } else {
@@ -84,12 +86,11 @@
         }
     }];
     [NSKeyedArchiver archiveRootObject:@{
-                                         @"records": serializedRecords,
-                                         @"changes": self.changes,
-                                         @"localRecords": serializedLocalRecords,
-                                         }
+        @"records" : serializedRecords,
+        @"changes" : self.changes,
+        @"localRecords" : serializedLocalRecords,
+    }
                                 toFile:_path];
 }
-
 
 @end

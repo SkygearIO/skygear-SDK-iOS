@@ -10,6 +10,7 @@
 
 @interface SKYDatabase (SKYContactFinder)
 
-- (void)findUserByLocalAddressBookWithCompletionHandler:(void(^)(NSArray /* SKYRecord */ *users, NSError *error))completionHandler;
+- (void)findUserByLocalAddressBookWithCompletionHandler:(void (^)(NSArray /* SKYRecord */ *users,
+                                                                  NSError *error))completionHandler;
 
 @end

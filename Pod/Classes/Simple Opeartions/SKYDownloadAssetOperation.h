@@ -15,7 +15,8 @@
 - (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
 + (instancetype)operationWithAsset:(SKYAsset *)asset;
 
-@property (nonatomic, copy) void(^downloadAssetProgressBlock)(SKYAsset *asset, double progress);
-@property (nonatomic, copy) void(^downloadAssetCompletionBlock)(SKYAsset *asset, NSData *data, NSError *operationError);
+@property (nonatomic, copy) void (^downloadAssetProgressBlock)(SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^downloadAssetCompletionBlock)
+    (SKYAsset *asset, NSData *data, NSError *operationError);
 
 @end

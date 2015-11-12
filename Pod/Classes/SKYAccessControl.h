@@ -13,7 +13,7 @@
 
 @class SKYUser;
 
-@interface SKYAccessControl : NSObject<NSFastEnumeration>
+@interface SKYAccessControl : NSObject <NSFastEnumeration>
 
 - (instancetype)init NS_UNAVAILABLE;
 

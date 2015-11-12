@@ -8,12 +8,12 @@
 
 #import "SKYRecordSerialization.h"
 
-NSString * const SKYRecordSerializationRecordIDKey = @"_id";
-NSString * const SKYRecordSerializationRecordTypeKey = @"_type";
-NSString * const SKYRecordSerializationRecordOwnerIDKey = @"_ownerID";
-NSString * const SKYRecordSerializationRecordCreatedAtKey = @"_created_at";
-NSString * const SKYRecordSerializationRecordCreatorIDKey = @"_created_by";
-NSString * const SKYRecordSerializationRecordUpdatedAtKey = @"_updated_at";
-NSString * const SKYRecordSerializationRecordUpdaterIDKey = @"_updated_by";
-NSString * const SKYRecordSerializationRecordAccessControlKey = @"_access";
-NSString * const SKYRecordSerializationRecordTransientKey = @"_transient";
+NSString *const SKYRecordSerializationRecordIDKey = @"_id";
+NSString *const SKYRecordSerializationRecordTypeKey = @"_type";
+NSString *const SKYRecordSerializationRecordOwnerIDKey = @"_ownerID";
+NSString *const SKYRecordSerializationRecordCreatedAtKey = @"_created_at";
+NSString *const SKYRecordSerializationRecordCreatorIDKey = @"_created_by";
+NSString *const SKYRecordSerializationRecordUpdatedAtKey = @"_updated_at";
+NSString *const SKYRecordSerializationRecordUpdaterIDKey = @"_updated_by";
+NSString *const SKYRecordSerializationRecordAccessControlKey = @"_access";
+NSString *const SKYRecordSerializationRecordTransientKey = @"_transient";

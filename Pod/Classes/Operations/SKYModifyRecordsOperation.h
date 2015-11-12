@@ -15,20 +15,23 @@ typedef enum : NSInteger {
 } SKYRecordSavePolicy;
 
 /**
- <SKYModifyRecordsOperation> is a subclass of <SKYDatabaseOperation> that implements record saving to Ourd.
+ <SKYModifyRecordsOperation> is a subclass of <SKYDatabaseOperation> that implements record saving
+ to Ourd.
  Use this operation to save new record or modify existing record in the database.
  */
 @interface SKYModifyRecordsOperation : SKYDatabaseOperation
 
 /**
- Instantiates an instance of <OdModifyRecordsOperation> with a list of records to be saved to database.
- 
+ Instantiates an instance of <OdModifyRecordsOperation> with a list of records to be saved to
+ database.
+
  @param records An array of records to be saved to database.
  */
 - (instancetype)initWithRecordsToSave:(NSArray *)records;
 
 /**
- Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to database.
+ Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to
+ database.
 
  @param records An array of records to be saved to database.
  */
@@ -40,8 +43,10 @@ typedef enum : NSInteger {
 @property (nonatomic, copy) NSArray *recordsToSave;
 
 /**
- Sets whether the operation should be treated as an atomic operation. An atomic operation saves all the
- modifications should there be no errors. If some of the <SKYRecord>s saves successfully while some are not,
+ Sets whether the operation should be treated as an atomic operation. An atomic operation saves all
+ the
+ modifications should there be no errors. If some of the <SKYRecord>s saves successfully while some
+ are not,
  the database will treat the save as not happened at all.
 
  The default value of this property is NO.
@@ -63,6 +68,7 @@ typedef enum : NSInteger {
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^modifyRecordsCompletionBlock)(NSArray *savedRecords, NSError *operationError);
+@property (nonatomic, copy) void (^modifyRecordsCompletionBlock)
+    (NSArray *savedRecords, NSError *operationError);
 
 @end

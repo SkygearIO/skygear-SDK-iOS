@@ -52,7 +52,9 @@
     NSString *rawRelation = dictionary[@"relation"];
     if ([rawRelation isEqualToString:@"$direct"]) {
         NSString *rawUserID = dictionary[@"user_id"];
-        return [[SKYAccessControlEntry alloc] initWithAccessLevel:level userID:[SKYUserRecordID recordIDWithUsername:rawUserID]];
+        return [[SKYAccessControlEntry alloc]
+            initWithAccessLevel:level
+                         userID:[SKYUserRecordID recordIDWithUsername:rawUserID]];
     } else {
         SKYRelation *relation;
         if ([rawRelation isEqualToString:@"follow"]) {
@@ -60,7 +62,8 @@
         } else if ([rawRelation isEqualToString:@"friend"]) {
             relation = [SKYRelation relationFriend];
         } else {
-            NSLog(@"Failed to deserialize access control entry: unrecgonized relation %@", rawRelation);
+            NSLog(@"Failed to deserialize access control entry: unrecgonized relation %@",
+                  rawRelation);
             return nil;
         }
 

@@ -10,7 +10,8 @@
 
 @implementation SKYServerChangeToken
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone
+{
     SKYServerChangeToken *changeToken = [[self.class allocWithZone:zone] init];
     return changeToken;
 }

@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SKYNotificationID : NSObject<NSCopying>
+@interface SKYNotificationID : NSObject <NSCopying>
 
 @end

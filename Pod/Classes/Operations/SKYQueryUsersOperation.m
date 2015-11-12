@@ -12,7 +12,8 @@
 #import "SKYUser.h"
 #import "SKYUserDeserializer.h"
 
-NSString * NSStringFromRelationDirection(SKYRelationDirection direction) {
+NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
+{
     switch (direction) {
         case SKYRelationDirectionActive:
             return @"active";
@@ -24,11 +25,15 @@ NSString * NSStringFromRelationDirection(SKYRelationDirection direction) {
             return @"mutual";
             break;
         default:
-            @throw([NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unrecgonized relation direction" userInfo:@{@"relationDirection": @(direction)}]);
+            @throw([NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Unrecgonized relation direction"
+                                         userInfo:@{
+                                             @"relationDirection" : @(direction)
+                                         }]);
     }
 }
 
-@interface SKYQueryUsersOperation()
+@interface SKYQueryUsersOperation ()
 
 @property (strong, nonatomic) SKYUserDeserializer *deserializer;
 @property (nonatomic, readwrite, assign) SKYUserDiscoveryMethod discoveryMethod;
@@ -47,7 +52,8 @@ NSString * NSStringFromRelationDirection(SKYRelationDirection direction) {
     return [[self alloc] initWithRelation:relation];
 }
 
-+ (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation direction:(SKYRelationDirection)direction
++ (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation
+                                    direction:(SKYRelationDirection)direction
 {
     return [[self alloc] initWithRelation:relation direction:direction];
 }
@@ -86,18 +92,25 @@ NSString * NSStringFromRelationDirection(SKYRelationDirection direction) {
 
     switch (self.discoveryMethod) {
         case SKYUserDiscoveryMethodEmail:
-            self.request = [[SKYRequest alloc] initWithAction:@"user:query" payload:@{@"emails": self.emails}];
+            self.request = [[SKYRequest alloc] initWithAction:@"user:query"
+                                                      payload:@{
+                                                          @"emails" : self.emails
+                                                      }];
             break;
         case SKYUserDiscoveryMethodRelation:
             directionString = NSStringFromRelationDirection(self.relationDirection);
             self.request = [[SKYRequest alloc] initWithAction:@"relation:query"
-                                                     payload:@{
-                                                               @"name": self.relation.name,
-                                                               @"direction": directionString,
-                                                               }];
+                                                      payload:@{
+                                                          @"name" : self.relation.name,
+                                                          @"direction" : directionString,
+                                                      }];
             break;
         default:
-            @throw([NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unrecgonized user discovery method" userInfo:@{@"discoveryMethod": @(self.discoveryMethod)}]);
+            @throw([NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Unrecgonized user discovery method"
+                                         userInfo:@{
+                                             @"discoveryMethod" : @(self.discoveryMethod)
+                                         }]);
     }
 
     self.request.accessToken = self.container.currentAccessToken;
@@ -140,7 +153,7 @@ NSString * NSStringFromRelationDirection(SKYRelationDirection direction) {
         }
 
         if (emailsNotFound.count) {
-            NSDictionary *userInfo = @{SKYPartialEmailsNotFoundKey: emailsNotFound};
+            NSDictionary *userInfo = @{SKYPartialEmailsNotFoundKey : emailsNotFound};
             error = [NSError errorWithDomain:SKYOperationErrorDomain
                                         code:SKYErrorPartialFailure
                                     userInfo:userInfo];

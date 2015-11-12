@@ -8,7 +8,7 @@
 
 #import "SKYSubscriptionSerialization.h"
 
-NSString * const SKYSubscriptionSerializationSubscriptionIDKey = @"id";
-NSString * const SKYSubscriptionSerializationSubscriptionTypeKey = @"type";
-NSString * const SKYSubscriptionSerializationSubscriptionTypeQuery = @"query";
-NSString * const SKYSubscriptionSerializationSubscriptionTypeError = @"error";
+NSString *const SKYSubscriptionSerializationSubscriptionIDKey = @"id";
+NSString *const SKYSubscriptionSerializationSubscriptionTypeKey = @"type";
+NSString *const SKYSubscriptionSerializationSubscriptionTypeQuery = @"query";
+NSString *const SKYSubscriptionSerializationSubscriptionTypeError = @"error";

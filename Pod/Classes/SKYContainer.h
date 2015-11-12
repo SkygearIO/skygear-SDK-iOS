@@ -14,7 +14,6 @@
 #import "SKYNotification.h"
 #import "SKYPubsub.h"
 
-
 @protocol SKYContainerDelegate <NSObject>
 
 - (void)container:(SKYContainer *)container didReceiveNotification:(SKYNotification *)notification;
@@ -25,7 +24,7 @@
  Notification posted by <SKYContainer> when the current user
  has been updated.
  */
-extern NSString * const SKYContainerDidChangeCurrentUserNotification;
+extern NSString *const SKYContainerDidChangeCurrentUserNotification;
 
 /**
  Notification posted by <SKYContainer> when the current device
@@ -37,7 +36,7 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @class SKYOperation;
 
 // keep it in sync with SKYUserOperationActionCompletion
-typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, NSError *error);
 
 @interface SKYContainer : NSObject
 
@@ -77,7 +76,8 @@ typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, 
 - (void)configureWithAPIKey:(NSString *)APIKey;
 
 /**
- Acknowledge the container that a remote notification is received. If the notification is sent by Ourd, container
+ Acknowledge the container that a remote notification is received. If the notification is sent by
+ Ourd, container
  would invoke container:didReceiveNotification: on its delegate.
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
@@ -85,56 +85,64 @@ typedef void(^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, 
 - (void)addOperation:(SKYOperation *)operation;
 
 /**
- Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also stored in persistent
+ Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
+ stored in persistent
  storage.
- 
- This method is called when operation sign up, log in and log out is performed using the container's convenient
+
+ This method is called when operation sign up, log in and log out is performed using the container's
+ convenient
  method and when the operation is completed successfully.
- 
+
  @see -loadAccessCurrentUserRecordIDAndAccessToken
  */
-- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord
+                   accessToken:(SKYAccessToken *)accessToken;
 
 /**
- Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with remote server.
+ Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
+ remote server.
 
  Such circumstance might arise on a container when either:
 
  1. There are no logged-in users for an opertion that requires users login.
  2. Access token is invalid or has been expired.
 
- In either cases, developer should prompt for re-authentication of user and login using <SKYUserLoginOperation>.
+ In either cases, developer should prompt for re-authentication of user and login using
+ <SKYUserLoginOperation>.
 
- NOTE: Any attempt to invoke user logout related operation within the set handler will created an feedback loop as logouting an invalid access token is also a kind of authentication error.
+ NOTE: Any attempt to invoke user logout related operation within the set handler will created an
+ feedback loop as logouting an invalid access token is also a kind of authentication error.
  */
-- (void)setAuthenticationErrorHandler:(void(^)(SKYContainer *container, SKYAccessToken *token, NSError *error))authErrorHandler;
+- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
+                                                NSError *error))authErrorHandler;
 
 /**
  Creates an anonymous user account and log in as the created user.
- 
- Use this to create a user that is not associated with an email address. This is a convenient method for
+
+ Use this to create a user that is not associated with an email address. This is a convenient method
+ for
  <SKYCreateUserOperation>.
  */
-- (void)signupAnonymouslyWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
+- (void)signupAnonymouslyWithCompletionHandler:
+    (SKYContainerUserOperationActionCompletion)completionHandler;
 
 - (void)signup:(NSString *)username
-      password:(NSString *)password
-completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
+            password:(NSString *)password
+    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
        completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
 - (void)login:(NSString *)username
-     password:(NSString *)password
-completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+             password:(NSString *)password
+    completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 - (void)loginWithEmail:(NSString *)email
-     password:(NSString *)password
-completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+              password:(NSString *)password
+     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Logs out the current user of this container.
- 
+
  This is a convenient method for <SKYUserLogoutOperation>.
  */
 - (void)logoutWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
@@ -142,7 +150,8 @@ completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 /**
  Registers a device token for push notification.
  */
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler;
+- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
+                            completionHandler:(void (^)(NSString *, NSError *))completionHandler;
 
 /**
  Registers a device without device token.
@@ -151,22 +160,23 @@ completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
  the application launches. It is okay to call this on subsequent launches, even if a device
  token is already associated with this device.
  */
-- (void)registerDeviceCompletionHandler:(void(^)(NSString *, NSError *))completionHandler;
+- (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
 
-- (void)uploadAsset:(SKYAsset *)asset completionHandler:(void(^)(SKYAsset *, NSError*))completionHandler;
+- (void)uploadAsset:(SKYAsset *)asset
+  completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
 
 /**
  Calls a registered lambda function without arguments.
  */
 - (void)callLambda:(NSString *)action
- completionHandler:(void(^)(NSDictionary *, NSError *))completionHandler;
+ completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 /**
  Calls a registered lambda function with arguments.
  */
 - (void)callLambda:(NSString *)action
          arguments:(NSArray *)arguments
- completionHandler:(void(^)(NSDictionary *, NSError *))completionHandler;
+ completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 @end
 
@@ -175,7 +185,11 @@ completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 - (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertBody:(NSString *)alertBody;
 - (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody;
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
+- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID
+      alertLocalizationKey:(NSString *)alertLocalizationKey
+     alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs
+       alertLocalizationKey:(NSString *)alertLocalizationKey
+      alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
 
 @end

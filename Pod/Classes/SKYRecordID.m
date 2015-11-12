@@ -15,7 +15,8 @@
     return [self initWithRecordType:nil name:nil];
 }
 
-- (instancetype)initWithRecordName:(NSString *)recordName {
+- (instancetype)initWithRecordName:(NSString *)recordName
+{
     return [self initWithRecordType:nil name:recordName];
 }
 
@@ -32,7 +33,7 @@
                                        reason:@"Invalid Record ID string."
                                      userInfo:nil];
     }
-    
+
     return [self initWithRecordType:components[0] name:components[1]];
 }
 
@@ -41,7 +42,8 @@
     self = [super init];
     if (self) {
         if (!type) {
-            NSLog(@"Deprecation Warning: %@ created without record type.", NSStringFromClass([self class]));
+            NSLog(@"Deprecation Warning: %@ created without record type.",
+                  NSStringFromClass([self class]));
         }
         _recordType = [type copy];
         _recordName = recordName ? [recordName copy] : [[NSUUID UUID] UUIDString];
@@ -75,9 +77,11 @@
     return [[self alloc] initWithRecordType:type name:recordName];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-    SKYRecordID *recordID = [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
-                                                                          name:[_recordName copyWithZone:zone]];
+- (id)copyWithZone:(NSZone *)zone
+{
+    SKYRecordID *recordID =
+        [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
+                                                       name:[_recordName copyWithZone:zone]];
     return recordID;
 }
 
@@ -92,11 +96,11 @@
     if (!object) {
         return NO;
     }
-    
+
     if (![object isKindOfClass:[SKYRecordID class]]) {
         return NO;
     }
-    
+
     return [self isEqualToRecordID:object];
 }
 
@@ -105,11 +109,11 @@
     if (!recordID) {
         return NO;
     }
-    
-    return (
-            ((recordID.recordName == nil && self.recordName == nil) || [recordID.recordName isEqual:self.recordName])
-            && ((recordID.recordType == nil && self.recordType == nil) || [recordID.recordType isEqual:self.recordType])
-            );
+
+    return (((recordID.recordName == nil && self.recordName == nil) ||
+             [recordID.recordName isEqual:self.recordName]) &&
+            ((recordID.recordType == nil && self.recordType == nil) ||
+             [recordID.recordType isEqual:self.recordType]));
 }
 
 - (NSUInteger)hash
@@ -120,7 +124,8 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; recordType = %@, recordName = %@>",
-            NSStringFromClass([self class]), self, self.recordType, self.recordName];
+                                      NSStringFromClass([self class]), self, self.recordType,
+                                      self.recordName];
 }
 
 - (NSString *)canonicalString

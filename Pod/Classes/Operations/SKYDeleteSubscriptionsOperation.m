@@ -32,9 +32,8 @@
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{
-                                       @"database_id": self.database.databaseID,
-                                      } mutableCopy];
-
+        @"database_id" : self.database.databaseID,
+    } mutableCopy];
 
     NSString *deviceID = nil;
     if (self.deviceID) {
@@ -50,14 +49,14 @@
         payload[@"ids"] = self.subscriptionIDsToDelete;
     }
 
-    self.request = [[SKYRequest alloc] initWithAction:@"subscription:delete"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"subscription:delete" payload:payload];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-
-- (void)processResultArray:(NSArray *)result deletedsubscriptionIDs:(NSArray **) deletedsubscriptionIDs operationError:(NSError **)operationError
+- (void)processResultArray:(NSArray *)result
+    deletedsubscriptionIDs:(NSArray **)deletedsubscriptionIDs
+            operationError:(NSError **)operationError
 {
     NSMutableArray *subscriptionIDs = [NSMutableArray array];
     NSMutableDictionary *errorBySubscriptionID = [NSMutableDictionary dictionary];
@@ -70,19 +69,17 @@
 
             NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj];
             userInfo[NSLocalizedDescriptionKey] = @"An error occurred while deleting subscription.";
-            errorBySubscriptionID[subscriptionID] = [NSError errorWithDomain:SKYOperationErrorDomain
-                                                                        code:0
-                                                                    userInfo:userInfo];
+            errorBySubscriptionID[subscriptionID] =
+                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         } else if (subscriptionID.length) {
             [subscriptionIDs addObject:subscriptionID];
         } else {
             // malformed response
-            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `id` or not in correct format."
-                                                                        errorDictionary:nil];
-            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] = [NSError errorWithDomain:SKYOperationErrorDomain
-                                                                                           code:0
-                                                                                       userInfo:userInfo];
-
+            NSMutableDictionary *userInfo = [self
+                errorUserInfoWithLocalizedDescription:@"Missing `id` or not in correct format."
+                                      errorDictionary:nil];
+            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] =
+                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         }
     }];
 
@@ -93,8 +90,8 @@
         *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
                                               code:SKYErrorPartialFailure
                                           userInfo:@{
-                                                     SKYPartialErrorsByItemIDKey: errorBySubscriptionID,
-                                                     }];
+                                              SKYPartialErrorsByItemIDKey : errorBySubscriptionID,
+                                          }];
     }
 }
 
@@ -113,12 +110,14 @@
         NSError *error = nil;
         NSArray *responseArray = response[@"result"];
         if ([responseArray isKindOfClass:[NSArray class]]) {
-            [self processResultArray:responseArray deletedsubscriptionIDs:&deletedSubscriptions operationError:&error];
+            [self processResultArray:responseArray
+                deletedsubscriptionIDs:&deletedSubscriptions
+                        operationError:&error];
         } else {
-            NSDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result." errorDictionary:nil];
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                    code:0
-                                userInfo:userInfo];
+            NSDictionary *userInfo =
+                [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                            errorDictionary:nil];
+            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
         }
         self.deleteSubscriptionsCompletionBlock(deletedSubscriptions, error);
     }

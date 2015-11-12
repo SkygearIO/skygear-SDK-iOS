@@ -15,6 +15,6 @@
 // is it really useful?
 @property (nonatomic, readonly, assign) BOOL isPublicDatabase;
 
-@property(nonatomic, readonly, copy) SKYRecordID *recordID;
+@property (nonatomic, readonly, copy) SKYRecordID *recordID;
 
 @end

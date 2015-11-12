@@ -29,7 +29,7 @@
 @property (nonatomic, assign) NSUInteger resultLimit;
 @property (nonatomic, copy) NSArray *results;
 
-@property (nonatomic, copy) void(^newsfeedItemFetchedBlock)(SKYNewsfeedItem *newsfeedItem);
-@property (nonatomic, copy) void(^fetchCompletionBlock)(SKYNewsfeedCursor *cursor, NSError *error);
+@property (nonatomic, copy) void (^newsfeedItemFetchedBlock)(SKYNewsfeedItem *newsfeedItem);
+@property (nonatomic, copy) void (^fetchCompletionBlock)(SKYNewsfeedCursor *cursor, NSError *error);
 
 @end

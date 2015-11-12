@@ -8,7 +8,7 @@
 
 #import "SKYNotification.h"
 
-@interface SKYNotification()
+@interface SKYNotification ()
 
 - (instancetype)initWithSubscriptionID:(NSString *)subscriptionID;
 

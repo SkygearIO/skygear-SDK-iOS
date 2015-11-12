@@ -8,7 +8,7 @@
 
 #import "SKYSubscription.h"
 
-@interface SKYSubscription()
+@interface SKYSubscription ()
 
 @property (nonatomic, copy) NSString *subscriptionID;
 @property (nonatomic, readwrite, assign) SKYSubscriptionType subscriptionType;
@@ -17,12 +17,13 @@
 
 @implementation SKYSubscription
 
-- (instancetype)initWithQuery:(SKYQuery *)query {
+- (instancetype)initWithQuery:(SKYQuery *)query
+{
     return [self initWithQuery:query subscriptionID:nil];
 }
 
-- (instancetype)initWithQuery:(SKYQuery *)query
-                 subscriptionID:(NSString *)subscriptionID {
+- (instancetype)initWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID
+{
     self = [super init];
     if (self) {
         _subscriptionType = SKYSubscriptionTypeQuery;
@@ -37,8 +38,7 @@
     return [[self alloc] initWithQuery:query];
 }
 
-+ (instancetype)subscriptionWithQuery:(SKYQuery *)query
-                       subscriptionID:(NSString *)subscriptionID
++ (instancetype)subscriptionWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID
 {
     return [[self alloc] initWithQuery:query subscriptionID:subscriptionID];
 }

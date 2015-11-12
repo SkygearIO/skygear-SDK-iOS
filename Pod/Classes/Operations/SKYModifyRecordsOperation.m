@@ -32,7 +32,7 @@
 - (void)prepareForRequest
 {
     SKYRecordSerializer *serializer = [SKYRecordSerializer serializer];
-    
+
     NSMutableArray *dictionariesToSave = [NSMutableArray array];
     recordsByRecordID = [NSMutableDictionary dictionary];
     [self.recordsToSave enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -41,15 +41,14 @@
     }];
 
     NSMutableDictionary *payload = [@{
-                                      @"records": dictionariesToSave,
-                                      @"database_id": self.database.databaseID,
-                                      } mutableCopy];
+        @"records" : dictionariesToSave,
+        @"database_id" : self.database.databaseID,
+    } mutableCopy];
     if (self.atomic) {
         payload[@"atomic"] = @YES;
     }
 
-    self.request = [[SKYRequest alloc] initWithAction:@"record:save"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"record:save" payload:payload];
     self.request.accessToken = self.container.currentAccessToken;
 }
 
@@ -75,40 +74,43 @@
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
         SKYRecord *record = nil;
-        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
-        
+        SKYRecordID *recordID =
+            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+
         if (recordID) {
             record = [recordsByRecordID objectForKey:recordID];
-            
+
             if (!record) {
                 NSLog(@"A returned record ID is not requested.");
             }
 
             if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
             } else if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj];
+                NSMutableDictionary *userInfo =
+                    [SKYDataSerialization userInfoWithErrorDictionary:obj];
                 userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
                 error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                             code:0
                                         userInfo:userInfo];
             }
         } else {
-            NSMutableDictionary *userInfo = [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                                                        errorDictionary:nil];
+            NSMutableDictionary *userInfo = [self
+                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
+                                      errorDictionary:nil];
             error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                         code:0
                                     userInfo:userInfo];
         }
-        
+
         if ((record || error) && self.perRecordCompletionBlock) {
             self.perRecordCompletionBlock(record, error);
         }
-        
+
         if (record && !error) {
             [savedRecords addObject:record];
         }
     }];
-    
+
     return savedRecords;
 }
 
@@ -124,14 +126,15 @@
                 if ([responseArray isKindOfClass:[NSArray class]]) {
                     resultArray = [weakSelf processResultArray:responseArray];
                 } else {
-                    NSDictionary *userInfo = [weakSelf errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                                                             errorDictionary:nil];
+                    NSDictionary *userInfo = [weakSelf
+                        errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                              errorDictionary:nil];
                     error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                                 code:0
                                             userInfo:userInfo];
                 }
             }
-            
+
             if (weakSelf.modifyRecordsCompletionBlock) {
                 weakSelf.modifyRecordsCompletionBlock(resultArray, error);
             }

@@ -24,8 +24,10 @@ NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
 NSString *const SKYContainerPubsubBaseURL = @"ws://localhost:5000/pubsub";
 NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubsub";
 
-NSString *const SKYContainerDidChangeCurrentUserNotification = @"SKYContainerDidChangeCurrentUserNotification";
-NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidRegisterDeviceNotification";
+NSString *const SKYContainerDidChangeCurrentUserNotification =
+    @"SKYContainerDidChangeCurrentUserNotification";
+NSString *const SKYContainerDidRegisterDeviceNotification =
+    @"SKYContainerDidRegisterDeviceNotification";
 
 @interface SKYContainer ()
 
@@ -41,7 +43,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     NSString *_APIKey;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         _endPointAddress = [NSURL URLWithString:SKYContainerRequestBaseURL];
@@ -53,15 +56,20 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
         _APIKey = nil;
-        _pubsubClient = [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL] APIKey:self.APIKey];
-        _internalPubsubClient = [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL] APIKey:self.APIKey];
+        _pubsubClient =
+            [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
+                                         APIKey:self.APIKey];
+        _internalPubsubClient = [[SKYPubsub alloc]
+            initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
+                      APIKey:self.APIKey];
 
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
     return self;
 }
 
-+ (SKYContainer *)defaultContainer {
++ (SKYContainer *)defaultContainer
+{
     static dispatch_once_t onceToken;
     static SKYContainer *SKYContainerDefaultInstance;
     dispatch_once(&onceToken, ^{
@@ -70,11 +78,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     return SKYContainerDefaultInstance;
 }
 
-- (SKYDatabase *)publicCloudDatabase {
+- (SKYDatabase *)publicCloudDatabase
+{
     return _publicCloudDatabase;
 }
 
-- (SKYUserRecordID *)currentUserRecordID {
+- (SKYUserRecordID *)currentUserRecordID
+{
     return _userRecordID;
 }
 
@@ -86,41 +96,50 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 - (void)setRegisteredDeviceID:(NSString *)deviceID
 {
     if (deviceID) {
-        [[NSUserDefaults standardUserDefaults] setObject:deviceID
-                                                  forKey:@"SKYContainerDeviceID"];
+        [[NSUserDefaults standardUserDefaults] setObject:deviceID forKey:@"SKYContainerDeviceID"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification object:self];
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SKYContainerDidRegisterDeviceNotification
+                      object:self];
 }
 
 /**
  Configurate the End-Point IP:PORT, no scheme is required. i.e. no http://
  */
-- (void)configAddress:(NSString *)address {
+- (void)configAddress:(NSString *)address
+{
     NSString *url = [NSString stringWithFormat:@"http://%@/", address];
     _endPointAddress = [NSURL URLWithString:url];
-    _pubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/pubsub", address]];
+    _pubsubClient.endPointAddress =
+        [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/pubsub", address]];
 
-    _internalPubsubClient.endPointAddress = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/_/pubsub", address]];
+    _internalPubsubClient.endPointAddress =
+        [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/_/pubsub", address]];
     [self configInternalPubsubClient];
 }
 
 - (void)configInternalPubsubClient
 {
-    __weak typeof(self)weakSelf = self;
+    __weak typeof(self) weakSelf = self;
 
     NSString *deviceID = self.registeredDeviceID;
     if (deviceID.length) {
-        [_internalPubsubClient subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID] handler:^(NSDictionary *data) {
-            [weakSelf handleSubscriptionNoticeWithData:data];
-        }];
+        [_internalPubsubClient subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID]
+                                   handler:^(NSDictionary *data) {
+                                       [weakSelf handleSubscriptionNoticeWithData:data];
+                                   }];
     } else {
         __block id observer;
-        observer = [[NSNotificationCenter defaultCenter] addObserverForName:SKYContainerDidRegisterDeviceNotification object:nil queue:self.operationQueue usingBlock:^(NSNotification *note) {
-            [weakSelf configInternalPubsubClient];
-            [[NSNotificationCenter defaultCenter] removeObserver:observer];
-        }];
+        observer = [[NSNotificationCenter defaultCenter]
+            addObserverForName:SKYContainerDidRegisterDeviceNotification
+                        object:nil
+                         queue:self.operationQueue
+                    usingBlock:^(NSNotification *note) {
+                        [weakSelf configInternalPubsubClient];
+                        [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                    }];
     }
 }
 
@@ -133,13 +152,15 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     }
 }
 
-- (void)handleSubscriptionNoticeWithSubscriptionID:(NSString *)subscriptionID seqenceNumber:(NSNumber *)seqNum
+- (void)handleSubscriptionNoticeWithSubscriptionID:(NSString *)subscriptionID
+                                     seqenceNumber:(NSNumber *)seqNum
 {
     NSMutableDictionary *dict = self.subscriptionSeqNumDict;
     NSNumber *lastSeqNum = dict[subscriptionID];
     if (seqNum.unsignedLongLongValue > lastSeqNum.unsignedLongLongValue) {
         dict[subscriptionID] = seqNum;
-        [self handleSubscriptionNotification:[[SKYNotification alloc] initWithSubscriptionID:subscriptionID]];
+        [self handleSubscriptionNotification:[[SKYNotification alloc]
+                                                 initWithSubscriptionID:subscriptionID]];
     }
 }
 
@@ -154,9 +175,12 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 - (void)configureWithAPIKey:(NSString *)APIKey
 {
     if (APIKey != nil && ![APIKey isKindOfClass:[NSString class]]) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:[NSString stringWithFormat:@"APIKey must be a subclass of NSString. %@ given.", NSStringFromClass([APIKey class])]
-                                     userInfo:nil];
+        @throw [NSException
+            exceptionWithName:NSInvalidArgumentException
+                       reason:[NSString stringWithFormat:
+                                            @"APIKey must be a subclass of NSString. %@ given.",
+                                            NSStringFromClass([APIKey class])]
+                     userInfo:nil];
     }
     [self willChangeValueForKey:@"applicationIdentifier"];
     _APIKey = [APIKey copy];
@@ -174,7 +198,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     }
 }
 
-- (void)addOperation:(SKYOperation *)operation {
+- (void)addOperation:(SKYOperation *)operation
+{
     operation.container = self;
     [self.operationQueue addOperation:operation];
 }
@@ -186,111 +211,136 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 
 - (void)loadAccessCurrentUserRecordIDAndAccessToken
 {
-    NSString *userRecordName = [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
-    NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
+    NSString *userRecordName =
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
+    NSString *accessToken =
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
     if (userRecordName && accessToken) {
         _userRecordID = [SKYUserRecordID recordIDWithUsername:userRecordName];
         _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
     }
 }
 
-- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord accessToken:(SKYAccessToken *)accessToken
+- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord
+                   accessToken:(SKYAccessToken *)accessToken
 {
-    BOOL userRecordIDChanged = !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));
+    BOOL userRecordIDChanged =
+        !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));
     _userRecordID = userRecord;
     _accessToken = accessToken;
-    
+
     if (userRecord && accessToken) {
-        [[NSUserDefaults standardUserDefaults] setObject:userRecord.recordName forKey:@"SKYContainerCurrentUserRecordID"];
-        [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString forKey:@"SKYContainerAccessToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:userRecord.recordName
+                                                  forKey:@"SKYContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString
+                                                  forKey:@"SKYContainerAccessToken"];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults]
+            removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     if (userRecordIDChanged) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                                                            object:self
-                                                          userInfo:nil];
+        [[NSNotificationCenter defaultCenter]
+            postNotificationName:SKYContainerDidChangeCurrentUserNotification
+                          object:self
+                        userInfo:nil];
     }
 }
 
-- (void)setAuthenticationErrorHandler:(void(^)(SKYContainer *container, SKYAccessToken *token, NSError *error))authErrorHandler
+- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
+                                                NSError *error))authErrorHandler
 {
     _authErrorHandler = authErrorHandler;
 }
 
-# pragma mark - User Auth
+#pragma mark - User Auth
 
-- (void)signup:(NSString *)username password:(NSString *)password completionHander:(SKYContainerUserOperationActionCompletion)completionHandler {
-    SKYCreateUserOperation *operation = [SKYCreateUserOperation operationWithEmail:username password:password];
-    operation.container = self;
-    
-    __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock = ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-        if (!error) {
-            [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(recordID, error);
-        });
-    };
-    
-    [_operationQueue addOperation:operation];
-}
-
-- (void)signupWithEmail:(NSString *)email password:(NSString *)password completionHander:(SKYContainerUserOperationActionCompletion)completionHandler {
-    SKYCreateUserOperation *operation = [SKYCreateUserOperation operationWithEmail:email password:password];
-    operation.container = self;
-    
-    __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock = ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-        if (!error) {
-            [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(recordID, error);
-        });
-    };
-    
-    [_operationQueue addOperation:operation];
-}
-
-
-
-- (void)signupAnonymouslyWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+- (void)signup:(NSString *)username
+            password:(NSString *)password
+    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYCreateUserOperation *operation = [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
-    
+    SKYCreateUserOperation *operation =
+        [SKYCreateUserOperation operationWithEmail:username password:password];
+    operation.container = self;
+
     __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock = ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-        if (!error) {
-            [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(recordID, error);
-        });
-    };
-    
+    operation.createCompletionBlock =
+        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+            if (!error) {
+                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordID, error);
+            });
+        };
+
+    [_operationQueue addOperation:operation];
+}
+
+- (void)signupWithEmail:(NSString *)email
+               password:(NSString *)password
+       completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYCreateUserOperation *operation =
+        [SKYCreateUserOperation operationWithEmail:email password:password];
+    operation.container = self;
+
+    __weak typeof(self) weakSelf = self;
+    operation.createCompletionBlock =
+        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+            if (!error) {
+                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordID, error);
+            });
+        };
+
+    [_operationQueue addOperation:operation];
+}
+
+- (void)signupAnonymouslyWithCompletionHandler:
+    (SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYCreateUserOperation *operation =
+        [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
+
+    __weak typeof(self) weakSelf = self;
+    operation.createCompletionBlock =
+        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+            if (!error) {
+                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordID, error);
+            });
+        };
+
     [self addOperation:operation];
 }
 
-- (void)login:(NSString *)username password:(NSString *)password completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler {
-    
-    SKYUserLoginOperation *operation = [SKYUserLoginOperation operationWithUsername:username password:password];
+- (void)login:(NSString *)username
+             password:(NSString *)password
+    completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+
+    SKYUserLoginOperation *operation =
+        [SKYUserLoginOperation operationWithUsername:username password:password];
     operation.container = self;
-    
+
     __weak typeof(self) weakSelf = self;
-    operation.loginCompletionBlock = ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-        if (!error) {
-            [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(recordID, error);
-        });
-    };
-    
+    operation.loginCompletionBlock =
+        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+            if (!error) {
+                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordID, error);
+            });
+        };
+
     [_operationQueue addOperation:operation];
 }
 
@@ -298,7 +348,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
 {
     SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
     operation.container = self;
-    
+
     __weak typeof(self) weakSelf = self;
     operation.logoutCompletionBlock = ^(NSError *error) {
         if (!error) {
@@ -308,19 +358,19 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
             completionHandler(nil, error);
         });
     };
-    
+
     [_operationQueue addOperation:operation];
 }
 
-
-# pragma mark - SKYRemoteNotification
+#pragma mark - SKYRemoteNotification
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
                              existingDeviceID:(NSString *)existingDeviceID
-                            completionHandler:(void(^)(NSString *, NSError *))completionHandler
+                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
-    SKYRegisterDeviceOperation *op = [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken];
+    SKYRegisterDeviceOperation *op =
+        [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken];
     op.deviceID = existingDeviceID;
-    op.registerCompletionBlock = ^(NSString *deviceID, NSError *error){
+    op.registerCompletionBlock = ^(NSString *deviceID, NSError *error) {
         BOOL willRetry = NO;
         if (error) {
             // If the device ID is not recognized by the server,
@@ -344,8 +394,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     [self addOperation:op];
 }
 
-
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken completionHandler:(void(^)(NSString *, NSError *))completionHandler
+- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
+                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
     NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:deviceToken
@@ -354,14 +404,14 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
                                   if (!error) {
                                       [self setRegisteredDeviceID:deviceID];
                                   }
-                                  
+
                                   if (completionHandler) {
                                       completionHandler(deviceID, error);
                                   }
                               }];
 }
 
-- (void)registerDeviceCompletionHandler:(void(^)(NSString *, NSError *))completionHandler
+- (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
     NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:nil
@@ -377,7 +427,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
                               }];
 }
 
-- (void)uploadAsset:(SKYAsset *)asset completionHandler:(void(^)(SKYAsset *, NSError*))completionHandler
+- (void)uploadAsset:(SKYAsset *)asset
+  completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
     SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
     operation.uploadAssetCompletionBlock = completionHandler;
@@ -397,17 +448,20 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
     return _APIKey;
 }
 
-- (void)callLambda:(NSString *)action completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+- (void)callLambda:(NSString *)action
+ completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     [self callLambda:action arguments:nil completionHandler:completionHandler];
 }
 
-- (void)callLambda:(NSString *)action arguments:(NSArray *)arguments completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+- (void)callLambda:(NSString *)action
+         arguments:(NSArray *)arguments
+ completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     arguments = arguments ? arguments : @[];
-    SKYLambdaOperation *operation = [[SKYLambdaOperation alloc] initWithAction:action
-                                                              arrayArguments:arguments];
-    
+    SKYLambdaOperation *operation =
+        [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:arguments];
+
     operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completionHandler) {
@@ -415,29 +469,45 @@ NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidReg
             }
         });
     };
-    
+
     [self addOperation:operation];
 }
 
-# pragma mark - SKYPushOperation
+#pragma mark - SKYPushOperation
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertBody:(NSString *)alertBody {
-    SKYPushOperation *pushOperation = [[SKYPushOperation alloc] initWithUserRecordIDs:@[userRecordID] alertBody:alertBody];
+- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertBody:(NSString *)alertBody
+{
+    SKYPushOperation *pushOperation =
+        [[SKYPushOperation alloc] initWithUserRecordIDs:@[ userRecordID ] alertBody:alertBody];
     [self addOperation:pushOperation];
 }
 
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody {
-    SKYPushOperation *pushOperation = [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody
+{
+    SKYPushOperation *pushOperation =
+        [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
     [self addOperation:pushOperation];
 }
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs {
-    SKYPushOperation *pushOperation = [[SKYPushOperation alloc] initWithUserRecordIDs:@[userRecordID] alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs];
+- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID
+      alertLocalizationKey:(NSString *)alertLocalizationKey
+     alertLocalizationArgs:(NSArray *)alertLocalizationArgs
+{
+    SKYPushOperation *pushOperation =
+        [[SKYPushOperation alloc] initWithUserRecordIDs:@[ userRecordID ]
+                                   alertLocalizationKey:alertLocalizationKey
+                                  alertLocalizationArgs:alertLocalizationArgs];
     [self addOperation:pushOperation];
 }
 
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertLocalizationKey:(NSString *)alertLocalizationKey alertLocalizationArgs:(NSArray *)alertLocalizationArgs {
-    SKYPushOperation *pushOperation = [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertLocalizationKey:alertLocalizationKey alertLocalizationArgs:alertLocalizationArgs];
+- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs
+       alertLocalizationKey:(NSString *)alertLocalizationKey
+      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
+{
+    SKYPushOperation *pushOperation =
+        [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs
+                                   alertLocalizationKey:alertLocalizationKey
+                                  alertLocalizationArgs:alertLocalizationArgs];
     [self addOperation:pushOperation];
 }
 

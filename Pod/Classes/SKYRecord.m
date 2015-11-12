@@ -13,7 +13,7 @@
 
 NSString *const SKYRecordTypeUserRecord = @"_User";
 
-@interface SKYRecord()
+@interface SKYRecord ()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
 
@@ -23,8 +23,7 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (instancetype)initWithRecordType:(NSString *)recordType
 {
-    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType]
-                             data:nil];
+    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType] data:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId
@@ -37,11 +36,14 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName
 {
-    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                             data:nil];
+    return
+        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
+                          data:nil];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId data:(NSDictionary *)data
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordId
+                              data:(NSDictionary *)data
 {
     if (![recordId.recordType isEqualToString:recordId.recordType]) {
         recordId = [[SKYRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
@@ -49,10 +51,13 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return [self initWithRecordID:recordId data:data];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
+- (instancetype)initWithRecordType:(NSString *)recordType
+                              name:(NSString *)recordName
+                              data:(NSDictionary *)data
 {
-    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                             data:data];
+    return
+        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
+                          data:data];
 }
 
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data
@@ -77,7 +82,9 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return [[self alloc] initWithRecordType:recordType name:recordName];
 }
 
-+ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
++ (instancetype)recordWithRecordType:(NSString *)recordType
+                                name:(NSString *)recordName
+                                data:(NSDictionary *)data
 {
     return [[self alloc] initWithRecordType:recordType name:recordName data:data];
 }
@@ -89,7 +96,8 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 #pragma mark - NSCopying
 
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone
+{
     SKYRecord *record = [[self.class allocWithZone:zone] init];
     record->_recordID = [_recordID copyWithZone:zone];
     record->_object = [_object mutableCopyWithZone:zone];
@@ -99,11 +107,13 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 #pragma mark - Properties
 
-- (void)setRecordID:(SKYRecordID *)recordID {
+- (void)setRecordID:(SKYRecordID *)recordID
+{
     _recordID = recordID;
 }
 
-- (void)setCreationDate:(NSDate *)date {
+- (void)setCreationDate:(NSDate *)date
+{
     _creationDate = date;
 }
 
@@ -119,7 +129,8 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 #pragma mark - Dictionary-like methods
 
-- (id)objectForKey:(id)key {
+- (id)objectForKey:(id)key
+{
     id object = [self.object objectForKey:key];
     if ([[NSNull null] isEqual:object]) {
         object = nil;
@@ -127,22 +138,26 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return object;
 }
 
-- (id)objectForKeyedSubscript:(id)key {
+- (id)objectForKeyedSubscript:(id)key
+{
     return [self objectForKey:key];
 }
 
-- (void)setObject:(id)object forKey:(id <NSCopying>)key {
+- (void)setObject:(id)object forKey:(id<NSCopying>)key
+{
     if (!object) {
         object = [NSNull null];
     }
     [self.object setObject:object forKey:key];
 }
 
-- (void)setObject:(id)object forKeyedSubscript:(id <NSCopying>)key {
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key
+{
     [self setObject:object forKey:key];
 }
 
-- (SKYRecord *)referencedRecordForKey:(id)key {
+- (SKYRecord *)referencedRecordForKey:(id)key
+{
     SKYReference *reference = self[key];
     return reference.record;
 }
@@ -159,20 +174,24 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 #pragma mark - Atomic increment
 
-- (void)incrementKey:(id<NSCopying>)key {
+- (void)incrementKey:(id<NSCopying>)key
+{
     // nothing
 }
 
-- (void)incrementKey:(id<NSCopying>)key amount:(NSInteger)amount {
+- (void)incrementKey:(id<NSCopying>)key amount:(NSInteger)amount
+{
     // nothing
 }
 
-- (void)incrementKeyPath:(id<NSCopying>)keyPath {
+- (void)incrementKeyPath:(id<NSCopying>)keyPath
+{
     // nothing
 }
 
-- (void)incrementKeyPath:(id<NSCopying>)keyPath amount:(NSInteger)amount {
+- (void)incrementKeyPath:(id<NSCopying>)keyPath amount:(NSInteger)amount
+{
     // nothing
 }
-    
+
 @end

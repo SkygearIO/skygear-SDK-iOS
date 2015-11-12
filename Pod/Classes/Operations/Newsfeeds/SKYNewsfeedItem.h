@@ -8,14 +8,15 @@
 
 #import "SKYRecord.h"
 
-extern NSString * const SKYRecordTypeNewsfeedItem;
+extern NSString *const SKYRecordTypeNewsfeedItem;
 
 // NOTE: Sounds problematic? Does it share the same database with other SKYRecords?
 // What if we fetch / save the recordID obtained from an SKYNewsfeedItem?
 @interface SKYNewsfeedItem : SKYRecord
 
 - (instancetype)initWithRecordType:(NSString *)recordType NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordID NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordID NS_UNAVAILABLE;
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID;
 
 @end

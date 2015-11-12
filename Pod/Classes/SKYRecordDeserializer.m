@@ -29,7 +29,7 @@
     static NSDateFormatter *formatter;
     static dispatch_once_t onceToken;
 
-    dispatch_once (&onceToken, ^{
+    dispatch_once(&onceToken, ^{
         formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
     });
@@ -39,7 +39,8 @@
 
 - (BOOL)isRecordDictionary:(NSDictionary *)obj
 {
-    return [obj isKindOfClass:[NSDictionary class]] && [obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"];
+    return [obj isKindOfClass:[NSDictionary class]] &&
+           [obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"];
 }
 
 - (SKYRecord *)recordWithDictionary:(NSDictionary *)obj
@@ -47,20 +48,19 @@
     NSMutableDictionary *recordData = [NSMutableDictionary dictionary];
     [obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if (![(NSString *)key hasPrefix:@"_"]) {
-            [recordData setObject:[SKYDataSerialization deserializeObjectWithValue:obj]
-                           forKey:key];
+            [recordData setObject:[SKYDataSerialization deserializeObjectWithValue:obj] forKey:key];
         }
     }];
-    
-    SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+
+    SKYRecordID *recordID =
+        [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
     SKYRecord *record;
     if ([recordID.recordType isEqualToString:@"_user"]) {
-        SKYUserRecordID *userRecordID = [[SKYUserRecordID alloc] initWithCanonicalString:recordID.canonicalString];
-        record = [[SKYUser alloc] initWithUserRecordID:userRecordID
-                                                       data:recordData];
+        SKYUserRecordID *userRecordID =
+            [[SKYUserRecordID alloc] initWithCanonicalString:recordID.canonicalString];
+        record = [[SKYUser alloc] initWithUserRecordID:userRecordID data:recordData];
     } else {
-        record = [[SKYRecord alloc] initWithRecordID:recordID
-                                               data:recordData];
+        record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
     }
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];
@@ -86,7 +86,6 @@
         record.lastModifiedUserRecordID = [SKYUserRecordID recordIDWithUsername:updaterID];
     }
 
-
     id accessControl = obj[SKYRecordSerializationRecordAccessControlKey];
     if (accessControl == nil) {
         // do nothing
@@ -101,7 +100,7 @@
 
         record.accessControl = [deserializer accessControlWithArray:rawAccessControl];
     }
-    
+
     NSDictionary *transient = obj[SKYRecordSerializationRecordTransientKey];
     if ([transient isKindOfClass:[NSDictionary class]]) {
         [transient enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -111,11 +110,11 @@
             } else {
                 deserializedObject = [SKYDataSerialization deserializeObjectWithValue:obj];
             }
-            [record.transient setObject:deserializedObject
-                                 forKey:key];
+            [record.transient setObject:deserializedObject forKey:key];
         }];
     } else if (transient != nil) {
-        NSLog(@"Ignored transient field when deserializing record %@ because of unexpected object %@.",
+        NSLog(@"Ignored transient field when deserializing record %@ because of unexpected object "
+              @"%@.",
               recordID.canonicalString, NSStringFromClass([transient class]));
     }
 
@@ -124,9 +123,7 @@
 
 - (SKYRecord *)recordWithJSONData:(NSData *)data error:(NSError *__autoreleasing *)error
 {
-    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data
-                                                               options:0
-                                                                 error:error];
+    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
     if (jsonObject) {
         return [self recordWithDictionary:jsonObject];
     } else {

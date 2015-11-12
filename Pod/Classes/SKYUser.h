@@ -17,20 +17,27 @@
 @interface SKYUser : SKYRecord
 
 - (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID;
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID
+                                data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithRecordType:(NSString *)recordType NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                              name:(NSString *)recordName NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordId NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordId
+                              data:(NSDictionary *)data NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                              name:(NSString *)recordName
+                              data:(NSDictionary *)data NS_UNAVAILABLE;
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
 
 + (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID;
 + (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID data:(NSDictionary *)data;
 
 /**
- * The properties username, email, authData and isNew will be delegated to 
+ * The properties username, email, authData and isNew will be delegated to
  * their corresponding methods on SKYUserRecordID
  */
 @property (nonatomic, readonly, copy) NSString *username;
@@ -42,7 +49,7 @@
 
 @end
 
-@interface SKYUser(SKYFollowReference)
+@interface SKYUser (SKYFollowReference)
 
 // delegate to [[self followReference] add:user]
 - (void)follow:(SKYUser *)user;
@@ -56,29 +63,45 @@
 - (SKYFollowReference *)followReferenceOfType:(NSString *)followType;
 
 - (SKYQueryOperation *)followingQueryOperation;
-- (SKYQueryOperation *)followingQueryOperationWithRecordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                                               queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
+- (SKYQueryOperation *)
+followingQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+                         queryCompletionBlock:
+                             (void (^)(SKYQueryCursor *cursor,
+                                       NSError *operationError))queryCompletionBlock;
 - (SKYQueryOperation *)followingQueryOperationOfType:(NSString *)followType;
 - (SKYQueryOperation *)followingQueryOperationOfType:(NSString *)followType
-                                 recordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                               queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
+                                  recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+                                queryCompletionBlock:
+                                    (void (^)(SKYQueryCursor *cursor,
+                                              NSError *operationError))queryCompletionBlock;
 
 - (SKYQueryOperation *)followerQueryOperation;
-- (SKYQueryOperation *)followerQueryOperationWithRecordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                                              queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
+- (SKYQueryOperation *)
+followerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+                        queryCompletionBlock:
+                            (void (^)(SKYQueryCursor *cursor,
+                                      NSError *operationError))queryCompletionBlock;
 
 - (SKYQueryOperation *)followerQueryOperationOfType:(NSString *)followType;
 - (SKYQueryOperation *)followerQueryOperationOfType:(NSString *)followType
-                                recordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                              queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;;
+                                 recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+                               queryCompletionBlock:
+                                   (void (^)(SKYQueryCursor *cursor,
+                                             NSError *operationError))queryCompletionBlock;
+;
 
 - (SKYQueryOperation *)mutualFollowerQueryOperation;
-- (SKYQueryOperation *)mutualFollowerQueryOperationWithRecordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                                                    queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
+- (SKYQueryOperation *)
+mutualFollowerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+                              queryCompletionBlock:
+                                  (void (^)(SKYQueryCursor *cursor,
+                                            NSError *operationError))queryCompletionBlock;
 
 - (SKYQueryOperation *)mutualFollowerQueryOperationOfType:(NSString *)followType;
-- (SKYQueryOperation *)mutualFollowerQueryOperationOfType:(NSString *)followType
-                                      recordFetchedBlock:(void(^)(SKYRecord *record))recordFetchedBlock
-                                    queryCompletionBlock:(void(^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
+- (SKYQueryOperation *)
+mutualFollowerQueryOperationOfType:(NSString *)followType
+                recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
+              queryCompletionBlock:
+                  (void (^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
 
 @end

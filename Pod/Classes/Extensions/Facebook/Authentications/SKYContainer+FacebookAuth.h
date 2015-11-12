@@ -15,13 +15,15 @@
 - (void)loginWithFacebookAccessToken:(NSString *)accessToken
                       expirationDate:(NSDate *)expirationDate
                             fbUserID:(NSString *)userID
-                   completionHandler:(void(^)(SKYUserRecordID *recordID, NSDictionary *profileInfo, NSError *error))completionHandler;
+                   completionHandler:(void (^)(SKYUserRecordID *recordID, NSDictionary *profileInfo,
+                                               NSError *error))completionHandler;
 
 - (void)linkUserRecordID:(SKYUserRecordID *)userRecordID
      facebookAccessToken:(NSString *)accessToken
           expirationDate:(NSDate *)expirationDate
                 fbUserID:(NSString *)userID
-       completionHandler:(void(^)(SKYUserRecordID *recordID, NSDictionary *profileInfo, NSError *error))completionHandler;
+       completionHandler:(void (^)(SKYUserRecordID *recordID, NSDictionary *profileInfo,
+                                   NSError *error))completionHandler;
 - (void)unlinkFacebookForUserRecordID:(SKYUserRecordID *)userRecordID;
 
 @end

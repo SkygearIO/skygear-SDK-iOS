@@ -25,7 +25,8 @@
 {
     self = [super init];
     if (self) {
-        _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        _session = [NSURLSession
+            sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         _asset = asset;
     }
     return self;
@@ -52,22 +53,30 @@
 
     NSURLRequest *request = [self makeRequest];
     __weak typeof(self) weakSelf = self;
-    self.task = [self.session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
+    self.task = [self.session
+        downloadTaskWithRequest:request
+              completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+                  __strong typeof(self) strongSelf = weakSelf;
 
-        [strongSelf handleCompletionWithLocation:location response:response error:error];
+                  [strongSelf handleCompletionWithLocation:location response:response error:error];
 
-        if (shouldObserveProgress) {
-            [strongSelf.task removeObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived)) context:nil];
-        }
+                  if (shouldObserveProgress) {
+                      [strongSelf.task
+                          removeObserver:self
+                              forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
+                                 context:nil];
+                  }
 
-        [strongSelf setExecuting:NO];
-        [strongSelf setFinished:YES];
+                  [strongSelf setExecuting:NO];
+                  [strongSelf setFinished:YES];
 
-    }];
+              }];
 
     if (shouldObserveProgress) {
-        [self.task addObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived)) options:0 context:nil];
+        [self.task addObserver:self
+                    forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
+                       options:0
+                       context:nil];
     }
 
     [self.task resume];
@@ -83,7 +92,8 @@
             NSURLSessionDownloadTask *task = object;
 
             if (task.countOfBytesExpectedToReceive != NSURLSessionTransferSizeUnknown) {
-                self.downloadAssetProgressBlock(self.asset, task.countOfBytesReceived*1.0 / task.countOfBytesExpectedToReceive);
+                self.downloadAssetProgressBlock(self.asset, task.countOfBytesReceived * 1.0 /
+                                                                task.countOfBytesExpectedToReceive);
             }
         }
     }
@@ -97,12 +107,16 @@
     return request;
 }
 
-- (void)handleCompletionWithLocation:(NSURL *)location response:(NSURLResponse *)response error:(NSError *)error
+- (void)handleCompletionWithLocation:(NSURL *)location
+                            response:(NSURLResponse *)response
+                               error:(NSError *)error
 {
     if (self.downloadAssetCompletionBlock) {
         NSData *data = nil;
         if (!error) {
-            data = [NSData dataWithContentsOfURL:location options:NSDataReadingMappedIfSafe error:&error];
+            data = [NSData dataWithContentsOfURL:location
+                                         options:NSDataReadingMappedIfSafe
+                                           error:&error];
         }
         self.downloadAssetCompletionBlock(_asset, data, error);
     }

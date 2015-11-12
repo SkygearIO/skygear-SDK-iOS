@@ -28,7 +28,7 @@
 
 /**
  Save a record in the backing store permanently.
- 
+
  When saving a record using this method, any locally made changes of the same record
  are overwritten.
  */
@@ -36,7 +36,7 @@
 
 /**
  Save a record in the backing store locally.
- 
+
  A local record is saved alongside a permanently record (if any) such that a record
  can be reverted to the permanent state later. Fetches and queries will now return the locally
  saved record.
@@ -58,7 +58,7 @@
 
 /**
  Delete a record in the backing store locally.
- 
+
  The local record is deleted but the permanently record (if any) is not affected.
  Fetches and queries will not return the record that is now considered deleted.
  */
@@ -78,7 +78,7 @@
 
 /**
  Fetches a record from backing store.
- 
+
  If both a permanent copy and a local copy exist for the same record, the local copy
  will be returned. If the record is deleted locally, this will return nil.
  */
@@ -104,7 +104,7 @@
 
 /**
  Enumerate records in the backing store with the specified type.
- 
+
  You can use this method to enumerate records satisfying a predicate and sorted in an order.
  */
 - (void)enumerateRecordsWithType:(NSString *)recordType
@@ -121,7 +121,7 @@
 
 /**
  Remove a change from the backing store.
- 
+
  This will not revert any locally changes. Locally saved changes should be
  reverted separately.
  */

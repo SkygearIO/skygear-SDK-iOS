@@ -22,7 +22,7 @@ typedef enum : NSUInteger {
     SKYAccessControlEntryTypeDirect = 1,
 } SKYAccessControlEntryType;
 
-NSString * NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
+NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 
 // NOTE(limouren): this class is consider an implementation details of SKYAccessControl
 @interface SKYAccessControlEntry : NSObject

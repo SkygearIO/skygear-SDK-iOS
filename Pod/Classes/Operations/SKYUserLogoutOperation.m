@@ -12,8 +12,7 @@
 
 - (void)prepareForRequest
 {
-    self.request = [[SKYRequest alloc] initWithAction:@"auth:logout"
-                                             payload:nil];
+    self.request = [[SKYRequest alloc] initWithAction:@"auth:logout" payload:nil];
     self.request.accessToken = self.container.currentAccessToken;
 }
 

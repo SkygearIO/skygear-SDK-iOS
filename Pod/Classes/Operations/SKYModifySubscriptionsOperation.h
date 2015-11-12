@@ -18,6 +18,7 @@
 @property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
 
-@property (nonatomic, copy) void(^modifySubscriptionsCompletionBlock)(NSArray *savedSubscriptions, NSError *operationError);
+@property (nonatomic, copy) void (^modifySubscriptionsCompletionBlock)
+    (NSArray *savedSubscriptions, NSError *operationError);
 
 @end

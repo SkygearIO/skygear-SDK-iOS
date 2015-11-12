@@ -12,11 +12,11 @@
 #import "SKYRecordID.h"
 
 typedef enum SKYReferenceAction : NSInteger {
-    SKYReferenceActionNone       = 0,
+    SKYReferenceActionNone = 0,
     SKYReferenceActionDeleteSelf = 1,
 } SKYReferenceAction;
 
-@interface SKYReference : NSObject<NSCoding>
+@interface SKYReference : NSObject <NSCoding>
 
 - (instancetype)initWithRecord:(SKYRecord *)record;
 - (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;

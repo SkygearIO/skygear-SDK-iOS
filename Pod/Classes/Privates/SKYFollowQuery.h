@@ -20,14 +20,16 @@ typedef enum : NSInteger {
 // and FollowReference-followingQuery
 @interface SKYFollowQuery : SKYQuery
 
-- (instancetype)initWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate NS_UNAVAILABLE;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                         predicate:(NSPredicate *)predicate NS_UNAVAILABLE;
 
 - (instancetype)initFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID;
 - (instancetype)initFollowingQueryWithUserRecordID:(SKYUserRecordID *)userRecordID;
 - (instancetype)initMutualFollowerQueryWithUserRecordID:(SKYUserRecordID *)userRecordID;
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID followQueryType:(SKYFollowQueryType)followQueryType NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+                     followQueryType:(SKYFollowQueryType)followQueryType NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, assign) SKYFollowQueryType followQueryType;
-@property (nonatomic, readonly) SKYUserRecordID* userRecordID;
+@property (nonatomic, readonly) SKYUserRecordID *userRecordID;
 
 @end

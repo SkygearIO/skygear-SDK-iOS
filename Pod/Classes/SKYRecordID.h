@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SKYRecordID : NSObject<NSCopying, NSSecureCoding>
+@interface SKYRecordID : NSObject <NSCopying, NSSecureCoding>
 
 /**
  Instantiates an instance of SKYRecordID with a random record name.
@@ -18,7 +18,8 @@
 
 - (instancetype)initWithRecordType:(NSString *)type;
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
-- (instancetype)initWithRecordType:(NSString *)type name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordType:(NSString *)type
+                              name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)recordIDWithRecordType:(NSString *)type;
 + (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
@@ -26,8 +27,8 @@
 
 - (BOOL)isEqualToRecordID:(SKYRecordID *)recordID;
 
-@property(nonatomic, readonly, strong) NSString *recordType;
-@property(nonatomic, readonly, strong) NSString *recordName;
-@property(nonatomic, readonly, strong) NSString *canonicalString;
+@property (nonatomic, readonly, strong) NSString *recordType;
+@property (nonatomic, readonly, strong) NSString *recordName;
+@property (nonatomic, readonly, strong) NSString *canonicalString;
 
 @end

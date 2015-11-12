@@ -10,10 +10,11 @@
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
 
-
 @implementation SKYUserLoginOperation
 
-- (instancetype)initWithEmail:(NSString *)email username:(NSString *)username password:(NSString *)password
+- (instancetype)initWithEmail:(NSString *)email
+                     username:(NSString *)username
+                     password:(NSString *)password
 {
     if ((self = [super init])) {
         self.username = username;
@@ -43,8 +44,7 @@
         payload[@"email"] = self.email;
     }
     payload[@"password"] = self.password;
-    self.request = [[SKYRequest alloc] initWithAction:@"auth:login"
-                                             payload:payload];
+    self.request = [[SKYRequest alloc] initWithAction:@"auth:login" payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
 
@@ -58,7 +58,8 @@
     }
 }
 
-- (void)setLoginCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *, NSError *))loginCompletionBlock
+- (void)setLoginCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
+                                          NSError *))loginCompletionBlock
 {
     if (loginCompletionBlock) {
         __weak typeof(self) weakSelf = self;
@@ -70,13 +71,15 @@
                 NSDictionary *response = weakSelf.response[@"result"];
                 if (response[@"user_id"] && response[@"access_token"]) {
                     recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
-                    accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+                    accessToken =
+                        [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
                 } else {
                     error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                                 code:0
                                             userInfo:@{
-                                                       NSLocalizedDescriptionKey: @"Returned data does not contain expected data."
-                                                       }];
+                                                NSLocalizedDescriptionKey :
+                                                    @"Returned data does not contain expected data."
+                                            }];
                 }
             } else {
                 error = weakSelf.error;
@@ -91,6 +94,5 @@
         self.completionBlock = nil;
     }
 }
-
 
 @end

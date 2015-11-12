@@ -40,16 +40,13 @@
         self.entries = [NSMutableOrderedSet orderedSetWithArray:entries];
     }
     return self;
-
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
-                                  objects:(id __unsafe_unretained [])buffer
+                                  objects:(id __unsafe_unretained[])buffer
                                     count:(NSUInteger)len;
 {
-    return [self.entries countByEnumeratingWithState:state
-                                             objects:buffer
-                                               count:len];
+    return [self.entries countByEnumeratingWithState:state objects:buffer count:len];
 }
 
 - (void)setPublicReadWriteAccess

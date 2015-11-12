@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SKYRequest.h"
 
-extern NSString * const SKYRequestHeaderAPIKey;
-extern NSString * const SKYRequestHeaderAccessTokenKey;
-
+extern NSString *const SKYRequestHeaderAPIKey;
+extern NSString *const SKYRequestHeaderAccessTokenKey;
 
 @interface NSURLRequest (SKYRequest)
 

@@ -44,7 +44,6 @@
         }
     }
     return self;
-
 }
 
 - (instancetype)initWithName:(NSString *)name fileURL:(NSURL *)fileURL
@@ -55,11 +54,11 @@
 - (instancetype)initWithName:(NSString *)name data:(NSData *)data
 {
     NSString *fileName = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+    NSURL *fileURL =
+        [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
     [data writeToURL:fileURL atomically:NO];
 
     return [self initWithName:name fileURL:fileURL];
-
 }
 
 - (instancetype)initWithFileURL:(NSURL *)fileURL

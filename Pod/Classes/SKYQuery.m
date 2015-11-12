@@ -10,8 +10,7 @@
 
 @implementation SKYQuery
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate
+- (instancetype)initWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate
 {
     self = [super init];
     if (self) {
@@ -21,8 +20,7 @@
     return self;
 }
 
-+ (instancetype)queryWithRecordType:(NSString *)recordType
-                          predicate:(NSPredicate *)predicate
++ (instancetype)queryWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate
 {
     return [[self alloc] initWithRecordType:recordType predicate:predicate];
 }
@@ -35,12 +33,10 @@
     NSPredicate *predicate = [aDecoder decodeObjectOfClass:[NSPredicate class] forKey:@"predicate"];
     self = [self initWithRecordType:recordType predicate:predicate];
     if (self) {
-        NSSet *set = [NSSet setWithArray:@[[NSArray class], [NSSortDescriptor class]]];
-        self.sortDescriptors = [aDecoder decodeObjectOfClasses:set
-                                                        forKey:@"sortDescriptors"];
-        set = [NSSet setWithArray:@[[NSArray class], [NSString class]]];
-        self.transientIncludes = [aDecoder decodeObjectOfClasses:set
-                                                         forKey:@"transientIncludes"];
+        NSSet *set = [NSSet setWithArray:@[ [NSArray class], [NSSortDescriptor class] ]];
+        self.sortDescriptors = [aDecoder decodeObjectOfClasses:set forKey:@"sortDescriptors"];
+        set = [NSSet setWithArray:@[ [NSArray class], [NSString class] ]];
+        self.transientIncludes = [aDecoder decodeObjectOfClasses:set forKey:@"transientIncludes"];
         self.limit = [aDecoder decodeIntegerForKey:@"limit"];
         self.offset = [aDecoder decodeIntegerForKey:@"offset"];
     }
@@ -66,20 +62,24 @@
 
 - (BOOL)isEqual:(id)object
 {
-    if (![object isKindOfClass:[SKYQuery class]]) return NO;
+    if (![object isKindOfClass:[SKYQuery class]])
+        return NO;
     SKYQuery *other = (SKYQuery *)object;
-    return ((self.predicate == nil && other.predicate == nil) || [self.predicate isEqual:other.predicate]) &&
-        ((self.recordType == nil && other.recordType == nil) || [self.recordType isEqual:other.recordType]) &&
-        ((self.sortDescriptors == nil && other.sortDescriptors == nil) || [self.sortDescriptors isEqual:other.sortDescriptors]) &&
-        ((self.transientIncludes == nil && other.transientIncludes == nil) || [self.transientIncludes isEqual:other.transientIncludes]) &&
-        (self.limit == other.limit) &&
-        (self.offset == other.offset);
+    return ((self.predicate == nil && other.predicate == nil) ||
+            [self.predicate isEqual:other.predicate]) &&
+           ((self.recordType == nil && other.recordType == nil) ||
+            [self.recordType isEqual:other.recordType]) &&
+           ((self.sortDescriptors == nil && other.sortDescriptors == nil) ||
+            [self.sortDescriptors isEqual:other.sortDescriptors]) &&
+           ((self.transientIncludes == nil && other.transientIncludes == nil) ||
+            [self.transientIncludes isEqual:other.transientIncludes]) &&
+           (self.limit == other.limit) && (self.offset == other.offset);
 }
 
 - (NSUInteger)hash
 {
-    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^ [self.transientIncludes hash] ^ self.limit ^ self.offset;
+    return [self.predicate hash] ^ [self.recordType hash] ^ [self.sortDescriptors hash] ^
+           [self.transientIncludes hash] ^ self.limit ^ self.offset;
 }
-
 
 @end

@@ -8,7 +8,7 @@
 
 #import "SKYRecord.h"
 
-@interface SKYRecord()
+@interface SKYRecord ()
 
 @property (nonatomic, readwrite, copy) SKYRecordID *recordID;
 @property (nonatomic, readwrite, copy) SKYUserRecordID *ownerUserRecordID;

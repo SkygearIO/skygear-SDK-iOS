@@ -20,7 +20,7 @@
  */
 - (instancetype)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, readonly) SKYDatabase* database;
+@property (nonatomic, readonly) SKYDatabase *database;
 
 /**
  Caches the result of the specified query.
@@ -29,7 +29,7 @@
 
 /**
  Returns the cached result by specifying an `SKYQuery`.
- 
+
  If the results of a query is not cached, this method will return nil.
  */
 - (NSArray *)cachedResultsWithQuery:(SKYQuery *)query;

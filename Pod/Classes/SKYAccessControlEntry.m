@@ -8,14 +8,19 @@
 
 #import "SKYAccessControlEntry.h"
 
-NSString * NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level) {
+NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
+{
     switch (level) {
         case SKYAccessControlEntryLevelRead:
             return @"read";
         case SKYAccessControlEntryLevelWrite:
             return @"write";
         default:
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unrecgonized access control entry level" userInfo:@{@"SKYAccessControlEntryLevel": @(level)}];
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Unrecgonized access control entry level"
+                                         userInfo:@{
+                                             @"SKYAccessControlEntryLevel" : @(level)
+                                         }];
     }
 }
 
@@ -27,12 +32,11 @@ NSString * NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
         return NO;
     }
 
-    return (
-            self.entryType == entry.entryType &&
-            self.accessLevel == entry.accessLevel &&
-            ((self.relation == nil && entry.relation == nil) || [self.relation isEqualToRelation:entry.relation]) &&
-            ((self.userID == nil && entry.userID == nil) || [self.userID isEqualToUserRecordID:entry.userID])
-            );
+    return (self.entryType == entry.entryType && self.accessLevel == entry.accessLevel &&
+            ((self.relation == nil && entry.relation == nil) ||
+             [self.relation isEqualToRelation:entry.relation]) &&
+            ((self.userID == nil && entry.userID == nil) ||
+             [self.userID isEqualToUserRecordID:entry.userID]));
 }
 
 - (BOOL)isEqual:(id)object

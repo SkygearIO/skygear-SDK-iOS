@@ -18,7 +18,8 @@
 
 @property (nonatomic, readwrite) SKYAsset *asset;
 
-@property (nonatomic, copy) void(^uploadAssetProgressBlock)(SKYAsset *asset, double progress);
-@property (nonatomic, copy) void(^uploadAssetCompletionBlock)(SKYAsset *asset, NSError *operationError);
+@property (nonatomic, copy) void (^uploadAssetProgressBlock)(SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^uploadAssetCompletionBlock)
+    (SKYAsset *asset, NSError *operationError);
 
 @end

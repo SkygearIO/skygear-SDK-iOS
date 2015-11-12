@@ -19,7 +19,8 @@
     return [[SKYQuerySerializer alloc] init];
 }
 
-- (NSString *)nameWithPredicateOperatorType:(NSPredicateOperatorType)operatorType andOptions:(NSComparisonPredicateOptions)options
+- (NSString *)nameWithPredicateOperatorType:(NSPredicateOperatorType)operatorType
+                                 andOptions:(NSComparisonPredicateOptions)options
 {
     switch (operatorType) {
         case NSEqualToPredicateOperatorType:
@@ -38,7 +39,7 @@
         case NSBeginsWithPredicateOperatorType:
         case NSEndsWithPredicateOperatorType:
         case NSContainsPredicateOperatorType:
-            if (options&NSCaseInsensitivePredicateOption) {
+            if (options & NSCaseInsensitivePredicateOption) {
                 return @"ilike";
             } else {
                 return @"like";
@@ -46,9 +47,13 @@
         case NSInPredicateOperatorType:
             return @"in";
         default:
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:[NSString stringWithFormat:@"Given NSPredicateOperatorType `%u` is not supported.", (unsigned int)operatorType]
-                                         userInfo:nil];
+            @throw [NSException
+                exceptionWithName:NSInvalidArgumentException
+                           reason:[NSString
+                                      stringWithFormat:
+                                          @"Given NSPredicateOperatorType `%u` is not supported.",
+                                          (unsigned int)operatorType]
+                         userInfo:nil];
             break;
     }
 }
@@ -63,9 +68,13 @@
         case NSNotPredicateType:
             return @"not";
         default:
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:[NSString stringWithFormat:@"Given NSCompoundPredicateType `%u` is not supported.", (unsigned int)predicateType]
-                                         userInfo:nil];
+            @throw [NSException
+                exceptionWithName:NSInvalidArgumentException
+                           reason:[NSString
+                                      stringWithFormat:
+                                          @"Given NSCompoundPredicateType `%u` is not supported.",
+                                          (unsigned int)predicateType]
+                         userInfo:nil];
             break;
     }
 }
@@ -100,7 +109,7 @@
         if (!include) {
             include = [NSMutableDictionary dictionary];
         }
-        
+
         include[key] = [self serializeWithExpression:obj];
     }];
     if (include) {
@@ -123,24 +132,27 @@
     switch (expression.expressionType) {
         case NSKeyPathExpressionType:
             return @{
-                     SKYDataSerializationCustomTypeKey: @"keypath",
-                     @"$val": expression.keyPath,
-                     };
+                SKYDataSerializationCustomTypeKey : @"keypath",
+                @"$val" : expression.keyPath,
+            };
         case NSConstantValueExpressionType:
             return [SKYDataSerialization serializeObject:expression.constantValue];
         case NSFunctionExpressionType:
             return [self serializeWithFunctionExpression:expression];
         default:
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:[NSString stringWithFormat:@"Given NSExpressionType `%u` is not supported.", (unsigned int)expression.expressionType]
-                                         userInfo:nil];
+            @throw [NSException
+                exceptionWithName:NSInvalidArgumentException
+                           reason:[NSString stringWithFormat:
+                                                @"Given NSExpressionType `%u` is not supported.",
+                                                (unsigned int)expression.expressionType]
+                         userInfo:nil];
             break;
     }
 }
 
 - (id)serializeWithFunctionExpression:(NSExpression *)expression
 {
-    NSMutableArray *arr = [@[@"func"] mutableCopy];
+    NSMutableArray *arr = [@[ @"func" ] mutableCopy];
 
     [arr addObject:remoteFunctionName(expression.function)];
     for (id obj in expression.arguments) {
@@ -157,7 +169,7 @@
         NSPredicateOperatorType operatorType = comparison.predicateOperatorType;
         NSExpression *lhs = [comparison leftExpression];
         NSExpression *rhs = [comparison rightExpression];
-        
+
         if ([self isStringMatchingPredicateOperatorType:operatorType]) {
             NSMutableString *matchPattern = [[rhs constantValue] mutableCopy];
             switch (operatorType) {
@@ -188,13 +200,15 @@
             }
             rhs = [NSExpression expressionForConstantValue:[matchPattern copy]];
         }
-        return @[[self nameWithPredicateOperatorType:operatorType andOptions:comparison.options],
-                 [self serializeWithExpression:lhs],
-                 [self serializeWithExpression:rhs],
-                 ];
+        return @[
+            [self nameWithPredicateOperatorType:operatorType andOptions:comparison.options],
+            [self serializeWithExpression:lhs],
+            [self serializeWithExpression:rhs],
+        ];
     } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
         NSCompoundPredicate *compound = (NSCompoundPredicate *)predicate;
-        NSMutableArray *result = [NSMutableArray arrayWithObject:[self nameWithCompoundPredicateType:compound.compoundPredicateType]];
+        NSMutableArray *result = [NSMutableArray
+            arrayWithObject:[self nameWithCompoundPredicateType:compound.compoundPredicateType]];
         [[compound subpredicates] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [result addObject:[self serializeWithPredicate:(NSPredicate *)obj]];
         }];
@@ -202,27 +216,40 @@
     } else if (!predicate) {
         return [NSArray array];
     } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:[NSString stringWithFormat:@"The given predicate is neither a NSComparisonPredicate or NSCompoundPredicate. Given: %@", NSStringFromClass([predicate class])]
-                                     userInfo:nil];
+        @throw [NSException
+            exceptionWithName:NSInvalidArgumentException
+                       reason:[NSString stringWithFormat:@"The given predicate is neither a "
+                                                         @"NSComparisonPredicate or "
+                                                         @"NSCompoundPredicate. Given: %@",
+                                                         NSStringFromClass([predicate class])]
+                     userInfo:nil];
     }
 }
 
 - (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors
 {
     NSMutableArray *result = [NSMutableArray array];
-    [sortDescriptors enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[SKYLocationSortDescriptor class]]) {
-            SKYLocationSortDescriptor *sd = (SKYLocationSortDescriptor *)obj;
-            NSExpression *expr = [NSExpression expressionForFunction:@"distanceToLocation:fromLocation:"
-                                                           arguments:@[[NSExpression expressionForKeyPath:sd.key],
-                                                                       [NSExpression expressionForConstantValue:sd.relativeLocation]]];
-            [result addObject:@[[self serializeWithExpression:expr], sd.ascending ? @"asc" : @"desc"]];
-        } else {
-            [result addObject:@[[self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
-                                obj.ascending ? @"asc" : @"desc"]];
-        }
-    }];
+    [sortDescriptors
+        enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[SKYLocationSortDescriptor class]]) {
+                SKYLocationSortDescriptor *sd = (SKYLocationSortDescriptor *)obj;
+                NSExpression *expr = [NSExpression
+                    expressionForFunction:@"distanceToLocation:fromLocation:"
+                                arguments:@[
+                                    [NSExpression expressionForKeyPath:sd.key],
+                                    [NSExpression expressionForConstantValue:sd.relativeLocation]
+                                ]];
+                [result addObject:@[
+                    [self serializeWithExpression:expr],
+                    sd.ascending ? @"asc" : @"desc"
+                ]];
+            } else {
+                [result addObject:@[
+                    [self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
+                    obj.ascending ? @"asc" : @"desc"
+                ]];
+            }
+        }];
     return [result copy];
 }
 
