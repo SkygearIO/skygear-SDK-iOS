@@ -97,7 +97,7 @@ describe(@"serialize notification info", ^{
         serializer = [SKYNotificationInfoSerializer serializer];
     });
 
-    it(@"serialize notification info", ^{
+    it(@"serialize aps notification info", ^{
         SKYAPSNotificationInfo *apsInfo = [SKYAPSNotificationInfo notificationInfo];
         apsInfo.alertBody = @"alertBody";
         apsInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
@@ -130,12 +130,7 @@ describe(@"serialize notification info", ^{
                                   });
     });
 
-    it(@"serialize nil", ^{
-        NSDictionary *result = [serializer dictionaryWithNotificationInfo:nil];
-        expect(result).to.equal(@{});
-    });
-
-    it(@"keep empty loc-args item", ^{
+    it(@"keep apns empty loc-args item", ^{
         SKYAPSNotificationInfo *apsInfo = [SKYAPSNotificationInfo notificationInfo];
         apsInfo.alertLocalizationArgs = @[@"arg0", @"", @"arg2"];
 
@@ -150,6 +145,61 @@ describe(@"serialize notification info", ^{
                                                   },
                                           },
                                   });
+    });
+
+    it(@"serialize gcm notification info", ^{
+        SKYGCMNotificationInfo *gcmInfo = [SKYGCMNotificationInfo notificationInfo];
+        gcmInfo.collapseKey = @"collapseKey";
+        gcmInfo.priority = 1;
+        gcmInfo.contentAvailable = YES;
+        gcmInfo.delayWhileIdle = YES;
+        gcmInfo.timeToLive = 1;
+        gcmInfo.restrictedPackageName = @"restrictedPackageName";
+
+        gcmInfo.notification.title = @"title";
+        gcmInfo.notification.body = @"body";
+        gcmInfo.notification.icon = @"icon";
+        gcmInfo.notification.sound = @"sound";
+        gcmInfo.notification.tag = @"tag";
+        gcmInfo.notification.clickAction = @"clickAction";
+        gcmInfo.notification.bodyLocKey = @"bodyLocKey";
+        gcmInfo.notification.bodyLocArgs = @[@"bodyLocArg0", @"bodyLocArg1"];
+        gcmInfo.notification.titleLocKey = @"titleLocKey";
+        gcmInfo.notification.titleLocArgs = @[@"titleLocArg0", @"titleLocArg1"];
+
+        SKYNotificationInfo *info = [SKYNotificationInfo notificationInfo];
+        info.gcmNotificationInfo = gcmInfo;
+        info.desiredKeys = @[@"key0", @"key1"];
+
+        NSDictionary *result = [serializer dictionaryWithNotificationInfo:info];
+        expect(result).to.equal(@{
+                                  @"gcm": @{
+                                          @"collapse_key": @"collapseKey",
+                                          @"priority": @1,
+                                          @"content_available": @YES,
+                                          @"delay_while_idle": @YES,
+                                          @"time_to_live": @1,
+                                          @"restricted_package_name": @"restrictedPackageName",
+                                          @"notification": @{
+                                                  @"title": @"title",
+                                                  @"body": @"body",
+                                                  @"icon": @"icon",
+                                                  @"sound": @"sound",
+                                                  @"tag": @"tag",
+                                                  @"click_action": @"clickAction",
+                                                  @"body_loc_key": @"bodyLocKey",
+                                                  @"body_loc_args": @[@"bodyLocArg0", @"bodyLocArg1"],
+                                                  @"title_loc_key": @"titleLocKey",
+                                                  @"title_loc_args": @[@"titleLocArg0", @"titleLocArg1"],
+                                                  },
+                                          },
+                                  @"desired_keys": @[@"key0", @"key1"],
+                                  });
+    });
+
+    it(@"serialize nil", ^{
+        NSDictionary *result = [serializer dictionaryWithNotificationInfo:nil];
+        expect(result).to.equal(@{});
     });
 });
 

@@ -25,6 +25,7 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
     SKYNotificationInfo *info = [[self.class allocWithZone:zone] init];
 
     info->_apsNotificationInfo = [_apsNotificationInfo copyWithZone:zone];
+    info->_gcmNotificationInfo = [_gcmNotificationInfo copyWithZone:zone];
     info->_desiredKeys = [_desiredKeys copyWithZone:zone];
 
     return info;
@@ -45,19 +46,22 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 
 - (BOOL)isEqualToNotificationInfo:(SKYNotificationInfo *)n
 {
-    return [self.apsNotificationInfo isEqualToNotificationInfo:n.apsNotificationInfo] &&
-           isNilOrEqualArray(self.desiredKeys, n.desiredKeys);
+    return (
+            ((self.apsNotificationInfo == nil && n.apsNotificationInfo == nil) || [self.apsNotificationInfo isEqualToNotificationInfo:n.apsNotificationInfo]) &&
+            ((self.gcmNotificationInfo == nil && n.gcmNotificationInfo == nil) || [self.gcmNotificationInfo isEqualToNotificationInfo:n.gcmNotificationInfo]) &&
+            isNilOrEqualArray(self.desiredKeys, n.desiredKeys)
+            );
 }
 
 - (NSUInteger)hash
 {
-    return self.apsNotificationInfo.hash ^ self.desiredKeys.hash;
+    return self.apsNotificationInfo.hash ^ self.gcmNotificationInfo.hash ^ self.desiredKeys.hash;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ <apsNotificationInfo = %@, desiredKeys = %@>",
-                                      NSStringFromClass(self.class), self.apsNotificationInfo, self.desiredKeys];
+    return [NSString stringWithFormat:@"%@ <apsNotificationInfo = %@, gcmNotificationInfo = %@, desiredKeys = %@>",
+                                      NSStringFromClass(self.class), self.apsNotificationInfo, self.gcmNotificationInfo, self.desiredKeys];
 }
 
 @end

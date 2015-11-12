@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYAPSNotificationInfo.h"
+#import "SKYGCMNotificationInfo.h"
 
 @interface SKYNotificationInfo : NSObject <NSCopying>
 
 + (instancetype)notificationInfo;
 
 @property (nonatomic, copy) SKYAPSNotificationInfo *apsNotificationInfo;
+@property (nonatomic, copy) SKYGCMNotificationInfo *gcmNotificationInfo;
 
 @property (nonatomic, copy) NSArray *desiredKeys;
 
