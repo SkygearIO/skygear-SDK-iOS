@@ -22,7 +22,7 @@ PODS:
   - SkyKit (0.1.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
-  - SocketRocket (0.4.1)
+  - SocketRocket (0.4.2)
   - Specta (1.0.3)
 
 DEPENDENCIES:
@@ -42,7 +42,7 @@ SPEC CHECKSUMS:
   OCMock: 4c2925291f80407c3738dd1db14d21d0cc278864
   OHHTTPStubs: f639130b83fb5f4f022d38f841141b0a6fa77249
   SkyKit: b4a7d05f9b26d1b7a06e14d2c8513fdb45e7b1b8
-  SocketRocket: ee0b5c34182d37bb4f1f8d628bbe737718126daa
+  SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0
