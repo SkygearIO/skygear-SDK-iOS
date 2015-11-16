@@ -57,32 +57,32 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 - (BOOL)isEqualToNotificationInfo:(SKYAPSNotificationInfo *)n
 {
     return isNilOrEqualString(self.alertActionLocalizationKey, n.alertActionLocalizationKey) &&
-    isNilOrEqualString(self.alertBody, n.alertBody) &&
-    isNilOrEqualString(self.alertLaunchImage, self.alertLaunchImage) &&
-    isNilOrEqualArray(self.alertLocalizationArgs, n.alertLocalizationArgs) &&
-    isNilOrEqualString(self.alertLocalizationKey, n.alertLocalizationKey) &&
-    isNilOrEqualString(self.soundName, n.soundName) && self.shouldBadge == n.shouldBadge &&
-    self.shouldSendContentAvailable == n.shouldSendContentAvailable;
+           isNilOrEqualString(self.alertBody, n.alertBody) &&
+           isNilOrEqualString(self.alertLaunchImage, self.alertLaunchImage) &&
+           isNilOrEqualArray(self.alertLocalizationArgs, n.alertLocalizationArgs) &&
+           isNilOrEqualString(self.alertLocalizationKey, n.alertLocalizationKey) &&
+           isNilOrEqualString(self.soundName, n.soundName) && self.shouldBadge == n.shouldBadge &&
+           self.shouldSendContentAvailable == n.shouldSendContentAvailable;
 }
 
 - (NSUInteger)hash
 {
     return self.alertActionLocalizationKey.hash ^ self.alertBody.hash ^ self.alertLaunchImage.hash ^
-    self.alertLocalizationArgs.hash ^ self.alertLocalizationKey.hash ^ self.soundName.hash ^
-    self.shouldBadge ^ self.shouldSendContentAvailable;
+           self.alertLocalizationArgs.hash ^ self.alertLocalizationKey.hash ^ self.soundName.hash ^
+           self.shouldBadge ^ self.shouldSendContentAvailable;
 }
 
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@ <alertBody = %@, alertLocalizationKey = %@, "
-            @"alertLocalizationArgs = %@, alertActionLocalizationKey = "
-            @"%@, alertLaunchImage = %@, soundName = %@, shouldBadge = "
-            @"%@, shouldSendContentAvailable = %@>",
-            NSStringFromClass(self.class), self.alertBody,
-            self.alertLocalizationKey, self.alertLocalizationArgs,
-            self.alertActionLocalizationKey, self.alertLaunchImage,
-            self.soundName, @(self.shouldBadge),
-            @(self.shouldSendContentAvailable)];
+                                      @"alertLocalizationArgs = %@, alertActionLocalizationKey = "
+                                      @"%@, alertLaunchImage = %@, soundName = %@, shouldBadge = "
+                                      @"%@, shouldSendContentAvailable = %@>",
+                                      NSStringFromClass(self.class), self.alertBody,
+                                      self.alertLocalizationKey, self.alertLocalizationArgs,
+                                      self.alertActionLocalizationKey, self.alertLaunchImage,
+                                      self.soundName, @(self.shouldBadge),
+                                      @(self.shouldSendContentAvailable)];
 }
 
 @end

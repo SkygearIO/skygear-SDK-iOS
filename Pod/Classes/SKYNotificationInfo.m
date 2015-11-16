@@ -46,11 +46,11 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 
 - (BOOL)isEqualToNotificationInfo:(SKYNotificationInfo *)n
 {
-    return (
-            ((self.apsNotificationInfo == nil && n.apsNotificationInfo == nil) || [self.apsNotificationInfo isEqualToNotificationInfo:n.apsNotificationInfo]) &&
-            ((self.gcmNotificationInfo == nil && n.gcmNotificationInfo == nil) || [self.gcmNotificationInfo isEqualToNotificationInfo:n.gcmNotificationInfo]) &&
-            isNilOrEqualArray(self.desiredKeys, n.desiredKeys)
-            );
+    return (((self.apsNotificationInfo == nil && n.apsNotificationInfo == nil) ||
+             [self.apsNotificationInfo isEqualToNotificationInfo:n.apsNotificationInfo]) &&
+            ((self.gcmNotificationInfo == nil && n.gcmNotificationInfo == nil) ||
+             [self.gcmNotificationInfo isEqualToNotificationInfo:n.gcmNotificationInfo]) &&
+            isNilOrEqualArray(self.desiredKeys, n.desiredKeys));
 }
 
 - (NSUInteger)hash
@@ -60,8 +60,11 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ <apsNotificationInfo = %@, gcmNotificationInfo = %@, desiredKeys = %@>",
-                                      NSStringFromClass(self.class), self.apsNotificationInfo, self.gcmNotificationInfo, self.desiredKeys];
+    return
+        [NSString stringWithFormat:
+                      @"%@ <apsNotificationInfo = %@, gcmNotificationInfo = %@, desiredKeys = %@>",
+                      NSStringFromClass(self.class), self.apsNotificationInfo,
+                      self.gcmNotificationInfo, self.desiredKeys];
 }
 
 @end
