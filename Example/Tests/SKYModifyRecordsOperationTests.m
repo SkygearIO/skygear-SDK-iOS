@@ -180,6 +180,33 @@ describe(@"modify", ^{
             [database executeOperation:operation];
         });
     });
+
+    it(@"bug: server return write not allowed", ^{
+        SKYModifyRecordsOperation *operation = [SKYModifyRecordsOperation operationWithRecordsToSave:@[record1, record2]];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *data = @{
+                                   @"result": @{
+                                           @"code": @201,
+                                           @"message": @"invalid request: write is not allowed",
+                                           }
+                                   };
+            return [OHHTTPStubsResponse responseWithJSONObject:data
+                                                    statusCode:401
+                                                       headers:@{}];
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    expect(operationError).toNot.beNil();
+                    done();
+                });
+            };
+            [database executeOperation:operation];
+        });
+    });
     
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
