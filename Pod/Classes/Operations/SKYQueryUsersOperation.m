@@ -15,11 +15,11 @@
 NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
 {
     switch (direction) {
-        case SKYRelationDirectionActive:
-            return @"active";
+        case SKYRelationDirectionOutward:
+            return @"outward";
             break;
-        case SKYRelationDirectionPassive:
-            return @"passive";
+        case SKYRelationDirectionInward:
+            return @"inward";
             break;
         case SKYRelationDirectionMutual:
             return @"mutual";
@@ -71,7 +71,7 @@ NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
 
 - (instancetype)initWithRelation:(SKYRelation *)relation
 {
-    return [self initWithRelation:relation direction:SKYRelationDirectionActive];
+    return [self initWithRelation:relation direction:SKYRelationDirectionOutward];
 }
 
 - (instancetype)initWithRelation:(SKYRelation *)relation direction:(SKYRelationDirection)direction

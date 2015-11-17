@@ -16,8 +16,8 @@ typedef enum : NSUInteger {
 } SKYUserDiscoveryMethod;
 
 typedef enum : NSInteger {
-    SKYRelationDirectionActive,
-    SKYRelationDirectionPassive,
+    SKYRelationDirectionOutward,
+    SKYRelationDirectionInward,
     SKYRelationDirectionMutual
 } SKYRelationDirection;
 
