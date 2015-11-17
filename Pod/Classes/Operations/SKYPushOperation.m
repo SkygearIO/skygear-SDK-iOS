@@ -15,7 +15,8 @@ SKYNotificationInfo *DefaultNotificationInfo;
 + (void)initialize
 {
     DefaultNotificationInfo = [[SKYNotificationInfo alloc] init];
-    DefaultNotificationInfo.shouldBadge = YES;
+    DefaultNotificationInfo.apsNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
+    DefaultNotificationInfo.apsNotificationInfo.shouldBadge = YES;
 }
 
 - (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
@@ -42,9 +43,9 @@ SKYNotificationInfo *DefaultNotificationInfo;
                             soundName:(NSString *)soundName
 {
     SKYNotificationInfo *info = [self.class defaultNotificationInfo];
-    info.alertBody = alertBody;
-    info.alertActionLocalizationKey = alertActionLocalizationKey;
-    info.soundName = soundName;
+    info.apsNotificationInfo.alertBody = alertBody;
+    info.apsNotificationInfo.alertActionLocalizationKey = alertActionLocalizationKey;
+    info.apsNotificationInfo.soundName = soundName;
     return [self initWithUserRecordIDs:userRecordIDs notificationInfo:info];
 }
 
@@ -77,10 +78,10 @@ SKYNotificationInfo *DefaultNotificationInfo;
                             soundName:(NSString *)soundName
 {
     SKYNotificationInfo *info = [self.class defaultNotificationInfo];
-    info.alertLocalizationKey = alertLocalizationKey;
-    info.alertLocalizationArgs = alertLocalizationArgs;
-    info.alertActionLocalizationKey = alertActionLocalizationKey;
-    info.soundName = soundName;
+    info.apsNotificationInfo.alertLocalizationKey = alertLocalizationKey;
+    info.apsNotificationInfo.alertLocalizationArgs = alertLocalizationArgs;
+    info.apsNotificationInfo.alertActionLocalizationKey = alertActionLocalizationKey;
+    info.apsNotificationInfo.soundName = soundName;
     return [self initWithUserRecordIDs:userRecordIDs notificationInfo:info];
 }
 

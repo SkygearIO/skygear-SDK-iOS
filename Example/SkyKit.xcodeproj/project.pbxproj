@@ -268,7 +268,6 @@
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
-			name = SkyKit;
 			path = SkyKit;
 			sourceTree = "<group>";
 		};
@@ -367,6 +366,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				1F2FF8F0F321390D0AD369A6 /* Copy Pods Resources */,
+				00329C1F679B3F0F20D5A492 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -386,6 +386,7 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				382D42CDA389EB0FEFE8CE00 /* Copy Pods Resources */,
+				0ABE1B27A762F00DC7CA66E1 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -458,6 +459,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		00329C1F679B3F0F20D5A492 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkyKit/Pods-SkyKit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0ABE1B27A762F00DC7CA66E1 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1533619D2C9D8C51A43F7637 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

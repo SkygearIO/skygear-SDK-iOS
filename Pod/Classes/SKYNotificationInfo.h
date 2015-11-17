@@ -8,18 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SKYAPSNotificationInfo.h"
+#import "SKYGCMNotificationInfo.h"
+
 @interface SKYNotificationInfo : NSObject <NSCopying>
 
 + (instancetype)notificationInfo;
 
-@property (nonatomic, copy) NSString *alertBody;
-@property (nonatomic, copy) NSString *alertLocalizationKey;
-@property (nonatomic, copy) NSArray *alertLocalizationArgs;
-@property (nonatomic, copy) NSString *alertActionLocalizationKey;
-@property (nonatomic, copy) NSString *alertLaunchImage;
-@property (nonatomic, copy) NSString *soundName;
-@property (nonatomic, assign) BOOL shouldBadge;
-@property (nonatomic, assign) BOOL shouldSendContentAvailable;
+@property (nonatomic, copy) SKYAPSNotificationInfo *apsNotificationInfo;
+@property (nonatomic, copy) SKYGCMNotificationInfo *gcmNotificationInfo;
 
 @property (nonatomic, copy) NSArray *desiredKeys;
 
