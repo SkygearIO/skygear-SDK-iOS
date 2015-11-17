@@ -21,7 +21,7 @@
 
     NSDictionary *apsDict = [self apsDictionaryWithNotificationInfo:n.apsNotificationInfo];
     if (apsDict.count) {
-        infoDict[@"aps"] = apsDict;
+        infoDict[@"apns"] = @{ @"aps" : apsDict };
     }
 
     NSDictionary *gcmDict = [self gcmDictionaryWithNotificationInfo:n.gcmNotificationInfo];

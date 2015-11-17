@@ -24,7 +24,7 @@
     }
 
     SKYNotificationInfo *info = [SKYNotificationInfo notificationInfo];
-    info.apsNotificationInfo = [self notificationInfoWithApsDictionary:dictionary[@"aps"]];
+    info.apsNotificationInfo = [self notificationInfoWithApsDictionary:dictionary[@"apns"][@"aps"]];
     info.desiredKeys = dictionary[@"desired_keys"];
 
     return info;
