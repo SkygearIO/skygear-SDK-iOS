@@ -33,6 +33,7 @@
 #import "SKYFollowQuery.h"
 #import "SKYFollowReference.h"
 #import "SKYFollowReference_Private.h"
+#import "SKYGCMNotificationInfo.h"
 #import "SKYLambdaOperation.h"
 #import "SKYLocationSortDescriptor.h"
 #import "SKYMarkNotificationsReadOperation.h"
