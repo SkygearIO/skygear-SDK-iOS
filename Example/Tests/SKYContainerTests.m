@@ -18,7 +18,7 @@
 // an empty SKYOperation subclass that does nothing but call its completion handler
 @interface MockOperation : SKYOperation
 
-@property (nonatomic, copy) void(^mockCompletion)();
+@property (nonatomic, copy) void (^mockCompletion)();
 
 @end
 
@@ -47,15 +47,16 @@
 
 SpecBegin(SKYContainer)
 
-describe(@"config End Point address", ^{
-    it(@"set the endPointAddress correctly", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
-        [container configAddress:@"newpoint.com:4321"];
-        NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
-        expect(container.endPointAddress).to.equal(expectEndPoint);
-        expect(container.pubsubClient.endPointAddress).to.equal([NSURL URLWithString:@"ws://newpoint.com:4321/pubsub"]);
+    describe(@"config End Point address", ^{
+        it(@"set the endPointAddress correctly", ^{
+            SKYContainer *container = [[SKYContainer alloc] init];
+            [container configAddress:@"newpoint.com:4321"];
+            NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
+            expect(container.endPointAddress).to.equal(expectEndPoint);
+            expect(container.pubsubClient.endPointAddress)
+                .to.equal([NSURL URLWithString:@"ws://newpoint.com:4321/pubsub"]);
+        });
     });
-});
 
 describe(@"Default container", ^{
     it(@"give DB default ID", ^{
@@ -68,52 +69,46 @@ describe(@"Default container", ^{
 describe(@"save current user", ^{
     it(@"logout user", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        
+
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            NSDictionary *parameters = @{
-                                         @"request_id": @"REQUEST_ID",
-                                         @"result": @[
-                                                 ]
-                                         };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
-                                                              options:0
-                                                                error:nil];
-            
-            return [OHHTTPStubsResponse responseWithData:payload
-                                              statusCode:200
-                                                 headers:@{}];
-        }];
-        
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{ @"request_id" : @"REQUEST_ID", @"result" : @[] };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
         waitUntil(^(DoneCallback done) {
             [container logoutWithcompletionHandler:^(SKYUserRecordID *user, NSError *error) {
                 done();
             }];
         });
     });
-    
+
     it(@"fetch record", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"user1"]
-                              accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
-        
+        [container
+            updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"user1"]
+                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
+
         container = [[SKYContainer alloc] init];
         expect(container.currentUserRecordID.recordType).to.equal(@"_user");
         expect(container.currentUserRecordID.recordName).to.equal(@"user1");
         expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
-    
+
     it(@"update with nil", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container updateWithUserRecordID:nil
-                              accessToken:nil];
-        
+        [container updateWithUserRecordID:nil accessToken:nil];
+
         container = [[SKYContainer alloc] init];
         expect(container.currentUserRecordID).to.beNil();
         expect(container.currentAccessToken).to.beNil();
     });
-    
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
 
@@ -129,66 +124,66 @@ describe(@"register device", ^{
 
     beforeEach(^{
         container = [[SKYContainer alloc] init];
-        notificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:SKYContainerDidRegisterDeviceNotification
-                                                                                 object:container
-                                                                                  queue:[NSOperationQueue mainQueue]
-                                                                             usingBlock:^(NSNotification *note) {
-                                                                                 notificationPosted = YES;
-                                                                             }];
+        notificationObserver = [[NSNotificationCenter defaultCenter]
+            addObserverForName:SKYContainerDidRegisterDeviceNotification
+                        object:container
+                         queue:[NSOperationQueue mainQueue]
+                    usingBlock:^(NSNotification *note) {
+                        notificationPosted = YES;
+                    }];
     });
 
     it(@"new device", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            NSDictionary *parameters = @{
-                                         @"request_id": @"REQUEST_ID",
-                                         @"result": @{@"id": @"DEVICE_ID"},
-                                         };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
-                                                              options:0
-                                                                error:nil];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"request_id" : @"REQUEST_ID",
+                    @"result" : @{@"id" : @"DEVICE_ID"},
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-            return [OHHTTPStubsResponse responseWithData:payload
-                                              statusCode:200
-                                                 headers:@{}];
-        }];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
 
         waitUntil(^(DoneCallback done) {
-            [container registerRemoteNotificationDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                           completionHandler:^(NSString *deviceID, NSError *error) {
-                                               expect(deviceID).to.equal(@"DEVICE_ID");
-                                               expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
-                                               expect(notificationPosted).to.beTruthy();
-                                               done();
-                                           }];
+            [container
+                registerRemoteNotificationDeviceToken:[SKYHexer
+                                                          dataWithHexString:@"abcdef1234567890"]
+                                    completionHandler:^(NSString *deviceID, NSError *error) {
+                                        expect(deviceID).to.equal(@"DEVICE_ID");
+                                        expect([container registeredDeviceID])
+                                            .to.equal(@"DEVICE_ID");
+                                        expect(notificationPosted).to.beTruthy();
+                                        done();
+                                    }];
         });
     });
 
     it(@"new device without device token", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            NSDictionary *parameters = @{
-                                         @"request_id": @"REQUEST_ID",
-                                         @"result": @{@"id": @"DEVICE_ID"},
-                                         };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
-                                                              options:0
-                                                                error:nil];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"request_id" : @"REQUEST_ID",
+                    @"result" : @{@"id" : @"DEVICE_ID"},
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-            return [OHHTTPStubsResponse responseWithData:payload
-                                              statusCode:200
-                                                 headers:@{}];
-        }];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
 
         waitUntil(^(DoneCallback done) {
             [container registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                    expect(deviceID).to.equal(@"DEVICE_ID");
-                    expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
-                    expect(notificationPosted).to.beTruthy();
-                    done();
-                }];
+                expect(deviceID).to.equal(@"DEVICE_ID");
+                expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                expect(notificationPosted).to.beTruthy();
+                done();
+            }];
         });
     });
 
@@ -214,20 +209,22 @@ describe(@"AuthenticationError callback", ^{
     it(@"calls authentication error handler", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithJSONObject:@{
-                                                                 @"error": @{
-                                                                         @"type": @"AuthenticationError",
-                                                                         @"code": @101,
-                                                                         @"message": @"authentication failed",
-                                                                         },
-                                                                 }
-                                                    statusCode:400
-                                                       headers:nil];
-        }];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithJSONObject:@{
+                    @"error" : @{
+                        @"type" : @"AuthenticationError",
+                        @"code" : @101,
+                        @"message" : @"authentication failed",
+                    },
+                }
+                                                        statusCode:400
+                                                           headers:nil];
+            }];
 
         waitUntil(^(DoneCallback done) {
-            [container setAuthenticationErrorHandler:^(SKYContainer *container, SKYAccessToken *token, NSError *error) {
+            [container setAuthenticationErrorHandler:^(SKYContainer *container,
+                                                       SKYAccessToken *token, NSError *error) {
                 done();
             }];
             [container addOperation:[[MockOperation alloc] init]];
@@ -237,17 +234,18 @@ describe(@"AuthenticationError callback", ^{
     it(@"operation works without setting authentication error handler", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithJSONObject:@{
-                                                                 @"error": @{
-                                                                         @"type": @"AuthenticationError",
-                                                                         @"code": @101,
-                                                                         @"message": @"authentication failed",
-                                                                         },
-                                                                 }
-                                                    statusCode:400
-                                                       headers:nil];
-        }];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithJSONObject:@{
+                    @"error" : @{
+                        @"type" : @"AuthenticationError",
+                        @"code" : @101,
+                        @"message" : @"authentication failed",
+                    },
+                }
+                                                        statusCode:400
+                                                           headers:nil];
+            }];
 
         waitUntil(^(DoneCallback done) {
             MockOperation *op = [[MockOperation alloc] init];
@@ -261,21 +259,25 @@ describe(@"AuthenticationError callback", ^{
     it(@"doesn't call authentication error handler on unmatched error", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithJSONObject:@{
-                                                                 @"error": @{
-                                                                         @"type": @"AuthenticationError",
-                                                                         @"code": @102,
-                                                                         @"message": @"invalid authentication information",
-                                                                         },
-                                                                 }
-                                                    statusCode:400
-                                                       headers:nil];
-        }];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithJSONObject:@{
+                    @"error" : @{
+                        @"type" : @"AuthenticationError",
+                        @"code" : @102,
+                        @"message" : @"invalid authentication information",
+                    },
+                }
+                                                        statusCode:400
+                                                           headers:nil];
+            }];
 
         waitUntil(^(DoneCallback done) {
-            [container setAuthenticationErrorHandler:^(SKYContainer *container, SKYAccessToken *token, NSError *error) {
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Thou shalt not call" userInfo:nil];
+            [container setAuthenticationErrorHandler:^(SKYContainer *container,
+                                                       SKYAccessToken *token, NSError *error) {
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                               reason:@"Thou shalt not call"
+                                             userInfo:nil];
             }];
             MockOperation *op = [[MockOperation alloc] init];
             op.mockCompletion = ^{
@@ -293,56 +295,47 @@ describe(@"AuthenticationError callback", ^{
 describe(@"calls lambda", ^{
     it(@"calls lambda no arguments", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        
+
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            NSDictionary *parameters = @{
-                                         @"request_id": @"REQUEST_ID",
-                                         @"result": @{
-                                                 @"message": @"hello bob"
-                                                 }
-                                         };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
-                                                              options:0
-                                                                error:nil];
-            
-            return [OHHTTPStubsResponse responseWithData:payload
-                                              statusCode:200
-                                                 headers:@{}];
-        }];
-        
-        waitUntil(^(DoneCallback done) {
-            [container callLambda:@"hello:world" completionHandler:^(NSDictionary *result, NSError *error) {
-                done();
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters =
+                    @{ @"request_id" : @"REQUEST_ID",
+                       @"result" : @{@"message" : @"hello bob"} };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
-        });
-    });
-    
-    it(@"calls lambda with arguments", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
-        
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-            NSDictionary *parameters = @{
-                                         @"request_id": @"REQUEST_ID",
-                                         @"result": @{
-                                                 @"message": @"hello bob"
-                                                 }
-                                         };
-            NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters
-                                                              options:0
-                                                                error:nil];
-            
-            return [OHHTTPStubsResponse responseWithData:payload
-                                              statusCode:200
-                                                 headers:@{}];
-        }];
-        
+
         waitUntil(^(DoneCallback done) {
             [container callLambda:@"hello:world"
-                        arguments:@[@"this", @"is", @"bob"]
+                completionHandler:^(NSDictionary *result, NSError *error) {
+                    done();
+                }];
+        });
+    });
+
+    it(@"calls lambda with arguments", ^{
+        SKYContainer *container = [[SKYContainer alloc] init];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters =
+                    @{ @"request_id" : @"REQUEST_ID",
+                       @"result" : @{@"message" : @"hello bob"} };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container callLambda:@"hello:world"
+                        arguments:@[ @"this", @"is", @"bob" ]
                 completionHandler:^(NSDictionary *result, NSError *error) {
                     done();
                 }];
@@ -358,7 +351,6 @@ describe(@"maintains a private pubsub", ^{
     __block SKYContainer *container = nil;
     __block id pubsub = nil;
 
-
     beforeEach(^{
         container = [[SKYContainer alloc] init];
 
@@ -372,13 +364,14 @@ describe(@"maintains a private pubsub", ^{
     });
 
     it(@"sets endpoint correct address", ^{
-        OCMExpect([pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
+        OCMExpect(
+            [pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
 
         [container configAddress:@"newpoint.com:4321"];
 
         OCMVerifyAll(pubsub);
     });
-    
+
     it(@"subscribes without deviceID", ^{
         OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
 
@@ -386,11 +379,13 @@ describe(@"maintains a private pubsub", ^{
 
         [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
                                                   forKey:@"SKYContainerDeviceID"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification object:nil];
-        
+        [[NSNotificationCenter defaultCenter]
+            postNotificationName:SKYContainerDidRegisterDeviceNotification
+                          object:nil];
+
         OCMVerifyAllWithDelay(pubsub, 100);
     });
-    
+
     it(@"subscribes with deviceID", ^{
         OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
 
@@ -409,12 +404,14 @@ describe(@"maintains a private pubsub", ^{
             delegate = OCMProtocolMock(@protocol(SKYContainerDelegate));
             container.delegate = delegate;
 
-            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid" forKey:@"SKYContainerDeviceID"];
-            OCMStub([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]).andDo(^(NSInvocation *invocation) {
-                void (^h)(NSDictionary *);
-                [invocation getArgument:&h atIndex:3];
-                handler = h;
-            });
+            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
+                                                      forKey:@"SKYContainerDeviceID"];
+            OCMStub([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]])
+                .andDo(^(NSInvocation *invocation) {
+                    void (^h)(NSDictionary *);
+                    [invocation getArgument:&h atIndex:3];
+                    handler = h;
+                });
             [container configAddress:@"newpoint.com:4321"];
         });
 
@@ -424,14 +421,15 @@ describe(@"maintains a private pubsub", ^{
         });
 
         it(@"sends message to delegate", ^{
-            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
-                return [n.subscriptionID isEqualToString:@"subscriptionid"];
-            }]]);
+            OCMExpect([delegate container:container
+                   didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
+                       return [n.subscriptionID isEqualToString:@"subscriptionid"];
+                   }]]);
 
             handler(@{
-                      @"subscription-id": @"subscriptionid",
-                      @"seq-num": @1,
-                      });
+                @"subscription-id" : @"subscriptionid",
+                @"seq-num" : @1,
+            });
 
             OCMVerifyAll(delegate);
         });
@@ -439,26 +437,29 @@ describe(@"maintains a private pubsub", ^{
         it(@"deduplicates message to delegate", ^{
             [delegate setExpectationOrderMatters:YES];
 
-            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
-                return [n.subscriptionID isEqualToString:@"subscription0"];
-            }]]);
-            OCMExpect([delegate container:container didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
-                return [n.subscriptionID isEqualToString:@"subscription1"];
-            }]]);
-            OCMExpect([[delegate reject] container:[OCMArg any] didReceiveNotification:[OCMArg any]]);
+            OCMExpect([delegate container:container
+                   didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
+                       return [n.subscriptionID isEqualToString:@"subscription0"];
+                   }]]);
+            OCMExpect([delegate container:container
+                   didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
+                       return [n.subscriptionID isEqualToString:@"subscription1"];
+                   }]]);
+            OCMExpect(
+                [[delegate reject] container:[OCMArg any] didReceiveNotification:[OCMArg any]]);
 
             handler(@{
-                      @"subscription-id": @"subscription0",
-                      @"seq-num": @1,
-                      });
+                @"subscription-id" : @"subscription0",
+                @"seq-num" : @1,
+            });
             handler(@{
-                      @"subscription-id": @"subscription1",
-                      @"seq-num": @2,
-                      });
+                @"subscription-id" : @"subscription1",
+                @"seq-num" : @2,
+            });
             handler(@{
-                      @"subscription-id": @"subscription1",
-                      @"seq-num": @1,
-                      });
+                @"subscription-id" : @"subscription1",
+                @"seq-num" : @1,
+            });
 
             OCMVerifyAll(delegate);
         });

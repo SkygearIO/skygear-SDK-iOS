@@ -76,8 +76,7 @@ SpecBegin(SKYSubscriptionDeserializer)
                 @"type" : @"query",
                 @"query" : @{
                     @"record_type" : @"recordType",
-                    @"predicate" :
-                        @[ @"eq", @{@"$type" : @"keypath", @"$val" : @"name"}, @"John" ],
+                    @"predicate" : @[ @"eq", @{@"$type" : @"keypath", @"$val" : @"name"}, @"John" ],
                 },
             };
 

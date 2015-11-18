@@ -98,24 +98,26 @@ SpecBegin(SKYSendPushNotificationOperation)
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *parameters = @{
-                    @"request_id" : @"REQUEST_ID",
-                    @"result" : @[
-                        @{
-                           @"_id" : @"johndoe",
-                        },
-                        @{
-                           @"_id" : @"janedoe",
-                           @"_type" : @"error",
-                        },
-                    ]
-                };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSDictionary *parameters = @{
+                        @"request_id" : @"REQUEST_ID",
+                        @"result" : @[
+                            @{
+                               @"_id" : @"johndoe",
+                            },
+                            @{
+                               @"_id" : @"janedoe",
+                               @"_type" : @"error",
+                            },
+                        ]
+                    };
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
-            }];
+                    return
+                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                }];
 
             waitUntil(^(DoneCallback done) {
                 __block NSMutableArray *processedIDs = [NSMutableArray array];
@@ -148,12 +150,13 @@ SpecBegin(SKYSendPushNotificationOperation)
             operation.container = container;
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return
-                    [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                                               code:0
-                                                                           userInfo:nil]];
-            }];
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                              code:0
+                                                          userInfo:nil]];
+                }];
 
             waitUntil(^(DoneCallback done) {
                 operation.sendCompletionHandler = ^(NSArray *stringIDs, NSError *operationError) {

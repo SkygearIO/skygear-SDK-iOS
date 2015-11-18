@@ -12,21 +12,21 @@
 
 SpecBegin(SKYRecordID)
 
-describe(@"SKYRecordID", ^{
-    it(@"init", ^{
-        SKYRecordID *recordID = [SKYRecordID recordIDWithRecordType:@"book"];
-        expect(recordID.recordType).to.equal(@"book");
-        expect(recordID.recordName).toNot.beNil();
-        expect([recordID.recordName class]).to.beSubclassOf([NSString class]);
-        expect([recordID.description class]).to.beSubclassOf([NSString class]);
+    describe(@"SKYRecordID", ^{
+        it(@"init", ^{
+            SKYRecordID *recordID = [SKYRecordID recordIDWithRecordType:@"book"];
+            expect(recordID.recordType).to.equal(@"book");
+            expect(recordID.recordName).toNot.beNil();
+            expect([recordID.recordName class]).to.beSubclassOf([NSString class]);
+            expect([recordID.description class]).to.beSubclassOf([NSString class]);
+        });
+
+        it(@"canonical string", ^{
+            SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:@"book/book1"];
+            expect(recordID.recordType).to.equal(@"book");
+            expect(recordID.recordName).to.equal(@"book1");
+            expect(recordID.canonicalString).to.equal(@"book/book1");
+        });
     });
-    
-    it(@"canonical string", ^{
-        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:@"book/book1"];
-        expect(recordID.recordType).to.equal(@"book");
-        expect(recordID.recordName).to.equal(@"book1");
-        expect(recordID.canonicalString).to.equal(@"book/book1");
-    });
-});
 
 SpecEnd

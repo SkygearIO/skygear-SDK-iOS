@@ -11,27 +11,28 @@
 
 SpecBegin(NSURLRequestSKYRequest)
 
-describe(@"request", ^{
-    
-    it(@"make url request", ^{
-        NSString *action = @"auth:login";
-        NSDictionary *payload = @{@"email": @"user@example.com"};
-        
-        SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
-        
-        NSURLRequest *urlRequest = [NSURLRequest requestWithSKYRequest:request];
-        expect(urlRequest).notTo.beNil();
-        expect([urlRequest.URL path]).to.endWith(@"auth/login");
-        expect([urlRequest valueForHTTPHeaderField:@"Content-Type"]).to.equal(@"application/json");
+    describe(@"request", ^{
 
-        NSError *error = nil;
-        NSDictionary *parameters = [NSJSONSerialization JSONObjectWithData:urlRequest.HTTPBody
-                                                                   options:0 error:&error];
-        
-        expect(error).to.beNil();
-        expect([parameters class]).to.beSubclassOf([NSDictionary class]);
-        expect(parameters[@"email"]).to.equal(@"user@example.com");
+        it(@"make url request", ^{
+            NSString *action = @"auth:login";
+            NSDictionary *payload = @{ @"email" : @"user@example.com" };
+
+            SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
+
+            NSURLRequest *urlRequest = [NSURLRequest requestWithSKYRequest:request];
+            expect(urlRequest).notTo.beNil();
+            expect([urlRequest.URL path]).to.endWith(@"auth/login");
+            expect([urlRequest valueForHTTPHeaderField:@"Content-Type"])
+                .to.equal(@"application/json");
+
+            NSError *error = nil;
+            NSDictionary *parameters =
+                [NSJSONSerialization JSONObjectWithData:urlRequest.HTTPBody options:0 error:&error];
+
+            expect(error).to.beNil();
+            expect([parameters class]).to.beSubclassOf([NSDictionary class]);
+            expect(parameters[@"email"]).to.equal(@"user@example.com");
+        });
     });
-});
 
 SpecEnd

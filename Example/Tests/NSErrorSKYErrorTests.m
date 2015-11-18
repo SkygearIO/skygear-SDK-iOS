@@ -11,23 +11,22 @@
 
 SpecBegin(NSErrorSKYErrorTests)
 
-describe(@"error", ^{
-    
-    it(@"error properties", ^{
-        NSDictionary *userInfo = @{
-                                   SKYErrorCodeKey: @(200),
-                                   SKYErrorTypeKey: @"ERROR_TYPE",
-                                   SKYErrorMessageKey: @"ERROR_MESSAGE",
-                                   SKYErrorInfoKey: @{@"key": @"value"},
-                                   };
-        NSError *error = [NSError errorWithDomain:@"SKYOperationErrorDomain"
-                                             code:100
-                                         userInfo:userInfo];
-        expect([error SKYErrorCode]).to.equal(200);
-        expect([error SKYErrorType]).to.equal(@"ERROR_TYPE");
-        expect([error SKYErrorMessage]).to.equal(@"ERROR_MESSAGE");
-        expect([error SKYErrorInfo]).to.equal(@{@"key": @"value"});
+    describe(@"error", ^{
+
+        it(@"error properties", ^{
+            NSDictionary *userInfo = @{
+                SKYErrorCodeKey : @(200),
+                SKYErrorTypeKey : @"ERROR_TYPE",
+                SKYErrorMessageKey : @"ERROR_MESSAGE",
+                SKYErrorInfoKey : @{@"key" : @"value"},
+            };
+            NSError *error =
+                [NSError errorWithDomain:@"SKYOperationErrorDomain" code:100 userInfo:userInfo];
+            expect([error SKYErrorCode]).to.equal(200);
+            expect([error SKYErrorType]).to.equal(@"ERROR_TYPE");
+            expect([error SKYErrorMessage]).to.equal(@"ERROR_MESSAGE");
+            expect([error SKYErrorInfo]).to.equal(@{ @"key" : @"value" });
+        });
     });
-});
 
 SpecEnd
