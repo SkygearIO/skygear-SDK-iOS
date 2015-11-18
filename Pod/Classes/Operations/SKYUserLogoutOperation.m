@@ -7,6 +7,7 @@
 //
 
 #import "SKYUserLogoutOperation.h"
+#import "SKYOperation_Private.h"
 
 @implementation SKYUserLogoutOperation
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <SkyKit/SkyKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "SKYOperation_Private.h"
 
 SpecBegin(SKYOperation)
 
@@ -46,7 +47,7 @@ SpecBegin(SKYOperation)
                 operation.completionBlock = ^{
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
-                        expect(blockOp.error).to.beNil();
+                        expect(blockOp.lastError).to.beNil();
                         done();
                     });
                 };
@@ -84,7 +85,7 @@ SpecBegin(SKYOperation)
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
 
-                        NSError *error = blockOp.error;
+                        NSError *error = blockOp.lastError;
                         expect([error class]).to.beSubclassOf([NSError class]);
                         expect(error.domain).to.equal(SKYOperationErrorDomain);
                         expect(error.code).to.equal(SKYErrorNetworkFailure);
@@ -120,8 +121,8 @@ SpecBegin(SKYOperation)
                 operation.completionBlock = ^{
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
-                        expect([blockOp.error class]).to.beSubclassOf([NSError class]);
-                        expect([(NSError *)[blockOp.error userInfo][NSUnderlyingErrorKey] code])
+                        expect([blockOp.lastError class]).to.beSubclassOf([NSError class]);
+                        expect([(NSError *)[blockOp.lastError userInfo][NSUnderlyingErrorKey] code])
                             .to.equal(3840);
                         done();
                     });
@@ -154,7 +155,7 @@ SpecBegin(SKYOperation)
                 operation.completionBlock = ^{
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
-                        expect([blockOp.error class]).to.beSubclassOf([NSError class]);
+                        expect([blockOp.lastError class]).to.beSubclassOf([NSError class]);
                         // FIXME: More concrete checks of the error?
                         done();
                     });
@@ -198,7 +199,7 @@ SpecBegin(SKYOperation)
                 operation.completionBlock = ^{
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
-                        NSError *error = blockOp.error;
+                        NSError *error = blockOp.lastError;
                         expect([error class]).to.beSubclassOf([NSError class]);
                         expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(400));
                         expect([error SKYErrorType]).to.equal(@"LoginError");
@@ -244,7 +245,7 @@ SpecBegin(SKYOperation)
                 operation.completionBlock = ^{
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
-                        NSError *error = blockOp.error;
+                        NSError *error = blockOp.lastError;
                         expect([error class]).to.beSubclassOf([NSError class]);
                         expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(500));
                         expect([error SKYErrorType]).to.equal(@"LoginError");

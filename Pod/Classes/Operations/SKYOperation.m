@@ -7,6 +7,7 @@
 //
 
 #import "SKYOperation.h"
+#import "SKYOperation_Private.h"
 #import "SKYContainer_Private.h"
 #import "NSURLRequest+SKYRequest.h"
 #import "NSError+SKYError.h"
@@ -82,6 +83,11 @@ NSString *const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStat
 - (NSError *)error
 {
     return _error;
+}
+
+- (NSError *)lastError
+{
+    return [_error copy];
 }
 
 - (NSDictionary *)response
