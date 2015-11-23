@@ -7,7 +7,7 @@
 //
 
 #import "SKYModifySubscriptionsOperation.h"
-
+#import "SKYOperation_Private.h"
 #import "SKYDefaults.h"
 #import "SKYSubscriptionSerialization.h"
 #import "SKYSubscriptionSerializer.h"

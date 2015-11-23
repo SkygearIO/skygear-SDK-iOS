@@ -7,7 +7,7 @@
 //
 
 #import "SKYRegisterDeviceOperation.h"
-
+#import "SKYOperation_Private.h"
 #import "SKYDefaults.h"
 
 @interface SKYRegisterDeviceOperation ()

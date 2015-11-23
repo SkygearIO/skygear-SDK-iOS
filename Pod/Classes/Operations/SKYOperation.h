@@ -19,8 +19,6 @@ extern NSString *const SKYOperationErrorHTTPStatusCodeKey;
 
 @property (nonatomic, strong) SKYContainer *container;
 @property (nonatomic, strong) SKYRequest *request;
-@property (nonatomic, readonly) NSDictionary *response __deprecated;
-@property (nonatomic, readonly) NSError *error __deprecated;
 
 - (instancetype)initWithRequest:(SKYRequest *)request;
 

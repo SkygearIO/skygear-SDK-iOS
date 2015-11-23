@@ -7,6 +7,7 @@
 //
 
 #import "SKYDeleteRecordsOperation.h"
+#import "SKYOperation_Private.h"
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
 

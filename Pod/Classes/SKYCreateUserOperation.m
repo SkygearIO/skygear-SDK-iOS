@@ -7,6 +7,7 @@
 //
 
 #import "SKYCreateUserOperation.h"
+#import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
 

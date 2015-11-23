@@ -152,6 +152,7 @@ SpecBegin(SKYModifyRecordsOperation)
                                @"_id" : @"book/book1",
                                @"_type" : @"record",
                                @"_revision" : @"revision1",
+                               @"title" : @"Title From Server",
                             },
                             @{
                                @"_id" : @"book/book2",
@@ -177,6 +178,7 @@ SpecBegin(SKYModifyRecordsOperation)
                     if ([record.recordID isEqual:record1.recordID]) {
                         expect([record class]).to.beSubclassOf([SKYRecord class]);
                         expect(record.recordID).to.equal(record1.recordID);
+                        expect(record[@"title"]).to.equal(@"Title From Server");
                     } else if ([record.recordID isEqual:record2.recordID]) {
                         expect([error class]).to.beSubclassOf([NSError class]);
                         expect([error SKYErrorType]).to.equal(@"SaveError");
@@ -184,14 +186,20 @@ SpecBegin(SKYModifyRecordsOperation)
                     [remainingRecordIDs removeObject:record.recordID];
                 };
 
-                operation.modifyRecordsCompletionBlock =
-                    ^(NSArray *savedRecords, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(savedRecords).to.haveCountOf(1);
-                            expect(remainingRecordIDs).to.haveCountOf(0);
-                            done();
-                        });
-                    };
+                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords,
+                                                           NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(savedRecords).to.haveCountOf(1);
+                        expect(remainingRecordIDs).to.haveCountOf(0);
+                        expect([operationError class]).to.beSubclassOf([NSError class]);
+                        expect(operationError.code).to.equal(SKYErrorPartialFailure);
+
+                        NSError *perRecordError =
+                            operationError.userInfo[SKYPartialErrorsByItemIDKey][record2.recordID];
+                        expect([perRecordError SKYErrorType]).to.equal(@"SaveError");
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
