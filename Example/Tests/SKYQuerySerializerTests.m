@@ -327,6 +327,20 @@ describe(@"serialize predicate", ^{
             @[ @"recipe", @"fiction" ]
         ]);
     });
+
+    it(@"serialize in with string on left hand side", ^{
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"%@ IN categories",
+                                                                                @"fiction"]];
+
+        expect(result).to.equal(@[
+            @"in",
+            @"fiction",
+            @{ @"$type" : @"keypath",
+               @"$val" : @"categories" },
+        ]);
+    });
+
 });
 
 describe(@"serialize sort descriptors", ^{
