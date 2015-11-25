@@ -12,10 +12,10 @@
 #import "SKYNotification_Private.h"
 #import "SKYOperation.h"
 #import "SKYPushOperation.h"
-#import "SKYUserLoginOperation.h"
-#import "SKYUserLogoutOperation.h"
+#import "SKYLoginUserOperation.h"
+#import "SKYLogoutUserOperation.h"
 #import "SKYUserRecordID_Private.h"
-#import "SKYCreateUserOperation.h"
+#import "SKYSignupUserOperation.h"
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
 #import "SKYLambdaOperation.h"
@@ -271,10 +271,10 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             });
         };
 
-    if ([operation isKindOfClass:[SKYUserLoginOperation class]]) {
-        [(SKYUserLoginOperation *)operation setLoginCompletionBlock:completionBock];
-    } else if ([operation isKindOfClass:[SKYCreateUserOperation class]]) {
-        [(SKYCreateUserOperation *)operation setCreateCompletionBlock:completionBock];
+    if ([operation isKindOfClass:[SKYLoginUserOperation class]]) {
+        [(SKYLoginUserOperation *)operation setLoginCompletionBlock:completionBock];
+    } else if ([operation isKindOfClass:[SKYSignupUserOperation class]]) {
+        [(SKYSignupUserOperation *)operation setSignupCompletionBlock:completionBock];
     } else {
         @throw
             [NSException exceptionWithName:NSInvalidArgumentException
@@ -289,8 +289,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYCreateUserOperation *operation =
-        [SKYCreateUserOperation operationWithEmail:username password:password];
+    SKYSignupUserOperation *operation =
+        [SKYSignupUserOperation operationWithEmail:username password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
@@ -298,16 +298,16 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                password:(NSString *)password
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYCreateUserOperation *operation =
-        [SKYCreateUserOperation operationWithEmail:email password:password];
+    SKYSignupUserOperation *operation =
+        [SKYSignupUserOperation operationWithEmail:email password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)signupAnonymouslyWithCompletionHandler:
     (SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYCreateUserOperation *operation =
-        [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
+    SKYSignupUserOperation *operation =
+        [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
@@ -315,8 +315,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYUserLoginOperation *operation =
-        [SKYUserLoginOperation operationWithUsername:username password:password];
+    SKYLoginUserOperation *operation =
+        [SKYLoginUserOperation operationWithUsername:username password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
@@ -324,14 +324,14 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYUserLoginOperation *operation =
-        [SKYUserLoginOperation operationWithEmail:email password:password];
+    SKYLoginUserOperation *operation =
+        [SKYLoginUserOperation operationWithEmail:email password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
+    SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
     operation.container = self;
 
     __weak typeof(self) weakSelf = self;

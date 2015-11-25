@@ -1,5 +1,5 @@
 //
-//  SKYCreateUserOperation.h
+//  SKYSignupUserOperation.h
 //  Pods
 //
 //  Created by Patrick Cheung on 26/2/15.
@@ -9,7 +9,7 @@
 #import "SKYOperation.h"
 
 /**
- <SKYCreateUserOperation> is a subclass of <SKYOperation> which an user object
+ <SKYSignupUserOperation> is a subclass of <SKYOperation> which an user object
  in Ourd. Use this operation to create a new user account in the container.
  When a new user is created, an <SKYUserRecordID> and an <SKYAccessToken>
  will be returned.
@@ -23,10 +23,10 @@
  user content. For anonymous user account, you should generate a password
  on the user's behalf and save the password.
 
- If you assign a block to `createCompletionBlock`, it will be called when
+ If you assign a block to `signupCompletionBlock`, it will be called when
  the operation is completed.
  */
-@interface SKYCreateUserOperation : SKYOperation
+@interface SKYSignupUserOperation : SKYOperation
 
 /**
  Username of the user. This username is unique across system.
@@ -57,7 +57,7 @@
  - *accessToken*: An <SKYAccessToken> object for performing other operations on behalf of this user.
  - *error*: If an error occurred, this object describes the error.
  */
-@property (nonatomic, copy) void (^createCompletionBlock)
+@property (nonatomic, copy) void (^signupCompletionBlock)
     (SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
 
 /**
@@ -67,7 +67,7 @@
  @param email An email address provided by the user.
  @param password A password provided by the user.
 
- @return <SKYCreateUserOperation> object.
+ @return <SKYSignupUserOperation> object.
  */
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;
 
@@ -78,7 +78,7 @@
  @param email An email address provided by the user.
  @param password A password provided by the user.
 
- @return <SKYCreateUserOperation> object.
+ @return <SKYSignupUserOperation> object.
  */
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
 
@@ -88,7 +88,7 @@
 
  @param password A password randomly generated.
 
- @return <SKYCreateUserOperation> object.
+ @return <SKYSignupUserOperation> object.
  */
 + (instancetype)operationWithAnonymousUserAndPassword:(NSString *)password;
 

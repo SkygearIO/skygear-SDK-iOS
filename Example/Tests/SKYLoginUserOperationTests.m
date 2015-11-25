@@ -1,5 +1,5 @@
 //
-//  SKYUserLoginOperationTests.m
+//  SKYLoginUserOperationTests.m
 //  SkyKit
 //
 //  Created by Patrick Cheung on 25/2/15.
@@ -10,7 +10,7 @@
 #import <SkyKit/SkyKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
-SpecBegin(SKYUserLoginOperation)
+SpecBegin(SKYLoginUserOperation)
 
     describe(@"login", ^{
         __block SKYContainer *container = nil;
@@ -24,8 +24,8 @@ SpecBegin(SKYUserLoginOperation)
         });
 
         it(@"make SKYRequest with username login", ^{
-            SKYUserLoginOperation *operation =
-                [SKYUserLoginOperation operationWithUsername:@"username" password:@"password"];
+            SKYLoginUserOperation *operation =
+                [SKYLoginUserOperation operationWithUsername:@"username" password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -38,8 +38,8 @@ SpecBegin(SKYUserLoginOperation)
         });
 
         it(@"make SKYRequest with email login", ^{
-            SKYUserLoginOperation *operation =
-                [SKYUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
+            SKYLoginUserOperation *operation =
+                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -52,8 +52,8 @@ SpecBegin(SKYUserLoginOperation)
         });
 
         it(@"make request", ^{
-            SKYUserLoginOperation *operation =
-                [SKYUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
+            SKYLoginUserOperation *operation =
+                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -90,8 +90,8 @@ SpecBegin(SKYUserLoginOperation)
         });
 
         it(@"pass error", ^{
-            SKYUserLoginOperation *operation =
-                [SKYUserLoginOperation operationWithEmail:@"user@example.com" password:@"password"];
+            SKYLoginUserOperation *operation =
+                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }

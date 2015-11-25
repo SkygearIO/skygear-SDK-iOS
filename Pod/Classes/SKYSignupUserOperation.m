@@ -1,17 +1,17 @@
 //
-//  SKYCreateUserOperation.m
+//  SKYSignupUserOperation.m
 //  Pods
 //
 //  Created by Patrick Cheung on 26/2/15.
 //
 //
 
-#import "SKYCreateUserOperation.h"
+#import "SKYSignupUserOperation.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
 
-@implementation SKYCreateUserOperation
+@implementation SKYSignupUserOperation
 
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
 {
@@ -91,10 +91,10 @@
     }
 }
 
-- (void)setCreateCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
-                                           NSError *))createCompletionBlock
+- (void)setSignupCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
+                                           NSError *))signupCompletionBlock
 {
-    if (createCompletionBlock) {
+    if (signupCompletionBlock) {
         __weak typeof(self) weakSelf = self;
         self.completionBlock = ^{
             if (!weakSelf.error) {
@@ -105,9 +105,9 @@
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
                 NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
                       response[@"access_token"]);
-                createCompletionBlock(recordID, accessToken, nil);
+                signupCompletionBlock(recordID, accessToken, nil);
             } else {
-                createCompletionBlock(nil, nil, weakSelf.error);
+                signupCompletionBlock(nil, nil, weakSelf.error);
             }
         };
     } else {

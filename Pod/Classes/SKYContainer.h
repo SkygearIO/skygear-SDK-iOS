@@ -108,7 +108,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
  2. Access token is invalid or has been expired.
 
  In either cases, developer should prompt for re-authentication of user and login using
- <SKYUserLoginOperation>.
+ <SKYLoginUserOperation>.
 
  NOTE: Any attempt to invoke user logout related operation within the set handler will created an
  feedback loop as logouting an invalid access token is also a kind of authentication error.
@@ -121,7 +121,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 
  Use this to create a user that is not associated with an email address. This is a convenient method
  for
- <SKYCreateUserOperation>.
+ <SKYSignupUserOperation>.
  */
 - (void)signupAnonymouslyWithCompletionHandler:
     (SKYContainerUserOperationActionCompletion)completionHandler;
@@ -157,7 +157,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 /**
  Logs out the current user of this container.
 
- This is a convenient method for <SKYUserLogoutOperation>.
+ This is a convenient method for <SKYLogoutUserOperation>.
  */
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 

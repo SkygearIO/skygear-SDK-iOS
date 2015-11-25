@@ -1,5 +1,5 @@
 //
-//  SKYUserLogoutOperationTests.m
+//  SKYLogoutUserOperationTests.m
 //  SkyKit
 //
 //  Created by Patrick Cheung on 2/3/15.
@@ -10,7 +10,7 @@
 #import <SkyKit/SkyKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
-SpecBegin(SKYUserLogoutOperation)
+SpecBegin(SKYLogoutUserOperation)
 
     describe(@"logout", ^{
         __block SKYContainer *container = nil;
@@ -23,7 +23,7 @@ SpecBegin(SKYUserLogoutOperation)
         });
 
         it(@"make SKYRequest", ^{
-            SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
+            SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -33,7 +33,7 @@ SpecBegin(SKYUserLogoutOperation)
         });
 
         it(@"make request", ^{
-            SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
+            SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -62,7 +62,7 @@ SpecBegin(SKYUserLogoutOperation)
         });
 
         it(@"pass error", ^{
-            SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
+            SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }

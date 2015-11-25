@@ -1,5 +1,5 @@
 //
-//  SKYCreateUserOperationTests.m
+//  SKYSignupUserOperationTests.m
 //  SkyKit
 //
 //  Created by Patrick Cheung on 26/2/15.
@@ -10,7 +10,7 @@
 #import <SkyKit/SkyKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
-SpecBegin(SKYCreateUserOperation)
+SpecBegin(SKYSignupUserOperation)
 
     describe(@"create", ^{
         __block SKYContainer *container = nil;
@@ -24,8 +24,8 @@ SpecBegin(SKYCreateUserOperation)
         });
 
         it(@"normal user request", ^{
-            SKYCreateUserOperation *operation =
-                [SKYCreateUserOperation operationWithEmail:@"user@example.com"
+            SKYSignupUserOperation *operation =
+                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
                                                   password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
@@ -39,8 +39,8 @@ SpecBegin(SKYCreateUserOperation)
         });
 
         it(@"anonymous user request", ^{
-            SKYCreateUserOperation *operation =
-                [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"password"];
+            SKYSignupUserOperation *operation =
+                [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"password"];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -52,8 +52,8 @@ SpecBegin(SKYCreateUserOperation)
         });
 
         it(@"make normal user request", ^{
-            SKYCreateUserOperation *operation =
-                [SKYCreateUserOperation operationWithEmail:@"user@example.com"
+            SKYSignupUserOperation *operation =
+                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
                                                   password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -74,7 +74,7 @@ SpecBegin(SKYCreateUserOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.createCompletionBlock =
+                operation.signupCompletionBlock =
                     ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(recordID.recordType).to.equal(@"_user");
@@ -90,8 +90,8 @@ SpecBegin(SKYCreateUserOperation)
         });
 
         it(@"make anonymous user request", ^{
-            SKYCreateUserOperation *operation =
-                [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"password"];
+            SKYSignupUserOperation *operation =
+                [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -111,7 +111,7 @@ SpecBegin(SKYCreateUserOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.createCompletionBlock =
+                operation.signupCompletionBlock =
                     ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(recordID.recordType).to.equal(@"_user");
@@ -127,8 +127,8 @@ SpecBegin(SKYCreateUserOperation)
         });
 
         it(@"pass error", ^{
-            SKYCreateUserOperation *operation =
-                [SKYCreateUserOperation operationWithEmail:@"user@example.com"
+            SKYSignupUserOperation *operation =
+                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
                                                   password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -141,7 +141,7 @@ SpecBegin(SKYCreateUserOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.createCompletionBlock =
+                operation.signupCompletionBlock =
                     ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();

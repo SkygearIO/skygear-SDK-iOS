@@ -1,5 +1,5 @@
 //
-//  SKYUserLoginOperation.h
+//  SKYLoginUserOperation.h
 //  askq
 //
 //  Created by Patrick Cheung on 8/2/15.
@@ -10,7 +10,7 @@
 #import "SKYUserRecordID.h"
 #import "SKYAccessToken.h"
 
-@interface SKYUserLoginOperation : SKYOperation
+@interface SKYLoginUserOperation : SKYOperation
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;
