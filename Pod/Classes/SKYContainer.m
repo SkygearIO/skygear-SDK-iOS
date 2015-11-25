@@ -285,20 +285,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [_operationQueue addOperation:operation];
 }
 
-- (void)signup:(NSString *)username
-            password:(NSString *)password
-    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    [self signupWithUsername:username password:password completionHandler:completionHandler];
-}
-
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-       completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    [self signupWithEmail:email password:password completionHandler:completionHandler];
-}
-
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
@@ -325,13 +311,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
-- (void)login:(NSString *)username
-             password:(NSString *)password
-    completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    [self loginWithUsername:username password:password completionHandler:completionHandler];
-}
-
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
@@ -348,11 +327,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     SKYUserLoginOperation *operation =
         [SKYUserLoginOperation operationWithEmail:email password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)logoutWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    [self logoutWithCompletionHandler:completionHandler];
 }
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
