@@ -257,16 +257,11 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
 #pragma mark - User Auth
 
-- (void)signup:(NSString *)username
-            password:(NSString *)password
-    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
+- (void)performUserAuthOperation:(SKYOperation *)operation
+               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYCreateUserOperation *operation =
-        [SKYCreateUserOperation operationWithEmail:username password:password];
-    operation.container = self;
-
     __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock =
+    void (^completionBock)(SKYUserRecordID *, SKYAccessToken *, NSError *) =
         ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
                 [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
@@ -276,29 +271,50 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             });
         };
 
+    if ([operation isKindOfClass:[SKYUserLoginOperation class]]) {
+        [(SKYUserLoginOperation *)operation setLoginCompletionBlock:completionBock];
+    } else if ([operation isKindOfClass:[SKYCreateUserOperation class]]) {
+        [(SKYCreateUserOperation *)operation setCreateCompletionBlock:completionBock];
+    } else {
+        @throw
+            [NSException exceptionWithName:NSInvalidArgumentException
+                                    reason:@"Only User Login or Create User Operation is supported."
+                                  userInfo:nil];
+    }
+    operation.container = self;
     [_operationQueue addOperation:operation];
+}
+
+- (void)signup:(NSString *)username
+            password:(NSString *)password
+    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    [self signupWithUsername:username password:password completionHandler:completionHandler];
 }
 
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
        completionHander:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    [self signupWithEmail:email password:password completionHandler:completionHandler];
+}
+
+- (void)signupWithUsername:(NSString *)username
+                  password:(NSString *)password
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYCreateUserOperation *operation =
+        [SKYCreateUserOperation operationWithEmail:username password:password];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
+}
+
+- (void)signupWithEmail:(NSString *)email
+               password:(NSString *)password
+      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
     SKYCreateUserOperation *operation =
         [SKYCreateUserOperation operationWithEmail:email password:password];
-    operation.container = self;
-
-    __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock =
-        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-            if (!error) {
-                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordID, error);
-            });
-        };
-
-    [_operationQueue addOperation:operation];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)signupAnonymouslyWithCompletionHandler:
@@ -306,45 +322,40 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYCreateUserOperation *operation =
         [SKYCreateUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
-
-    __weak typeof(self) weakSelf = self;
-    operation.createCompletionBlock =
-        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-            if (!error) {
-                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordID, error);
-            });
-        };
-
-    [self addOperation:operation];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)login:(NSString *)username
              password:(NSString *)password
     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    [self loginWithUsername:username password:password completionHandler:completionHandler];
+}
 
+- (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
+        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
     SKYUserLoginOperation *operation =
         [SKYUserLoginOperation operationWithUsername:username password:password];
-    operation.container = self;
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
+}
 
-    __weak typeof(self) weakSelf = self;
-    operation.loginCompletionBlock =
-        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
-            if (!error) {
-                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordID, error);
-            });
-        };
-
-    [_operationQueue addOperation:operation];
+- (void)loginWithEmail:(NSString *)email
+              password:(NSString *)password
+     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYUserLoginOperation *operation =
+        [SKYUserLoginOperation operationWithEmail:email password:password];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)logoutWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    [self logoutWithCompletionHandler:completionHandler];
+}
+
+- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYUserLogoutOperation *operation = [[SKYUserLogoutOperation alloc] init];
     operation.container = self;
