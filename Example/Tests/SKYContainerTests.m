@@ -66,6 +66,90 @@ describe(@"Default container", ^{
     });
 });
 
+describe(@"user login and signup", ^{
+    __block SKYContainer *container = nil;
+    __block void (^assertLoggedIn)(SKYUserRecordID *, NSError *) =
+        ^(SKYUserRecordID *userRecordID, NSError *error) {
+            expect(container.currentUserRecordID).to.equal(userRecordID);
+            expect(error).to.beNil();
+            expect(userRecordID.recordType).to.equal(@"_user");
+            expect(userRecordID.recordName).to.equal(@"UUID");
+            expect(container.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+        };
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:@"API_KEY"];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"user_id" : @"UUID",
+                    @"access_token" : @"ACCESS_TOKEN",
+                };
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:@{
+                    @"result" : parameters
+                }
+                                                                  options:0
+                                                                    error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+    });
+
+    it(@"signup user email and password", ^{
+        waitUntil(^(DoneCallback done) {
+            [container signupWithEmail:@"test@invalid"
+                              password:@"secret"
+                     completionHandler:^(SKYUserRecordID *user, NSError *error) {
+                         assertLoggedIn(user, error);
+                         done();
+                     }];
+        });
+    });
+
+    it(@"signup username and password", ^{
+        waitUntil(^(DoneCallback done) {
+            [container signupWithUsername:@"test"
+                                 password:@"secret"
+                        completionHandler:^(SKYUserRecordID *user, NSError *error) {
+                            assertLoggedIn(user, error);
+                            done();
+                        }];
+        });
+    });
+
+    it(@"login user email and password", ^{
+        waitUntil(^(DoneCallback done) {
+            [container loginWithEmail:@"test@invalid"
+                             password:@"secret"
+                    completionHandler:^(SKYUserRecordID *user, NSError *error) {
+                        assertLoggedIn(user, error);
+                        done();
+                    }];
+        });
+    });
+
+    it(@"login username and password", ^{
+        waitUntil(^(DoneCallback done) {
+            [container loginWithUsername:@"test"
+                                password:@"secret"
+                       completionHandler:^(SKYUserRecordID *user, NSError *error) {
+                           assertLoggedIn(user, error);
+                           done();
+                       }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    });
+});
+
 describe(@"save current user", ^{
     it(@"logout user", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
@@ -82,7 +166,7 @@ describe(@"save current user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container logoutWithcompletionHandler:^(SKYUserRecordID *user, NSError *error) {
+            [container logoutWithCompletionHandler:^(SKYUserRecordID *user, NSError *error) {
                 done();
             }];
         });

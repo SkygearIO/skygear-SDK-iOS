@@ -126,16 +126,30 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 - (void)signupAnonymouslyWithCompletionHandler:
     (SKYContainerUserOperationActionCompletion)completionHandler;
 
-- (void)signup:(NSString *)username
-            password:(NSString *)password
-    completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
+/**
+ Creates a user account with the specified username and password.
+ */
+- (void)signupWithUsername:(NSString *)username
+                  password:(NSString *)password
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Creates a user account with the specified email and password.
+ */
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
-       completionHander:(SKYContainerUserOperationActionCompletion)completionHandler;
-- (void)login:(NSString *)username
-             password:(NSString *)password
-    completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
+/**
+ Logs in to an existing user account with the specified username and password.
+ */
+- (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
+        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Logs in to an existing user account with the specified email and password.
+ */
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
@@ -145,7 +159,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 
  This is a convenient method for <SKYUserLogoutOperation>.
  */
-- (void)logoutWithcompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Registers a device token for push notification.
