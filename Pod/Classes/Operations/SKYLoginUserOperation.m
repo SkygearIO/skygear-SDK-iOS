@@ -1,17 +1,17 @@
 //
-//  SKYUserLoginOperation.m
+//  SKYLoginUserOperation.m
 //  askq
 //
 //  Created by Patrick Cheung on 8/2/15.
 //  Copyright (c) 2015 Rocky Chan. All rights reserved.
 //
 
-#import "SKYUserLoginOperation.h"
+#import "SKYLoginUserOperation.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
 
-@implementation SKYUserLoginOperation
+@implementation SKYLoginUserOperation
 
 - (instancetype)initWithEmail:(NSString *)email
                      username:(NSString *)username
