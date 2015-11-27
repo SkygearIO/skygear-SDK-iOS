@@ -58,10 +58,10 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _APIKey = nil;
         _pubsubClient =
             [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
-                                         APIKey:self.APIKey];
+                                         APIKey:nil];
         _internalPubsubClient = [[SKYPubsub alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
-                      APIKey:self.APIKey];
+                      APIKey:nil];
 
         [self loadAccessCurrentUserRecordIDAndAccessToken];
     }
