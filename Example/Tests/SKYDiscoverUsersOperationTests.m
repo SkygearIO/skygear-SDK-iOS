@@ -23,10 +23,8 @@ SpecBegin(SKYDiscoverUsersOperation)
 
         it(@"multiple emails", ^{
             SKYQueryUsersOperation *operation =
-                [SKYQueryUsersOperation discoverUsersOperationByEmails:@[
-                    @"john.doe@example.com",
-                    @"jane.doe@example.com"
-                ]];
+                [SKYQueryUsersOperation discoverUsersOperationByEmails:
+                                            @[ @"john.doe@example.com", @"jane.doe@example.com" ]];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -63,34 +61,33 @@ SpecBegin(SKYDiscoverUsersOperation)
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            }
-                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *parameters = @{
-                        @"result" : @[
-                            @{
-                               @"id" : @"user0",
-                               @"type" : @"user",
-                               @"data" : @{
-                                   @"_id" : @"user0",
-                                   @"email" : @"john.doe@example.com",
-                               },
-                            },
-                            @{
-                               @"id" : @"user1",
-                               @"type" : @"user",
-                               @"data" : @{
-                                   @"_id" : @"user1",
-                                   @"email" : @"jane.doe@example.com",
-                               },
-                            },
-                        ]
-                    };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"result" : @[
+                        @{
+                           @"id" : @"user0",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user0",
+                               @"email" : @"john.doe@example.com",
+                           },
+                        },
+                        @{
+                           @"id" : @"user1",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user1",
+                               @"email" : @"jane.doe@example.com",
+                           },
+                        },
+                    ],
+                    @"info" : @{@"count" : @10}
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
-                }];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
 
             waitUntil(^(DoneCallback done) {
                 operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
@@ -113,26 +110,25 @@ SpecBegin(SKYDiscoverUsersOperation)
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            }
-                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *parameters = @{
-                        @"result" : @[
-                            @{
-                               @"id" : @"user0",
-                               @"type" : @"user",
-                               @"data" : @{
-                                   @"_id" : @"user0",
-                                   @"email" : @"john.doe@example.com",
-                               },
-                            },
-                        ]
-                    };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"result" : @[
+                        @{
+                           @"id" : @"user0",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user0",
+                               @"email" : @"john.doe@example.com",
+                           },
+                        },
+                    ],
+                    @"info" : @{@"count" : @1}
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
-                }];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
 
             waitUntil(^(DoneCallback done) {
                 operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {

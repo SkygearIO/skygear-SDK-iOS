@@ -55,36 +55,36 @@ SpecBegin(SKYAddRelationsOperation)
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            }
-                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *parameters = @{
-                        @"request_id" : @"REQUEST_ID",
-                        @"result" : @[
-                            @{
-                               @"id" : @"user1001",
-                               @"type" : @"user",
-                               @"data" : @{
-                                   @"_id" : @"user1001",
-                               },
-                            },
-                            @{
-                               @"id" : @"user1002",
-                               @"type" : @"error",
-                               @"data" : @{
-                                   @"code" : @104,
-                                   @"message" : @"cannot find user",
-                                   @"type" : @"ResourceNotFound",
-                                   @"info" : @{@"id" : @"user1002"},
-                               },
-                            },
-                        ],
-                    };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"request_id" : @"REQUEST_ID",
+                    @"result" : @[
+                        @{
+                           @"id" : @"user1001",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user1001",
+                               @"username" : @"user1001",
+                               @"email" : @"user1001@skygear.io"
+                           },
+                        },
+                        @{
+                           @"id" : @"user1002",
+                           @"type" : @"error",
+                           @"data" : @{
+                               @"code" : @104,
+                               @"message" : @"cannot find user",
+                               @"type" : @"ResourceNotFound",
+                               @"info" : @{@"id" : @"user1002"},
+                           },
+                        },
+                    ],
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
-                }];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
 
             waitUntil(^(DoneCallback done) {
                 operation.addRelationsCompletionBlock =
