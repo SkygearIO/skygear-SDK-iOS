@@ -15,12 +15,6 @@ typedef enum : NSUInteger {
     SKYUserDiscoveryMethodRelation = 1,
 } SKYUserDiscoveryMethod;
 
-typedef enum : NSInteger {
-    SKYRelationDirectionOutward,
-    SKYRelationDirectionInward,
-    SKYRelationDirectionMutual
-} SKYRelationDirection;
-
 /**
  <SKYQueryUsersOperation> is a subclass of <SKYOperation> that implements user query
  in Ourd. Use this operation to query other user in the same application.

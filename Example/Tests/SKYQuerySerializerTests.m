@@ -341,6 +341,22 @@ describe(@"serialize predicate", ^{
         ]);
     });
 
+    it(@"user relation predicate", ^{
+        SKYRelationPredicate *p =
+            [SKYRelationPredicate predicateWithRelation:[SKYRelation followingRelation]
+                                                keyPath:@"_owner"];
+        NSArray *result = [serializer serializeWithPredicate:p];
+
+        expect(result).to.equal(@[
+            @"func",
+            @"userRelation",
+            @{ @"$type" : @"keypath",
+               @"$val" : @"_owner" },
+            @{ @"$type" : @"relation",
+               @"$name" : @"_follow",
+               @"$direction" : @"outward" }
+        ]);
+    });
 });
 
 describe(@"serialize sort descriptors", ^{

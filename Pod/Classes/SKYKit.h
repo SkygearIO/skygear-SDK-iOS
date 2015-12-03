@@ -68,6 +68,7 @@
 #import "SKYReference.h"
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYRelation.h"
+#import "SKYRelationPredicate.h"
 #import "SKYRequest.h"
 #import "SKYServerChangeToken.h"
 #import "SKYSubscription.h"

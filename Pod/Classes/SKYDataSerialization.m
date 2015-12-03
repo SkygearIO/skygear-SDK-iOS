@@ -19,6 +19,7 @@ NSString *const SKYDataSerializationAssetType = @"asset";
 NSString *const SKYDataSerializationReferenceType = @"ref";
 NSString *const SKYDataSerializationDateType = @"date";
 NSString *const SKYDataSerializationLocationType = @"geo";
+NSString *const SKYDataSerializationRelationType = @"relation";
 
 static NSDictionary *remoteFunctionNameDict;
 static NSDictionary *localFunctionNameDict;
@@ -65,6 +66,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         obj = [self deserializeAssetWithDictionary:data];
     } else if ([type isEqualToString:SKYDataSerializationLocationType]) {
         obj = [self deserializeLocationWithDictionary:data];
+    } else if ([type isEqualToString:SKYDataSerializationRelationType]) {
+        obj = [self deserializeRelationWithDictionary:data];
     }
     return obj;
 }
@@ -125,6 +128,31 @@ NSString *localFunctionName(NSString *remoteFunctionName)
                                         timestamp:[NSDate dateWithTimeIntervalSince1970:0]];
 }
 
++ (SKYRelation *)deserializeRelationWithDictionary:(NSDictionary *)data
+{
+    NSString *name = data[@"name"];
+    if ([name isEqualToString:@"_friend"]) {
+        name = @"friend";
+    } else if ([name isEqualToString:@"_follow"]) {
+        name = @"follow";
+    }
+
+    SKYRelationDirection direction;
+    if ([data[@"direction"] isEqualToString:@"outward"]) {
+        direction = SKYRelationDirectionOutward;
+    } else if ([data[@"direction"] isEqualToString:@"inward"]) {
+        direction = SKYRelationDirectionInward;
+    } else if ([data[@"direction"] isEqualToString:@"mutual"]) {
+        direction = SKYRelationDirectionMutual;
+    } else {
+        NSLog(@"Unexpected relation direction %@. Assuming direction is outward.",
+              data[@"direction"]);
+        direction = SKYRelationDirectionOutward;
+    }
+
+    return [SKYRelation relationWithName:name direction:direction];
+}
+
 + (id)serializeSimpleObject:(id)obj
 {
     id data = nil;
@@ -151,6 +179,37 @@ NSString *localFunctionName(NSString *remoteFunctionName)
             SKYDataSerializationCustomTypeKey : SKYDataSerializationLocationType,
             @"$lng" : @(coordinate.longitude),
             @"$lat" : @(coordinate.latitude),
+        };
+    } else if ([obj isKindOfClass:[SKYRelation class]]) {
+        SKYRelation *relation = (SKYRelation *)obj;
+        NSString *name = relation.name;
+        if ([name isEqualToString:@"follow"]) {
+            name = @"_follow";
+        } else if ([name isEqualToString:@"friend"]) {
+            name = @"_friend";
+        }
+
+        NSString *direction;
+        switch (relation.direction) {
+            case SKYRelationDirectionInward:
+                direction = @"inward";
+                break;
+            case SKYRelationDirectionOutward:
+                direction = @"outward";
+                break;
+            case SKYRelationDirectionMutual:
+                direction = @"mutual";
+                break;
+            default:
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                               reason:@"Unexpected relation direction."
+                                             userInfo:nil];
+        }
+
+        data = @{
+            SKYDataSerializationCustomTypeKey : SKYDataSerializationRelationType,
+            @"$name" : name,
+            @"$direction" : direction,
         };
     } else {
         data = obj;
