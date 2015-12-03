@@ -123,9 +123,21 @@ NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
     }
 }
 
+- (void)processResultInfo:(NSDictionary *)resultInfo
+{
+    if (![resultInfo isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+
+    [self willChangeValueForKey:@"overallCount"];
+    _overallCount = [resultInfo[@"count"] unsignedIntegerValue];
+    [self didChangeValueForKey:@"overallCount"];
+}
+
 - (void)handleResponse:(SKYResponse *)responseObject
 {
     NSDictionary *response = responseObject.responseDictionary;
+    [self processResultInfo:response[@"info"]];
     NSArray *result = response[@"result"];
     NSArray *userDicts = [self.class itemDictsFromResult:result];
     NSMutableArray *users = [NSMutableArray arrayWithCapacity:userDicts.count];

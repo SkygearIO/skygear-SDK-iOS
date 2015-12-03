@@ -90,11 +90,13 @@ SpecBegin(SKYDiscoverUsersOperation)
             }];
 
             waitUntil(^(DoneCallback done) {
+                __weak SKYQueryUsersOperation *weakOperation = operation;
                 operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(users).to.haveCountOf(2);
                         expect([users[0] username]).to.equal(@"user0");
                         expect([users[1] username]).to.equal(@"user1");
+                        expect(weakOperation.overallCount).to.equal(10);
                         expect(operationError).to.beNil();
                         done();
                     });
