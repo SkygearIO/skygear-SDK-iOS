@@ -98,6 +98,11 @@ typedef enum : NSInteger {
 @property (nonatomic, readonly, assign) SKYUserDiscoveryMethod discoveryMethod;
 
 /**
+ Returns the nubmer of all matching records if the original query requested this info.
+ */
+@property (nonatomic, readonly) NSUInteger overallCount;
+
+/**
  Sets or returns a block to be called when a user fetch operation completes for
  a <SKYUser>.
 

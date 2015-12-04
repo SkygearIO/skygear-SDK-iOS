@@ -65,6 +65,8 @@ SpecBegin(SKYAddRelationsOperation)
                                @"type" : @"user",
                                @"data" : @{
                                    @"_id" : @"user1001",
+                                   @"username" : @"user1001",
+                                   @"email" : @"user1001@skygear.io"
                                },
                             },
                             @{
