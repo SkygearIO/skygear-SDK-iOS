@@ -58,9 +58,9 @@
     } else {
         SKYRelation *relation;
         if ([rawRelation isEqualToString:@"follow"]) {
-            relation = [SKYRelation relationFollow];
+            relation = [SKYRelation followedRelation];
         } else if ([rawRelation isEqualToString:@"friend"]) {
-            relation = [SKYRelation relationFriend];
+            relation = [SKYRelation friendRelation];
         } else {
             NSLog(@"Failed to deserialize access control entry: unrecgonized relation %@",
                   rawRelation);
