@@ -18,9 +18,6 @@ typedef enum : NSInteger {
 
 - (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)relationFollow __deprecated;
-+ (instancetype)relationFriend __deprecated;
-
 + (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction;
 
 + (instancetype)friendRelation;

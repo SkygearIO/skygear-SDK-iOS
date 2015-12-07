@@ -76,16 +76,6 @@
     return shared;
 }
 
-+ (instancetype)relationFollow
-{
-    return [self followingRelation];
-}
-
-+ (instancetype)relationFriend
-{
-    return [self friendRelation];
-}
-
 #pragma mark - NSObject
 
 - (BOOL)isEqualToRelation:(SKYRelation *)relation
