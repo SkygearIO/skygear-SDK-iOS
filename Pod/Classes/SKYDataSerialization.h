@@ -13,6 +13,7 @@
 extern NSString *const SKYDataSerializationCustomTypeKey;
 extern NSString *const SKYDataSerializationReferenceType;
 extern NSString *const SKYDataSerializationDateType;
+extern NSString *const SKYDataSerializationRelationType;
 
 NSString *remoteFunctionName(NSString *localFunctionName);
 NSString *localFunctionName(NSString *remoteFunctionName);

@@ -11,6 +11,7 @@
 #import "SKYReference.h"
 #import "SKYDataSerialization.h"
 #import "SKYLocationSortDescriptor.h"
+#import "SKYRelationPredicate.h"
 
 @implementation SKYQuerySerializer
 
@@ -213,6 +214,15 @@
             [result addObject:[self serializeWithPredicate:(NSPredicate *)obj]];
         }];
         return [result copy];
+    } else if ([predicate isKindOfClass:[SKYRelationPredicate class]]) {
+        SKYRelationPredicate *relPredicate = (SKYRelationPredicate *)predicate;
+        return @[
+            @"func",
+            @"userRelation",
+            [self serializeWithExpression:[NSExpression expressionForKeyPath:relPredicate.keyPath]],
+            [SKYDataSerialization serializeObject:relPredicate.relation],
+        ];
+        return @[];
     } else if (!predicate) {
         return [NSArray array];
     } else {

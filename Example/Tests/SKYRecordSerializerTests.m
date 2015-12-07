@@ -123,7 +123,7 @@ SpecBegin(SKYRecordSerializer)
 
         it(@"serialize access control", ^{
             SKYAccessControlEntry *entry =
-                [SKYAccessControlEntry writeEntryForRelation:[SKYRelation relationFollow]];
+                [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
             record.accessControl = [SKYAccessControl accessControlWithEntries:@[ entry ]];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];

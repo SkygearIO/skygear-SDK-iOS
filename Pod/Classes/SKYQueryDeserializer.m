@@ -9,6 +9,7 @@
 #import "SKYQueryDeserializer.h"
 #import "SKYDataSerialization.h"
 #import "SKYLocationSortDescriptor.h"
+#import "SKYRelationPredicate.h"
 
 @implementation SKYQueryDeserializer
 
@@ -132,6 +133,8 @@
         predicate = [self comparisonPredicateWithArray:array];
     } else if ([@[ @"and", @"or", @"not" ] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
+    } else if ([op isEqualToString:@"func"]) {
+        predicate = [self functionalPredicateWithArray:array];
     }
 
     return predicate;
@@ -269,6 +272,18 @@
 
     return
         [[NSCompoundPredicate alloc] initWithType:compoundOperatorType subpredicates:subpredicates];
+}
+
+- (NSPredicate *)functionalPredicateWithArray:(NSArray *)array
+{
+    if ([array[1] isEqualToString:@"userRelation"]) {
+        NSExpression *keyPathExpr = [self expressionWithObject:array[2]];
+        SKYRelation *relation = [SKYDataSerialization deserializeObjectWithValue:array[3]];
+        return [SKYRelationPredicate predicateWithRelation:relation keyPath:[keyPathExpr keyPath]];
+    } else {
+        NSLog(@"Unexpected functional predicate %@.", array[1]);
+        return [NSPredicate predicateWithValue:YES];
+    }
 }
 
 @end

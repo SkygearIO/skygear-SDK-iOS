@@ -10,9 +10,8 @@
 
 @interface SKYRelation ()
 
-- (instancetype)initWithName:(NSString *)name NS_DESIGNATED_INITIALIZER;
-
-+ (instancetype)relationWithName:(NSString *)name;
+- (instancetype)initWithName:(NSString *)name
+                   direction:(SKYRelationDirection)direction NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readwrite, copy) NSString *name;
 
@@ -20,36 +19,59 @@
 
 @implementation SKYRelation
 
-- (instancetype)initWithName:(NSString *)name
+- (instancetype)initWithName:(NSString *)name direction:(SKYRelationDirection)direction
 {
     self = [super init];
     if (self) {
+        if (![name isKindOfClass:[NSString class]]) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Relation name is nil or of unexpected class."
+                                         userInfo:nil];
+        }
         _name = name;
+        _direction = direction;
     }
     return self;
 }
 
-+ (instancetype)relationWithName:(NSString *)name
++ (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction
 {
-    return [[self alloc] initWithName:name];
+    if ([name isEqualToString:@"friend"] && direction == SKYRelationDirectionMutual) {
+        return [self friendRelation];
+    } else if ([name isEqualToString:@"follow"] && direction == SKYRelationDirectionOutward) {
+        return [self followingRelation];
+    } else if ([name isEqualToString:@"follow"] && direction == SKYRelationDirectionInward) {
+        return [self followedRelation];
+    }
+    return [[self alloc] initWithName:name direction:direction];
 }
 
-+ (instancetype)relationFollow
++ (instancetype)friendRelation
 {
     static id shared;
     static dispatch_once_t token;
     dispatch_once(&token, ^{
-        shared = [self relationWithName:@"follow"];
+        shared = [[self alloc] initWithName:@"friend" direction:SKYRelationDirectionMutual];
     });
     return shared;
 }
 
-+ (instancetype)relationFriend
++ (instancetype)followingRelation
 {
     static id shared;
     static dispatch_once_t token;
     dispatch_once(&token, ^{
-        shared = [self relationWithName:@"friend"];
+        shared = [[self alloc] initWithName:@"follow" direction:SKYRelationDirectionOutward];
+    });
+    return shared;
+}
+
++ (instancetype)followedRelation
+{
+    static id shared;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        shared = [[self alloc] initWithName:@"follow" direction:SKYRelationDirectionInward];
     });
     return shared;
 }
@@ -58,8 +80,8 @@
 
 - (BOOL)isEqualToRelation:(SKYRelation *)relation
 {
-    // NOTE(limouren): since all instances are singleton we could use simple comparison here
-    return self == relation;
+    return self == relation ||
+           ([self.name isEqualToString:relation.name] && self.direction == relation.direction);
 }
 
 - (BOOL)isEqual:(id)object
@@ -73,6 +95,11 @@
     }
 
     return [self isEqualToRelation:object];
+}
+
+- (NSUInteger)hash
+{
+    return [_name hash] ^ _direction;
 }
 
 @end

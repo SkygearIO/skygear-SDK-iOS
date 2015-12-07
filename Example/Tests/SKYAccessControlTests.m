@@ -37,7 +37,7 @@ SpecBegin(SKYAccessControl)
         });
 
         it(@"is not public after mutated", ^{
-            [accessControl addReadAccessForRelation:[SKYRelation relationFollow]];
+            [accessControl addReadAccessForRelation:[SKYRelation followedRelation]];
             expect(accessControl.public).to.equal(NO);
             expect(serializedAccessControl(accessControl))
                 .to.equal(@[
@@ -94,9 +94,9 @@ describe(@"Access Control", ^{
 describe(@"Access Control Entry", ^{
     it(@"serializes correctly", ^{
         SKYAccessControlEntry *readRelationEntry =
-            [SKYAccessControlEntry readEntryForRelation:[SKYRelation relationFriend]];
+            [SKYAccessControlEntry readEntryForRelation:[SKYRelation friendRelation]];
         SKYAccessControlEntry *writeRelationEntry =
-            [SKYAccessControlEntry writeEntryForRelation:[SKYRelation relationFollow]];
+            [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
         SKYAccessControlEntry *readUserIDEntry = [SKYAccessControlEntry
             readEntryForUserID:[SKYUserRecordID recordIDWithUsername:@"userid0"]];
         SKYAccessControlEntry *writeUserIDEntry = [SKYAccessControlEntry

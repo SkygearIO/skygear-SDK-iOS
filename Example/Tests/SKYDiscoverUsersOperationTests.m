@@ -41,7 +41,7 @@ SpecBegin(SKYDiscoverUsersOperation)
 
         it(@"query relation", ^{
             SKYQueryUsersOperation *operation =
-                [SKYQueryUsersOperation queryUsersOperationByRelation:[SKYRelation relationFollow]
+                [SKYQueryUsersOperation queryUsersOperationByRelation:[SKYRelation followedRelation]
                                                             direction:SKYRelationDirectionMutual];
             operation.container = container;
             [operation prepareForRequest];
