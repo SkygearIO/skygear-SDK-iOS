@@ -5,7 +5,7 @@
 language: objective-c
 before_install:
 - export LANG=en_US.UTF-8
-- gem install cocoapods -v '~>0.37.2' # Since Travis is not always on latest version
+- gem install cocoapods -v '~>0.39.0' # Since Travis is not always on latest version
 - sudo pip install lizard
 - brew update
 - brew install clang-format
