@@ -115,7 +115,7 @@
             }
             break;
         default:
-            NSLog(@"Unsupport expression of type %lu.", expr.expressionType);
+            NSLog(@"Unsupport expression of type %lu.", (unsigned long)expr.expressionType);
             return nil;
     }
 }

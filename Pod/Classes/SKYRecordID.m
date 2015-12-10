@@ -57,6 +57,11 @@
                                name:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
 }
 
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 + (instancetype)recordIDWithRecordType:(NSString *)type
 {
     return [[self alloc] initWithRecordType:type];

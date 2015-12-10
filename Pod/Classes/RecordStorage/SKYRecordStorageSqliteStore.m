@@ -176,7 +176,7 @@
 #pragma mark -
 
 - (BOOL)_updatePermanentRowWithRecordID:(SKYRecordID *)recordID
-                           overlayRowID:(NSInteger)newRowID
+                           overlayRowID:(sqlite_int64)newRowID
                                   error:(NSError **)error
 {
     NSString *recordType = recordID.recordType;
@@ -484,7 +484,7 @@
                       "(recordID, attributesToSave, action, finished, resolveMethod, error) VALUES "
                       "(?, ?, ?, ?, ?, ?);";
 
-    BOOL success =
+    BOOL success __attribute__((unused)) =
         [_db executeUpdate:stmt, change.recordID.canonicalString,
                            [NSKeyedArchiver archivedDataWithRootObject:change.attributesToSave],
                            [NSNumber numberWithInt:change.action],
@@ -503,7 +503,8 @@
 
     NSString *stmt = @"DELETE FROM _pendingChanges WHERE recordID = ?";
 
-    BOOL success = [_db executeUpdate:stmt, change.recordID.canonicalString];
+    BOOL success __attribute__((unused)) =
+        [_db executeUpdate:stmt, change.recordID.canonicalString];
     NSAssert(success, @"handle delete failure not implemented");
 
     [self synchronize];

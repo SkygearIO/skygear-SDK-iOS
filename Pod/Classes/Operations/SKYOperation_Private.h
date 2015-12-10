@@ -10,8 +10,8 @@
 
 @interface SKYOperation ()
 
-@property (nonatomic, readonly) NSDictionary *response __deprecated;
-@property (nonatomic, readonly) NSError *error __deprecated;
+@property (nonatomic, readonly) NSDictionary *response;
+@property (nonatomic, readonly) NSError *error;
 @property (nonatomic, readonly) NSError *lastError;
 
 @end
