@@ -18,4 +18,6 @@
 @property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, readonly, copy) NSURL *url;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

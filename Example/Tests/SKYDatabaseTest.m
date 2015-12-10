@@ -335,6 +335,60 @@ SpecBegin(SKYDatabase)
 
         });
 
+        it(@"fetch all subscriptions", ^{
+            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSDictionary *parameters = @{
+                        @"request_id" : @"REQUEST_ID",
+                        @"database_id" : database.databaseID,
+                        @"result" : @[
+                            @{
+                               @"id" : @"sub1",
+                               @"type" : @"query",
+                               @"query" : @{
+                                   @"record_type" : @"book",
+                               }
+                            },
+                            @{
+                               @"id" : @"sub2",
+                               @"type" : @"query",
+                               @"query" : @{
+                                   @"record_type" : @"book",
+                               }
+                            },
+                        ]
+                    };
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                    return
+                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                [database fetchAllSubscriptionsWithCompletionHandler:^(NSArray *subscriptions,
+                                                                       NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect([subscriptions count]).to.equal(2);
+
+                        NSMutableArray *expectedSubscriptionIDs =
+                            [@[ @"sub1", @"sub2" ] mutableCopy];
+                        [subscriptions
+                            enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                [expectedSubscriptionIDs
+                                    removeObject:((SKYSubscription *)obj).subscriptionID];
+                            }];
+                        expect([expectedSubscriptionIDs count]).to.equal(0);
+                        done();
+                    });
+                }];
+            });
+
+        });
+
     });
 
 SpecEnd

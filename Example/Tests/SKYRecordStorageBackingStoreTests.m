@@ -32,7 +32,7 @@
 
     char *tempFileNameCString = (char *)malloc(strlen(tempFileTemplateCString) + 1);
     strcpy(tempFileNameCString, tempFileTemplateCString);
-    int fileDescriptor = mkstemps(tempFileNameCString, (NSInteger)[suffix length]);
+    int fileDescriptor = mkstemps(tempFileNameCString, (int)[suffix length]);
 
     // no need to keep it open
     close(fileDescriptor);

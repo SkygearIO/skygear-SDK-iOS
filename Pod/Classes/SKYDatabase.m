@@ -14,6 +14,7 @@
 #import "SKYFetchRecordsOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYModifySubscriptionsOperation.h"
+#import "SKYFetchSubscriptionsOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYQueryCache.h"
 #import "SKYRecord_Private.h"
@@ -64,6 +65,44 @@
 {
     SKYUserRecordID *currentUserRecordID = [self.container currentUserRecordID];
     return currentUserRecordID ? [[SKYUser alloc] initWithUserRecordID:currentUserRecordID] : nil;
+}
+
+#pragma mark - Subscriptions
+
+- (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
+{
+    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    if (completionHandler) {
+        operation.fetchSubscriptionCompletionBlock =
+            ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler([subscriptionsBySubscriptionID allValues], operationError);
+                });
+            };
+    }
+
+    [self executeOperation:operation];
+}
+
+- (void)fetchSubscriptionWithID:(NSString *)subscriptionID
+              completionHandler:(void (^)(SKYSubscription *, NSError *))completionHandler
+{
+    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    if (completionHandler) {
+        operation.fetchSubscriptionCompletionBlock =
+            ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSArray *subscriptions = [subscriptionsBySubscriptionID allValues];
+                    if ([subscriptions count] > 0) {
+                        completionHandler([subscriptions firstObject], operationError);
+                    } else {
+                        completionHandler(nil, operationError);
+                    }
+                });
+            };
+    }
+
+    [self executeOperation:operation];
 }
 
 - (void)saveSubscription:(SKYSubscription *)subscription

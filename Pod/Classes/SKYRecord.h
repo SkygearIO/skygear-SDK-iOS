@@ -30,6 +30,7 @@ extern NSString *const SKYRecordTypeUserRecord;
  @param recordType Record type of the record.
  @return An instance of SKYRecord.
  */
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)recordType;
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 - (instancetype)initWithRecordType:(NSString *)recordType
@@ -49,23 +50,7 @@ extern NSString *const SKYRecordTypeUserRecord;
 - (void)setObject:(id)object forKey:(id<NSCopying>)key;
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
 
-- (void)addObject:(id)object forKey:(id<NSCopying>)key;
-- (void)addObjectsFromArray:(NSArray *)objects forKey:(id<NSCopying>)key;
-- (void)removeObject:(id)object forKey:(id<NSCopying>)key;
-- (void)removeObjectsFromArray:(NSArray *)objects forKey:(id<NSCopying>)key;
-
 - (SKYRecord *)referencedRecordForKey:(id)key;
-
-// increment integer value stored in key by 1
-// if the value of key is nil, it is then treated as zero
-- (void)incrementKey:(id<NSCopying>)key;
-- (void)incrementKey:(id<NSCopying>)key amount:(NSInteger)amount;
-
-// work similarly as incrementKey: but also capacable to
-// increment integer value stored within a dictionary accessible by KVC
-// intermediate keys that do not exist beforehand will be created automatically
-- (void)incrementKeyPath:(id<NSCopying>)keyPath;
-- (void)incrementKeyPath:(id<NSCopying>)keyPath amount:(NSInteger)amount;
 
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
 @property (nonatomic, readonly, copy) NSString *recordType;
