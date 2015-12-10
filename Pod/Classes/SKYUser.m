@@ -20,23 +20,16 @@
 
 - (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID
 {
-    return [self initWithUserRecordID:recordID data:nil];
-}
-
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID data:(NSDictionary *)data
-{
-    self = [super initWithRecordID:recordID data:data];
+    self = [super init];
+    if (self) {
+        _recordID = [recordID copy];
+    }
     return self;
 }
 
 + (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID
 {
     return [[self alloc] initWithUserRecordID:recordID];
-}
-
-+ (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID data:(NSDictionary *)data
-{
-    return [[self alloc] initWithUserRecordID:recordID data:data];
 }
 
 - (NSString *)username
@@ -56,7 +49,7 @@
 
 - (SKYUserRecordID *)recordID
 {
-    return (SKYUserRecordID *)[super recordID];
+    return _recordID;
 }
 
 @end

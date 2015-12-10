@@ -13,27 +13,13 @@
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
-@interface SKYUser : SKYRecord
+@interface SKYUser : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID;
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID
-                                data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithRecordType:(NSString *)recordType NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                              name:(NSString *)recordName NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary *)data NS_UNAVAILABLE;
-- (instancetype)initWithRecordType:(NSString *)recordType
-                              name:(NSString *)recordName
-                              data:(NSDictionary *)data NS_UNAVAILABLE;
-- (instancetype)initWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data NS_UNAVAILABLE;
 
 + (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID;
-+ (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID data:(NSDictionary *)data;
 
 /**
  * The properties username, email, authData and isNew will be delegated to

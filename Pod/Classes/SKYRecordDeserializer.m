@@ -54,14 +54,7 @@
 
     SKYRecordID *recordID =
         [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
-    SKYRecord *record;
-    if ([recordID.recordType isEqualToString:@"_user"]) {
-        SKYUserRecordID *userRecordID =
-            [[SKYUserRecordID alloc] initWithCanonicalString:recordID.canonicalString];
-        record = [[SKYUser alloc] initWithUserRecordID:userRecordID data:recordData];
-    } else {
-        record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
-    }
+    SKYRecord *record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];
     if (ownerID.length) {
