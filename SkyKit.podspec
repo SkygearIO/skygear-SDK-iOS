@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
                        DESC
   s.homepage         = "https://github.com/oursky/ODKit"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
-  s.license          = 'MIT'
+  s.license          = 'Apache License, Version 2.0'
   s.author           = { "Kwok-kuen Cheung" => "cheungpat@y03.hk" }
   s.source           = { :git => "https://github.com/oursky/ODKit.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/oursky'
