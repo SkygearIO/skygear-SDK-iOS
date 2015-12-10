@@ -18,6 +18,7 @@ typedef enum SKYReferenceAction : NSInteger {
 
 @interface SKYReference : NSObject <NSCoding>
 
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithRecord:(SKYRecord *)record;
 - (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID;

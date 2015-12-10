@@ -30,6 +30,7 @@ extern NSString *const SKYRecordTypeUserRecord;
  @param recordType Record type of the record.
  @return An instance of SKYRecord.
  */
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithRecordType:(NSString *)recordType;
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 - (instancetype)initWithRecordType:(NSString *)recordType
