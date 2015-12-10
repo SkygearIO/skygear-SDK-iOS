@@ -8,7 +8,6 @@
 
 #import "SKYQueryOperation.h"
 #import "SKYRecordDeserializer.h"
-#import "SKYFollowQuery.h"
 #import "SKYQuerySerializer.h"
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"

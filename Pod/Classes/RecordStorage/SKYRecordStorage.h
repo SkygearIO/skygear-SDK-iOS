@@ -10,7 +10,6 @@
 
 #import "SKYRecord.h"
 #import "SKYRecordChange.h"
-#import "SKYRecordResultController.h"
 #import "SKYRecordStorageBackingStore.h"
 #import "SKYNotification.h"
 
@@ -166,13 +165,6 @@ typedef enum : NSInteger {
                        predicate:(NSPredicate *)predicate
                  sortDescriptors:(NSArray *)sortDescriptors
                       usingBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
-
-/**
- Returns SKYRecordResultController.
- */
-- (SKYRecordResultController *)recordResultControllerWithType:(NSString *)recordType
-                                                    predicate:(NSPredicate *)predicate
-                                              sortDescriptors:(NSArray *)sortDescriptors;
 
 #pragma mark - Managing Record changes
 

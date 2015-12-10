@@ -172,26 +172,4 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return [self setObject:value forKey:key];
 }
 
-#pragma mark - Atomic increment
-
-- (void)incrementKey:(id<NSCopying>)key
-{
-    // nothing
-}
-
-- (void)incrementKey:(id<NSCopying>)key amount:(NSInteger)amount
-{
-    // nothing
-}
-
-- (void)incrementKeyPath:(id<NSCopying>)keyPath
-{
-    // nothing
-}
-
-- (void)incrementKeyPath:(id<NSCopying>)keyPath amount:(NSInteger)amount
-{
-    // nothing
-}
-
 @end

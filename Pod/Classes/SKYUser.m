@@ -8,7 +8,6 @@
 
 #import "SKYUser.h"
 
-#import "SKYFollowReference_Private.h"
 #import "SKYQueryOperation.h"
 
 @interface SKYUser ()
@@ -58,59 +57,6 @@
 - (SKYUserRecordID *)recordID
 {
     return (SKYUserRecordID *)[super recordID];
-}
-
-- (SKYFollowReference *)followReference
-{
-    return [[SKYFollowReference alloc] initWithUserRecordID:self.recordID];
-}
-
-- (SKYQueryOperation *)mutualFollowerQueryOperation
-{
-    return [self mutualFollowerQueryOperationWithRecordFetchedBlock:nil queryCompletionBlock:nil];
-}
-
-- (SKYQueryOperation *)
-mutualFollowerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                              queryCompletionBlock:
-                                  (void (^)(SKYQueryCursor *cursor,
-                                            NSError *operationError))queryCompletionBlock
-{
-    SKYQuery *mutualFollowerQuery = self.followReference.mutualFollowerQuery;
-    SKYQueryOperation *queryOperation =
-        [[SKYQueryOperation alloc] initWithQuery:mutualFollowerQuery];
-    queryOperation.perRecordCompletionBlock = recordFetchedBlock;
-    queryOperation.queryRecordsCompletionBlock =
-        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
-            if (queryCompletionBlock) {
-                queryCompletionBlock(cursor, operationError);
-            }
-        };
-
-    return queryOperation;
-}
-
-- (SKYQueryOperation *)followerQueryOperation
-{
-    return [self followerQueryOperationWithRecordFetchedBlock:nil queryCompletionBlock:nil];
-}
-
-- (SKYQueryOperation *)
-followerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                        queryCompletionBlock:(void (^)(SKYQueryCursor *cursor,
-                                                       NSError *operationError))queryCompletionBlock
-{
-    SKYQuery *followerQuery = self.followReference.followerQuery;
-    SKYQueryOperation *queryOperation = [[SKYQueryOperation alloc] initWithQuery:followerQuery];
-    queryOperation.perRecordCompletionBlock = recordFetchedBlock;
-    queryOperation.queryRecordsCompletionBlock =
-        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
-            if (queryCompletionBlock) {
-                queryCompletionBlock(cursor, operationError);
-            }
-        };
-
-    return queryOperation;
 }
 
 @end

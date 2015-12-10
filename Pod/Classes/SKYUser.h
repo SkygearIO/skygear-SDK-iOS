@@ -10,7 +10,6 @@
 
 #import "SKYUserRecordID.h"
 
-@class SKYFollowReference;
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
@@ -46,62 +45,5 @@
 @property (nonatomic, readonly, assign) BOOL isNew;
 
 @property (nonatomic, readonly, copy) SKYUserRecordID *recordID;
-
-@end
-
-@interface SKYUser (SKYFollowReference)
-
-// delegate to [[self followReference] add:user]
-- (void)follow:(SKYUser *)user;
-- (void)follow:(SKYUser *)user withType:(NSString *)type;
-
-// delegate to [[self followReference] remove:user]
-- (void)unfollow:(SKYUser *)user;
-- (void)unfollow:(SKYUser *)user withType:(NSString *)type;
-
-- (SKYFollowReference *)followReference;
-- (SKYFollowReference *)followReferenceOfType:(NSString *)followType;
-
-- (SKYQueryOperation *)followingQueryOperation;
-- (SKYQueryOperation *)
-followingQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                         queryCompletionBlock:
-                             (void (^)(SKYQueryCursor *cursor,
-                                       NSError *operationError))queryCompletionBlock;
-- (SKYQueryOperation *)followingQueryOperationOfType:(NSString *)followType;
-- (SKYQueryOperation *)followingQueryOperationOfType:(NSString *)followType
-                                  recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                                queryCompletionBlock:
-                                    (void (^)(SKYQueryCursor *cursor,
-                                              NSError *operationError))queryCompletionBlock;
-
-- (SKYQueryOperation *)followerQueryOperation;
-- (SKYQueryOperation *)
-followerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                        queryCompletionBlock:
-                            (void (^)(SKYQueryCursor *cursor,
-                                      NSError *operationError))queryCompletionBlock;
-
-- (SKYQueryOperation *)followerQueryOperationOfType:(NSString *)followType;
-- (SKYQueryOperation *)followerQueryOperationOfType:(NSString *)followType
-                                 recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                               queryCompletionBlock:
-                                   (void (^)(SKYQueryCursor *cursor,
-                                             NSError *operationError))queryCompletionBlock;
-;
-
-- (SKYQueryOperation *)mutualFollowerQueryOperation;
-- (SKYQueryOperation *)
-mutualFollowerQueryOperationWithRecordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-                              queryCompletionBlock:
-                                  (void (^)(SKYQueryCursor *cursor,
-                                            NSError *operationError))queryCompletionBlock;
-
-- (SKYQueryOperation *)mutualFollowerQueryOperationOfType:(NSString *)followType;
-- (SKYQueryOperation *)
-mutualFollowerQueryOperationOfType:(NSString *)followType
-                recordFetchedBlock:(void (^)(SKYRecord *record))recordFetchedBlock
-              queryCompletionBlock:
-                  (void (^)(SKYQueryCursor *cursor, NSError *operationError))queryCompletionBlock;
 
 @end
