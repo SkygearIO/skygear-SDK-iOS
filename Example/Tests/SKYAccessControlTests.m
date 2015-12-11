@@ -1,6 +1,6 @@
 //
 //  SKYAccessControlTests.m
-//  SkyKit
+//  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
 //
@@ -15,8 +15,9 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+//
 
-#import <SkyKit/SkyKit.h>
+#import <SKYKit/SKYKit.h>
 
 #import "SKYAccessControl_Private.h"
 #import "SKYAccessControlDeserializer.h"

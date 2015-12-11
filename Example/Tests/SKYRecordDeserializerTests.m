@@ -1,6 +1,6 @@
 //
 //  SKYRecordDeserializerTests.m
-//  SkyKit
+//  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
 //
@@ -15,11 +15,12 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+//
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import <SkyKit/SkyKit.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYRecordDeserializer)
 

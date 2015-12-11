@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = "SkyKit"
+  s.name             = "SKYKit"
   s.version          = "0.1.0"
   s.summary          = "iOS SDK for Skygear"
   s.description      = <<-DESC
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
   s.resource_bundles = {
-    'SkyKit' => ['Pod/Assets/*.png']
+    'SKYKit' => ['Pod/Assets/*.png']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'

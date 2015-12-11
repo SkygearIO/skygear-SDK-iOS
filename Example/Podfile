@@ -2,12 +2,12 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.1'
 
-target 'SkyKit', :exclusive => true do
-  pod "SkyKit", :path => "../"
+target 'SKYKit', :exclusive => true do
+  pod "SKYKit", :path => "../"
 end
 
 target 'Tests', :exclusive => true do
-  pod "SkyKit", :path => "../"
+  pod "SKYKit", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'

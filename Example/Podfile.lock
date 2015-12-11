@@ -19,7 +19,7 @@ PODS:
   - OHHTTPStubs/NSURLSession (4.2.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (4.2.0)
-  - SkyKit (0.1.0):
+  - SKYKit (0.1.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
   - SocketRocket (0.4.2)
@@ -29,19 +29,19 @@ DEPENDENCIES:
   - Expecta
   - OCMock
   - OHHTTPStubs
-  - SkyKit (from `../`)
+  - SKYKit (from `../`)
   - Specta
 
 EXTERNAL SOURCES:
-  SkyKit:
-    :path: "../"
+  SKYKit:
+    :path: ../
 
 SPEC CHECKSUMS:
   Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   OCMock: 4c2925291f80407c3738dd1db14d21d0cc278864
   OHHTTPStubs: f639130b83fb5f4f022d38f841141b0a6fa77249
-  SkyKit: b4a7d05f9b26d1b7a06e14d2c8513fdb45e7b1b8
+  SKYKit: 7b96ad61a63812ad0562c13457e33ddb70dfeee3
   SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 

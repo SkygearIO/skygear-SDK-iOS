@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6003F589195388D20070C39A"
-               BuildableName = "SkyKit.app"
-               BlueprintName = "SkyKit"
-               ReferencedContainer = "container:SkyKit.xcodeproj">
+               BuildableName = "SKYKit.app"
+               BlueprintName = "SKYKit"
+               ReferencedContainer = "container:SKYKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "6003F5AD195388D20070C39A"
                BuildableName = "Tests.xctest"
                BlueprintName = "Tests"
-               ReferencedContainer = "container:SkyKit.xcodeproj">
+               ReferencedContainer = "container:SKYKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "SkyKit.app"
-            BlueprintName = "SkyKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            BuildableName = "SKYKit.app"
+            BlueprintName = "SKYKit"
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "SkyKit.app"
-            BlueprintName = "SkyKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            BuildableName = "SKYKit.app"
+            BlueprintName = "SKYKit"
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "SkyKit.app"
-            BlueprintName = "SkyKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            BuildableName = "SKYKit.app"
+            BlueprintName = "SKYKit"
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
