@@ -4,10 +4,12 @@ platform :ios, '7.1'
 
 target 'SkyKit', :exclusive => true do
   pod "SkyKit", :path => "../"
+  pod "SkyKit/Facebook", :path => "../"
 end
 
 target 'Tests', :exclusive => true do
   pod "SkyKit", :path => "../"
+  pod "SkyKit/Facebook", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'

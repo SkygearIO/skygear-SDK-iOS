@@ -11,15 +11,27 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/oursky/skygear-iOS-SDK.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '7.0'
-  s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'SkyKit' => ['Pod/Assets/*.png']
-  }
+  s.default_subspec = 'Core'
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'FMDB', '~> 2.5'
-  s.dependency 'SocketRocket', '~> 0.4'
+  s.subspec 'Core' do |core|
+    core.requires_arc = true
+
+    core.source_files = 'Pod/Classes/**/*'
+    core.resource_bundles = {
+      'SkyKit' => ['Pod/Assets/*.png']
+    }
+
+    # core.public_header_files = 'Pod/Classes/**/*.h'
+    # core.frameworks = 'UIKit', 'MapKit'
+    core.dependency 'FMDB', '~> 2.5'
+    core.dependency 'SocketRocket', '~> 0.4'
+  end
+
+  s.subspec 'Facebook' do |facebook|
+    facebook.source_files = 'Pod/Extensions/Facebook/**/*.{h,m}'
+    facebook.requires_arc = true
+
+    facebook.dependency 'FBSDKCoreKit', '~> 4.0'
+  end
 end
