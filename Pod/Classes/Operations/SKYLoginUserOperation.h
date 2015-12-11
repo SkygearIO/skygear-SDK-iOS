@@ -22,13 +22,29 @@
 
 @interface SKYLoginUserOperation : SKYOperation
 
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *email;
-@property (nonatomic, copy) NSString *password;
+@property (nonatomic, readonly, copy) NSString *username;
+@property (nonatomic, readonly, copy) NSString *email;
+@property (nonatomic, readonly, copy) NSString *password;
+@property (nonatomic, readonly, copy) NSString *provider;
+@property (nonatomic, readonly, copy) NSDictionary *authenticationData;
+
 @property (nonatomic, copy) void (^loginCompletionBlock)
     (SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
 
+/**
+ Creates and returns an instance of operation for logging in a user with username and password.
+ */
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;
+
+/**
+ Creates and returns an instance of operation for logging in a user with email and password.
+ */
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
+
+/**
+ Creates and returns an instance of operation for logging in a user with provider and auth data.
+ */
++ (instancetype)operationWithProvider:(NSString *)provider
+                   authenticationData:(NSDictionary *)authData;
 
 @end

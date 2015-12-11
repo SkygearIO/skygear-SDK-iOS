@@ -21,40 +21,71 @@
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
 
-@implementation SKYLoginUserOperation
+@implementation SKYLoginUserOperation {
+    NSDictionary *_authPayload;
+}
 
-- (instancetype)initWithEmail:(NSString *)email
-                     username:(NSString *)username
-                     password:(NSString *)password
+- (NSString *)username
+{
+    return _authPayload[@"username"];
+}
+
+- (NSString *)password
+{
+    return _authPayload[@"password"];
+}
+
+- (NSString *)email
+{
+    return _authPayload[@"email"];
+}
+
+- (NSString *)provider
+{
+    return _authPayload[@"provider"];
+}
+
+- (NSString *)authenticationData
+{
+    return _authPayload[@"auth_data"];
+}
+
+- (instancetype)initWithAuthenticationPayload:(NSDictionary *)authPayload
 {
     if ((self = [super init])) {
-        self.username = username;
-        self.email = email;
-        self.password = password;
+        _authPayload = authPayload ? [authPayload copy] : [NSMutableDictionary dictionary];
     }
     return self;
 }
 
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
 {
-    return [[self alloc] initWithEmail:nil username:username password:password];
+    return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
+        @"username" : username,
+        @"password" : password,
+    }];
 }
 
 + (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
 {
-    return [[self alloc] initWithEmail:email username:nil password:password];
+    return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
+        @"email" : email,
+        @"password" : password,
+    }];
+}
+
++ (instancetype)operationWithProvider:(NSString *)provider
+                   authenticationData:(NSDictionary *)authData
+{
+    return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
+        @"provider" : provider,
+        @"auth_data" : authData,
+    }];
 }
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
-    if (self.username) {
-        payload[@"username"] = self.username;
-    }
-    if (self.email) {
-        payload[@"email"] = self.email;
-    }
-    payload[@"password"] = self.password;
+    NSMutableDictionary *payload = [_authPayload mutableCopy];
     self.request = [[SKYRequest alloc] initWithAction:@"auth:login" payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
@@ -69,40 +100,38 @@
     }
 }
 
-- (void)setLoginCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
-                                          NSError *))loginCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (loginCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            SKYUserRecordID *recordID = nil;
-            SKYAccessToken *accessToken = nil;
-            NSError *error = nil;
-            if (!weakSelf.error) {
-                NSDictionary *response = weakSelf.response[@"result"];
-                if (response[@"user_id"] && response[@"access_token"]) {
-                    recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
-                    accessToken =
-                        [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
-                } else {
-                    error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                                code:0
-                                            userInfo:@{
-                                                NSLocalizedDescriptionKey :
-                                                    @"Returned data does not contain expected data."
-                                            }];
-                }
-            } else {
-                error = weakSelf.error;
-            }
+    if (self.loginCompletionBlock) {
+        self.loginCompletionBlock(nil, nil, error);
+    }
+}
 
-            if (!error) {
-                NSLog(@"User logged in with UserRecordID %@.", recordID.recordName);
-            }
-            loginCompletionBlock(recordID, accessToken, error);
-        };
+- (void)handleResponse:(SKYResponse *)aResponse
+{
+    SKYUserRecordID *recordID = nil;
+    SKYAccessToken *accessToken = nil;
+    NSError *error = nil;
+
+    NSDictionary *response = aResponse.responseDictionary[@"result"];
+    if (response[@"user_id"] && response[@"access_token"]) {
+        recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
+        accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
-        self.completionBlock = nil;
+        error = [NSError
+            errorWithDomain:(NSString *)SKYOperationErrorDomain
+                       code:0
+                   userInfo:@{
+                       NSLocalizedDescriptionKey : @"Returned data does not contain expected data."
+                   }];
+    }
+
+    if (!error) {
+        NSLog(@"User logged in with UserRecordID %@.", recordID.recordName);
+    }
+
+    if (self.loginCompletionBlock) {
+        self.loginCompletionBlock(recordID, accessToken, error);
     }
 }
 
