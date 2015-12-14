@@ -1,2 +1,2 @@
-# SkyKit
+# SKYKit
 iOS SDK for Skygear

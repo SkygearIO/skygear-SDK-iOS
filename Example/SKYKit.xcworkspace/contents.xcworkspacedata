@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:SkyKit.xcodeproj">
+      location = "group:SKYKit.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SkyKit.xcodeproj">
    </FileRef>
 </Workspace>

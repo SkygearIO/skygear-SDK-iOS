@@ -64,8 +64,8 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		8042FF4D70754137A585683E /* libPods-SkyKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D0A21907E2F88C47901220 /* libPods-SkyKit.a */; };
-		C6AA418D510F073AE2609148 /* libPods-SkyKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-SkyKit.a */; };
+		8042FF4D70754137A585683E /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D0A21907E2F88C47901220 /* libPods-SKYKit.a */; };
+		C6AA418D510F073AE2609148 /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-SKYKit.a */; };
 		CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */; };
 		CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */; };
 		CD42FE101AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */; };
@@ -90,13 +90,13 @@
 			containerPortal = 6003F582195388D10070C39A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 6003F589195388D20070C39A;
-			remoteInfo = SkyKit;
+			remoteInfo = SKYKit;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0AA14A77F7B5805A52640ECF /* Pods-SkyKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SkyKit/Pods-SkyKit.debug.xcconfig"; sourceTree = "<group>"; };
-		1FD295B3CF4DEAAEC58DA4F3 /* libPods-SkyKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SkyKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AA14A77F7B5805A52640ECF /* Pods-SKYKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SKYKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit.debug.xcconfig"; sourceTree = "<group>"; };
+		1FD295B3CF4DEAAEC58DA4F3 /* libPods-SKYKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SKYKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C525CB7BEDCD9C5F745CECD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		372E77901B28338A001F1972 /* SKYAccessControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAccessControlTests.m; sourceTree = "<group>"; };
 		372FD24C1AF79F59008128EC /* SKYHexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKYHexer.h; sourceTree = "<group>"; };
@@ -128,14 +128,14 @@
 		5F0532C01B8D912E00DA4D8B /* SKYPubsubTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPubsubTests.m; sourceTree = "<group>"; };
 		5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAddRelationsOperationTests.m; sourceTree = "<group>"; };
 		5F9F71421B0B349700F7ADDD /* SKYRemoveRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRemoveRelationsOperationTests.m; sourceTree = "<group>"; };
-		6003F58A195388D20070C39A /* SkyKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6003F58A195388D20070C39A /* SKYKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SKYKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6003F595195388D20070C39A /* SkyKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SkyKit-Info.plist"; sourceTree = "<group>"; };
+		6003F595195388D20070C39A /* SKYKit-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SKYKit-Info.plist"; sourceTree = "<group>"; };
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6003F59B195388D20070C39A /* SkyKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SkyKit-Prefix.pch"; sourceTree = "<group>"; };
+		6003F59B195388D20070C39A /* SKYKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKYKit-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* SKYAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKYAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* SKYAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKYAppDelegate.m; sourceTree = "<group>"; };
 		6003F5A0195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
@@ -149,10 +149,10 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		657F94CCEA2515F29D33EDA5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B46A624FFAA79E1A174FB17 /* SkyKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SkyKit.podspec; path = ../SkyKit.podspec; sourceTree = "<group>"; };
+		6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SKYKit.podspec; path = ../SKYKit.podspec; sourceTree = "<group>"; };
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		B4D0A21907E2F88C47901220 /* libPods-SkyKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SkyKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BBCD8651B4E01440D50F8C99 /* Pods-SkyKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkyKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-SkyKit/Pods-SkyKit.release.xcconfig"; sourceTree = "<group>"; };
+		B4D0A21907E2F88C47901220 /* libPods-SKYKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SKYKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCD8651B4E01440D50F8C99 /* Pods-SKYKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SKYKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit.release.xcconfig"; sourceTree = "<group>"; };
 		C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDatabaseTest.m; sourceTree = "<group>"; };
 		CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDeleteRecordsOperationTests.m; sourceTree = "<group>"; };
@@ -181,8 +181,8 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				C6AA418D510F073AE2609148 /* libPods-SkyKit.a in Frameworks */,
-				8042FF4D70754137A585683E /* libPods-SkyKit.a in Frameworks */,
+				C6AA418D510F073AE2609148 /* libPods-SKYKit.a in Frameworks */,
+				8042FF4D70754137A585683E /* libPods-SKYKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,8 +212,8 @@
 		3860173C0F432095134E4C25 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0AA14A77F7B5805A52640ECF /* Pods-SkyKit.debug.xcconfig */,
-				BBCD8651B4E01440D50F8C99 /* Pods-SkyKit.release.xcconfig */,
+				0AA14A77F7B5805A52640ECF /* Pods-SKYKit.debug.xcconfig */,
+				BBCD8651B4E01440D50F8C99 /* Pods-SKYKit.release.xcconfig */,
 				C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */,
 				3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */,
 			);
@@ -224,7 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
-				6003F593195388D20070C39A /* SkyKit */,
+				6003F593195388D20070C39A /* SKYKit */,
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
@@ -235,7 +235,7 @@
 		6003F58B195388D20070C39A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6003F58A195388D20070C39A /* SkyKit.app */,
+				6003F58A195388D20070C39A /* SKYKit.app */,
 				6003F5AE195388D20070C39A /* Tests.xctest */,
 			);
 			name = Products;
@@ -248,15 +248,15 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				1FD295B3CF4DEAAEC58DA4F3 /* libPods-SkyKit.a */,
+				1FD295B3CF4DEAAEC58DA4F3 /* libPods-SKYKit.a */,
 				EAF4B1BCF3CDA715078425EB /* libPods-Tests.a */,
 				657F94CCEA2515F29D33EDA5 /* libPods.a */,
-				B4D0A21907E2F88C47901220 /* libPods-SkyKit.a */,
+				B4D0A21907E2F88C47901220 /* libPods-SKYKit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6003F593195388D20070C39A /* SkyKit */ = {
+		6003F593195388D20070C39A /* SKYKit */ = {
 			isa = PBXGroup;
 			children = (
 				6003F59C195388D20070C39A /* SKYAppDelegate.h */,
@@ -268,16 +268,16 @@
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
-			path = SkyKit;
+			path = SKYKit;
 			sourceTree = "<group>";
 		};
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				6003F595195388D20070C39A /* SkyKit-Info.plist */,
+				6003F595195388D20070C39A /* SKYKit-Info.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
-				6003F59B195388D20070C39A /* SkyKit-Prefix.pch */,
+				6003F59B195388D20070C39A /* SKYKit-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -347,7 +347,7 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
-				6B46A624FFAA79E1A174FB17 /* SkyKit.podspec */,
+				6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */,
 				813616DF0F77FA2B355E0989 /* README.md */,
 				2C525CB7BEDCD9C5F745CECD /* LICENSE */,
 			);
@@ -357,9 +357,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6003F589195388D20070C39A /* SkyKit */ = {
+		6003F589195388D20070C39A /* SKYKit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "SkyKit" */;
+			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "SKYKit" */;
 			buildPhases = (
 				D875EEB35BEA3246A4BB7E22 /* Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
@@ -372,9 +372,9 @@
 			);
 			dependencies = (
 			);
-			name = SkyKit;
-			productName = SkyKit;
-			productReference = 6003F58A195388D20070C39A /* SkyKit.app */;
+			name = SKYKit;
+			productName = SKYKit;
+			productReference = 6003F58A195388D20070C39A /* SKYKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6003F5AD195388D20070C39A /* Tests */ = {
@@ -394,7 +394,7 @@
 				6003F5B4195388D20070C39A /* PBXTargetDependency */,
 			);
 			name = Tests;
-			productName = SkyKitTests;
+			productName = SKYKitTests;
 			productReference = 6003F5AE195388D20070C39A /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -416,7 +416,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "SkyKit" */;
+			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "SKYKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -429,7 +429,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6003F589195388D20070C39A /* SkyKit */,
+				6003F589195388D20070C39A /* SKYKit */,
 				6003F5AD195388D20070C39A /* Tests */,
 				CD7FE2771A9F0E6D002C076E /* Documentation */,
 			);
@@ -486,7 +486,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkyKit/Pods-SkyKit-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		382D42CDA389EB0FEFE8CE00 /* Copy Pods Resources */ = {
@@ -516,7 +516,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SkyKit/Pods-SkyKit-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CD7FE27B1A9F0E79002C076E /* ShellScript */ = {
@@ -631,7 +631,7 @@
 /* Begin PBXTargetDependency section */
 		6003F5B4195388D20070C39A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6003F589195388D20070C39A /* SkyKit */;
+			target = 6003F589195388D20070C39A /* SKYKit */;
 			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -746,30 +746,30 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0AA14A77F7B5805A52640ECF /* Pods-SkyKit.debug.xcconfig */;
+			baseConfigurationReference = 0AA14A77F7B5805A52640ECF /* Pods-SKYKit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SkyKit/SkyKit-Prefix.pch";
-				INFOPLIST_FILE = "SkyKit/SkyKit-Info.plist";
+				GCC_PREFIX_HEADER = "SKYKit/SKYKit-Prefix.pch";
+				INFOPLIST_FILE = "SKYKit/SKYKit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = SkyKit;
+				PRODUCT_NAME = SKYKit;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BBCD8651B4E01440D50F8C99 /* Pods-SkyKit.release.xcconfig */;
+			baseConfigurationReference = BBCD8651B4E01440D50F8C99 /* Pods-SKYKit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SkyKit/SkyKit-Prefix.pch";
-				INFOPLIST_FILE = "SkyKit/SkyKit-Info.plist";
+				GCC_PREFIX_HEADER = "SKYKit/SKYKit-Prefix.pch";
+				INFOPLIST_FILE = "SKYKit/SKYKit-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				PRODUCT_NAME = SkyKit;
+				PRODUCT_NAME = SKYKit;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -778,7 +778,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0F78B1D9D25D2F357E0451B /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SkyKit.app/SkyKit";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SKYKit.app/SKYKit";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -801,7 +801,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3EE2A567298AFE5A801699CF /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SkyKit.app/SkyKit";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SKYKit.app/SKYKit";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -833,7 +833,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6003F585195388D10070C39A /* Build configuration list for PBXProject "SkyKit" */ = {
+		6003F585195388D10070C39A /* Build configuration list for PBXProject "SKYKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6003F5BD195388D20070C39A /* Debug */,
@@ -842,7 +842,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "SkyKit" */ = {
+		6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "SKYKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6003F5C0195388D20070C39A /* Debug */,
