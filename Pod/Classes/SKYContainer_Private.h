@@ -31,6 +31,9 @@
  */
 - (void)loadAccessCurrentUserRecordIDAndAccessToken;
 
+- (void)performUserAuthOperation:(SKYOperation *)operation
+               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
 @property (nonatomic, strong) SKYPubsub *internalPubsubClient;
 
 @property (nonatomic, copy, setter=setAuthenticationErrorHandler:) void (^authErrorHandler)

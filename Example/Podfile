@@ -4,10 +4,12 @@ platform :ios, '7.1'
 
 target 'SKYKit', :exclusive => true do
   pod "SKYKit", :path => "../"
+  pod "SKYKit/Facebook", :path => "../"
 end
 
 target 'Tests', :exclusive => true do
   pod "SKYKit", :path => "../"
+  pod "SKYKit/Facebook", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'

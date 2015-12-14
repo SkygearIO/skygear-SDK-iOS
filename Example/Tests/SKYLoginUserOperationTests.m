@@ -62,6 +62,23 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.payload[@"password"]).to.equal(@"password");
         });
 
+        it(@"make SKYRequest with provider", ^{
+            SKYLoginUserOperation *operation =
+                [SKYLoginUserOperation operationWithProvider:@"com.example"
+                                          authenticationData:@{
+                                              @"access_token" : @"hello_world",
+                                          }];
+            operation.container = container;
+            [operation prepareForRequest];
+            SKYRequest *request = operation.request;
+            expect([request class]).to.beSubclassOf([SKYRequest class]);
+            expect(request.action).to.equal(@"auth:login");
+            expect(request.accessToken).to.beNil();
+            expect(request.APIKey).to.equal(@"API_KEY");
+            expect(request.payload[@"provider"]).to.equal(@"com.example");
+            expect(request.payload[@"auth_data"]).to.equal(@{ @"access_token" : @"hello_world" });
+        });
+
         it(@"make request", ^{
             SKYLoginUserOperation *operation =
                 [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
