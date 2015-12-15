@@ -70,6 +70,26 @@ SpecBegin(SKYUploadAssetOperation)
                 });
         });
 
+        it(@"makes request with escape character", ^{
+            asset = [SKYAsset
+                assetWithName:@"boy%boy.txt"
+                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
+                                                                  options:0]];
+            SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
+            operation.container = container;
+
+            NSURLRequest *request = [operation makeRequest];
+
+            expect(request.HTTPMethod).to.equal(@"PUT");
+            expect(request.URL)
+                .to.equal([NSURL URLWithString:@"http://ourd.test/files/boy%25boy.txt"]);
+            expect(request.allHTTPHeaderFields)
+                .to.equal(@{
+                    @"X-Skygear-API-Key" : @"API_KEY",
+                    @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
+                });
+        });
+
         it(@"parses response correctly", ^{
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;

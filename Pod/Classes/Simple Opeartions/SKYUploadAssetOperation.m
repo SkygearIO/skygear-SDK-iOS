@@ -117,7 +117,10 @@
 - (NSURLRequest *)makeRequest
 {
     NSURL *baseURL = [NSURL URLWithString:@"files/" relativeToURL:self.container.endPointAddress];
-    NSURL *url = [NSURL URLWithString:self.asset.name relativeToURL:baseURL];
+    NSURL *url =
+        [NSURL URLWithString:[self.asset.name stringByAddingPercentEncodingWithAllowedCharacters:
+                                                  [NSCharacterSet URLPathAllowedCharacterSet]]
+               relativeToURL:baseURL];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"PUT";
