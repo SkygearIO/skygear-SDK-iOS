@@ -18,10 +18,11 @@
 //
 
 #import "SKYFetchSubscriptionsOperation.h"
-#import "SKYOperation_Private.h"
 #import "SKYDefaults.h"
 #import "SKYSubscriptionDeserializer.h"
 #import "SKYSubscriptionSerialization.h"
+#import "SKYDataSerialization.h"
+#import "SKYError.h"
 
 @interface SKYFetchSubscriptionsOperation ()
 
@@ -94,24 +95,21 @@
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)setFetchSubscriptionCompletionBlock:
-    (void (^)(NSDictionary *subscriptionsBySubscriptionID,
-              NSError *operationError))fetchSubscriptionCompletionBlock
-{
-    [self willChangeValueForKey:@"fetchSubscriptionCompletionBlock"];
-    _fetchSubscriptionCompletionBlock = fetchSubscriptionCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"fetchSubscriptionCompletionBlock"];
-}
-
-- (NSDictionary *)processResultArray:(NSArray *)result
+- (NSDictionary *)processResultArray:(NSArray *)result error:(NSError **)operationError
 {
     SKYSubscriptionDeserializer *deserializer = [SKYSubscriptionDeserializer deserializer];
+    NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     NSMutableDictionary *subscriptionsBySubscriptionID = [NSMutableDictionary dictionary];
 
     for (NSDictionary *dict in result) {
         SKYSubscription *subscription = nil;
+        NSError *error = nil;
         NSString *subscriptionID = dict[SKYSubscriptionSerializationSubscriptionIDKey];
+        if (subscriptionID.length == 0) {
+            subscriptionID =
+                dict[@"_id"]; // this is for per item error, which has a different key for ID
+        }
+
         if (subscriptionID.length) {
             if ([self.subscriptionIDs containsObject:subscriptionID]) {
                 NSLog(@"A returned subscription is not requested.");
@@ -120,43 +118,64 @@
             NSString *subscriptionType = dict[SKYSubscriptionSerializationSubscriptionTypeKey];
             if ([subscriptionType isEqual:SKYSubscriptionSerializationSubscriptionTypeQuery]) {
                 subscription = [deserializer subscriptionWithDictionary:dict];
+            } else if ([dict[@"_type"] isEqualToString:@"error"]) {
+                NSMutableDictionary *userInfo =
+                    [SKYDataSerialization userInfoWithErrorDictionary:dict];
+                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
+                error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
+                                            code:0
+                                        userInfo:userInfo];
+
+                [errorsByID setObject:error forKey:subscriptionID];
             }
         }
 
         if (subscription) {
             subscriptionsBySubscriptionID[subscriptionID] = subscription;
         }
+
+        if (self.perSubscriptionCompletionBlock) {
+            self.perSubscriptionCompletionBlock(subscription, subscriptionID, error);
+        }
     }
+
+    if (operationError && [errorsByID count] > 0) {
+        *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
+                                              code:SKYErrorPartialFailure
+                                          userInfo:@{
+                                              SKYPartialErrorsByItemIDKey : errorsByID,
+                                          }];
+    } else {
+        *operationError = nil;
+    }
+
     return subscriptionsBySubscriptionID;
 }
 
-- (void)updateCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (self.fetchSubscriptionCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            NSDictionary *resultDictionary = nil;
-            NSError *error = weakSelf.error;
-            if (!error) {
-                NSArray *responseArray = weakSelf.response[@"result"];
-                if ([responseArray isKindOfClass:[NSArray class]]) {
-                    resultDictionary = [weakSelf processResultArray:responseArray];
-                } else {
-                    NSDictionary *userInfo = [weakSelf
-                        errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                              errorDictionary:nil];
-                    error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                                code:0
-                                            userInfo:userInfo];
-                }
-            }
+    if (self.fetchSubscriptionsCompletionBlock) {
+        self.fetchSubscriptionsCompletionBlock(nil, error);
+    }
+}
 
-            if (weakSelf.fetchSubscriptionCompletionBlock) {
-                weakSelf.fetchSubscriptionCompletionBlock(resultDictionary, error);
-            }
-        };
+- (void)handleResponse:(SKYResponse *)response
+{
+    NSDictionary *resultDictionary = nil;
+    NSError *error = nil;
+    NSArray *responseArray = response.responseDictionary[@"result"];
+    if ([responseArray isKindOfClass:[NSArray class]]) {
+        resultDictionary = [self processResultArray:responseArray error:&error];
     } else {
-        self.completionBlock = nil;
+        NSDictionary *userInfo =
+            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
+                                        errorDictionary:nil];
+        error =
+            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+    }
+
+    if (self.fetchSubscriptionsCompletionBlock) {
+        self.fetchSubscriptionsCompletionBlock(resultDictionary, error);
     }
 }
 

@@ -24,6 +24,7 @@
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
+#import "SKYError.h"
 
 @implementation SKYFetchRecordsOperation
 
@@ -59,8 +60,9 @@
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (NSDictionary *)processResultArray:(NSArray *)result
+- (NSDictionary *)processResultArray:(NSArray *)result error:(NSError **)operationError
 {
+    NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     NSMutableDictionary *recordsByRecordID = [NSMutableDictionary dictionary];
 
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
@@ -84,6 +86,8 @@
                 error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
                                             code:0
                                         userInfo:userInfo];
+
+                [errorsByID setObject:error forKey:recordID];
             }
         } else {
             NSMutableDictionary *userInfo = [self
@@ -113,6 +117,16 @@
         }
     }];
 
+    if (operationError && [errorsByID count] > 0) {
+        *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
+                                              code:SKYErrorPartialFailure
+                                          userInfo:@{
+                                              SKYPartialErrorsByItemIDKey : errorsByID,
+                                          }];
+    } else {
+        *operationError = nil;
+    }
+
     return recordsByRecordID;
 }
 
@@ -130,7 +144,7 @@
     NSError *error = nil;
     NSArray *responseArray = response[@"result"];
     if ([responseArray isKindOfClass:[NSArray class]]) {
-        resultDictionary = [self processResultArray:responseArray];
+        resultDictionary = [self processResultArray:responseArray error:&error];
     } else {
         NSDictionary *userInfo =
             [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."

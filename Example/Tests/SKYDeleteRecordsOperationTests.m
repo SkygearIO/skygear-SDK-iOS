@@ -110,6 +110,7 @@ SpecBegin(SKYDeleteRecordsOperation)
                             expect(recordIDs).to.haveCountOf(2);
                             expect(recordIDs).to.contain(recordID1);
                             expect(recordIDs).to.contain(recordID2);
+                            expect(operationError).to.beNil();
                             done();
                         });
                     };
@@ -188,6 +189,11 @@ SpecBegin(SKYDeleteRecordsOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(recordIDs).to.haveCountOf(1);
                             expect(remaingRecordIDs).to.haveCountOf(0);
+                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
+                            NSDictionary *errorsByID =
+                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                            expect(errorsByID).to.haveCountOf(1);
+                            expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
                             done();
                         });
                     };

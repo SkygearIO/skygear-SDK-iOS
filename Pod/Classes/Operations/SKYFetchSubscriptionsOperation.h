@@ -30,7 +30,9 @@
 
 @property (nonatomic, copy) NSArray *subscriptionIDs;
 
-@property (nonatomic, copy) void (^fetchSubscriptionCompletionBlock)
+@property (nonatomic, copy) void (^perSubscriptionCompletionBlock)
+    (SKYSubscription *subscription, NSString *subscriptionID, NSError *error);
+@property (nonatomic, copy) void (^fetchSubscriptionsCompletionBlock)
     (NSDictionary *subscriptionsBySubscriptionID, NSError *operationError);
 
 @end
