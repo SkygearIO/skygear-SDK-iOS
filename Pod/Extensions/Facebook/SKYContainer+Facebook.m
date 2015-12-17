@@ -1,6 +1,6 @@
 //
 //  SKYContainer+Facebook.m
-//  SkyKit
+//  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
 //

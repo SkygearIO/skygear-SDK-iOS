@@ -1,6 +1,6 @@
 //
 //  SKYContainer+Facebook.h
-//  SkyKit
+//  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
 //
@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#import <SkyKit/SkyKit.h>
+#import <SKYKit/SKYKit.h>
 
 @class FBSDKAccessToken;
 
