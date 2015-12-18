@@ -99,4 +99,13 @@
     return [self errorWithCode:code userInfo:userInfo];
 }
 
+- (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors
+{
+    return [self errorWithCode:SKYErrorPartialOperationFailure
+                      userInfo:@{
+                          SKYErrorNameKey : SKYErrorNameWithCode(SKYErrorPartialOperationFailure),
+                          SKYPartialErrorsByItemIDKey : [perItemErrors copy],
+                      }];
+}
+
 @end

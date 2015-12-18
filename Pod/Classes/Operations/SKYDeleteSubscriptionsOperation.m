@@ -96,11 +96,8 @@
         *deletedsubscriptionIDs = subscriptionIDs;
     }
     if (errorBySubscriptionID.count) {
-        *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
-                                              code:SKYErrorPartialFailure
-                                          userInfo:@{
-                                              SKYPartialErrorsByItemIDKey : errorBySubscriptionID,
-                                          }];
+        *operationError =
+            [self.errorCreator partialErrorWithPerItemDictionary:errorBySubscriptionID];
     }
 }
 

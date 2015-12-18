@@ -137,8 +137,8 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
                                @"_type" : @"error",
                                @"_id" : @"ben's notes",
                                @"message" : @"cannot find subscription \"ben's notes\"",
-                               @"type" : @"ResourceNotFound",
-                               @"code" : @101,
+                               @"name" : @"ResourceNotFound",
+                               @"code" : @(SKYErrorResourceNotFound),
                                @"info" : @{@"id" : @"ben's notes"},
                             },
                         ]
@@ -164,15 +164,11 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
                         expect(errorBySubscriptionID).toNot.beNil();
                         NSError *benError = errorBySubscriptionID[@"ben's notes"];
                         expect(benError).toNot.beNil();
-                        expect(benError.userInfo)
-                            .to.equal(@{
-                                SKYErrorCodeKey : @101,
-                                SKYErrorMessageKey : @"cannot find subscription \"ben's notes\"",
-                                SKYErrorTypeKey : @"ResourceNotFound",
-                                SKYErrorInfoKey : @{@"id" : @"ben's notes"},
-                                NSLocalizedDescriptionKey :
-                                    @"An error occurred while deleting subscription."
-                            });
+                        expect(benError.code).to.equal(SKYErrorResourceNotFound);
+                        expect(benError.userInfo[SKYErrorMessageKey])
+                            .to.equal(@"cannot find subscription \"ben's notes\"");
+                        expect(benError.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                        expect(benError.userInfo[@"id"]).to.equal(@"ben's notes");
                         done();
                     });
                 };

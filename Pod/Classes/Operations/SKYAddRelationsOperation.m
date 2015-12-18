@@ -129,11 +129,8 @@
     if (self.addRelationsCompletionBlock) {
         NSError *operationError = nil;
         if (errorsByStringUserID.count) {
-            operationError = [NSError errorWithDomain:SKYOperationErrorDomain
-                                                 code:SKYErrorPartialFailure
-                                             userInfo:@{
-                                                 SKYPartialErrorsByItemIDKey : errorsByStringUserID,
-                                             }];
+            operationError =
+                [self.errorCreator partialErrorWithPerItemDictionary:errorsByStringUserID];
         }
 
         self.addRelationsCompletionBlock(savedUsers, operationError);

@@ -18,6 +18,7 @@
 //
 
 #import "SKYSendPushNotificationOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYRequest.h"
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
@@ -138,12 +139,7 @@
         }];
 
         if ([errorsByID count] > 0) {
-            NSDictionary *errorUserInfo = @{
-                SKYPartialErrorsByItemIDKey : errorsByID,
-            };
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                        code:SKYErrorPartialFailure
-                                    userInfo:errorUserInfo];
+            error = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
         }
     }
 

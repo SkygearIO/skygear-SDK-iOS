@@ -144,11 +144,7 @@
     }];
 
     if ([errorByID count] && error) {
-        *error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                     code:SKYErrorPartialFailure
-                                 userInfo:@{
-                                     SKYPartialErrorsByItemIDKey : errorByID,
-                                 }];
+        *error = [self.errorCreator partialErrorWithPerItemDictionary:errorByID];
     }
     return resultArray;
 }

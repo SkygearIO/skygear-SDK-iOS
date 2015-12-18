@@ -81,11 +81,7 @@
     }];
 
     if (errorByUserID.count) {
-        *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
-                                              code:SKYErrorPartialFailure
-                                          userInfo:@{
-                                              SKYPartialErrorsByItemIDKey : errorByUserID,
-                                          }];
+        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorByUserID];
     }
     return deletedUserIDs;
 }

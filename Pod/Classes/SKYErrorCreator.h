@@ -33,5 +33,6 @@
 - (NSError *)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
 - (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *)userInfoToAdd;
 - (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
+- (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
 
 @end
