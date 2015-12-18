@@ -191,9 +191,9 @@ SpecBegin(SKYOperation)
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                         @"error" : @{
                             @"message" : @"Unable to login.",
-                            @"type" : @"LoginError",
-                            @"code" : @100,
-                            @"error" : @{
+                            @"code" : @(SKYErrorInvalidCredentials),
+                            @"name" : @"InvalidCredentials",
+                            @"info" : @{
                                 @"username" : @"user@example.com",
                             },
                         }
@@ -202,7 +202,7 @@ SpecBegin(SKYOperation)
                                                                      error:nil];
 
                     return
-                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:400 headers:@{}];
+                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:401 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -212,8 +212,11 @@ SpecBegin(SKYOperation)
                         expect(blockOp.finished).to.equal(YES);
                         NSError *error = blockOp.lastError;
                         expect([error class]).to.beSubclassOf([NSError class]);
-                        expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(400));
-                        expect([error SKYErrorType]).to.equal(@"LoginError");
+                        expect(error.code).to.equal(SKYErrorInvalidCredentials);
+                        expect(error.userInfo[SKYErrorNameKey]).to.equal(@"InvalidCredentials");
+                        expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"Unable to login.");
+                        expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(401));
+                        expect(error.userInfo[@"username"]).to.equal(@"user@example.com");
                         done();
                     });
                 };
@@ -237,9 +240,9 @@ SpecBegin(SKYOperation)
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                         @"error" : @{
                             @"message" : @"Unable to login.",
-                            @"type" : @"LoginError",
-                            @"code" : @100,
-                            @"error" : @{
+                            @"code" : @(SKYErrorUnexpectedError),
+                            @"name" : @"UnexpectedError",
+                            @"info" : @{
                                 @"username" : @"user@example.com",
                             },
                         }
@@ -258,8 +261,11 @@ SpecBegin(SKYOperation)
                         expect(blockOp.finished).to.equal(YES);
                         NSError *error = blockOp.lastError;
                         expect([error class]).to.beSubclassOf([NSError class]);
+                        expect(error.code).to.equal(SKYErrorUnexpectedError);
+                        expect(error.userInfo[SKYErrorNameKey]).to.equal(@"UnexpectedError");
+                        expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"Unable to login.");
                         expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(500));
-                        expect([error SKYErrorType]).to.equal(@"LoginError");
+                        expect(error.userInfo[@"username"]).to.equal(@"user@example.com");
                         done();
                     });
                 };

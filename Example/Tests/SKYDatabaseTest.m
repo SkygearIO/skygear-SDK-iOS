@@ -85,9 +85,9 @@ SpecBegin(SKYDatabase)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorUnexpectedError),
                                @"message" : @"An error.",
-                               @"type" : @"SaveError",
+                               @"name" : @"UnexpectedError",
                             },
                         ]
                     };
@@ -189,9 +189,9 @@ SpecBegin(SKYDatabase)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorUnexpectedError),
                                @"message" : @"An error.",
-                               @"type" : @"SaveError",
+                               @"name" : @"UnexpectedError",
                             },
                         ]
                     };
@@ -271,9 +271,9 @@ SpecBegin(SKYDatabase)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorUnexpectedError),
                                @"message" : @"An error.",
-                               @"type" : @"SaveError",
+                               @"name" : @"UnexpectedError",
                             }
                         ]
                     };

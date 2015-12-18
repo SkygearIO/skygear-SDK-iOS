@@ -172,9 +172,9 @@ SpecBegin(SKYFetchRecordsOperation)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorResourceNotFound),
                                @"message" : @"An error.",
-                               @"type" : @"FetchError",
+                               @"name" : @"ResourceNotFound",
                             },
                             @{
                                @"_id" : @"book/book3",
@@ -192,21 +192,23 @@ SpecBegin(SKYFetchRecordsOperation)
             waitUntil(^(DoneCallback done) {
                 NSMutableArray *remainingRecordIDs =
                     [@[ recordID1, recordID2, recordID3 ] mutableCopy];
-                operation.perRecordCompletionBlock =
-                    ^(SKYRecord *record, SKYRecordID *recordID, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if ([recordID isEqual:recordID1]) {
-                                expect([record class]).to.beSubclassOf([SKYRecord class]);
-                                expect(record.recordID).to.equal(recordID1);
-                            } else if ([recordID isEqual:recordID2]) {
-                                expect([error class]).to.beSubclassOf([NSError class]);
-                                expect([error SKYErrorType]).to.equal(@"FetchError");
-                            } else if ([recordID isEqual:recordID3]) {
-                                expect([error class]).to.beSubclassOf([NSError class]);
-                            }
-                            [remainingRecordIDs removeObject:recordID];
-                        });
-                    };
+                operation.perRecordCompletionBlock = ^(SKYRecord *record, SKYRecordID *recordID,
+                                                       NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if ([recordID isEqual:recordID1]) {
+                            expect([record class]).to.beSubclassOf([SKYRecord class]);
+                            expect(record.recordID).to.equal(recordID1);
+                        } else if ([recordID isEqual:recordID2]) {
+                            expect([error class]).to.beSubclassOf([NSError class]);
+                            expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                            expect(error.code).to.equal(SKYErrorResourceNotFound);
+                            expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
+                        } else if ([recordID isEqual:recordID3]) {
+                            expect([error class]).to.beSubclassOf([NSError class]);
+                        }
+                        [remainingRecordIDs removeObject:recordID];
+                    });
+                };
 
                 operation.fetchRecordsCompletionBlock =
                     ^(NSDictionary *recordsByRecordID, NSError *operationError) {

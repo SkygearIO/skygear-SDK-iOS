@@ -174,9 +174,9 @@ SpecBegin(SKYModifySubscriptionsOperation)
                             @{
                                @"_id" : @"sub2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorResourceNotFound),
                                @"message" : @"An error.",
-                               @"type" : @"FetchError",
+                               @"name" : @"ResourceNotFound",
                             },
                         ]
                     };
@@ -197,7 +197,9 @@ SpecBegin(SKYModifySubscriptionsOperation)
                             expect(subscription.subscriptionID).to.equal(@"sub1");
                         } else if ([subscriptionID isEqual:@"sub2"]) {
                             expect([error class]).to.beSubclassOf([NSError class]);
-                            expect([error SKYErrorType]).to.equal(@"FetchError");
+                            expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                            expect(error.code).to.equal(SKYErrorResourceNotFound);
+                            expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
                         }
                         [remainingSubscriptionIDs removeObject:subscriptionID];
                     });
