@@ -20,6 +20,7 @@
 extern NSString *const SKYErrorMessageKey;
 extern NSString *const SKYErrorCodeKey;
 extern NSString *const SKYErrorTypeKey;
+extern NSString *const SKYErrorNameKey;
 extern NSString *const SKYErrorInfoKey;
 extern NSString *const SKYPartialErrorsByItemIDKey;
 extern NSString *const SKYPartialEmailsNotFoundKey;

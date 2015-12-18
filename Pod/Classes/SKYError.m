@@ -22,6 +22,7 @@
 NSString *const SKYErrorMessageKey = @"SKYErrorMessage";
 NSString *const SKYErrorCodeKey = @"SKYErrorCode";
 NSString *const SKYErrorTypeKey = @"SKYErrorType";
+NSString *const SKYErrorNameKey = @"SKYErrorName";
 NSString *const SKYErrorInfoKey = @"SKYErrorInfo";
 NSString *const SKYPartialErrorsByItemIDKey = @"SKYPartialErrorsByItemIDKey";
 NSString *const SKYPartialEmailsNotFoundKey = @"SKYPartialEmailsNotFoundKey";

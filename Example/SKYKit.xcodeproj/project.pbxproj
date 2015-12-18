@@ -37,9 +37,9 @@
 		383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */; };
 		383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383CE06C1ADBB8420085E24B /* SKYQueryTests.m */; };
 		383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */; };
-		385633851AC82F5100F1FD84 /* NSErrorSKYErrorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 385633841AC82F5100F1FD84 /* NSErrorSKYErrorTests.m */; };
 		3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */; };
 		38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */; };
+		38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */; };
 		38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */; };
 		38D3E2281B7ED41E00CCD28D /* SKYResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */; };
 		38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */; };
@@ -115,9 +115,9 @@
 		383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageTests.m; sourceTree = "<group>"; };
 		383CE06C1ADBB8420085E24B /* SKYQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYQueryTests.m; sourceTree = "<group>"; };
 		383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLambdaOperationTests.m; sourceTree = "<group>"; };
-		385633841AC82F5100F1FD84 /* NSErrorSKYErrorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSErrorSKYErrorTests.m; sourceTree = "<group>"; };
 		3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
 		38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordSynchronizerTests.m; sourceTree = "<group>"; };
+		38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYErrorCreatorTests.m; sourceTree = "<group>"; };
 		38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
 		38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResponseTest.m; sourceTree = "<group>"; };
 		38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResultArrayResponseTest.m; sourceTree = "<group>"; };
@@ -286,7 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				37F26A081AF8E91E006A21A8 /* Commons */,
-				385633841AC82F5100F1FD84 /* NSErrorSKYErrorTests.m */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
 				372E77901B28338A001F1972 /* SKYAccessControlTests.m */,
 				5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */,
@@ -330,6 +329,7 @@
 				38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */,
 				38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */,
 				38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */,
+				38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -416,7 +416,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "SkyKit" */;
+			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "SKYKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -580,6 +580,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */,
+				38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */,
 				38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */,
 				38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
@@ -598,7 +599,6 @@
 				CD7FE2721A9EDD5B002C076E /* SKYSignupUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* SKYRecordIDTests.m in Sources */,
 				372FD24E1AF79F59008128EC /* SKYHexer.m in Sources */,
-				385633851AC82F5100F1FD84 /* NSErrorSKYErrorTests.m in Sources */,
 				5F0532C11B8D912E00DA4D8B /* SKYPubsubTests.m in Sources */,
 				37CDD6071B4C040F007B9FE1 /* SKYDownloadAssetOperationTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */,
@@ -838,7 +838,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6003F585195388D10070C39A /* Build configuration list for PBXProject "SkyKit" */ = {
+		6003F585195388D10070C39A /* Build configuration list for PBXProject "SKYKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6003F5BD195388D20070C39A /* Debug */,

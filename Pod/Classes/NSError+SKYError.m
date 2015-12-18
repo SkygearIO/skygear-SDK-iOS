@@ -24,26 +24,22 @@
 
 - (NSInteger)SKYErrorCode
 {
-    NSNumber *code = [self userInfo][SKYErrorCodeKey];
-    return [code isKindOfClass:[NSNumber class]] ? [code integerValue] : 0;
+    return self.code;
 }
 
 - (NSString *)SKYErrorMessage
 {
-    NSString *message = [self userInfo][SKYErrorMessageKey];
-    return [message isKindOfClass:[NSString class]] ? message : nil;
+    return self.localizedDescription;
 }
 
 - (NSString *)SKYErrorType
 {
-    NSString *type = [self userInfo][SKYErrorTypeKey];
-    return [type isKindOfClass:[NSString class]] ? type : nil;
+    return nil;
 }
 
 - (NSDictionary *)SKYErrorInfo
 {
-    NSDictionary *info = [self userInfo][SKYErrorInfoKey];
-    return [info isKindOfClass:[NSDictionary class]] ? info : nil;
+    return self.userInfo;
 }
 
 @end

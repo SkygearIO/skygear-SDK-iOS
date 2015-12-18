@@ -1,5 +1,5 @@
 //
-//  NSError+SKYError.h
+//  SKYErrorCreator.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -18,12 +18,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SKYError.h"
 
-@interface NSError (SKYError)
+@interface SKYErrorCreator : NSObject
 
-- (NSString *)SKYErrorMessage __deprecated;
-- (NSString *)SKYErrorType __deprecated;
-- (NSInteger)SKYErrorCode __deprecated;
-- (NSDictionary *)SKYErrorInfo __deprecated;
+@property (nonatomic, readwrite, copy) NSString *errorDomain;
+@property (nonatomic, readonly) NSDictionary *defaultUserInfo;
+
+- (instancetype)initWithDefaultErrorDomain:(NSString *)errorDomain NS_DESIGNATED_INITIALIZER;
+
+- (void)setDefaultUserInfoObject:(id)obj forKey:(NSString *)key;
+
+- (NSError *)errorWithCode:(SKYErrorCode)code;
+- (NSError *)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
+- (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *)userInfoToAdd;
+- (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
 
 @end
