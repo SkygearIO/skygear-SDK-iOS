@@ -296,9 +296,8 @@ NSString *const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStat
 
 - (BOOL)isAuthFailureError:(NSError *)error
 {
-    NSDictionary *userInfo = error.userInfo;
-    return [userInfo[SKYErrorTypeKey] isEqualToString:@"AuthenticationError"] &&
-           [userInfo[SKYErrorCodeKey] integerValue] == 101;
+    return [error.domain isEqualToString:SKYOperationErrorDomain] &&
+           error.code == SKYErrorAccessTokenNotAccepted;
 }
 
 - (SKYResponse *)createResponseWithDictionary:(NSDictionary *)responseDictionary
