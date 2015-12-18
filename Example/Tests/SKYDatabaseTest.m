@@ -209,10 +209,8 @@ SpecBegin(SKYDatabase)
                     completionHandler:^(NSArray *savedRecords, NSError *operationError) {
                         expect(savedRecords).to.haveCountOf(1);
                         expect(((SKYRecord *)savedRecords[0]).recordID).to.equal(record1.recordID);
-
-                        if (errorHandlerCallCount == 1) {
-                            done();
-                        }
+                        expect(errorHandlerCallCount).to.equal(1);
+                        done();
                     }
                     perRecordErrorHandler:^(SKYRecord *record, NSError *error) {
                         expect(record.recordID).to.equal(record2.recordID);
