@@ -18,6 +18,7 @@
 //
 
 #import "SKYDeleteRecordsOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
@@ -69,22 +70,12 @@
 
         if (recordID) {
             if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo =
-                    [SKYDataSerialization userInfoWithErrorDictionary:obj];
-                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
-                error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:userInfo];
-
+                error = [self.errorCreator errorWithResponseDictionary:obj];
                 [errorsByID setObject:error forKey:recordID];
             }
         } else {
-            NSMutableDictionary *userInfo = [self
-                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                      errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Missing `_id` or not in correct format."];
         }
 
         if (recordID) {
@@ -130,11 +121,8 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray error:&error];
     } else {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        error =
-            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
 
     if (self.deleteRecordsCompletionBlock) {

@@ -18,6 +18,7 @@
 //
 
 #import "SKYAddRelationsOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
@@ -73,10 +74,8 @@
     NSDictionary *response = responseObject.responseDictionary;
     NSArray *result = response[@"result"];
     if (![result isKindOfClass:[NSArray class]]) {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        NSError *error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+        NSError *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                                  message:@"Result is not an array or not exists."];
         if (self.addRelationsCompletionBlock) {
             self.addRelationsCompletionBlock(nil, error);
         }
@@ -94,26 +93,21 @@
         NSError *error = nil;
 
         if (!itemDict.count) {
-            NSDictionary *info = @{
-                SKYErrorCodeKey : @104,
-                SKYErrorTypeKey : @"ResourceNotFound",
-                SKYErrorMessageKey : @"User missing in response",
-                SKYErrorInfoKey : @{@"id" : user.username},
-            };
-            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
+            error = [self.errorCreator errorWithCode:SKYErrorResourceNotFound
+                                            userInfo:@{
+                                                @"id" : user.username,
+                                                SKYErrorMessageKey : @"User missing in response",
+                                            }];
         } else {
             NSString *itemType = itemDict[@"type"];
             if ([itemType isEqualToString:@"error"]) {
-                NSDictionary *info =
-                    [SKYDataSerialization userInfoWithErrorDictionary:itemDict[@"data"]];
-                error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
+                error = [self.errorCreator errorWithResponseDictionary:itemDict[@"data"]];
             } else {
                 returnedUserID = [SKYUserRecordID recordIDWithUsername:user.username];
                 if (returnedUserID == nil) {
-                    NSDictionary *info = [self errorUserInfoWithLocalizedDescription:
-                                                   @"User does not conform with expected format."
-                                                                     errorDictionary:nil];
-                    error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
+                    error = [self.errorCreator
+                        errorWithCode:SKYErrorInvalidData
+                              message:@"User does not conform with expected format."];
                 }
             }
         }

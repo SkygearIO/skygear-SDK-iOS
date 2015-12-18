@@ -70,9 +70,6 @@ extern NSString *const SKYOperationErrorHTTPStatusCodeKey;
 
 - (void)operationWillStart;
 
-- (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description
-                                               errorDictionary:(NSDictionary *)dict;
-
 + (Class)responseClass;
 
 @end

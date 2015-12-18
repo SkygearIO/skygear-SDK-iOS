@@ -18,6 +18,7 @@
 //
 
 #import "SKYLoginUserOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 #import "SKYUserRecordID_Private.h"
@@ -119,12 +120,8 @@
         recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
-        error = [NSError
-            errorWithDomain:(NSString *)SKYOperationErrorDomain
-                       code:0
-                   userInfo:@{
-                       NSLocalizedDescriptionKey : @"Returned data does not contain expected data."
-                   }];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Returned data does not contain expected data."];
     }
 
     if (!error) {

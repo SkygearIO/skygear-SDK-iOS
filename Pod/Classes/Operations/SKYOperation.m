@@ -160,16 +160,6 @@ NSString *const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStat
     [task resume];
 }
 
-- (NSMutableDictionary *)errorUserInfoWithLocalizedDescription:(NSString *)description
-                                               errorDictionary:(NSDictionary *)dict
-{
-    NSMutableDictionary *userInfo = [dict isKindOfClass:[NSDictionary class]]
-                                        ? [SKYDataSerialization userInfoWithErrorDictionary:dict]
-                                        : [NSMutableDictionary dictionary];
-    userInfo[NSLocalizedDescriptionKey] = [description copy];
-    return userInfo;
-}
-
 - (NSDictionary *)parseResponse:(NSData *)data error:(NSError **)error
 {
     NSError *jsonError = nil;

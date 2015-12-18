@@ -163,9 +163,9 @@ SpecBegin(SKYDeleteRecordsOperation)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorUnexpectedError),
                                @"message" : @"An error.",
-                               @"type" : @"Error",
+                               @"name" : @"UnexpectedError",
                             }
                         ]
                     };

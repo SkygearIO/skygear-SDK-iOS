@@ -18,6 +18,7 @@
 //
 
 #import "SKYModifySubscriptionsOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYDefaults.h"
 #import "SKYSubscriptionSerialization.h"
 #import "SKYSubscriptionSerializer.h"
@@ -99,13 +100,7 @@
             if ([subscriptionType isEqual:SKYSubscriptionSerializationSubscriptionTypeQuery]) {
                 // do nothing
             } else if ([dict[@"_type"] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo =
-                    [SKYDataSerialization userInfoWithErrorDictionary:dict];
-                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
-                error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:userInfo];
-
+                error = [self.errorCreator errorWithResponseDictionary:dict];
                 [errorsByID setObject:error forKey:subscriptionID];
             }
         }
@@ -147,11 +142,8 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray error:&error];
     } else {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed results."
-                                        errorDictionary:nil];
-        error =
-            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
 
     if (self.modifySubscriptionsCompletionBlock) {

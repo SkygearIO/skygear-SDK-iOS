@@ -36,6 +36,4 @@ NSString *localFunctionName(NSString *remoteFunctionName);
 
 + (id)serializeObject:(id)obj;
 
-+ (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict;
-
 @end

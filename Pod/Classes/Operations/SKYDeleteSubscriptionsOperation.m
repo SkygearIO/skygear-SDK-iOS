@@ -18,6 +18,7 @@
 //
 
 #import "SKYDeleteSubscriptionsOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYDataSerialization.h"
 #import "SKYDefaults.h"
@@ -78,19 +79,16 @@
         if ([objType isEqual:@"error"]) {
             subscriptionID = obj[@"_id"];
 
-            NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj];
-            userInfo[NSLocalizedDescriptionKey] = @"An error occurred while deleting subscription.";
-            errorBySubscriptionID[subscriptionID] =
-                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+            NSError *error = [self.errorCreator errorWithResponseDictionary:obj];
+            errorBySubscriptionID[subscriptionID] = error;
         } else if (subscriptionID.length) {
             [subscriptionIDs addObject:subscriptionID];
         } else {
             // malformed response
-            NSMutableDictionary *userInfo = [self
-                errorUserInfoWithLocalizedDescription:@"Missing `id` or not in correct format."
-                                      errorDictionary:nil];
-            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] =
-                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+            NSError *error =
+                [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                         message:@"Missing `id` or not in correct format."];
+            errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] = error;
         }
     }];
 
@@ -125,10 +123,8 @@
                 deletedsubscriptionIDs:&deletedSubscriptions
                         operationError:&error];
         } else {
-            NSDictionary *userInfo =
-                [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                            errorDictionary:nil];
-            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+            error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                             message:@"Result is not an array or not exists."];
         }
         self.deleteSubscriptionsCompletionBlock(deletedSubscriptions, error);
     }

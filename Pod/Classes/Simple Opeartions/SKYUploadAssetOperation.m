@@ -18,6 +18,7 @@
 //
 
 #import "SKYUploadAssetOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYAsset_Private.h"
 #import "SKYDataSerialization.h"
@@ -153,7 +154,9 @@
         if (name.length) {
             _asset.name = name;
         } else {
-            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:nil];
+            error = [self.errorCreator
+                errorWithCode:SKYErrorInvalidData
+                      message:@"Uploaded asset does not have a name associated with it."];
         }
     }
 

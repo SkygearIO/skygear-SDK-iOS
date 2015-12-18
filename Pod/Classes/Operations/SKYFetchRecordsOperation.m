@@ -18,6 +18,7 @@
 //
 
 #import "SKYFetchRecordsOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYUser.h"
 #import "SKYUserRecordID.h"
@@ -80,32 +81,18 @@
                     NSLog(@"Error with returned record.");
                 }
             } else if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo =
-                    [SKYDataSerialization userInfoWithErrorDictionary:obj];
-                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
-                error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:userInfo];
-
+                error = [self.errorCreator errorWithResponseDictionary:obj];
                 [errorsByID setObject:error forKey:recordID];
             }
         } else {
-            NSMutableDictionary *userInfo = [self
-                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                      errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Missing `_id` or not in correct format."];
         }
 
         if (!error && !record) {
-            NSMutableDictionary *userInfo =
-                [self errorUserInfoWithLocalizedDescription:
-                          @"Record does not conform with expected format."
-                                            errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error =
+                [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                         message:@"Record does not conform with expected format."];
         }
 
         if (recordID && self.perRecordCompletionBlock) {
@@ -146,11 +133,8 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultDictionary = [self processResultArray:responseArray error:&error];
     } else {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        error =
-            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
 
     if (self.fetchRecordsCompletionBlock) {
