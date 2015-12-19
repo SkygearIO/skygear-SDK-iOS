@@ -23,9 +23,6 @@
 #import "SKYRequest.h"
 #import "SKYResponse.h"
 
-extern NSString *const SKYOperationErrorDomain;
-extern NSString *const SKYOperationErrorHTTPStatusCodeKey;
-
 @interface SKYOperation : NSOperation
 
 @property (nonatomic, strong) SKYContainer *container;

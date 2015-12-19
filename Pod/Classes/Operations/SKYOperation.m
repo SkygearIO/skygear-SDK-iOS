@@ -27,9 +27,6 @@
 #import "SKYDataSerialization.h"
 #import "SKYResponse.h"
 
-NSString *const SKYOperationErrorDomain = @"SKYOperationErrorDomain";
-NSString *const SKYOperationErrorHTTPStatusCodeKey = @"SKYOperationErrorHTTPStatusCodeKey";
-
 @implementation SKYOperation {
     BOOL _executing;
     BOOL _finished;
