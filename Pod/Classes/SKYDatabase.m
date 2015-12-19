@@ -179,10 +179,6 @@
 
 - (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion)completion
 {
-    if ([record.recordType isEqualToString:@"question"]) {
-        record[@"id"] = @6666;
-        record.recordID = [[SKYRecordID alloc] initWithRecordType:@"question" name:@"6666"];
-    }
     [self od_prepareRecordForSaving:record];
 
     SKYModifyRecordsOperation *operation =
