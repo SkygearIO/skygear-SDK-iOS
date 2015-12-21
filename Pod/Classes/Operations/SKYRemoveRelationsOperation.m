@@ -18,6 +18,7 @@
 //
 
 #import "SKYRemoveRelationsOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
@@ -62,23 +63,16 @@
         NSString *userID = obj[@"id"];
         NSString *objType = obj[@"type"];
         if ([objType isEqual:@"error"]) {
-            NSMutableDictionary *userInfo =
-                [SKYDataSerialization userInfoWithErrorDictionary:obj[@"data"]];
-            userInfo[NSLocalizedDescriptionKey] = @"An error occurred while deleting relation.";
-            errorByUserID[userID] =
-                [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+            NSError *error = [self.errorCreator errorWithResponseDictionary:obj[@"data"]];
+            errorByUserID[userID] = error;
         } else if (userID.length) {
             userRecordID = [SKYUserRecordID recordIDWithUsername:userID];
             [deletedUserIDs addObject:userRecordID];
         }
 
         if (userRecordID == nil && error == nil) {
-            NSDictionary *info = @{
-                SKYErrorCodeKey : @104,
-                SKYErrorTypeKey : @"MalformedResponse",
-                SKYErrorMessageKey : @"Per-item response is malformed",
-            };
-            error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:info];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Per-item response is malformed"];
         }
 
         if (self.perUserCompletionBlock) {
@@ -87,11 +81,7 @@
     }];
 
     if (errorByUserID.count) {
-        *operationError = [NSError errorWithDomain:SKYOperationErrorDomain
-                                              code:SKYErrorPartialFailure
-                                          userInfo:@{
-                                              SKYPartialErrorsByItemIDKey : errorByUserID,
-                                          }];
+        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorByUserID];
     }
     return deletedUserIDs;
 }
@@ -113,10 +103,8 @@
         userIDs = [self processResultArray:result operationError:&error];
     } else {
         userIDs = [NSArray array];
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
     if (self.removeRelationsCompletionBlock) {
         self.removeRelationsCompletionBlock(userIDs, error);

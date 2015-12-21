@@ -18,6 +18,7 @@
 //
 
 #import "SKYRegisterDeviceOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 #import "SKYDefaults.h"
 
@@ -128,11 +129,9 @@
 
     NSString *deviceID = self.response[@"result"][@"id"];
     if (!deviceID.length) {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Response missing device id."
-                                        errorDictionary:nil];
-        *error = [NSError errorWithDomain:SKYOperationErrorDomain code:0 userInfo:userInfo];
-        return dict;
+        if (error)
+            *error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                              message:@"Response missing device id."];
     }
 
     dict[@"id"] = deviceID;

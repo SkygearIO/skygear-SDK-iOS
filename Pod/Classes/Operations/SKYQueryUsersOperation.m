@@ -18,6 +18,7 @@
 //
 
 #import "SKYQueryUsersOperation.h"
+#import "SKYOperationSubclass.h"
 
 #import "SKYError.h"
 #import "SKYUser.h"
@@ -176,10 +177,9 @@ NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
         }
 
         if (emailsNotFound.count) {
-            NSDictionary *userInfo = @{SKYPartialEmailsNotFoundKey : emailsNotFound};
-            error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                        code:SKYErrorPartialFailure
-                                    userInfo:userInfo];
+            error =
+                [self.errorCreator errorWithCode:SKYErrorPartialOperationFailure
+                                        userInfo:@{SKYPartialEmailsNotFoundKey : emailsNotFound}];
         }
     }
 

@@ -168,9 +168,9 @@ SpecBegin(SKYModifyRecordsOperation)
                             @{
                                @"_id" : @"book/book2",
                                @"_type" : @"error",
-                               @"code" : @(100),
+                               @"code" : @(SKYErrorResourceNotFound),
                                @"message" : @"An error.",
-                               @"type" : @"SaveError",
+                               @"name" : @"ResourceNotFound",
                             }
                         ]
                     };
@@ -192,7 +192,9 @@ SpecBegin(SKYModifyRecordsOperation)
                         expect(record[@"title"]).to.equal(@"Title From Server");
                     } else if ([record.recordID isEqual:record2.recordID]) {
                         expect([error class]).to.beSubclassOf([NSError class]);
-                        expect([error SKYErrorType]).to.equal(@"SaveError");
+                        expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                        expect(error.code).to.equal(SKYErrorResourceNotFound);
+                        expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
                     }
                     [remainingRecordIDs removeObject:record.recordID];
                 };
@@ -207,7 +209,11 @@ SpecBegin(SKYModifyRecordsOperation)
 
                         NSError *perRecordError =
                             operationError.userInfo[SKYPartialErrorsByItemIDKey][record2.recordID];
-                        expect([perRecordError SKYErrorType]).to.equal(@"SaveError");
+                        expect([perRecordError class]).to.beSubclassOf([NSError class]);
+                        expect(perRecordError.userInfo[SKYErrorNameKey])
+                            .to.equal(@"ResourceNotFound");
+                        expect(perRecordError.code).to.equal(SKYErrorResourceNotFound);
+                        expect(perRecordError.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
                         done();
                     });
                 };

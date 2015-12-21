@@ -18,9 +18,11 @@
 //
 
 #import "SKYDeleteRecordsOperation.h"
-#import "SKYOperation_Private.h"
+#import "SKYOperationSubclass.h"
+
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
+#import "SKYError.h"
 
 @implementation SKYDeleteRecordsOperation
 
@@ -57,24 +59,9 @@
     self.request.accessToken = self.container.currentAccessToken;
 }
 
-- (void)setPerRecordCompletionBlock:(void (^)(SKYRecordID *, NSError *))perRecordCompletionBlock
+- (NSArray *)processResultArray:(NSArray *)result error:(NSError **)operationError
 {
-    [self willChangeValueForKey:@"perRecordCompletionBlock"];
-    _perRecordCompletionBlock = perRecordCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"perRecordCompletionBlock"];
-}
-
-- (void)setDeleteRecordsCompletionBlock:(void (^)(NSArray *, NSError *))deleteRecordsCompletionBlock
-{
-    [self willChangeValueForKey:@"deleteRecordsCompletionBlock"];
-    _deleteRecordsCompletionBlock = deleteRecordsCompletionBlock;
-    [self updateCompletionBlock];
-    [self didChangeValueForKey:@"deleteRecordsCompletionBlock"];
-}
-
-- (NSArray *)processResultArray:(NSArray *)result
-{
+    NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
@@ -83,20 +70,12 @@
 
         if (recordID) {
             if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                NSMutableDictionary *userInfo =
-                    [SKYDataSerialization userInfoWithErrorDictionary:obj];
-                userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
-                error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                            code:0
-                                        userInfo:userInfo];
+                error = [self.errorCreator errorWithResponseDictionary:obj];
+                [errorsByID setObject:error forKey:recordID];
             }
         } else {
-            NSMutableDictionary *userInfo = [self
-                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                      errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Missing `_id` or not in correct format."];
         }
 
         if (recordID) {
@@ -106,6 +85,12 @@
             [deletedRecordIDs removeObject:recordID];
         }
     }];
+
+    if (operationError && [errorsByID count] > 0) {
+        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
+    } else {
+        *operationError = nil;
+    }
 
     if (self.perRecordCompletionBlock) {
         [deletedRecordIDs
@@ -117,31 +102,27 @@
     return deletedRecordIDs;
 }
 
-- (void)updateCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (self.perRecordCompletionBlock || self.deleteRecordsCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            NSArray *resultArray = nil;
-            NSError *error = weakSelf.error;
-            if (!error) {
-                NSArray *responseArray = weakSelf.response[@"result"];
-                if ([responseArray isKindOfClass:[NSArray class]]) {
-                    resultArray = [weakSelf processResultArray:responseArray];
-                } else {
-                    NSDictionary *userInfo = [weakSelf
-                        errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                              errorDictionary:nil];
-                    error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                                code:0
-                                            userInfo:userInfo];
-                }
-            }
+    if (self.deleteRecordsCompletionBlock) {
+        self.deleteRecordsCompletionBlock(nil, error);
+    }
+}
 
-            if (weakSelf.deleteRecordsCompletionBlock) {
-                weakSelf.deleteRecordsCompletionBlock(resultArray, error);
-            }
-        };
+- (void)handleResponse:(SKYResponse *)response
+{
+    NSArray *resultArray = nil;
+    NSError *error = nil;
+    NSArray *responseArray = response.responseDictionary[@"result"];
+    if ([responseArray isKindOfClass:[NSArray class]]) {
+        resultArray = [self processResultArray:responseArray error:&error];
+    } else {
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
+    }
+
+    if (self.deleteRecordsCompletionBlock) {
+        self.deleteRecordsCompletionBlock(resultArray, error);
     }
 }
 

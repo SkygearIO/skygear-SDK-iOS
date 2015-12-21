@@ -1,5 +1,5 @@
 //
-//  NSError+SKYError.m
+//  SKYOperationSubclass.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,29 +17,11 @@
 //  limitations under the License.
 //
 
-#import "NSError+SKYError.h"
-#import "SKYError.h"
+#import "SKYOperation.h"
+#import "SKYErrorCreator.h"
 
-@implementation NSError (SKYError)
+@interface SKYOperation ()
 
-- (NSInteger)SKYErrorCode
-{
-    return self.code;
-}
-
-- (NSString *)SKYErrorMessage
-{
-    return self.localizedDescription;
-}
-
-- (NSString *)SKYErrorType
-{
-    return nil;
-}
-
-- (NSDictionary *)SKYErrorInfo
-{
-    return self.userInfo;
-}
+@property (nonatomic, readonly) SKYErrorCreator *errorCreator;
 
 @end

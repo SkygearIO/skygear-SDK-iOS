@@ -156,10 +156,8 @@ SpecBegin(SKYDiscoverUsersOperation)
                         expect([users[0] username]).to.equal(@"user0");
                         expect(operationError).notTo.beNil();
                         expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                        expect(operationError.userInfo)
-                            .to.equal(@{
-                                SKYPartialEmailsNotFoundKey : @[ @"jane.doe@example.com" ],
-                            });
+                        expect(operationError.userInfo[SKYPartialEmailsNotFoundKey])
+                            .to.equal(@[ @"jane.doe@example.com" ]);
                         done();
                     });
                 };

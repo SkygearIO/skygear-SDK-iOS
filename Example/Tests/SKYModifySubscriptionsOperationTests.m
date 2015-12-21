@@ -77,11 +77,11 @@ SpecBegin(SKYModifySubscriptionsOperation)
                         @"result" : @[
                             @{
                                @"id" : @"sub1",
-                               @"type" : @"subscription",
+                               @"type" : @"query",
                             },
                             @{
                                @"id" : @"sub2",
-                               @"type" : @"subscription",
+                               @"type" : @"query",
                             }
                         ]
                     };
@@ -93,15 +93,32 @@ SpecBegin(SKYModifySubscriptionsOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
+                NSMutableArray *remainingSubscriptionIDs = [@[ @"sub1", @"sub2" ] mutableCopy];
+                operation.perSubscriptionCompletionBlock = ^(
+                    SKYSubscription *subscription, NSString *subscriptionID, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if ([subscriptionID isEqual:@"sub1"]) {
+                            expect([subscription class]).to.beSubclassOf([SKYSubscription class]);
+                            expect(subscription.subscriptionID).to.equal(@"sub1");
+                        } else if ([subscriptionID isEqual:@"sub2"]) {
+                            expect([subscription class]).to.beSubclassOf([SKYSubscription class]);
+                            expect(subscription.subscriptionID).to.equal(@"sub2");
+                        }
+                        [remainingSubscriptionIDs removeObject:subscriptionID];
+                    });
+                };
+
                 operation.modifySubscriptionsCompletionBlock =
                     ^(NSArray *savedSubscriptions, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            expect(remainingSubscriptionIDs).to.haveCountOf(0);
                             expect([savedSubscriptions class]).to.beSubclassOf([NSArray class]);
                             expect(savedSubscriptions).to.haveCountOf(2);
                             expect([savedSubscriptions[0] subscriptionID])
                                 .to.equal(subscription1.subscriptionID);
                             expect([savedSubscriptions[1] subscriptionID])
                                 .to.equal(subscription2.subscriptionID);
+                            expect(operationError).to.beNil();
                             done();
                         });
                     };
@@ -131,6 +148,76 @@ SpecBegin(SKYModifySubscriptionsOperation)
                             done();
                         });
                     };
+                [database executeOperation:operation];
+            });
+        });
+
+        it(@"per block", ^{
+            SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
+                operationWithSubscriptionsToSave:@[ subscription1, subscription2 ]];
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSDictionary *parameters = @{
+                        @"request_id" : @"REQUEST_ID",
+                        @"database_id" : database.databaseID,
+                        @"result" : @[
+                            @{
+                               @"id" : @"sub1",
+                               @"type" : @"query",
+                               @"query" : @{
+                                   @"record_type" : @"book",
+                               }
+                            },
+                            @{
+                               @"_id" : @"sub2",
+                               @"_type" : @"error",
+                               @"code" : @(SKYErrorResourceNotFound),
+                               @"message" : @"An error.",
+                               @"name" : @"ResourceNotFound",
+                            },
+                        ]
+                    };
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                    return
+                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                NSMutableArray *remainingSubscriptionIDs = [@[ @"sub1", @"sub2" ] mutableCopy];
+                operation.perSubscriptionCompletionBlock = ^(
+                    SKYSubscription *subscription, NSString *subscriptionID, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if ([subscriptionID isEqual:@"sub1"]) {
+                            expect([subscription class]).to.beSubclassOf([SKYSubscription class]);
+                            expect(subscription.subscriptionID).to.equal(@"sub1");
+                        } else if ([subscriptionID isEqual:@"sub2"]) {
+                            expect([error class]).to.beSubclassOf([NSError class]);
+                            expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                            expect(error.code).to.equal(SKYErrorResourceNotFound);
+                            expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
+                        }
+                        [remainingSubscriptionIDs removeObject:subscriptionID];
+                    });
+                };
+
+                operation.modifySubscriptionsCompletionBlock =
+                    ^(NSArray *subscriptions, NSError *operationError) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            expect(remainingSubscriptionIDs).to.haveCountOf(0);
+                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
+                            NSDictionary *errorsByID =
+                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                            expect(errorsByID).to.haveCountOf(1);
+                            expect([errorsByID[@"sub2"] class]).to.beSubclassOf([NSError class]);
+                            done();
+                        });
+                    };
+
                 [database executeOperation:operation];
             });
         });

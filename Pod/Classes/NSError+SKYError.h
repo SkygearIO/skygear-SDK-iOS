@@ -21,9 +21,9 @@
 
 @interface NSError (SKYError)
 
-- (NSString *)SKYErrorMessage;
-- (NSString *)SKYErrorType;
-- (NSInteger)SKYErrorCode;
-- (NSDictionary *)SKYErrorInfo;
+- (NSString *)SKYErrorMessage __deprecated;
+- (NSString *)SKYErrorType __deprecated;
+- (NSInteger)SKYErrorCode __deprecated;
+- (NSDictionary *)SKYErrorInfo __deprecated;
 
 @end

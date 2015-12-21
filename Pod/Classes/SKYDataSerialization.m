@@ -252,37 +252,4 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     }
 }
 
-+ (NSMutableDictionary *)userInfoWithErrorDictionary:(NSDictionary *)dict
-{
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-
-    if ([dict[@"code"] isKindOfClass:[NSNumber class]]) {
-        userInfo[SKYErrorCodeKey] = [NSNumber numberWithInteger:[dict[@"code"] integerValue]];
-    } else {
-        NSLog(@"`code` is missing in error object or it is not a number.");
-    }
-
-    if ([dict[@"type"] isKindOfClass:[NSString class]]) {
-        userInfo[SKYErrorTypeKey] = [dict[@"type"] copy];
-    } else {
-        NSLog(@"`type` is missing in error object or it is not a string.");
-    }
-
-    if ([dict[@"message"] isKindOfClass:[NSString class]]) {
-        userInfo[SKYErrorMessageKey] = [dict[@"message"] copy];
-    } else {
-        NSLog(@"`message` is missing in error object or it is not a string.");
-    }
-
-    if (dict[@"info"]) {
-        if ([dict[@"info"] isKindOfClass:[NSDictionary class]]) {
-            userInfo[SKYErrorInfoKey] = [dict[@"info"] copy];
-        } else {
-            NSLog(@"`info` is not a dictionary.");
-        }
-    }
-
-    return userInfo;
-}
-
 @end

@@ -18,6 +18,7 @@
 //
 
 #import "SKYQueryOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYQuerySerializer.h"
 #import "SKYRecordSerialization.h"
@@ -96,12 +97,8 @@
                       SKYRecordSerializationRecordTypeKey);
             }
         } else {
-            NSMutableDictionary *userInfo = [self
-                errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                      errorDictionary:nil];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Missing `_id` or not in correct format."];
         }
 
         if (record) {
@@ -150,11 +147,8 @@
                                     }
                                 }];
     } else {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        error =
-            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
 
     if (self.queryRecordsCompletionBlock) {

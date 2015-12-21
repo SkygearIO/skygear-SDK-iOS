@@ -18,24 +18,24 @@
 //
 
 #import "SKYResultArrayResponse.h"
+#import "SKYErrorCreator.h"
 #import "SKYOperation.h"
 #import "SKYDataSerialization.h"
 
 @implementation SKYResultArrayResponse {
     NSArray *resultArrayInResponse;
+    SKYErrorCreator *errorCreator;
 }
 
 - (instancetype)initWithDictionary:(NSDictionary *)response
 {
     self = [super initWithDictionary:response];
     if (self) {
+        errorCreator = [[SKYErrorCreator alloc] init];
         resultArrayInResponse = self.responseDictionary[@"result"];
         if (![resultArrayInResponse isKindOfClass:[NSArray class]]) {
-            NSDictionary *userInfo =
-                @{ NSLocalizedDescriptionKey : @"Server returned malformed result." };
-            NSError *error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                                 code:0
-                                             userInfo:userInfo];
+            NSError *error = [errorCreator errorWithCode:SKYErrorBadResponse
+                                                 message:@"Result is not an array or not exists."];
             [self foundResponseError:error];
         }
     }
@@ -57,11 +57,8 @@
     [resultArrayInResponse enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSError *error;
         if (![obj isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *userInfo =
-                @{ NSLocalizedDescriptionKey : @"Result does not conform with expected format." };
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [errorCreator errorWithCode:SKYErrorInvalidData
+                                        message:@"Result does not conform with expected format."];
             block(nil, nil, error, idx, stop);
             return;
         }
@@ -69,20 +66,14 @@
         NSDictionary *result = (NSDictionary *)obj;
         NSString *resultKey = result[@"_id"];
         if (![resultKey isKindOfClass:[NSString class]]) {
-            NSDictionary *userInfo =
-                @{ NSLocalizedDescriptionKey : @"Missing `_id` or not in correct format." };
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [errorCreator errorWithCode:SKYErrorInvalidData
+                                        message:@"Missing `_id` or not in correct format."];
             block(nil, nil, error, idx, stop);
             return;
         }
 
         if ([result[@"_type"] isEqualToString:@"error"]) {
-            NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:obj];
-            error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                        code:0
-                                    userInfo:userInfo];
+            error = [errorCreator errorWithResponseDictionary:obj];
             block(resultKey, nil, error, idx, stop);
             return;
         }

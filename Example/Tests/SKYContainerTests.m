@@ -308,12 +308,12 @@ describe(@"AuthenticationError callback", ^{
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
-                        @"type" : @"AuthenticationError",
-                        @"code" : @101,
+                        @"name" : @"AccessTokenNotAccepted",
+                        @"code" : @(SKYErrorAccessTokenNotAccepted),
                         @"message" : @"authentication failed",
                     },
                 }
-                                                        statusCode:400
+                                                        statusCode:401
                                                            headers:nil];
             }];
 
@@ -333,12 +333,12 @@ describe(@"AuthenticationError callback", ^{
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
-                        @"type" : @"AuthenticationError",
-                        @"code" : @101,
+                        @"name" : @"AccessTokenNotAccepted",
+                        @"code" : @(SKYErrorAccessTokenNotAccepted),
                         @"message" : @"authentication failed",
                     },
                 }
-                                                        statusCode:400
+                                                        statusCode:401
                                                            headers:nil];
             }];
 
@@ -358,12 +358,12 @@ describe(@"AuthenticationError callback", ^{
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
-                        @"type" : @"AuthenticationError",
-                        @"code" : @102,
+                        @"name" : @"AccessKeyNotAccepted",
+                        @"code" : @(SKYErrorAccessKeyNotAccepted),
                         @"message" : @"invalid authentication information",
                     },
                 }
-                                                        statusCode:400
+                                                        statusCode:401
                                                            headers:nil];
             }];
 

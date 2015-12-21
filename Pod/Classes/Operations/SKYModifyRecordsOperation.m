@@ -18,6 +18,7 @@
 //
 
 #import "SKYModifyRecordsOperation.h"
+#import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 #import "SKYRecordSerializer.h"
 #import "SKYRecordSerialization.h"
@@ -79,13 +80,9 @@
         [SKYRecordID recordIDWithCanonicalString:item[SKYRecordSerializationRecordIDKey]];
 
     if (!recordID) {
-        NSMutableDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Missing `_id` or not in correct format."
-                                        errorDictionary:nil];
         if (error) {
-            *error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                         code:0
-                                     userInfo:userInfo];
+            *error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                              message:@"Missing `_id` or not in correct format."];
             return nil;
         }
     }
@@ -104,13 +101,8 @@
             NSLog(@"Error with returned record.");
         }
     } else if ([item[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-        NSMutableDictionary *userInfo = [SKYDataSerialization userInfoWithErrorDictionary:item];
-        userInfo[NSLocalizedDescriptionKey] = @"An error occurred while modifying record.";
         if (error) {
-            *error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                         code:0
-                                     userInfo:userInfo];
-            return nil;
+            *error = [self.errorCreator errorWithResponseDictionary:item];
         }
     }
     return record;
@@ -119,13 +111,9 @@
 - (NSArray *)handleResponseArray:(NSArray *)responseArray error:(NSError **)error
 {
     if (!responseArray) {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
         if (error) {
-            *error = [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain
-                                         code:0
-                                     userInfo:userInfo];
+            *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                              message:@"Result is not an array or not exists."];
         }
         return nil;
     }
@@ -156,11 +144,7 @@
     }];
 
     if ([errorByID count] && error) {
-        *error = [NSError errorWithDomain:SKYOperationErrorDomain
-                                     code:SKYErrorPartialFailure
-                                 userInfo:@{
-                                     SKYPartialErrorsByItemIDKey : errorByID,
-                                 }];
+        *error = [self.errorCreator partialErrorWithPerItemDictionary:errorByID];
     }
     return resultArray;
 }

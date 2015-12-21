@@ -18,6 +18,7 @@
 //
 
 #import "SKYLambdaOperation.h"
+#import "SKYOperationSubclass.h"
 
 @implementation SKYLambdaOperation
 
@@ -75,11 +76,8 @@
     if ([responseDictionary isKindOfClass:[NSDictionary class]]) {
         resultDictionary = responseDictionary;
     } else {
-        NSDictionary *userInfo =
-            [self errorUserInfoWithLocalizedDescription:@"Server returned malformed result."
-                                        errorDictionary:nil];
-        error =
-            [NSError errorWithDomain:(NSString *)SKYOperationErrorDomain code:0 userInfo:userInfo];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                         message:@"Result is not an array or not exists."];
     }
 
     if (self.lambdaCompletionBlock) {

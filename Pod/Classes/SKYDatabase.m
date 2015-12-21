@@ -30,6 +30,7 @@
 #import "SKYQueryCache.h"
 #import "SKYRecord_Private.h"
 #import "SKYRecordID.h"
+#import "SKYError.h"
 
 @interface SKYDatabase ()
 
@@ -84,7 +85,7 @@
 {
     SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
     if (completionHandler) {
-        operation.fetchSubscriptionCompletionBlock =
+        operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     completionHandler([subscriptionsBySubscriptionID allValues], operationError);
@@ -100,7 +101,7 @@
 {
     SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
     if (completionHandler) {
-        operation.fetchSubscriptionCompletionBlock =
+        operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSArray *subscriptions = [subscriptionsBySubscriptionID allValues];
@@ -179,23 +180,29 @@
 
 - (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion)completion
 {
-    if ([record.recordType isEqualToString:@"question"]) {
-        record[@"id"] = @6666;
-        record.recordID = [[SKYRecordID alloc] initWithRecordType:@"question" name:@"6666"];
-    }
     [self od_prepareRecordForSaving:record];
 
     SKYModifyRecordsOperation *operation =
         [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:@[ record ]];
 
     if (completion) {
+        SKYRecordID *recordID = record.recordID;
         operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([savedRecords count] > 0) {
-                    completion(savedRecords[0], operationError);
-                } else {
-                    completion(nil, operationError);
+            SKYRecord *record = nil;
+            NSError *error = nil;
+            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
+                if (operationError.code == SKYErrorPartialOperationFailure) {
+                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
                 }
+                if (!error) {
+                    error = operationError;
+                }
+            }
+            if ([savedRecords count] > 0) {
+                record = savedRecords[0];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(record, error);
             });
         };
     }
@@ -265,16 +272,22 @@
         [[SKYFetchRecordsOperation alloc] initWithRecordIDs:@[ recordID ]];
 
     if (completionHandler) {
-        operation.fetchRecordsCompletionBlock =
-            ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([recordsByRecordID count] > 0) {
-                        completionHandler(recordsByRecordID[recordID], operationError);
-                    } else {
-                        completionHandler(nil, operationError);
-                    }
-                });
-            };
+        operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID,
+                                                  NSError *operationError) {
+            SKYRecord *record = recordsByRecordID[recordID];
+            NSError *error = nil;
+            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
+                if (operationError.code == SKYErrorPartialOperationFailure) {
+                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+                }
+                if (!error) {
+                    error = operationError;
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(record, error);
+            });
+        };
     }
 
     [self executeOperation:operation];
@@ -319,12 +332,17 @@
 
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([recordIDs count] > 0) {
-                    completionHandler(recordIDs[0], operationError);
-                } else {
-                    completionHandler(nil, operationError);
+            NSError *error = nil;
+            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
+                if (operationError.code == SKYErrorPartialOperationFailure) {
+                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
                 }
+                if (!error) {
+                    error = operationError;
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordIDs[0], error);
             });
         };
     }

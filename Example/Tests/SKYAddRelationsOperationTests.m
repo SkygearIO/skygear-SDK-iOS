@@ -84,9 +84,9 @@ SpecBegin(SKYAddRelationsOperation)
                                @"id" : @"user1002",
                                @"type" : @"error",
                                @"data" : @{
-                                   @"code" : @104,
+                                   @"code" : @(SKYErrorResourceNotFound),
                                    @"message" : @"cannot find user",
-                                   @"type" : @"ResourceNotFound",
+                                   @"name" : @"ResourceNotFound",
                                    @"info" : @{@"id" : @"user1002"},
                                },
                             },
