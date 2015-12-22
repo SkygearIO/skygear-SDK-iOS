@@ -27,4 +27,12 @@ Pod::Spec.new do |s|
     core.dependency 'FMDB', '~> 2.5'
     core.dependency 'SocketRocket', '~> 0.4'
   end
+
+  s.subspec 'Facebook' do |facebook|
+    facebook.source_files = 'Pod/Extensions/Facebook/**/*.{h,m}'
+    facebook.requires_arc = true
+
+    facebook.dependency 'SKYKit/Core'
+    facebook.dependency 'FBSDKCoreKit', '~> 4.0'
+  end
 end
