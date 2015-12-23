@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#import <SKYKit/SKYKit.h>
+#import "SKYKit.h"
 
 @class FBSDKAccessToken;
 
