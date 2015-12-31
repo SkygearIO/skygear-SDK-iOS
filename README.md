@@ -1,4 +1,9 @@
 # SKYKit
+
+[![CocoaPods](https://img.shields.io/cocoapods/v/SKYKit.svg)](http://cocoadocs.org/docsets/SKYKit)
+[![Build Status](https://travis-ci.org/SkygearIO/skygear-SDK-iOS.svg?branch=master)](https://travis-ci.org/SkygearIO/skygear-SDK-iOS)
+[![License](https://img.shields.io/cocoapods/l/SKYKit.svg)](http://cocoadocs.org/docsets/SKYKit)
+
 iOS SDK for Skygear
 
 
