@@ -53,6 +53,7 @@ SpecBegin(SKYUploadAssetOperation)
                 assetWithName:@"boy.txt"
                          data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
                                                                   options:0]];
+            asset.mimeType = @"text/plain";
         });
 
         it(@"makes request", ^{
@@ -67,6 +68,7 @@ SpecBegin(SKYUploadAssetOperation)
                 .to.equal(@{
                     @"X-Skygear-API-Key" : @"API_KEY",
                     @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
+                    @"Content-Type" : @"text/plain",
                 });
         });
 

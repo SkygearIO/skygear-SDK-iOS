@@ -29,6 +29,14 @@
 @property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, readonly, copy) NSURL *url;
 
+/**
+ The MIME type of the asset when the MIME type is known.
+
+ When uploading asset, the MIME type stored in this property will be used to set the asset
+ content type.
+ */
+@property (nonatomic, readwrite, copy) NSString *mimeType;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
