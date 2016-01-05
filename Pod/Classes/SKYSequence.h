@@ -1,5 +1,5 @@
 //
-//  SKYDataSerialization.h
+//  SKYSequence.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -19,22 +19,15 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKYAsset.h"
+/**
+ SKYSequence is a special value that creates an auto-increment field on the record when
+ saved.
+ */
+@interface SKYSequence : NSObject
 
-extern NSString *const SKYDataSerializationCustomTypeKey;
-extern NSString *const SKYDataSerializationReferenceType;
-extern NSString *const SKYDataSerializationDateType;
-extern NSString *const SKYDataSerializationRelationType;
-extern NSString *const SKYDataSerializationSequenceType;
-
-NSString *remoteFunctionName(NSString *localFunctionName);
-NSString *localFunctionName(NSString *remoteFunctionName);
-
-@interface SKYDataSerialization : NSObject
-
-+ (id)deserializeObjectWithValue:(id)value;
-+ (SKYAsset *)deserializeAssetWithDictionary:(NSDictionary *)data;
-
-+ (id)serializeObject:(id)obj;
+/**
+ Returns an instance of SKYSequence.
+ */
++ (instancetype)sequence;
 
 @end
