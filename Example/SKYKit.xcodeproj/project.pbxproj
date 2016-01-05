@@ -24,6 +24,7 @@
 		372E77911B28338A001F1972 /* SKYAccessControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 372E77901B28338A001F1972 /* SKYAccessControlTests.m */; };
 		372FD24E1AF79F59008128EC /* SKYHexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 372FD24D1AF79F59008128EC /* SKYHexer.m */; };
 		3745755A1B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 374575591B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m */; };
+		374863DA1C3CF16000A6E787 /* SKYChangePasswordOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 374863D91C3CF16000A6E787 /* SKYChangePasswordOperationTests.m */; };
 		376CB11B1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 376CB11A1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m */; };
 		376CB11D1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 376CB11C1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m */; };
 		3785584A1AE63FEC00685319 /* SKYSubscriptionSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 378558491AE63FEC00685319 /* SKYSubscriptionSerializerTests.m */; };
@@ -102,6 +103,7 @@
 		372FD24C1AF79F59008128EC /* SKYHexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKYHexer.h; sourceTree = "<group>"; };
 		372FD24D1AF79F59008128EC /* SKYHexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYHexer.m; sourceTree = "<group>"; };
 		374575591B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDeleteSubscriptionsOperationTests.m; sourceTree = "<group>"; };
+		374863D91C3CF16000A6E787 /* SKYChangePasswordOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYChangePasswordOperationTests.m; sourceTree = "<group>"; };
 		376CB11A1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSubscriptionDeserializerTests.m; sourceTree = "<group>"; };
 		376CB11C1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYFetchSubscriptionsOperationTests.m; sourceTree = "<group>"; };
 		378558491AE63FEC00685319 /* SKYSubscriptionSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSubscriptionSerializerTests.m; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
 				372E77901B28338A001F1972 /* SKYAccessControlTests.m */,
 				5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */,
+				374863D91C3CF16000A6E787 /* SKYChangePasswordOperationTests.m */,
 				CD48CE0C1AA05A9200A1CD04 /* SKYContainerTests.m */,
 				CD7FE2711A9EDD5B002C076E /* SKYSignupUserOperationTests.m */,
 				CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */,
@@ -600,6 +603,7 @@
 				CD56972A1AAC7D3700AE596B /* SKYRecordIDTests.m in Sources */,
 				372FD24E1AF79F59008128EC /* SKYHexer.m in Sources */,
 				5F0532C11B8D912E00DA4D8B /* SKYPubsubTests.m in Sources */,
+				374863DA1C3CF16000A6E787 /* SKYChangePasswordOperationTests.m in Sources */,
 				37CDD6071B4C040F007B9FE1 /* SKYDownloadAssetOperationTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */,
 				383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */,

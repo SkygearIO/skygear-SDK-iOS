@@ -173,6 +173,15 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
+ Changes the password of the current user of this container.
+
+ This is a convenient method for <SKYChangePasswordOperation>.
+ */
+- (void)setNewPassword:(NSString *)newPassword
+           oldPassword:(NSString *)oldPassword
+     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
  Registers a device token for push notification.
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
