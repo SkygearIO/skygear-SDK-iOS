@@ -154,6 +154,16 @@ SpecBegin(SKYRecordDeserializer)
 
         });
 
+        it(@"deserialize sequence", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"seq"] = @{
+                @"$type" : @"seq",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect([record[@"seq"] class]).to.beSubclassOf([SKYSequence class]);
+
+        });
+
         it(@"deserialize transient fields", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"_transient"] = @{ @"hello" : @"world" };

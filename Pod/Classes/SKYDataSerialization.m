@@ -23,6 +23,7 @@
 
 #import "SKYAsset_Private.h"
 #import "SKYReference.h"
+#import "SKYSequence.h"
 #import "SKYError.h"
 
 NSString *const SKYDataSerializationCustomTypeKey = @"$type";
@@ -31,6 +32,7 @@ NSString *const SKYDataSerializationReferenceType = @"ref";
 NSString *const SKYDataSerializationDateType = @"date";
 NSString *const SKYDataSerializationLocationType = @"geo";
 NSString *const SKYDataSerializationRelationType = @"relation";
+NSString *const SKYDataSerializationSequenceType = @"seq";
 
 static NSDictionary *remoteFunctionNameDict;
 static NSDictionary *localFunctionNameDict;
@@ -79,6 +81,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         obj = [self deserializeLocationWithDictionary:data];
     } else if ([type isEqualToString:SKYDataSerializationRelationType]) {
         obj = [self deserializeRelationWithDictionary:data];
+    } else if ([type isEqualToString:SKYDataSerializationSequenceType]) {
+        obj = [SKYSequence sequence];
     }
     return obj;
 }
@@ -222,6 +226,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
             @"$name" : name,
             @"$direction" : direction,
         };
+    } else if ([obj isKindOfClass:[SKYSequence class]]) {
+        data = @{ @"$type" : @"seq" };
     } else {
         data = obj;
     }

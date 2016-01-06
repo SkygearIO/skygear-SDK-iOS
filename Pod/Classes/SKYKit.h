@@ -69,6 +69,7 @@
 #import "SKYRelation.h"
 #import "SKYRelationPredicate.h"
 #import "SKYRequest.h"
+#import "SKYSequence.h"
 #import "SKYSubscription.h"
 #import "SKYSubscriptionDeserializer.h"
 #import "SKYSubscriptionSerialization.h"

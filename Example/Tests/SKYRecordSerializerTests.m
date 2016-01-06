@@ -157,6 +157,16 @@ SpecBegin(SKYRecordSerializer)
                 });
         });
 
+        it(@"serialize sequence", ^{
+            record[@"seq"] = [SKYSequence sequence];
+
+            NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+            expect(dictionary[@"seq"])
+                .to.equal(@{
+                    @"$type" : @"seq",
+                });
+        });
+
         it(@"serialize transient fields (enabled)", ^{
             record.transient[@"hello"] = @"world";
 
