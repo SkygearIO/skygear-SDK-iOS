@@ -1,3 +1,10 @@
+## 0.3.0 (2016-01-06)
+
+### Features
+
+- Support for setting auto-increment field #218
+- Allow application specified asset mime type #131
+
 ## 0.2.0 (2015-12-23)
 
 ### Features
