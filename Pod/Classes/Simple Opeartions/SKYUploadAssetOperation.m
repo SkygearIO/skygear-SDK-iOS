@@ -126,6 +126,11 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"PUT";
 
+    NSString *mimeType = self.asset.mimeType;
+    if ([mimeType length] > 0) {
+        [request setValue:[mimeType lowercaseString] forHTTPHeaderField:@"Content-Type"];
+    }
+
     // SKYKit-related headers
     NSString *apiKey = self.container.APIKey;
     if (apiKey.length) {
