@@ -1,5 +1,5 @@
 //
-//  SKYDatabaseOperation.m
+//  SKYChangePasswordOperation.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
