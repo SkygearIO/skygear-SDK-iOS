@@ -44,10 +44,11 @@ SpecBegin(SKYChangePasswordOperation)
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"auth:password");
             expect(request.accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-            expect(request.payload).to.equal(@{
-                @"old_password" : @"old_password",
-                @"password" : @"new_password",
-            });
+            expect(request.payload)
+                .to.equal(@{
+                    @"old_password" : @"old_password",
+                    @"password" : @"new_password",
+                });
         });
 
         it(@"make request", ^{
