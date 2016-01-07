@@ -22,6 +22,7 @@
 #import "SKYAddRelationsOperation.h"
 #import "SKYAPSNotificationInfo.h"
 #import "SKYAsset.h"
+#import "SKYChangePasswordOperation.h"
 #import "SKYContainer.h"
 #import "SKYContainer_Private.h"
 #import "SKYSignupUserOperation.h"

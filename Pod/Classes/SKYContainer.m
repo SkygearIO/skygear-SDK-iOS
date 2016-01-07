@@ -19,6 +19,7 @@
 
 #import "SKYContainer.h"
 #import "SKYContainer_Private.h"
+#import "SKYChangePasswordOperation.h"
 #import "SKYDatabase_Private.h"
 #import "SKYNotification_Private.h"
 #import "SKYOperation.h"
@@ -354,6 +355,24 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             completionHandler(nil, error);
         });
     };
+
+    [_operationQueue addOperation:operation];
+}
+
+- (void)setNewPassword:(NSString *)newPassword
+           oldPassword:(NSString *)oldPassword
+     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYChangePasswordOperation *operation =
+        [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
+    operation.container = self;
+
+    operation.changePasswordCompletionBlock =
+        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordID, error);
+            });
+        };
 
     [_operationQueue addOperation:operation];
 }
