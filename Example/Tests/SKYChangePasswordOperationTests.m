@@ -97,9 +97,9 @@ SpecBegin(SKYChangePasswordOperation)
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *resp = @{
                         @"error" : @{
-                            @"type" : @"UnknownError",
-                            @"code" : @1,
-                            @"message" : @"Incorrecly Old Password",
+                            @"type" : @"InvalidCredentials",
+                            @"code" : @(SKYErrorInvalidCredentials),
+                            @"message" : @"Incorrect Old Password",
                         },
                     };
                     return [OHHTTPStubsResponse responseWithJSONObject:resp
@@ -112,6 +112,7 @@ SpecBegin(SKYChangePasswordOperation)
                     ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
+                            expect(error.code).to.equal(SKYErrorInvalidCredentials);
                             done();
                         });
                     };
