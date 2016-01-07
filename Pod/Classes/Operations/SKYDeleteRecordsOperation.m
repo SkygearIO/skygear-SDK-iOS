@@ -65,15 +65,12 @@
 
     NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        if (erroneousResponse) {
-            return;
-        }
-
         SKYRecordID *recordID =
             [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
         if (!recordID) {
             erroneousResponse = YES;
+            *stop = YES;
             return;
         }
 
@@ -86,16 +83,20 @@
     }];
 
     if (erroneousResponse) {
-        *operationError =
-            [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                     message:@"Missing `_id` or not in correct format."];
+        if (operationError) {
+            *operationError =
+                [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                         message:@"Missing `_id` or not in correct format."];
+        }
         return nil;
     }
 
-    if ([errorsByID count] > 0) {
-        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
-    } else {
-        *operationError = nil;
+    if (operationError) {
+        if ([errorsByID count] > 0) {
+            *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
+        } else {
+            *operationError = nil;
+        }
     }
 
     NSMutableArray *deletedRecordIDs = [NSMutableArray array];
