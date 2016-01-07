@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYDeleteRecordsOperation)
 
@@ -93,7 +93,16 @@ SpecBegin(SKYDeleteRecordsOperation)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[]
+                        @"result" : @[
+                            @{
+                               @"_id" : @"book/book1",
+                               @"_type" : @"record",
+                            },
+                            @{
+                               @"_id" : @"book/book2",
+                               @"_type" : @"record",
+                            },
+                        ],
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -106,10 +115,7 @@ SpecBegin(SKYDeleteRecordsOperation)
                 operation.deleteRecordsCompletionBlock =
                     ^(NSArray *recordIDs, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([recordIDs class]).to.beSubclassOf([NSArray class]);
-                            expect(recordIDs).to.haveCountOf(2);
-                            expect(recordIDs).to.contain(recordID1);
-                            expect(recordIDs).to.contain(recordID2);
+                            expect(recordIDs).to.equal(@[ recordID1, recordID2 ]);
                             expect(operationError).to.beNil();
                             done();
                         });

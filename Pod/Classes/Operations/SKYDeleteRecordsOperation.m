@@ -61,43 +61,57 @@
 
 - (NSArray *)processResultArray:(NSArray *)result error:(NSError **)operationError
 {
+    __block BOOL erroneousResponse = NO;
+
     NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
-    NSMutableArray *deletedRecordIDs = [self.recordIDs mutableCopy];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        NSError *error = nil;
         SKYRecordID *recordID =
             [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
-        if (recordID) {
-            if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                error = [self.errorCreator errorWithResponseDictionary:obj];
-                [errorsByID setObject:error forKey:recordID];
-            }
-        } else {
-            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                             message:@"Missing `_id` or not in correct format."];
+        if (!recordID) {
+            erroneousResponse = YES;
+            *stop = YES;
+            return;
         }
 
-        if (recordID) {
+        if (![obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
+            return;
+        }
+
+        NSError *error = [self.errorCreator errorWithResponseDictionary:obj];
+        [errorsByID setObject:error forKey:recordID];
+    }];
+
+    if (erroneousResponse) {
+        if (operationError) {
+            *operationError =
+                [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                         message:@"Missing `_id` or not in correct format."];
+        }
+        return nil;
+    }
+
+    if (operationError) {
+        if ([errorsByID count] > 0) {
+            *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
+        } else {
+            *operationError = nil;
+        }
+    }
+
+    NSMutableArray *deletedRecordIDs = [NSMutableArray array];
+    [self.recordIDs
+        enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
+            NSError *error = errorsByID[recordID];
+
+            if (!error) {
+                [deletedRecordIDs addObject:recordID];
+            }
+
             if (self.perRecordCompletionBlock) {
                 self.perRecordCompletionBlock(recordID, error);
             }
-            [deletedRecordIDs removeObject:recordID];
-        }
-    }];
-
-    if (operationError && [errorsByID count] > 0) {
-        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
-    } else {
-        *operationError = nil;
-    }
-
-    if (self.perRecordCompletionBlock) {
-        [deletedRecordIDs
-            enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
-                self.perRecordCompletionBlock(recordID, nil);
-            }];
-    }
+        }];
 
     return deletedRecordIDs;
 }
