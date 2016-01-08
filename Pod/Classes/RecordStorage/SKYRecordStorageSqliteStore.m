@@ -187,7 +187,7 @@
 #pragma mark -
 
 - (BOOL)_updatePermanentRowWithRecordID:(SKYRecordID *)recordID
-                           overlayRowID:(sqlite_int64)newRowID
+                           overlayRowID:(int64_t)newRowID
                                   error:(NSError **)error
 {
     NSString *recordType = recordID.recordType;
