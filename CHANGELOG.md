@@ -1,3 +1,14 @@
+## 0.4.0 (2016-01-13)
+
+### Feature
+
+- Support for changing user password #177
+
+### Bug Fixes
+
+- Fix sqlite_int64 undefined in FMDB 2.6
+- Fix SKYDeleteRecordsOperation completion block always receives empty array
+
 ## 0.3.0 (2016-01-06)
 
 ### Features
