@@ -233,7 +233,6 @@
             [self serializeWithExpression:[NSExpression expressionForKeyPath:relPredicate.keyPath]],
             [SKYDataSerialization serializeObject:relPredicate.relation],
         ];
-        return @[];
     } else if (!predicate) {
         return [NSArray array];
     } else {

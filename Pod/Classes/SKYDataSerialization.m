@@ -145,7 +145,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (SKYRelation *)deserializeRelationWithDictionary:(NSDictionary *)data
 {
-    NSString *name = data[@"name"];
+    NSString *name = data[@"$name"];
     if ([name isEqualToString:@"_friend"]) {
         name = @"friend";
     } else if ([name isEqualToString:@"_follow"]) {
@@ -153,15 +153,15 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     }
 
     SKYRelationDirection direction;
-    if ([data[@"direction"] isEqualToString:@"outward"]) {
+    if ([data[@"$direction"] isEqualToString:@"outward"]) {
         direction = SKYRelationDirectionOutward;
-    } else if ([data[@"direction"] isEqualToString:@"inward"]) {
+    } else if ([data[@"$direction"] isEqualToString:@"inward"]) {
         direction = SKYRelationDirectionInward;
-    } else if ([data[@"direction"] isEqualToString:@"mutual"]) {
+    } else if ([data[@"$direction"] isEqualToString:@"mutual"]) {
         direction = SKYRelationDirectionMutual;
     } else {
         NSLog(@"Unexpected relation direction %@. Assuming direction is outward.",
-              data[@"direction"]);
+              data[@"$direction"]);
         direction = SKYRelationDirectionOutward;
     }
 
