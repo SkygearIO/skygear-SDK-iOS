@@ -23,6 +23,7 @@
 #import "SKYDataSerialization.h"
 #import "SKYLocationSortDescriptor.h"
 #import "SKYRelationPredicate.h"
+#import "SKYUserDiscoverPredicate.h"
 
 @implementation SKYQuerySerializer
 
@@ -232,6 +233,15 @@
             @"userRelation",
             [self serializeWithExpression:[NSExpression expressionForKeyPath:relPredicate.keyPath]],
             [SKYDataSerialization serializeObject:relPredicate.relation],
+        ];
+    } else if ([predicate isKindOfClass:[SKYUserDiscoverPredicate class]]) {
+        SKYUserDiscoverPredicate *userPredicate = (SKYUserDiscoverPredicate *)predicate;
+        return @[
+            @"func",
+            @"userDiscover",
+            @{
+                @"emails" : userPredicate.emails,
+            },
         ];
     } else if (!predicate) {
         return [NSArray array];

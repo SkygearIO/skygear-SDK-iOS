@@ -366,6 +366,21 @@ describe(@"deserialize predicate", ^{
         expect(predicate.relation.direction).to.equal(SKYRelationDirectionOutward);
         expect(predicate.keyPath).to.equal(@"_owner");
     });
+
+    it(@"user discover", ^{
+        NSArray *predicateArray = @[
+            @"func",
+            @"userDiscover",
+            @{
+                @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
+            },
+        ];
+
+        SKYUserDiscoverPredicate *predicate =
+            (SKYUserDiscoverPredicate *)[deserializer predicateWithArray:predicateArray];
+        expect([predicate class]).to.beSubclassOf([SKYUserDiscoverPredicate class]);
+        expect(predicate.emails).to.equal(@[ @"john.doe@example.com", @"jane.doe@example.com" ]);
+    });
 });
 
 describe(@"deserialize sort descriptors", ^{

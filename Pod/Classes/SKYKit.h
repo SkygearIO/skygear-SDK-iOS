@@ -80,6 +80,7 @@
 #import "SKYUserDeserializer.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
+#import "SKYUserDiscoverPredicate.h"
 #import "SKYUserRecordID.h"
 #import "SKYUserRecordID_Private.h"
 #import "NSURLRequest+SKYRequest.h"

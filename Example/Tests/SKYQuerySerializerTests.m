@@ -368,6 +368,20 @@ describe(@"serialize predicate", ^{
                @"$direction" : @"outward" }
         ]);
     });
+
+    it(@"user discover predicate", ^{
+        SKYUserDiscoverPredicate *p = [SKYUserDiscoverPredicate
+            predicateWithEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]];
+        NSArray *result = [serializer serializeWithPredicate:p];
+
+        expect(result).to.equal(@[
+            @"func",
+            @"userDiscover",
+            @{
+                @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
+            },
+        ]);
+    });
 });
 
 describe(@"serialize sort descriptors", ^{
