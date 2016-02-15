@@ -347,6 +347,40 @@ describe(@"deserialize predicate", ^{
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
         expect(predicate).to.equal([NSPredicate predicateWithFormat:@"not (name = %@)", @"Peter"]);
     });
+
+    it(@"user relation", ^{
+        NSArray *predicateArray = @[
+            @"func",
+            @"userRelation",
+            @{ @"$type" : @"keypath",
+               @"$val" : @"_owner" },
+            @{ @"$type" : @"relation",
+               @"$name" : @"_follow",
+               @"$direction" : @"outward" }
+        ];
+
+        SKYRelationPredicate *predicate =
+            (SKYRelationPredicate *)[deserializer predicateWithArray:predicateArray];
+        expect([predicate class]).to.beSubclassOf([SKYRelationPredicate class]);
+        expect(predicate.relation.name).to.equal(@"follow");
+        expect(predicate.relation.direction).to.equal(SKYRelationDirectionOutward);
+        expect(predicate.keyPath).to.equal(@"_owner");
+    });
+
+    it(@"user discover", ^{
+        NSArray *predicateArray = @[
+            @"func",
+            @"userDiscover",
+            @{
+                @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
+            },
+        ];
+
+        SKYUserDiscoverPredicate *predicate =
+            (SKYUserDiscoverPredicate *)[deserializer predicateWithArray:predicateArray];
+        expect([predicate class]).to.beSubclassOf([SKYUserDiscoverPredicate class]);
+        expect(predicate.emails).to.equal(@[ @"john.doe@example.com", @"jane.doe@example.com" ]);
+    });
 });
 
 describe(@"deserialize sort descriptors", ^{

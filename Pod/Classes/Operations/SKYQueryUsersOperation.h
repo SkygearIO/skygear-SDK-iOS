@@ -26,16 +26,18 @@ typedef enum : NSUInteger {
     SKYUserDiscoveryMethodRelation = 1,
 } SKYUserDiscoveryMethod;
 
+/* clang-format off */
 /**
  <SKYQueryUsersOperation> is a subclass of <SKYOperation> that implements user query
  in Ourd. Use this operation to query other user in the same application.
  */
-@interface SKYQueryUsersOperation : SKYOperation
+__deprecated @interface SKYQueryUsersOperation : SKYOperation
 
 /**
  Returns an operation object that discovers users by their email.
  */
 + (instancetype)discoverUsersOperationByEmails:(NSArray /* NSString */ *)emails;
+/* clang-format on */
 
 /**
  Returns an operation object that queries users by their relation to the current user.
