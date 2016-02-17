@@ -31,6 +31,8 @@ Pod::Spec.new do |s|
   s.subspec 'Facebook' do |facebook|
     facebook.source_files = 'Pod/Extensions/Facebook/**/*.{h,m}'
     facebook.requires_arc = true
+    # Allow the weak linking to Bolts (see FBSDKAppLinkResolver.h) in Cocoapods 0.39.0
+    facebook.pod_target_xcconfig = { 'CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES' => 'YES' }
 
     facebook.dependency 'SKYKit/Core'
     facebook.dependency 'FBSDKCoreKit', '~> 4.0'
