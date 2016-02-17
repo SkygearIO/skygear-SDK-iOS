@@ -1,3 +1,9 @@
+## 0.5.0 (2016-02-17)
+
+### Features
+
+- Support for relation/discover in user record query #242
+
 ## 0.4.0 (2016-01-13)
 
 ### Feature
