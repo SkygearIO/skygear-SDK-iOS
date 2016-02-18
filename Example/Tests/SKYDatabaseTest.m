@@ -64,6 +64,33 @@ SpecBegin(SKYDatabase)
 
         });
 
+        it(@"fetch record with operation error", ^{
+            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                              code:0
+                                                          userInfo:nil]];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                [database
+                    fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                    completionHandler:^(SKYRecord *record, NSError *error) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            expect(error).notTo.beNil();
+                            expect(error.domain).to.equal(SKYOperationErrorDomain);
+                            expect(error.code).to.equal(SKYErrorNetworkFailure);
+                            done();
+                        });
+                    }];
+            });
+
+        });
+
         it(@"fetch records", ^{
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
@@ -161,6 +188,37 @@ SpecBegin(SKYDatabase)
 
         });
 
+        it(@"modify record with operation error", ^{
+            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+            NSString *bookTitle = @"A tale of two cities";
+            SKYRecord *record = [[SKYRecord alloc]
+                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                            data:nil];
+            record[@"title"] = bookTitle;
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                              code:0
+                                                          userInfo:nil]];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                [database saveRecord:record
+                          completion:^(SKYRecord *record, NSError *error) {
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  expect(error).notTo.beNil();
+                                  expect(error.domain).to.equal(SKYOperationErrorDomain);
+                                  expect(error.code).to.equal(SKYErrorNetworkFailure);
+                                  done();
+                              });
+                          }];
+            });
+        });
+
         it(@"modify records", ^{
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             NSString *bookTitle = @"A tale of two cities";
@@ -251,6 +309,33 @@ SpecBegin(SKYDatabase)
                            }];
             });
 
+        });
+
+        it(@"delete record with operation error", ^{
+            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+            SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                              code:0
+                                                          userInfo:nil]];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                [database deleteRecordWithID:recordID
+                           completionHandler:^(SKYRecordID *recordID, NSError *error) {
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   expect(error).notTo.beNil();
+                                   expect(error.domain).to.equal(SKYOperationErrorDomain);
+                                   expect(error.code).to.equal(SKYErrorNetworkFailure);
+                                   done();
+                               });
+                           }];
+            });
         });
 
         it(@"delete records", ^{
@@ -344,6 +429,32 @@ SpecBegin(SKYDatabase)
 
         });
 
+        it(@"perform query with operation error", ^{
+            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
+                                                              code:0
+                                                          userInfo:nil]];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
+                [database performQuery:query
+                     completionHandler:^(NSArray *results, NSError *error) {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             expect(error).notTo.beNil();
+                             expect(error.domain).to.equal(SKYOperationErrorDomain);
+                             expect(error.code).to.equal(SKYErrorNetworkFailure);
+                             done();
+                         });
+                     }];
+            });
+        });
+
         it(@"fetch all subscriptions", ^{
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -397,7 +508,6 @@ SpecBegin(SKYDatabase)
             });
 
         });
-
     });
 
 SpecEnd
