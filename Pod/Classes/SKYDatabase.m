@@ -190,10 +190,13 @@
         operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
             SKYRecord *record = nil;
             NSError *error = nil;
-            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
+            if (operationError != nil) {
                 if (operationError.code == SKYErrorPartialOperationFailure) {
                     error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
                 }
+
+                // If error is not a partial error, or if the error cannot be obtained
+                // from the info dictionary, set the returned error to the operationError.
                 if (!error) {
                     error = operationError;
                 }
@@ -272,22 +275,25 @@
         [[SKYFetchRecordsOperation alloc] initWithRecordIDs:@[ recordID ]];
 
     if (completionHandler) {
-        operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID,
-                                                  NSError *operationError) {
-            SKYRecord *record = recordsByRecordID[recordID];
-            NSError *error = nil;
-            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
-                if (operationError.code == SKYErrorPartialOperationFailure) {
-                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+        operation.fetchRecordsCompletionBlock =
+            ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+                SKYRecord *record = recordsByRecordID[recordID];
+                NSError *error = nil;
+                if (operationError != nil) {
+                    if (operationError.code == SKYErrorPartialOperationFailure) {
+                        error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+                    }
+
+                    // If error is not a partial error, or if the error cannot be obtained
+                    // from the info dictionary, set the returned error to the operationError.
+                    if (!error) {
+                        error = operationError;
+                    }
                 }
-                if (!error) {
-                    error = operationError;
-                }
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(record, error);
-            });
-        };
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(record, error);
+                });
+            };
     }
 
     [self executeOperation:operation];
@@ -333,10 +339,13 @@
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
             NSError *error = nil;
-            if (operationError != nil && operationError.code == SKYErrorPartialOperationFailure) {
+            if (operationError != nil) {
                 if (operationError.code == SKYErrorPartialOperationFailure) {
                     error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
                 }
+
+                // If error is not a partial error, or if the error cannot be obtained
+                // from the info dictionary, set the returned error to the operationError.
                 if (!error) {
                     error = operationError;
                 }
