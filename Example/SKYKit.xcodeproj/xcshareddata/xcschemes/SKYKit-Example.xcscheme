@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0710"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,7 +17,7 @@
                BlueprintIdentifier = "6003F589195388D20070C39A"
                BuildableName = "SKYKit.app"
                BlueprintName = "SKYKit"
-               ReferencedContainer = "container:SkyKit.xcodeproj">
+               ReferencedContainer = "container:SKYKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "6003F5AD195388D20070C39A"
                BuildableName = "Tests.xctest"
                BlueprintName = "Tests"
-               ReferencedContainer = "container:SkyKit.xcodeproj">
+               ReferencedContainer = "container:SKYKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,7 +45,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "SKYKit.app"
             BlueprintName = "SKYKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -68,7 +68,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "SKYKit.app"
             BlueprintName = "SKYKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -87,7 +87,7 @@
             BlueprintIdentifier = "6003F589195388D20070C39A"
             BuildableName = "SKYKit.app"
             BlueprintName = "SKYKit"
-            ReferencedContainer = "container:SkyKit.xcodeproj">
+            ReferencedContainer = "container:SKYKit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
