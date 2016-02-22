@@ -65,6 +65,7 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
+		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		8042FF4D70754137A585683E /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D0A21907E2F88C47901220 /* libPods-SKYKit.a */; };
 		C6AA418D510F073AE2609148 /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-SKYKit.a */; };
 		CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */; };
@@ -150,6 +151,7 @@
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		607B788C1C7B0DD500498FAC /* SKYRoleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRoleTests.m; sourceTree = "<group>"; };
 		657F94CCEA2515F29D33EDA5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SKYKit.podspec; path = ../SKYKit.podspec; sourceTree = "<group>"; };
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */,
 				38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */,
 				38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */,
+				607B788C1C7B0DD500498FAC /* SKYRoleTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				37CDD6041B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* SKYRecordDeserializerTests.m in Sources */,
 				383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */,
+				607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* SKYOperationTests.m in Sources */,
 				376CB11B1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m in Sources */,
 				376CB11D1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m in Sources */,
