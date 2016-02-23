@@ -21,7 +21,7 @@
 
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
-#import "SKYUserRecordID_Private.h"
+
 
 @implementation SKYChangePasswordOperation
 
@@ -69,13 +69,13 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYUserRecordID *recordID = nil;
+    NSString *recordID = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
+        recordID = response[@"user_id"];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithResponseDictionary:response];

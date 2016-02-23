@@ -21,7 +21,7 @@
 #import "SKYOperationSubclass.h"
 
 #import "SKYUser.h"
-#import "SKYUserRecordID.h"
+
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"

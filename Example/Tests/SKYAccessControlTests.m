@@ -23,7 +23,6 @@
 #import "SKYAccessControlDeserializer.h"
 #import "SKYAccessControlEntry.h"
 #import "SKYAccessControlSerializer.h"
-#import "SKYUserRecordID_Private.h"
 
 // Currently there are no methods to access the internal state of SKYAccessControl.
 // Before that comes, use serialization for assertion.
@@ -60,10 +59,10 @@ SpecBegin(SKYAccessControl)
 
 describe(@"Access Control", ^{
     __block SKYAccessControl *accessControl = nil;
-    __block SKYUserRecordID *userID = nil;
+    __block NSString *userID = nil;
 
     beforeEach(^{
-        userID = [SKYUserRecordID recordIDWithUsername:@"userid"];
+        userID = @"userid";
 
         SKYAccessControlEntry *entry = [SKYAccessControlEntry writeEntryForUserID:userID];
         accessControl = [SKYAccessControl accessControlWithEntries:@[ entry ]];
@@ -92,7 +91,7 @@ describe(@"Access Control", ^{
     });
 
     it(@"does not add same entry twice", ^{
-        [accessControl addWriteAccessForUserID:[SKYUserRecordID recordIDWithUsername:@"userid"]];
+        [accessControl addWriteAccessForUserID:@"userid"];
         expect(serializedAccessControl(accessControl))
             .to.equal(@[
                 @{ @"relation" : @"$direct",
@@ -109,9 +108,9 @@ describe(@"Access Control Entry", ^{
         SKYAccessControlEntry *writeRelationEntry =
             [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
         SKYAccessControlEntry *readUserIDEntry = [SKYAccessControlEntry
-            readEntryForUserID:[SKYUserRecordID recordIDWithUsername:@"userid0"]];
+            readEntryForUserID:@"userid0"];
         SKYAccessControlEntry *writeUserIDEntry = [SKYAccessControlEntry
-            writeEntryForUserID:[SKYUserRecordID recordIDWithUsername:@"userid1"]];
+            writeEntryForUserID:@"userid1"];
 
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
             readRelationEntry,

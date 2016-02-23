@@ -29,7 +29,7 @@ SpecBegin(SKYOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
         });

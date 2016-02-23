@@ -82,7 +82,7 @@
     [self addReadAccessForUserID:user.recordID];
 }
 
-- (void)addReadAccessForUserID:(SKYUserRecordID *)userID
+- (void)addReadAccessForUserID:(NSString *)userID
 {
     [self addEntry:[SKYAccessControlEntry readEntryForUserID:userID]];
 }
@@ -97,7 +97,7 @@
     [self addWriteAccessForUserID:user.recordID];
 }
 
-- (void)addWriteAccessForUserID:(SKYUserRecordID *)userID
+- (void)addWriteAccessForUserID:(NSString *)userID
 {
     [self addEntry:[SKYAccessControlEntry writeEntryForUserID:userID]];
 }
@@ -112,7 +112,7 @@
     [self removeReadAccessForUserID:user.recordID];
 }
 
-- (void)removeReadAccessForUserID:(SKYUserRecordID *)userID
+- (void)removeReadAccessForUserID:(NSString *)userID
 {
     [self removeEntry:[SKYAccessControlEntry readEntryForUserID:userID]];
 }
@@ -127,7 +127,7 @@
     [self removeWriteAccessForUserID:user.recordID];
 }
 
-- (void)removeWriteAccessForUserID:(SKYUserRecordID *)userID
+- (void)removeWriteAccessForUserID:(NSString *)userID
 {
     [self removeEntry:[SKYAccessControlEntry writeEntryForUserID:userID]];
 }

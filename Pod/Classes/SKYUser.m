@@ -23,13 +23,13 @@
 
 @interface SKYUser ()
 
-@property (nonatomic, readwrite, copy) SKYUserRecordID *recordID;
+@property (nonatomic, readwrite, copy) NSString *recordID;
 
 @end
 
 @implementation SKYUser
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID
+- (instancetype)initWithUserRecordID:(NSString *)recordID
 {
     self = [super init];
     if (self) {
@@ -38,29 +38,9 @@
     return self;
 }
 
-+ (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID
++ (instancetype)userWithUserRecordID:(NSString *)recordID
 {
     return [[self alloc] initWithUserRecordID:recordID];
-}
-
-- (NSString *)username
-{
-    return self.recordID.username;
-}
-
-- (NSString *)email
-{
-    return self.recordID.email;
-}
-
-- (NSDictionary *)authData
-{
-    return self.recordID.authData;
-}
-
-- (SKYUserRecordID *)recordID
-{
-    return _recordID;
 }
 
 @end

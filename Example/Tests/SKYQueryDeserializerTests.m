@@ -157,22 +157,6 @@ describe(@"deserialize predicate", ^{
         expect(predicate).to.equal([NSPredicate predicateWithFormat:@"city = %@", reference]);
     });
 
-    it(@"equal reference to user record id", ^{
-        NSArray *predicateArray = @[
-            @"eq",
-            @{ @"$type" : @"keypath",
-               @"$val" : @"_created_by" },
-            @{ @"$type" : @"ref",
-               @"$id" : @"_user/john.doe@example.com" }
-        ];
-
-        NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        SKYReference *reference = [[SKYReference alloc]
-            initWithRecordID:[SKYUserRecordID recordIDWithUsername:@"john.doe@example.com"]];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"_created_by = %@", reference]);
-    });
-
     it(@"greater than integer", ^{
         NSArray *predicateArray = @[ @"gt", @{ @"$type" : @"keypath", @"$val" : @"name" }, @12 ];
 

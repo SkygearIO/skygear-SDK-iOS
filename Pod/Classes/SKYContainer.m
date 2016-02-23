@@ -26,7 +26,7 @@
 #import "SKYPushOperation.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
-#import "SKYUserRecordID_Private.h"
+
 #import "SKYSignupUserOperation.h"
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
@@ -50,7 +50,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
 @implementation SKYContainer {
     SKYAccessToken *_accessToken;
-    SKYUserRecordID *_userRecordID;
+    NSString *_userRecordID;
     SKYDatabase *_publicCloudDatabase;
     NSString *_APIKey;
 }
@@ -95,7 +95,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     return _publicCloudDatabase;
 }
 
-- (SKYUserRecordID *)currentUserRecordID
+- (NSString *)currentUserRecordID
 {
     return _userRecordID;
 }
@@ -228,12 +228,12 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     NSString *accessToken =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
     if (userRecordName && accessToken) {
-        _userRecordID = [SKYUserRecordID recordIDWithUsername:userRecordName];
+        _userRecordID = userRecordName;
         _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
     }
 }
 
-- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord
+- (void)updateWithUserRecordID:(NSString *)userRecord
                    accessToken:(SKYAccessToken *)accessToken
 {
     BOOL userRecordIDChanged =
@@ -242,7 +242,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     _accessToken = accessToken;
 
     if (userRecord && accessToken) {
-        [[NSUserDefaults standardUserDefaults] setObject:userRecord.recordName
+        [[NSUserDefaults standardUserDefaults] setObject:userRecord
                                                   forKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString
                                                   forKey:@"SKYContainerAccessToken"];
@@ -273,8 +273,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     __weak typeof(self) weakSelf = self;
-    void (^completionBock)(SKYUserRecordID *, SKYAccessToken *, NSError *) =
-        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+    void (^completionBock)(NSString *, SKYAccessToken *, NSError *) =
+        ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
                 [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
             }
@@ -368,7 +368,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     operation.container = self;
 
     operation.changePasswordCompletionBlock =
-        ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+        ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(recordID, error);
             });
@@ -490,7 +490,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
 #pragma mark - SKYPushOperation
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertBody:(NSString *)alertBody
+- (void)pushToUserRecordID:(NSString *)userRecordID alertBody:(NSString *)alertBody
 {
     SKYPushOperation *pushOperation =
         [[SKYPushOperation alloc] initWithUserRecordIDs:@[ userRecordID ] alertBody:alertBody];
@@ -504,7 +504,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [self addOperation:pushOperation];
 }
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID
+- (void)pushToUserRecordID:(NSString *)userRecordID
       alertLocalizationKey:(NSString *)alertLocalizationKey
      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
 {

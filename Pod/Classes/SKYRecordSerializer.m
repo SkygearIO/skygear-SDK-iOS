@@ -20,7 +20,7 @@
 #import "SKYAccessControlSerializer.h"
 #import "SKYRecordSerializer.h"
 #import "SKYRecord.h"
-#import "SKYUserRecordID.h"
+
 #import "SKYRecordID.h"
 #import "SKYUser.h"
 #import "SKYRecordSerialization.h"

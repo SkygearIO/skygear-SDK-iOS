@@ -1,25 +1,16 @@
 PODS:
-  - Bolts (1.5.0):
-    - Bolts/AppLinks (= 1.5.0)
-    - Bolts/Tasks (= 1.5.0)
-  - Bolts/AppLinks (1.5.0):
+  - Bolts (1.6.0):
+    - Bolts/AppLinks (= 1.6.0)
+    - Bolts/Tasks (= 1.6.0)
+  - Bolts/AppLinks (1.6.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.5.0)
+  - Bolts/Tasks (1.6.0)
   - Expecta (1.0.5)
-  - FBSDKCoreKit (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.8.0)
-    - FBSDKCoreKit/no-arc (= 4.8.0)
-  - FBSDKCoreKit/arc (4.8.0):
-    - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.8.0):
-    - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc
-  - FMDB (2.5):
-    - FMDB/standard (= 2.5)
-  - FMDB/common (2.5)
-  - FMDB/standard (2.5):
-    - FMDB/common
+  - FBSDKCoreKit (4.10.0):
+    - Bolts (~> 1.5)
+  - FMDB (2.6):
+    - FMDB/standard (= 2.6)
+  - FMDB/standard (2.6)
   - OCMock (3.2)
   - OHHTTPStubs (4.6.0):
     - OHHTTPStubs/Default (= 4.6.0)
@@ -34,13 +25,14 @@ PODS:
   - OHHTTPStubs/NSURLSession (4.6.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (4.6.0)
-  - SKYKit (0.1.0):
-    - SKYKit/Core (= 0.1.0)
-  - SKYKit/Core (0.1.0):
+  - SKYKit (0.5.0):
+    - SKYKit/Core (= 0.5.0)
+  - SKYKit/Core (0.5.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
-  - SKYKit/Facebook (0.1.0):
+  - SKYKit/Facebook (0.5.0):
     - FBSDKCoreKit (~> 4.0)
+    - SKYKit/Core
   - SocketRocket (0.4.2)
   - Specta (1.0.5)
 
@@ -57,13 +49,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bolts: 722ab9a4f8b50fc4ed1b9998a5a7a2b3f16d80b4
+  Bolts: f52a250053bb517ca874523c3913776359ab3def
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FBSDKCoreKit: 66a935d17b6e00b6b64e604f2eb9b72c9ab7deb8
-  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  FBSDKCoreKit: 13bec8373fb3af94d44daf2aa1e0958687897fbd
+  FMDB: c1968bab3ab0aed38f66cb778ae1e7fa9a652b6e
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: a83bca7eda2766b6f3c79a4dd23bc65a541a06d5
+  SKYKit: d911c213e038aa868f02f8373001eb1eb1031162
   SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 

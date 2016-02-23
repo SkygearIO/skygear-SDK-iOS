@@ -22,7 +22,7 @@
 
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
-#import "SKYUserRecordID_Private.h"
+
 
 @implementation SKYRemoveRelationsOperation
 
@@ -45,7 +45,7 @@
     NSMutableDictionary *payload = [@{ @"name" : self.relationType } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (SKYUser *user in self.usersToRemove) {
-        [targets addObject:user.username];
+        [targets addObject:user.recordID];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:delete" payload:payload];
@@ -57,7 +57,7 @@
     NSMutableArray *deletedUserIDs = [NSMutableArray array];
     NSMutableDictionary *errorByUserID = [NSMutableDictionary dictionary];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        SKYUserRecordID *userRecordID = nil;
+        NSString *userRecordID = nil;
         NSError *error = nil;
 
         NSString *userID = obj[@"id"];
@@ -66,7 +66,7 @@
             NSError *error = [self.errorCreator errorWithResponseDictionary:obj[@"data"]];
             errorByUserID[userID] = error;
         } else if (userID.length) {
-            userRecordID = [SKYUserRecordID recordIDWithUsername:userID];
+            userRecordID = userID;
             [deletedUserIDs addObject:userRecordID];
         }
 

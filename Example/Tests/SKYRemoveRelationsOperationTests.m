@@ -30,12 +30,12 @@ SpecBegin(SKYRemoveRelationsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
-            SKYUserRecordID *userRecordID = [SKYUserRecordID recordIDWithUsername:@"user1001"];
+            NSString *userRecordID = @"user1001";
             follower1 = [[SKYUser alloc] initWithUserRecordID:userRecordID];
-            userRecordID = [SKYUserRecordID recordIDWithUsername:@"user1002"];
+            userRecordID = @"user1002";
             follower2 = [[SKYUser alloc] initWithUserRecordID:userRecordID];
         });
 

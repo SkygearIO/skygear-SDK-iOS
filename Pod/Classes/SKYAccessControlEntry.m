@@ -47,7 +47,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
             ((self.relation == nil && entry.relation == nil) ||
              [self.relation isEqualToRelation:entry.relation]) &&
             ((self.userID == nil && entry.userID == nil) ||
-             [self.userID isEqualToUserRecordID:entry.userID]));
+             [self.userID isEqualToString:entry.userID]));
 }
 
 - (BOOL)isEqual:(id)object
@@ -69,7 +69,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
 }
 
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                             userID:(SKYUserRecordID *)userID
+                             userID:(NSString *)userID
 {
     self = [super init];
     if (self) {
@@ -97,7 +97,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return [self readEntryForUserID:user.recordID];
 }
 
-+ (instancetype)readEntryForUserID:(SKYUserRecordID *)userID
++ (instancetype)readEntryForUserID:(NSString *)userID
 {
     return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelRead userID:userID];
 }
@@ -112,7 +112,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return [self writeEntryForUserID:user.recordID];
 }
 
-+ (instancetype)writeEntryForUserID:(SKYUserRecordID *)userID
++ (instancetype)writeEntryForUserID:(NSString *)userID
 {
     return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelWrite userID:userID];
 }

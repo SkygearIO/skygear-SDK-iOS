@@ -31,14 +31,14 @@ SpecBegin(SKYAddRelationsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
-            SKYUserRecordID *userRecordID1 = [SKYUserRecordID recordIDWithUsername:@"user1001"];
+            NSString *userRecordID1 = @"user1001";
             follower1 = [[SKYUser alloc] initWithUserRecordID:userRecordID1];
-            SKYUserRecordID *userRecordID2 = [SKYUserRecordID recordIDWithUsername:@"user1002"];
+            NSString *userRecordID2 = @"user1002";
             follower2 = [[SKYUser alloc] initWithUserRecordID:userRecordID2];
-            SKYUserRecordID *userRecordID3 = [SKYUserRecordID recordIDWithUsername:@"user1003"];
+            NSString *userRecordID3 = @"user1003";
             follower3 = [[SKYUser alloc] initWithUserRecordID:userRecordID3];
         });
 
@@ -105,8 +105,7 @@ SpecBegin(SKYAddRelationsOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([savedUsers class]).to.beSubclassOf([NSArray class]);
                             expect(savedUsers).to.haveCountOf(1);
-                            expect(savedUsers[0])
-                                .to.equal([SKYUserRecordID recordIDWithUsername:@"user1001"]);
+                            expect(savedUsers[0]).to.equal(@"user1001");
                             expect(operationError).toNot.beNil();
                             NSArray *errorKeys =
                                 [operationError.userInfo[SKYPartialErrorsByItemIDKey] allKeys];

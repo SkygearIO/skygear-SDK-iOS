@@ -32,7 +32,7 @@ SpecBegin(SKYRecordStorageCoordinator)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USERNAME"]
+            [container updateWithUserRecordID:@"USERNAME"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
             coordinator = [[SKYRecordStorageCoordinator alloc] initWithContainer:container];

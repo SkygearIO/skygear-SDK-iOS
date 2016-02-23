@@ -21,7 +21,7 @@
 
 #import "SKYAccessControl_Private.h"
 #import "SKYAccessControlEntry.h"
-#import "SKYUserRecordID_Private.h"
+
 
 @implementation SKYAccessControlDeserializer
 
@@ -63,9 +63,7 @@
     NSString *rawRelation = dictionary[@"relation"];
     if ([rawRelation isEqualToString:@"$direct"]) {
         NSString *rawUserID = dictionary[@"user_id"];
-        return [[SKYAccessControlEntry alloc]
-            initWithAccessLevel:level
-                         userID:[SKYUserRecordID recordIDWithUsername:rawUserID]];
+        return [[SKYAccessControlEntry alloc] initWithAccessLevel:level userID:rawUserID];
     } else {
         SKYRelation *relation;
         if ([rawRelation isEqualToString:@"follow"]) {

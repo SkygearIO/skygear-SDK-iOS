@@ -22,7 +22,7 @@
 
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
-#import "SKYUserRecordID_Private.h"
+
 
 @implementation SKYAddRelationsOperation
 
@@ -55,7 +55,7 @@
     NSMutableDictionary *payload = [@{ @"name" : self.relationType } mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (SKYUser *user in self.usersToRelate) {
-        [targets addObject:user.username];
+        [targets addObject:user.recordID];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:add" payload:payload];
@@ -87,15 +87,15 @@
     NSMutableArray *savedUsers = [NSMutableArray arrayWithCapacity:itemsByID.count];
     NSMutableDictionary *errorsByStringUserID = [NSMutableDictionary dictionary];
     for (SKYUser *user in self.usersToRelate) {
-        NSDictionary *itemDict = itemsByID[user.username];
+        NSDictionary *itemDict = itemsByID[user.recordID];
 
-        SKYUserRecordID *returnedUserID = nil;
+        NSString *returnedUserID = nil;
         NSError *error = nil;
 
         if (!itemDict.count) {
             error = [self.errorCreator errorWithCode:SKYErrorResourceNotFound
                                             userInfo:@{
-                                                @"id" : user.username,
+                                                @"id" : user.recordID,
                                                 SKYErrorMessageKey : @"User missing in response",
                                             }];
         } else {
@@ -103,7 +103,7 @@
             if ([itemType isEqualToString:@"error"]) {
                 error = [self.errorCreator errorWithResponseDictionary:itemDict[@"data"]];
             } else {
-                returnedUserID = [SKYUserRecordID recordIDWithUsername:user.username];
+                returnedUserID = user.recordID;
                 if (returnedUserID == nil) {
                     error = [self.errorCreator
                         errorWithCode:SKYErrorInvalidData
@@ -122,7 +122,7 @@
         if (returnedUserID != nil) {
             [savedUsers addObject:returnedUserID];
         } else {
-            errorsByStringUserID[user.username] = error;
+            errorsByStringUserID[user.recordID] = error;
         }
     }
 

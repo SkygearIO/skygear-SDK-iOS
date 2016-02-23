@@ -19,7 +19,7 @@
 
 #import "SKYUserDeserializer.h"
 
-#import "SKYUserRecordID_Private.h"
+
 
 @implementation SKYUserDeserializer
 
@@ -34,11 +34,9 @@
 
     NSString *userID = dictionary[@"_id"];
     if (userID.length) {
-        NSString *email = dictionary[@"email"];
-        NSDictionary *authData = dictionary[@"authData"];
-        SKYUserRecordID *userRecordID =
-            [SKYUserRecordID recordIDWithUsername:userID email:email authData:authData];
-        user = [[SKYUser alloc] initWithUserRecordID:userRecordID];
+        user = [[SKYUser alloc] initWithUserRecordID:userID];
+        user.email = dictionary[@"email"];
+        user.authData = dictionary[@"authData"];
     }
 
     return user;

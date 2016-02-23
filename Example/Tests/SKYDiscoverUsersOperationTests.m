@@ -27,7 +27,7 @@ SpecBegin(SKYDiscoverUsersOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
         });
@@ -109,8 +109,8 @@ SpecBegin(SKYDiscoverUsersOperation)
                 operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(users).to.haveCountOf(2);
-                        expect([users[0] username]).to.equal(@"user0");
-                        expect([users[1] username]).to.equal(@"user1");
+                        expect([users[0] recordID]).to.equal(@"user0");
+                        expect([users[1] recordID]).to.equal(@"user1");
                         expect(weakOperation.overallCount).to.equal(10);
                         expect(operationError).to.beNil();
                         done();
@@ -153,7 +153,7 @@ SpecBegin(SKYDiscoverUsersOperation)
                 operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(users).to.haveCountOf(1);
-                        expect([users[0] username]).to.equal(@"user0");
+                        expect([users[0] recordID]).to.equal(@"user0");
                         expect(operationError).notTo.beNil();
                         expect(operationError.code).to.equal(SKYErrorPartialFailure);
                         expect(operationError.userInfo[SKYPartialEmailsNotFoundKey])

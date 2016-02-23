@@ -20,65 +20,65 @@
 #import "SKYOperation.h"
 
 #import "SKYNotificationInfo.h"
-#import "SKYUserRecordID.h"
+
 
 @interface SKYPushOperation : SKYOperation
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody;
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                             soundName:(NSString *)soundName;
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                             soundName:(NSString *)soundName;
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+- (instancetype)initWithUserRecordID:(NSString *)userRecordID
                     notificationInfo:(SKYNotificationInfo *)notificationInfo;
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                      notificationInfo:(SKYNotificationInfo *)notificationInfo
     NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody;
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                                  soundName:(NSString *)soundName;
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey;
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                                  soundName:(NSString *)soundName;
 
-+ (instancetype)operationWithUserRecordID:(SKYUserRecordID *)userRecordID
++ (instancetype)operationWithUserRecordID:(NSString *)userRecordID
                          notificationInfo:(SKYNotificationInfo *)notificationInfo;
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                           notificationInfo:(SKYNotificationInfo *)notificationInfo;
 
 @property (nonatomic, copy) NSArray *userRecordIDs;
@@ -103,7 +103,7 @@
 @property (nonatomic, copy) SKYNotificationInfo *notificationInfo;
 
 @property (nonatomic, copy) void (^perUserRecordIDCompletionBlock)
-    (SKYUserRecordID *userRecordID, NSError *error);
+    (NSString *userRecordID, NSError *error);
 @property (nonatomic, copy) void (^pushCompletionBlock)(NSError *error);
 
 @end
