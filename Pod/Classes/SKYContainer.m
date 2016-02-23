@@ -31,6 +31,7 @@
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
 #import "SKYDefineAdminRolesOperation.h"
+#import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYLambdaOperation.h"
 
 NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
@@ -399,7 +400,19 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
                 completion:(void (^)(NSError *error))completionBlock
 {
-    // TODO: set user default roles
+    SKYSetUserDefaultRoleOperation *operation =
+        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+    operation.container = self;
+
+    operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
+
+    [_operationQueue addOperation:operation];
 }
 
 #pragma mark - SKYRemoteNotification

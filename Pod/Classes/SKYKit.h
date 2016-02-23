@@ -73,6 +73,7 @@
 #import "SKYRelationPredicate.h"
 #import "SKYRequest.h"
 #import "SKYRole.h"
+#import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYSequence.h"
 #import "SKYSubscription.h"
 #import "SKYSubscriptionDeserializer.h"

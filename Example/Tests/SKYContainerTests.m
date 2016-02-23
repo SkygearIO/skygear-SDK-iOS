@@ -604,6 +604,32 @@ describe(@"manage roles", ^{
         });
     });
 
+    it(@"should handle set user default role correctly", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *response =
+            @{
+              @"result": @{ @"roles": @[ developerRoleName, testerRoleName, pmRoleName ] }
+              };
+            return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                    statusCode:200
+                                                       headers:nil];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            [container setUserDefaultRole:@[
+                                            [SKYRole roleWithName:developerRoleName],
+                                            [SKYRole roleWithName:testerRoleName],
+                                            [SKYRole roleWithName:pmRoleName]
+                                            ]
+                               completion:^(NSError *error) {
+                                   expect(error).to.beNil();
+                                   done();
+                               }];
+        });
+    });
+
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });
