@@ -65,6 +65,7 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
+		604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */; };
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		8042FF4D70754137A585683E /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D0A21907E2F88C47901220 /* libPods-SKYKit.a */; };
 		C6AA418D510F073AE2609148 /* libPods-SKYKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD295B3CF4DEAAEC58DA4F3 /* libPods-SKYKit.a */; };
@@ -150,6 +151,7 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineAdminRolesOperationTests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		607B788C1C7B0DD500498FAC /* SKYRoleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRoleTests.m; sourceTree = "<group>"; };
 		657F94CCEA2515F29D33EDA5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -297,6 +299,7 @@
 				CD48CE0C1AA05A9200A1CD04 /* SKYContainerTests.m */,
 				CD7FE2711A9EDD5B002C076E /* SKYSignupUserOperationTests.m */,
 				CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */,
+				604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */,
 				CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */,
 				374575591B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m */,
 				37B10B181B1C5E1F00052740 /* SKYDiscoverUsersOperationTests.m */,
@@ -628,6 +631,7 @@
 				CD8FE8301A9F1FE10087FE71 /* SKYRecordSerializerTests.m in Sources */,
 				CD42FE141AA4499C0079B3DA /* SKYQueryOperationTests.m in Sources */,
 				CD7FE26B1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m in Sources */,
+				604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */,
 				37B477B71AE8A9C100B8566D /* SKYQueryDeserializerTests.m in Sources */,
 				CD98A8A61A9F34390056420F /* SKYFetchRecordsOperationTests.m in Sources */,
 				383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */,

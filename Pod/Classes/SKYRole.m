@@ -58,4 +58,11 @@ static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
     return self;
 }
 
+// override
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@ { name = %@ }",
+            NSStringFromClass(self.class), self.name];
+}
+
 @end

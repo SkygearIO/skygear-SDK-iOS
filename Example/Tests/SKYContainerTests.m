@@ -559,4 +559,54 @@ describe(@"maintains a private pubsub", ^{
     });
 });
 
+describe(@"manage roles", ^{
+    NSString *apiKey = @"CORRECT_KEY";
+    NSString *currentUserName = @"CORRECT_USER";
+    NSString *token = @"CORRECT_TOKEN";
+
+    NSString *developerRoleName = @"Developer";
+    NSString *testerRoleName = @"Tester";
+    NSString *pmRoleName = @"Project Manager";
+
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:apiKey];
+        [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:currentUserName]
+                              accessToken:[[SKYAccessToken alloc]
+                                           initWithTokenString:token]];
+    });
+
+    it(@"should handle define admin roles correctly", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+            NSDictionary *response =
+            @{
+              @"result": @{ @"roles": @[ developerRoleName, testerRoleName, pmRoleName ] }
+              };
+            return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                    statusCode:200
+                                                       headers:nil];
+        }];
+
+        waitUntil(^(DoneCallback done) {
+            [container defineAdminRoles:@[
+                                          [SKYRole roleWithName:developerRoleName],
+                                          [SKYRole roleWithName:testerRoleName],
+                                          [SKYRole roleWithName:pmRoleName]
+                                          ]
+                             completion:^(NSError *error) {
+                                 expect(error).to.beNil();
+                                 done();
+                             }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+});
+
 SpecEnd
