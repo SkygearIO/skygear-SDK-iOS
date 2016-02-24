@@ -29,7 +29,7 @@ SpecBegin(SKYLoginUserOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
         });
@@ -103,10 +103,9 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordID.recordType).to.equal(@"_user");
-                            expect(recordID.recordName).to.equal(@"UUID");
+                            expect(user.userID).to.equal(@"UUID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -132,7 +131,7 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             done();

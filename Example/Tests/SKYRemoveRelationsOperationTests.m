@@ -30,13 +30,13 @@ SpecBegin(SKYRemoveRelationsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
-            SKYUserRecordID *userRecordID = [SKYUserRecordID recordIDWithUsername:@"user1001"];
-            follower1 = [[SKYUser alloc] initWithUserRecordID:userRecordID];
-            userRecordID = [SKYUserRecordID recordIDWithUsername:@"user1002"];
-            follower2 = [[SKYUser alloc] initWithUserRecordID:userRecordID];
+            NSString *userRecordID = @"user1001";
+            follower1 = [[SKYUser alloc] initWithUserID:userRecordID];
+            userRecordID = @"user1002";
+            follower2 = [[SKYUser alloc] initWithUserID:userRecordID];
         });
 
         it(@"multiple relations", ^{
@@ -94,7 +94,7 @@ SpecBegin(SKYRemoveRelationsOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([deletedUserIDs class]).to.beSubclassOf([NSArray class]);
                             expect(deletedUserIDs).to.haveCountOf(1);
-                            expect(deletedUserIDs[0]).to.equal(follower1.recordID);
+                            expect(deletedUserIDs[0]).to.equal(follower1.userID);
                             expect(operationError).toNot.beNil();
                             done();
                         });

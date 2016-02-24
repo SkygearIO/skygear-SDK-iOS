@@ -58,12 +58,12 @@ SpecBegin(SKYRecordDeserializer)
             data[SKYRecordSerializationRecordUpdaterIDKey] = @"updaterID";
 
             SKYRecord *record = [deserializer recordWithDictionary:data];
-            expect(record.ownerUserRecordID.username).to.equal(@"ownerID");
+            expect(record.ownerUserRecordID).to.equal(@"ownerID");
             expect(record.creationDate).to.equal([NSDate dateWithTimeIntervalSince1970:1136214245]);
-            expect(record.creatorUserRecordID.username).to.equal(@"creatorID");
+            expect(record.creatorUserRecordID).to.equal(@"creatorID");
             expect(record.modificationDate)
                 .to.equal([NSDate dateWithTimeIntervalSince1970:1136214246]);
-            expect(record.lastModifiedUserRecordID.username).to.equal(@"updaterID");
+            expect(record.lastModifiedUserRecordID).to.equal(@"updaterID");
         });
 
         it(@"deserialize null access control", ^{

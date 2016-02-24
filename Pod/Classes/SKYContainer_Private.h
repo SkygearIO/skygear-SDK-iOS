@@ -22,7 +22,7 @@
 @interface SKYContainer ()
 
 /**
- Loads <SKYUserRecordID> and <SKYAccessToken> from persistent storage. Use this method to resume
+ Loads <NSString> and <SKYAccessToken> from persistent storage. Use this method to resume
  user's access credentials
  after application launch.
 

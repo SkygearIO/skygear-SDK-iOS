@@ -21,7 +21,6 @@
 
 #import "SKYAccessControl.h"
 #import "SKYRecordID.h"
-#import "SKYUserRecordID.h"
 
 extern NSString *const SKYRecordTypeUserRecord;
 
@@ -65,11 +64,11 @@ extern NSString *const SKYRecordTypeUserRecord;
 
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
 @property (nonatomic, readonly, copy) NSString *recordType;
-@property (nonatomic, readonly, copy) SKYUserRecordID *ownerUserRecordID;
+@property (nonatomic, readonly, copy) NSString *ownerUserRecordID;
 @property (nonatomic, readonly, copy) NSDate *creationDate;
-@property (nonatomic, readonly, copy) SKYUserRecordID *creatorUserRecordID;
+@property (nonatomic, readonly, copy) NSString *creatorUserRecordID;
 @property (nonatomic, readonly, copy) NSDate *modificationDate;
-@property (nonatomic, readonly, copy) SKYUserRecordID *lastModifiedUserRecordID;
+@property (nonatomic, readonly, copy) NSString *lastModifiedUserRecordID;
 @property (nonatomic, readonly, copy) NSString *recordChangeTag;
 @property (strong, nonatomic, readonly) SKYAccessControl *accessControl;
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;

@@ -127,6 +127,6 @@ __deprecated @interface SKYQueryUsersOperation : SKYOperation
  that no users can be found.
  */
 @property (nonatomic, copy) void (^queryUserCompletionBlock)
-    (NSArray /* SKYUser */ *users, NSError *operationError);
+    (NSArray<SKYUser *> *users, NSError *operationError);
 
 @end

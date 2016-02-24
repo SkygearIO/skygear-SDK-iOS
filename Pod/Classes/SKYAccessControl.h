@@ -20,7 +20,6 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYRelation.h"
-#import "SKYUserRecordID.h"
 
 @class SKYUser;
 
@@ -31,17 +30,17 @@
 - (void)setPublicReadWriteAccess;
 
 - (void)addReadAccessForUser:(SKYUser *)user;
-- (void)addReadAccessForUserID:(SKYUserRecordID *)userID;
+- (void)addReadAccessForUserID:(NSString *)userID;
 - (void)addReadAccessForRelation:(SKYRelation *)relation;
 - (void)addWriteAccessForUser:(SKYUser *)user;
-- (void)addWriteAccessForUserID:(SKYUserRecordID *)userID;
+- (void)addWriteAccessForUserID:(NSString *)userID;
 - (void)addWriteAccessForRelation:(SKYRelation *)relation;
 
 - (void)removeReadAccessForUser:(SKYUser *)user;
-- (void)removeReadAccessForUserID:(SKYUserRecordID *)userID;
+- (void)removeReadAccessForUserID:(NSString *)userID;
 - (void)removeReadAccessForRelation:(SKYRelation *)relation;
 - (void)removeWriteAccessForUser:(SKYUser *)user;
-- (void)removeWriteAccessForUserID:(SKYUserRecordID *)userID;
+- (void)removeWriteAccessForUserID:(NSString *)userID;
 - (void)removeWriteAccessForRelation:(SKYRelation *)relation;
 
 @property (nonatomic, readonly) BOOL public;

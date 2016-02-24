@@ -30,7 +30,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
     DefaultNotificationInfo.apsNotificationInfo.shouldBadge = YES;
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody
 {
     return [self initWithUserRecordIDs:userRecordIDs
@@ -38,7 +38,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
             alertActionLocalizationKey:nil];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
 {
@@ -48,7 +48,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                              soundName:nil];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                             alertBody:(NSString *)alertBody
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                             soundName:(NSString *)soundName
@@ -60,7 +60,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
     return [self initWithUserRecordIDs:userRecordIDs notificationInfo:info];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs
 {
@@ -70,7 +70,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
             alertActionLocalizationKey:nil];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
@@ -82,7 +82,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                              soundName:nil];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                  alertLocalizationKey:(NSString *)alertLocalizationKey
                 alertLocalizationArgs:(NSArray *)alertLocalizationArgs
            alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
@@ -96,13 +96,13 @@ SKYNotificationInfo *DefaultNotificationInfo;
     return [self initWithUserRecordIDs:userRecordIDs notificationInfo:info];
 }
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)userRecordID
+- (instancetype)initWithUserRecordID:(NSString *)userRecordID
                     notificationInfo:(SKYNotificationInfo *)notificationInfo
 {
     return [self initWithUserRecordIDs:@[ userRecordID ] notificationInfo:notificationInfo];
 }
 
-- (instancetype)initWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
+- (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                      notificationInfo:(SKYNotificationInfo *)notificationInfo
 {
     self = [super init];
@@ -113,13 +113,13 @@ SKYNotificationInfo *DefaultNotificationInfo;
     return self;
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody
 {
     return [[self alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
 {
@@ -128,7 +128,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                     alertActionLocalizationKey:alertActionLocalizationKey];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                                  alertBody:(NSString *)alertBody
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
                                  soundName:(NSString *)soundName
@@ -139,7 +139,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                                      soundName:soundName];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
 {
@@ -148,7 +148,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                          alertLocalizationArgs:alertLocalizationArgs];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
@@ -159,7 +159,7 @@ SKYNotificationInfo *DefaultNotificationInfo;
                     alertActionLocalizationKey:alertActionLocalizationKey];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                       alertLocalizationKey:(NSString *)alertLocalizationKey
                      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
                 alertActionLocalizationKey:(NSString *)alertActionLocalizationKey
@@ -172,13 +172,13 @@ SKYNotificationInfo *DefaultNotificationInfo;
                                      soundName:soundName];
 }
 
-+ (instancetype)operationWithUserRecordID:(SKYUserRecordID *)userRecordID
++ (instancetype)operationWithUserRecordID:(NSString *)userRecordID
                          notificationInfo:(SKYNotificationInfo *)notificationInfo
 {
     return [[self alloc] initWithUserRecordID:userRecordID notificationInfo:notificationInfo];
 }
 
-+ (instancetype)operationWithUserRecordIDs:(NSArray /* SKYUserRecordID */ *)userRecordIDs
++ (instancetype)operationWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs
                           notificationInfo:(SKYNotificationInfo *)notificationInfo
 {
     return [[self alloc] initWithUserRecordIDs:userRecordIDs notificationInfo:notificationInfo];

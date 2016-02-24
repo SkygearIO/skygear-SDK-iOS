@@ -79,12 +79,11 @@ describe(@"Default container", ^{
 
 describe(@"user login and signup", ^{
     __block SKYContainer *container = nil;
-    __block void (^assertLoggedIn)(SKYUserRecordID *, NSError *) =
-        ^(SKYUserRecordID *userRecordID, NSError *error) {
+    __block void (^assertLoggedIn)(NSString *, NSError *) =
+        ^(NSString *userRecordID, NSError *error) {
             expect(container.currentUserRecordID).to.equal(userRecordID);
             expect(error).to.beNil();
-            expect(userRecordID.recordType).to.equal(@"_user");
-            expect(userRecordID.recordName).to.equal(@"UUID");
+            expect(userRecordID).to.equal(@"UUID");
             expect(container.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
         };
 
@@ -113,8 +112,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container signupWithEmail:@"test@invalid"
                               password:@"secret"
-                     completionHandler:^(SKYUserRecordID *user, NSError *error) {
-                         assertLoggedIn(user, error);
+                     completionHandler:^(SKYUser *user, NSError *error) {
+                         assertLoggedIn(user.userID, error);
                          done();
                      }];
         });
@@ -124,8 +123,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container signupWithUsername:@"test"
                                  password:@"secret"
-                        completionHandler:^(SKYUserRecordID *user, NSError *error) {
-                            assertLoggedIn(user, error);
+                        completionHandler:^(SKYUser *user, NSError *error) {
+                            assertLoggedIn(user.userID, error);
                             done();
                         }];
         });
@@ -135,8 +134,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container loginWithEmail:@"test@invalid"
                              password:@"secret"
-                    completionHandler:^(SKYUserRecordID *user, NSError *error) {
-                        assertLoggedIn(user, error);
+                    completionHandler:^(SKYUser *user, NSError *error) {
+                        assertLoggedIn(user.userID, error);
                         done();
                     }];
         });
@@ -146,8 +145,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container loginWithUsername:@"test"
                                 password:@"secret"
-                       completionHandler:^(SKYUserRecordID *user, NSError *error) {
-                           assertLoggedIn(user, error);
+                       completionHandler:^(SKYUser *user, NSError *error) {
+                           assertLoggedIn(user.userID, error);
                            done();
                        }];
         });
@@ -177,7 +176,7 @@ describe(@"save current user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container logoutWithCompletionHandler:^(SKYUserRecordID *user, NSError *error) {
+            [container logoutWithCompletionHandler:^(SKYUser *user, NSError *error) {
                 done();
             }];
         });
@@ -186,12 +185,11 @@ describe(@"save current user", ^{
     it(@"fetch record", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
         [container
-            updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"user1"]
+            updateWithUserRecordID:@"user1"
                        accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [[SKYContainer alloc] init];
-        expect(container.currentUserRecordID.recordType).to.equal(@"_user");
-        expect(container.currentUserRecordID.recordName).to.equal(@"user1");
+        expect(container.currentUserRecordID).to.equal(@"user1");
         expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
 

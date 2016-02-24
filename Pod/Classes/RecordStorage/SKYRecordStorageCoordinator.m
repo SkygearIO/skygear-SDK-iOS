@@ -43,7 +43,7 @@ NSString *base64urlEncodeUInteger(NSUInteger i)
                                   withString:@"_"];
 }
 
-NSString *storageFileBaseName(SKYUserRecordID *userID, SKYQuery *query)
+NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 {
     return [NSString stringWithFormat:@"%@:%@", base64urlEncodeUInteger(userID.hash),
                                       base64urlEncodeUInteger(query.hash)];

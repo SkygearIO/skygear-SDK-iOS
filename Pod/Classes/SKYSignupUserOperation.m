@@ -20,7 +20,6 @@
 #import "SKYSignupUserOperation.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
-#import "SKYUserRecordID_Private.h"
 
 @implementation SKYSignupUserOperation
 
@@ -102,7 +101,7 @@
     }
 }
 
-- (void)setSignupCompletionBlock:(void (^)(SKYUserRecordID *, SKYAccessToken *,
+- (void)setSignupCompletionBlock:(void (^)(SKYUser *, SKYAccessToken *,
                                            NSError *))signupCompletionBlock
 {
     if (signupCompletionBlock) {
@@ -110,13 +109,18 @@
         self.completionBlock = ^{
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                SKYUserRecordID *recordID =
-                    [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
+
+                SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
+                user.username = response[@"username"];
+                user.email = response[@"email"];
+
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+
                 NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
                       response[@"access_token"]);
-                signupCompletionBlock(recordID, accessToken, nil);
+
+                signupCompletionBlock(user, accessToken, nil);
             } else {
                 signupCompletionBlock(nil, nil, weakSelf.error);
             }

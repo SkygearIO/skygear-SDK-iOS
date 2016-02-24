@@ -47,7 +47,7 @@ SpecBegin(SKYDownloadAssetOperation)
             container = [[SKYContainer alloc] init];
             [container configAddress:@"ourd.test"];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
 

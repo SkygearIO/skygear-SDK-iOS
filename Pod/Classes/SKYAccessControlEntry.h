@@ -21,7 +21,6 @@
 
 #import "SKYRelation.h"
 #import "SKYUser.h"
-#import "SKYUserRecordID.h"
 
 typedef enum : NSUInteger {
     SKYAccessControlEntryLevelRead = 0,
@@ -39,23 +38,23 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 @interface SKYAccessControlEntry : NSObject
 
 + (instancetype)readEntryForUser:(SKYUser *)user;
-+ (instancetype)readEntryForUserID:(SKYUserRecordID *)user;
++ (instancetype)readEntryForUserID:(NSString *)user;
 + (instancetype)readEntryForRelation:(SKYRelation *)relation;
 
 + (instancetype)writeEntryForUser:(SKYUser *)user;
-+ (instancetype)writeEntryForUserID:(SKYUserRecordID *)user;
++ (instancetype)writeEntryForUserID:(NSString *)user;
 + (instancetype)writeEntryForRelation:(SKYRelation *)relation;
 
 - (instancetype)init NS_UNAVAILABLE;
 // avoid the following initializers, it is here because of deserializer
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                             userID:(SKYUserRecordID *)userID NS_DESIGNATED_INITIALIZER;
+                             userID:(NSString *)userID NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
                            relation:(SKYRelation *)relation NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readonly, assign) SKYAccessControlEntryType entryType;
 @property (nonatomic, readonly, assign) SKYAccessControlEntryLevel accessLevel;
 @property (nonatomic, readonly) SKYRelation *relation;
-@property (nonatomic, copy, readonly) SKYUserRecordID *userID;
+@property (nonatomic, copy, readonly) NSString *userID;
 
 @end

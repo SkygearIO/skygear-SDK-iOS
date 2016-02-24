@@ -22,7 +22,7 @@
 /**
  <SKYSignupUserOperation> is a subclass of <SKYOperation> which an user object
  in Ourd. Use this operation to create a new user account in the container.
- When a new user is created, an <SKYUserRecordID> and an <SKYAccessToken>
+ When a new user is created, an <NSString> and an <SKYAccessToken>
  will be returned.
 
  A user account is uniquely identified by an email address given by the user.
@@ -64,12 +64,12 @@
 /**
  The block to execute when the operation completes.
 
- - *recordID*: An <SKYUserRecordID> object containing the user record identifier.
+ - *recordID*: An <NSString> object containing the user record identifier.
  - *accessToken*: An <SKYAccessToken> object for performing other operations on behalf of this user.
  - *error*: If an error occurred, this object describes the error.
  */
 @property (nonatomic, copy) void (^signupCompletionBlock)
-    (SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
+    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Initializes and returns and operation configured to create a user account

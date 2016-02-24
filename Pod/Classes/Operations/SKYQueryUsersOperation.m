@@ -152,7 +152,7 @@ NSString *NSStringFromRelationDirection(SKYRelationDirection direction)
     [self processResultInfo:response[@"info"]];
     NSArray *result = response[@"result"];
     NSArray *userDicts = [self.class itemDictsFromResult:result];
-    NSMutableArray *users = [NSMutableArray arrayWithCapacity:userDicts.count];
+    NSMutableArray<SKYUser *> *users = [NSMutableArray arrayWithCapacity:userDicts.count];
 
     for (NSDictionary *userDict in userDicts) {
         SKYUser *user = [self.deserializer userWithDictionary:userDict];

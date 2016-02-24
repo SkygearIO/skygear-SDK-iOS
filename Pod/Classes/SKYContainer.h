@@ -43,11 +43,11 @@ extern NSString *const SKYContainerDidChangeCurrentUserNotification;
  */
 extern NSString *const SKYContainerDidRegisterDeviceNotification;
 
-@class SKYUserRecordID;
+@class NSString;
 @class SKYOperation;
 
 // keep it in sync with SKYUserOperationActionCompletion
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
 
 @interface SKYContainer : NSObject
 
@@ -63,7 +63,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 
 @property (nonatomic, readonly) NSString *containerIdentifier;
 
-@property (nonatomic, readonly) SKYUserRecordID *currentUserRecordID;
+@property (nonatomic, readonly) NSString *currentUserRecordID;
 @property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
 
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
@@ -106,8 +106,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 
  @see -loadAccessCurrentUserRecordIDAndAccessToken
  */
-- (void)updateWithUserRecordID:(SKYUserRecordID *)userRecord
-                   accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
@@ -216,10 +215,10 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUserRecordID *user,
 
 @interface SKYContainer (SKYPushOperation)
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID alertBody:(NSString *)alertBody;
+- (void)pushToUserRecordID:(NSString *)userRecordID alertBody:(NSString *)alertBody;
 - (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody;
 
-- (void)pushToUserRecordID:(SKYUserRecordID *)userRecordID
+- (void)pushToUserRecordID:(NSString *)userRecordID
       alertLocalizationKey:(NSString *)alertLocalizationKey
      alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
 - (void)pushToUserRecordIDs:(NSArray *)userRecordIDs

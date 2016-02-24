@@ -53,7 +53,7 @@ SpecBegin(SKYUserDeserializerTests)
             };
 
             SKYUser *user = [deserializer userWithDictionary:data];
-            expect(user.username).to.equal(@"userid");
+            expect(user.userID).to.equal(@"userid");
             expect(user.email).to.equal(@"john.doe@gmail.com");
             expect(user.authData).to.equal(@{ @"authMethod" : @{@"key" : @"value"} });
         });
@@ -61,7 +61,7 @@ SpecBegin(SKYUserDeserializerTests)
         it(@"deserialize user with id only", ^{
             NSDictionary *data = @{ @"_id" : @"userid" };
             SKYUser *user = [deserializer userWithDictionary:data];
-            expect(user.username).to.equal(@"userid");
+            expect(user.userID).to.equal(@"userid");
         });
 
         it(@"return nil if id is missing", ^{

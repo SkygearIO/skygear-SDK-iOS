@@ -27,7 +27,7 @@ SpecBegin(SKYDiscoverUsersOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:@"USER_ID"]
+            [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
         });
@@ -106,16 +106,17 @@ SpecBegin(SKYDiscoverUsersOperation)
 
             waitUntil(^(DoneCallback done) {
                 __weak SKYQueryUsersOperation *weakOperation = operation;
-                operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        expect(users).to.haveCountOf(2);
-                        expect([users[0] username]).to.equal(@"user0");
-                        expect([users[1] username]).to.equal(@"user1");
-                        expect(weakOperation.overallCount).to.equal(10);
-                        expect(operationError).to.beNil();
-                        done();
-                    });
-                };
+                operation.queryUserCompletionBlock =
+                    ^(NSArray<SKYUser *> *users, NSError *operationError) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            expect(users).to.haveCountOf(2);
+                            expect(users[0].userID).to.equal(@"user0");
+                            expect(users[1].userID).to.equal(@"user1");
+                            expect(weakOperation.overallCount).to.equal(10);
+                            expect(operationError).to.beNil();
+                            done();
+                        });
+                    };
 
                 [container addOperation:operation];
             });
@@ -150,17 +151,18 @@ SpecBegin(SKYDiscoverUsersOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.queryUserCompletionBlock = ^(NSArray *users, NSError *operationError) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        expect(users).to.haveCountOf(1);
-                        expect([users[0] username]).to.equal(@"user0");
-                        expect(operationError).notTo.beNil();
-                        expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                        expect(operationError.userInfo[SKYPartialEmailsNotFoundKey])
-                            .to.equal(@[ @"jane.doe@example.com" ]);
-                        done();
-                    });
-                };
+                operation.queryUserCompletionBlock =
+                    ^(NSArray<SKYUser *> *users, NSError *operationError) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            expect(users).to.haveCountOf(1);
+                            expect(users[0].userID).to.equal(@"user0");
+                            expect(operationError).notTo.beNil();
+                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
+                            expect(operationError.userInfo[SKYPartialEmailsNotFoundKey])
+                                .to.equal(@[ @"jane.doe@example.com" ]);
+                            done();
+                        });
+                    };
 
                 [container addOperation:operation];
             });

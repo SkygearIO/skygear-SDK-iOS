@@ -21,7 +21,6 @@
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
-#import "SKYUserRecordID_Private.h"
 
 @implementation SKYLoginUserOperation {
     NSDictionary *_authPayload;
@@ -111,13 +110,15 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYUserRecordID *recordID = nil;
+    SKYUser *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        recordID = [SKYUserRecordID recordIDWithUsername:response[@"user_id"]];
+        user = [SKYUser userWithUserID:response[@"user_id"]];
+        user.email = response[@"email"];
+        user.username = response[@"username"];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
@@ -125,11 +126,11 @@
     }
 
     if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", recordID.recordName);
+        NSLog(@"User logged in with UserRecordID %@.", user.userID);
     }
 
     if (self.loginCompletionBlock) {
-        self.loginCompletionBlock(recordID, accessToken, error);
+        self.loginCompletionBlock(user, accessToken, error);
     }
 }
 

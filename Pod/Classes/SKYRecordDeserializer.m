@@ -20,10 +20,10 @@
 #import "SKYAccessControlDeserializer.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYRecord_Private.h"
-#import "SKYUserRecordID.h"
+
 #import "SKYRecordID.h"
 #import "SKYUser.h"
-#import "SKYUserRecordID_Private.h"
+
 #import "SKYRecordSerialization.h"
 #import "SKYReference.h"
 #import "SKYDataSerialization.h"
@@ -69,7 +69,7 @@
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];
     if (ownerID.length) {
-        record.ownerUserRecordID = [SKYUserRecordID recordIDWithUsername:ownerID];
+        record.ownerUserRecordID = ownerID;
     }
 
     NSDateFormatter *formatter = [self.class dateFormatter];
@@ -79,7 +79,7 @@
     }
     NSString *creatorID = obj[SKYRecordSerializationRecordCreatorIDKey];
     if (creatorID.length) {
-        record.creatorUserRecordID = [SKYUserRecordID recordIDWithUsername:creatorID];
+        record.creatorUserRecordID = creatorID;
     }
     NSString *updatedAt = obj[SKYRecordSerializationRecordUpdatedAtKey];
     if (updatedAt.length) {
@@ -87,7 +87,7 @@
     }
     NSString *updaterID = obj[SKYRecordSerializationRecordUpdaterIDKey];
     if (updaterID.length) {
-        record.lastModifiedUserRecordID = [SKYUserRecordID recordIDWithUsername:updaterID];
+        record.lastModifiedUserRecordID = updaterID;
     }
 
     id accessControl = obj[SKYRecordSerializationRecordAccessControlKey];

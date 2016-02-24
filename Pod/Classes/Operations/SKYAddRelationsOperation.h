@@ -52,13 +52,13 @@
  Sets or returns a block to be called when the save operation for individual record is completed.
  If an error occurred during the save, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^perUserCompletionBlock)(SKYUserRecordID *userID, NSError *error);
+@property (nonatomic, copy) void (^perUserCompletionBlock)(NSString *userID, NSError *error);
 
 /**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^addRelationsCompletionBlock)
-    (NSArray /* SKYUserRecordID */ *savedUserIDs, NSError *operationError);
+    (NSArray /* NSString */ *savedUserIDs, NSError *operationError);
 
 @end

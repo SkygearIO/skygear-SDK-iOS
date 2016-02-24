@@ -79,7 +79,7 @@
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"relation"] = @"$direct";
     dict[@"level"] = NSStringFromAccessControlEntryLevel(entry.accessLevel);
-    dict[@"user_id"] = entry.userID.username;
+    dict[@"user_id"] = entry.userID;
     return dict;
 }
 

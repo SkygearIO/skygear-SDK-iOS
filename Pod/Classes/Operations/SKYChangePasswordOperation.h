@@ -25,7 +25,7 @@
 @property (nonatomic, readonly, copy) NSString *passwordToSet;
 
 @property (nonatomic, copy) void (^changePasswordCompletionBlock)
-    (SKYUserRecordID *recordID, SKYAccessToken *accessToken, NSError *error);
+    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Creates and returns an instance of operation for changing the existing user password

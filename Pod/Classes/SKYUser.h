@@ -19,8 +19,6 @@
 
 #import "SKYRecord.h"
 
-#import "SKYUserRecordID.h"
-
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
@@ -28,19 +26,19 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithUserRecordID:(SKYUserRecordID *)recordID;
+- (instancetype)initWithUserID:(NSString *)userID;
 
-+ (instancetype)userWithUserRecordID:(SKYUserRecordID *)recordID;
++ (instancetype)userWithUserID:(NSString *)userID;
 
 /**
  * The properties username, email, authData and isNew will be delegated to
- * their corresponding methods on SKYUserRecordID
+ * their corresponding methods on NSString
  */
-@property (nonatomic, readonly, copy) NSString *username;
-@property (nonatomic, readonly, copy) NSString *email;
-@property (nonatomic, readonly, copy) NSDictionary *authData;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *email;
+@property (nonatomic, copy) NSDictionary *authData;
 @property (nonatomic, readonly, assign) BOOL isNew;
 
-@property (nonatomic, readonly, copy) SKYUserRecordID *recordID;
+@property (nonatomic, readonly, copy) NSString *userID;
 
 @end
