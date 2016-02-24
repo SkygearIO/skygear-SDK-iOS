@@ -113,7 +113,7 @@ describe(@"user login and signup", ^{
             [container signupWithEmail:@"test@invalid"
                               password:@"secret"
                      completionHandler:^(SKYUser *user, NSError *error) {
-                         assertLoggedIn(user.recordID, error);
+                         assertLoggedIn(user.userID, error);
                          done();
                      }];
         });
@@ -124,7 +124,7 @@ describe(@"user login and signup", ^{
             [container signupWithUsername:@"test"
                                  password:@"secret"
                         completionHandler:^(SKYUser *user, NSError *error) {
-                            assertLoggedIn(user.recordID, error);
+                            assertLoggedIn(user.userID, error);
                             done();
                         }];
         });
@@ -135,7 +135,7 @@ describe(@"user login and signup", ^{
             [container loginWithEmail:@"test@invalid"
                              password:@"secret"
                     completionHandler:^(SKYUser *user, NSError *error) {
-                        assertLoggedIn(user.recordID, error);
+                        assertLoggedIn(user.userID, error);
                         done();
                     }];
         });
@@ -146,7 +146,7 @@ describe(@"user login and signup", ^{
             [container loginWithUsername:@"test"
                                 password:@"secret"
                        completionHandler:^(SKYUser *user, NSError *error) {
-                           assertLoggedIn(user.recordID, error);
+                           assertLoggedIn(user.userID, error);
                            done();
                        }];
         });

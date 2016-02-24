@@ -26,9 +26,9 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithUserRecordID:(NSString *)recordID;
+- (instancetype)initWithUserID:(NSString *)userID;
 
-+ (instancetype)userWithUserRecordID:(NSString *)recordID;
++ (instancetype)userWithUserID:(NSString *)userID;
 
 /**
  * The properties username, email, authData and isNew will be delegated to
@@ -39,6 +39,6 @@
 @property (nonatomic, copy) NSDictionary *authData;
 @property (nonatomic, readonly, assign) BOOL isNew;
 
-@property (nonatomic, readonly, copy) NSString *recordID;
+@property (nonatomic, readonly, copy) NSString *userID;
 
 @end

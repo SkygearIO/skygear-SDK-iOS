@@ -275,7 +275,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     void (^completionBock)(SKYUser *, SKYAccessToken *, NSError *) =
         ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
-                [weakSelf updateWithUserRecordID:user.recordID accessToken:accessToken];
+                [weakSelf updateWithUserRecordID:user.userID accessToken:accessToken];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);

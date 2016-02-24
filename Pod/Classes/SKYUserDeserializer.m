@@ -32,7 +32,7 @@
 
     NSString *userID = dictionary[@"_id"];
     if (userID.length) {
-        user = [[SKYUser alloc] initWithUserRecordID:userID];
+        user = [[SKYUser alloc] initWithUserID:userID];
         user.email = dictionary[@"email"];
         user.authData = dictionary[@"authData"];
     }

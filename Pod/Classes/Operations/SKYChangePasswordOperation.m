@@ -74,7 +74,7 @@
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        user = [SKYUser userWithUserRecordID:response[@"user_id"]];
+        user = [SKYUser userWithUserID:response[@"user_id"]];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithResponseDictionary:response];

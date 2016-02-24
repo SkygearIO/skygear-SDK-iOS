@@ -35,11 +35,11 @@ SpecBegin(SKYAddRelationsOperation)
                                   accessToken:[[SKYAccessToken alloc]
                                                   initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID1 = @"user1001";
-            follower1 = [[SKYUser alloc] initWithUserRecordID:userRecordID1];
+            follower1 = [[SKYUser alloc] initWithUserID:userRecordID1];
             NSString *userRecordID2 = @"user1002";
-            follower2 = [[SKYUser alloc] initWithUserRecordID:userRecordID2];
+            follower2 = [[SKYUser alloc] initWithUserID:userRecordID2];
             NSString *userRecordID3 = @"user1003";
-            follower3 = [[SKYUser alloc] initWithUserRecordID:userRecordID3];
+            follower3 = [[SKYUser alloc] initWithUserID:userRecordID3];
         });
 
         it(@"multiple relations", ^{

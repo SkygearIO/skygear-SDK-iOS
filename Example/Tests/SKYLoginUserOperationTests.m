@@ -105,7 +105,7 @@ SpecBegin(SKYLoginUserOperation)
                 operation.loginCompletionBlock =
                     ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.recordID).to.equal(@"UUID");
+                            expect(user.userID).to.equal(@"UUID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();

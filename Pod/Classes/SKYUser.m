@@ -29,18 +29,18 @@
 
 @implementation SKYUser
 
-- (instancetype)initWithUserRecordID:(NSString *)recordID
+- (instancetype)initWithUserID:(NSString *)userID
 {
     self = [super init];
     if (self) {
-        _recordID = [recordID copy];
+        _userID = [userID copy];
     }
     return self;
 }
 
-+ (instancetype)userWithUserRecordID:(NSString *)recordID
++ (instancetype)userWithUserID:(NSString *)userID
 {
-    return [[self alloc] initWithUserRecordID:recordID];
+    return [[self alloc] initWithUserID:userID];
 }
 
 @end

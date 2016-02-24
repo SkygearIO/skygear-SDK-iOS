@@ -116,7 +116,7 @@
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        user = [SKYUser userWithUserRecordID:response[@"user_id"]];
+        user = [SKYUser userWithUserID:response[@"user_id"]];
         user.email = response[@"email"];
         user.username = response[@"username"];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
@@ -126,7 +126,7 @@
     }
 
     if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", user.recordID);
+        NSLog(@"User logged in with UserRecordID %@.", user.userID);
     }
 
     if (self.loginCompletionBlock) {

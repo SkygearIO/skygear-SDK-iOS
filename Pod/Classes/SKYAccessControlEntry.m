@@ -94,7 +94,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
 
 + (instancetype)readEntryForUser:(SKYUser *)user
 {
-    return [self readEntryForUserID:user.recordID];
+    return [self readEntryForUserID:user.userID];
 }
 
 + (instancetype)readEntryForUserID:(NSString *)userID
@@ -109,7 +109,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
 
 + (instancetype)writeEntryForUser:(SKYUser *)user
 {
-    return [self writeEntryForUserID:user.recordID];
+    return [self writeEntryForUserID:user.userID];
 }
 
 + (instancetype)writeEntryForUserID:(NSString *)userID

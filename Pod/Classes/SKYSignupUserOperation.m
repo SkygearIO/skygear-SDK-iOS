@@ -110,7 +110,7 @@
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
 
-                SKYUser *user = [SKYUser userWithUserRecordID:response[@"user_id"]];
+                SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
                 user.username = response[@"username"];
                 user.email = response[@"email"];
 

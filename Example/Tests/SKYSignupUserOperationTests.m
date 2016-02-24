@@ -88,7 +88,7 @@ SpecBegin(SKYSignupUserOperation)
                 operation.signupCompletionBlock =
                     ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.recordID).to.equal(@"USER_ID");
+                            expect(user.userID).to.equal(@"USER_ID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -124,7 +124,7 @@ SpecBegin(SKYSignupUserOperation)
                 operation.signupCompletionBlock =
                     ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.recordID).to.equal(@"USER_ID");
+                            expect(user.userID).to.equal(@"USER_ID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
