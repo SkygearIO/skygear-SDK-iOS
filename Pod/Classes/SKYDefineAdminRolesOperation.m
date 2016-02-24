@@ -1,5 +1,5 @@
 //
-//  SKYRecordStorageTests.m
+//  SKYDefineAdminRolesOperation.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.

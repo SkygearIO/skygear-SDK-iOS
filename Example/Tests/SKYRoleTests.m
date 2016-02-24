@@ -1,5 +1,5 @@
 //
-//  SKYAccessControlTests.m
+//  SKYRoleTests.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
