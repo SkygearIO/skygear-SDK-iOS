@@ -112,8 +112,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container signupWithEmail:@"test@invalid"
                               password:@"secret"
-                     completionHandler:^(NSString *user, NSError *error) {
-                         assertLoggedIn(user, error);
+                     completionHandler:^(SKYUser *user, NSError *error) {
+                         assertLoggedIn(user.recordID, error);
                          done();
                      }];
         });
@@ -123,8 +123,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container signupWithUsername:@"test"
                                  password:@"secret"
-                        completionHandler:^(NSString *user, NSError *error) {
-                            assertLoggedIn(user, error);
+                        completionHandler:^(SKYUser *user, NSError *error) {
+                            assertLoggedIn(user.recordID, error);
                             done();
                         }];
         });
@@ -134,8 +134,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container loginWithEmail:@"test@invalid"
                              password:@"secret"
-                    completionHandler:^(NSString *user, NSError *error) {
-                        assertLoggedIn(user, error);
+                    completionHandler:^(SKYUser *user, NSError *error) {
+                        assertLoggedIn(user.recordID, error);
                         done();
                     }];
         });
@@ -145,8 +145,8 @@ describe(@"user login and signup", ^{
         waitUntil(^(DoneCallback done) {
             [container loginWithUsername:@"test"
                                 password:@"secret"
-                       completionHandler:^(NSString *user, NSError *error) {
-                           assertLoggedIn(user, error);
+                       completionHandler:^(SKYUser *user, NSError *error) {
+                           assertLoggedIn(user.recordID, error);
                            done();
                        }];
         });
@@ -176,7 +176,7 @@ describe(@"save current user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container logoutWithCompletionHandler:^(NSString *user, NSError *error) {
+            [container logoutWithCompletionHandler:^(SKYUser *user, NSError *error) {
                 done();
             }];
         });

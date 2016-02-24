@@ -103,9 +103,9 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordID).to.equal(@"UUID");
+                            expect(user.recordID).to.equal(@"UUID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -131,7 +131,7 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             done();

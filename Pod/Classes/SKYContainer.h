@@ -47,7 +47,7 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @class SKYOperation;
 
 // keep it in sync with SKYUserOperationActionCompletion
-typedef void (^SKYContainerUserOperationActionCompletion)(NSString *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
 
 @interface SKYContainer : NSObject
 
@@ -106,7 +106,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(NSString *user, NSErro
 
  @see -loadAccessCurrentUserRecordIDAndAccessToken
  */
-- (void)updateWithUserRecordID:(NSString *)userRecord accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with

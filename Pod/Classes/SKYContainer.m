@@ -223,25 +223,25 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
 - (void)loadAccessCurrentUserRecordIDAndAccessToken
 {
-    NSString *userRecordName =
+    NSString *userRecordID =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
     NSString *accessToken =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
-    if (userRecordName && accessToken) {
-        _userRecordID = userRecordName;
+    if (userRecordID && accessToken) {
+        _userRecordID = userRecordID;
         _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
     }
 }
 
-- (void)updateWithUserRecordID:(NSString *)userRecord accessToken:(SKYAccessToken *)accessToken
+- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken
 {
     BOOL userRecordIDChanged =
-        !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));
-    _userRecordID = userRecord;
+        !([_userRecordID isEqual:userRecordID] || (_userRecordID == nil && userRecordID == nil));
+    _userRecordID = userRecordID;
     _accessToken = accessToken;
 
-    if (userRecord && accessToken) {
-        [[NSUserDefaults standardUserDefaults] setObject:userRecord
+    if (userRecordID && accessToken) {
+        [[NSUserDefaults standardUserDefaults] setObject:userRecordID
                                                   forKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString
                                                   forKey:@"SKYContainerAccessToken"];
@@ -272,13 +272,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     __weak typeof(self) weakSelf = self;
-    void (^completionBock)(NSString *, SKYAccessToken *, NSError *) =
-        ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+    void (^completionBock)(SKYUser *, SKYAccessToken *, NSError *) =
+        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
-                [weakSelf updateWithUserRecordID:recordID accessToken:accessToken];
+                [weakSelf updateWithUserRecordID:user.recordID accessToken:accessToken];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordID, error);
+                completionHandler(user, error);
             });
         };
 
@@ -367,9 +367,9 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     operation.container = self;
 
     operation.changePasswordCompletionBlock =
-        ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordID, error);
+                completionHandler(user, error);
             });
         };
 

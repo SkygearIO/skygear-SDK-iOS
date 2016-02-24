@@ -86,9 +86,9 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordID).to.equal(@"USER_ID");
+                            expect(user.recordID).to.equal(@"USER_ID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -122,9 +122,9 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordID).to.equal(@"USER_ID");
+                            expect(user.recordID).to.equal(@"USER_ID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -151,7 +151,7 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(NSString *recordID, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             done();

@@ -68,20 +68,20 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    NSString *recordID = nil;
+    SKYUser *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        recordID = response[@"user_id"];
+        user = [SKYUser userWithUserRecordID:response[@"user_id"]];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithResponseDictionary:response];
     }
 
     if (self.changePasswordCompletionBlock) {
-        self.changePasswordCompletionBlock(recordID, accessToken, error);
+        self.changePasswordCompletionBlock(user, accessToken, error);
     }
 }
 

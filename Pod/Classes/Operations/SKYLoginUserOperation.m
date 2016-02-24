@@ -110,13 +110,15 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    NSString *recordID = nil;
+    SKYUser *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        recordID = response[@"user_id"];
+        user = [SKYUser userWithUserRecordID:response[@"user_id"]];
+        user.email = response[@"email"];
+        user.username = response[@"username"];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
@@ -124,11 +126,11 @@
     }
 
     if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", recordID);
+        NSLog(@"User logged in with UserRecordID %@.", user.recordID);
     }
 
     if (self.loginCompletionBlock) {
-        self.loginCompletionBlock(recordID, accessToken, error);
+        self.loginCompletionBlock(user, accessToken, error);
     }
 }
 

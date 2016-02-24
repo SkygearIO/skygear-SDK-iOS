@@ -30,7 +30,7 @@
 @property (nonatomic, readonly, copy) NSDictionary *authenticationData;
 
 @property (nonatomic, copy) void (^loginCompletionBlock)
-    (NSString *recordID, SKYAccessToken *accessToken, NSError *error);
+    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Creates and returns an instance of operation for logging in a user with username and password.

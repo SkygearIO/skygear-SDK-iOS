@@ -101,7 +101,7 @@
     }
 }
 
-- (void)setSignupCompletionBlock:(void (^)(NSString *, SKYAccessToken *,
+- (void)setSignupCompletionBlock:(void (^)(SKYUser *, SKYAccessToken *,
                                            NSError *))signupCompletionBlock
 {
     if (signupCompletionBlock) {
@@ -109,12 +109,18 @@
         self.completionBlock = ^{
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                NSString *recordID = response[@"user_id"];
+
+                SKYUser *user = [SKYUser userWithUserRecordID:response[@"user_id"]];
+                user.username = response[@"username"];
+                user.email = response[@"email"];
+
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+
                 NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
                       response[@"access_token"]);
-                signupCompletionBlock(recordID, accessToken, nil);
+
+                signupCompletionBlock(user, accessToken, nil);
             } else {
                 signupCompletionBlock(nil, nil, weakSelf.error);
             }
