@@ -18,6 +18,7 @@
 //
 
 #import "SKYRecord.h"
+#import "SKYRole.h"
 
 @class SKYQueryCursor;
 @class SKYQueryOperation;
@@ -25,18 +26,18 @@
 @interface SKYUser : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
-
 - (instancetype)initWithUserID:(NSString *)userID;
+
+- (void)addRole:(SKYRole *)aRole;
+- (void)removeRole:(SKYRole *)aRole;
+- (BOOL)hasRole:(SKYRole *)aRole;
 
 + (instancetype)userWithUserID:(NSString *)userID;
 
-/**
- * The properties username, email, authData and isNew will be delegated to
- * their corresponding methods on NSString
- */
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSDictionary *authData;
+@property (nonatomic, strong) NSArray<SKYRole *> *roles;
 @property (nonatomic, readonly, assign) BOOL isNew;
 
 @property (nonatomic, readonly, copy) NSString *userID;
