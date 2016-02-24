@@ -1,3 +1,15 @@
+## 0.6.0 (2016-02-24)
+
+### Incompatible Changes
+
+- Refactor `SKYUser` and `SKYUserRecordID`
+  - Use `SKYUser` instead of `SKYUserRecordID`
+  - Use `userID` property as an identifier of `SKYUser`
+
+### Bug Fixes
+
+- Fix passing operation error in SKYDatabase #241
+
 ## 0.5.0 (2016-02-17)
 
 ### Features
