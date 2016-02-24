@@ -39,12 +39,6 @@
 // override
 - (void)prepareForRequest
 {
-    if ([self.roles count] == 0) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"Roles should not be nil or empty."
-                                     userInfo:nil];
-    }
-
     NSMutableArray<NSString *> *roleNames =
         [[NSMutableArray alloc] initWithCapacity:self.roles.count];
     [self.roles enumerateObjectsUsingBlock:^(SKYRole *obj, NSUInteger idx, BOOL *stop) {
