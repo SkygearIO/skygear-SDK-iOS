@@ -19,8 +19,6 @@
 
 #import "SKYRole.h"
 
-static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
-
 @interface SKYRole ()
 
 @property (strong, nonatomic, readwrite) NSString *name;
@@ -31,9 +29,11 @@ static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
 
 + (NSMutableDictionary<NSString *, SKYRole *> *)definedRoles
 {
-    if (!_definedRoles) {
+    static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         _definedRoles = [[NSMutableDictionary alloc] init];
-    }
+    });
 
     return _definedRoles;
 }
