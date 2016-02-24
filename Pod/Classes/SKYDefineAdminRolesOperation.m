@@ -21,12 +21,12 @@
 
 @implementation SKYDefineAdminRolesOperation
 
-+ (instancetype)operationWithRoles:(NSArray <SKYRole *> *)roles
++ (instancetype)operationWithRoles:(NSArray<SKYRole *> *)roles
 {
     return [[SKYDefineAdminRolesOperation alloc] initWithRoles:roles];
 }
 
-- (instancetype)initWithRoles:(NSArray <SKYRole *> *)roles
+- (instancetype)initWithRoles:(NSArray<SKYRole *> *)roles
 {
     self = [super init];
     if (self) {
@@ -45,13 +45,16 @@
                                      userInfo:nil];
     }
 
-    NSMutableArray<NSString *> *roleNames = [[NSMutableArray alloc] initWithCapacity:self.roles.count];
+    NSMutableArray<NSString *> *roleNames =
+        [[NSMutableArray alloc] initWithCapacity:self.roles.count];
     [self.roles enumerateObjectsUsingBlock:^(SKYRole *obj, NSUInteger idx, BOOL *stop) {
         [roleNames addObject:obj.name];
     }];
 
-    self.request = [[SKYRequest alloc] initWithAction:@"role:admin"
-                                              payload:@{ @"roles": roleNames }];
+    self.request =
+        [[SKYRequest alloc] initWithAction:@"role:admin" payload:@{
+            @"roles" : roleNames
+        }];
     self.request.accessToken = self.container.currentAccessToken;
 }
 
@@ -78,7 +81,7 @@
 - (void)handleResponse:(SKYResponse *)aResponse
 {
     NSDictionary *response = aResponse.responseDictionary[@"result"];
-    NSArray <NSString *> *roleNames = [response objectForKey:@"roles"];
+    NSArray<NSString *> *roleNames = [response objectForKey:@"roles"];
 
     NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] initWithCapacity:roleNames.count];
 

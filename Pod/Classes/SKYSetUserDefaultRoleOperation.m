@@ -15,7 +15,7 @@
     return [[SKYSetUserDefaultRoleOperation alloc] initWithRoles:roles];
 }
 
-- (instancetype)initWithRoles:(NSArray <SKYRole *> *)roles
+- (instancetype)initWithRoles:(NSArray<SKYRole *> *)roles
 {
     self = [super init];
     if (self) {
@@ -34,13 +34,16 @@
                                      userInfo:nil];
     }
 
-    NSMutableArray<NSString *> *roleNames = [[NSMutableArray alloc] initWithCapacity:self.roles.count];
+    NSMutableArray<NSString *> *roleNames =
+        [[NSMutableArray alloc] initWithCapacity:self.roles.count];
     [self.roles enumerateObjectsUsingBlock:^(SKYRole *obj, NSUInteger idx, BOOL *stop) {
         [roleNames addObject:obj.name];
     }];
 
-    self.request = [[SKYRequest alloc] initWithAction:@"role:default"
-                                              payload:@{ @"roles": roleNames }];
+    self.request =
+        [[SKYRequest alloc] initWithAction:@"role:default" payload:@{
+            @"roles" : roleNames
+        }];
     self.request.accessToken = self.container.currentAccessToken;
 }
 

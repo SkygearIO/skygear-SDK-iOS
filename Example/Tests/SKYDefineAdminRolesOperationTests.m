@@ -24,26 +24,26 @@ SpecBegin(SKYDefineAdminRolesOperation)
 
     describe(@"Define Admin Role Operation", ^{
         NSString *apiKey = @"CORRECT_KEY";
-        NSString *currentUserName = @"CORRECT_USER";
+        NSString *currentUserID = @"CORRECT_USER_ID";
         NSString *token = @"CORRECT_TOKEN";
 
         NSString *developerRoleName = @"Developer";
         NSString *testerRoleName = @"Tester";
         NSString *pmRoleName = @"Project Manager";
 
-        NSArray<SKYRole *> *roles = @[[SKYRole roleWithName:developerRoleName],
-                                      [SKYRole roleWithName:testerRoleName],
-                                      [SKYRole roleWithName:pmRoleName]];
-
+        NSArray<SKYRole *> *roles = @[
+            [SKYRole roleWithName:developerRoleName],
+            [SKYRole roleWithName:testerRoleName],
+            [SKYRole roleWithName:pmRoleName]
+        ];
 
         __block SKYContainer *container = nil;
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:apiKey];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:currentUserName]
-                                  accessToken:[[SKYAccessToken alloc]
-                                               initWithTokenString:token]];
+            [container updateWithUserRecordID:currentUserID
+                                  accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
@@ -57,31 +57,32 @@ SpecBegin(SKYDefineAdminRolesOperation)
             expect(request.action).to.equal(@"role:admin");
             expect(request.accessToken.tokenString).to.equal(token);
             expect(request.payload)
-                .to.equal(@{ @"roles": @[developerRoleName, testerRoleName, pmRoleName] });
+                .to.equal(
+                    @{ @"roles" : @[ developerRoleName, testerRoleName, pmRoleName ] });
         });
 
         it(@"should handle success response correctly", ^{
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *response =
-                @{
-                  @"result": @{ @"roles": @[ developerRoleName, testerRoleName, pmRoleName ] }
-                  };
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
-            }];
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSDictionary *response = @{
+                        @"result" : @{@"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]}
+                    };
+                    return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                            statusCode:200
+                                                               headers:nil];
+                }];
 
             SKYDefineAdminRolesOperation *operation =
-            [SKYDefineAdminRolesOperation operationWithRoles:roles];
+                [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
             [operation setContainer:container];
             [operation prepareForRequest];
 
             waitUntil(^(DoneCallback done) {
                 operation.defineAdminRolesCompletionBlock =
-                    ^(NSArray<SKYRole *> *roles, NSError *error){
+                    ^(NSArray<SKYRole *> *roles, NSError *error) {
                         expect(roles.count).to.equal(3);
                         expect(roles).to.contain([SKYRole roleWithName:developerRoleName]);
                         expect(roles).to.contain([SKYRole roleWithName:testerRoleName]);

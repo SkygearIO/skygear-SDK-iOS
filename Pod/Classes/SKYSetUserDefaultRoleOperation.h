@@ -10,10 +10,10 @@
 
 @interface SKYSetUserDefaultRoleOperation : SKYOperation
 
-@property (nonatomic, readonly, strong) NSArray <SKYRole *> *roles;
+@property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
 @property (nonatomic, copy) void (^setUserDefaultRoleCompletionBlock)
     (NSArray<SKYRole *> *roles, NSError *error);
 
-+ (instancetype)operationWithRoles:(NSArray <SKYRole *> *)roles;
++ (instancetype)operationWithRoles:(NSArray<SKYRole *> *)roles;
 
 @end

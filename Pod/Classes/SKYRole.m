@@ -29,7 +29,8 @@ static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
 
 @implementation SKYRole
 
-+ (NSMutableDictionary<NSString *, SKYRole *> *)definedRoles {
++ (NSMutableDictionary<NSString *, SKYRole *> *)definedRoles
+{
     if (!_definedRoles) {
         _definedRoles = [[NSMutableDictionary alloc] init];
     }
@@ -61,8 +62,8 @@ static NSMutableDictionary<NSString *, SKYRole *> *_definedRoles;
 // override
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ { name = %@ }",
-            NSStringFromClass(self.class), self.name];
+    return
+        [NSString stringWithFormat:@"%@ { name = %@ }", NSStringFromClass(self.class), self.name];
 }
 
 @end

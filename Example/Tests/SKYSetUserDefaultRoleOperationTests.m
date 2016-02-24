@@ -24,24 +24,22 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
 
     describe(@"Set User Default Role Operation", ^{
         NSString *apiKey = @"CORRECT_KEY";
-        NSString *currentUserName = @"CORRECT_USER";
+        NSString *currentUserID = @"CORRECT_USER_ID";
         NSString *token = @"CORRECT_TOKEN";
 
         NSString *readerRoleName = @"Reader";
         NSString *writerRoleName = @"Writer";
 
-        NSArray<SKYRole *> *roles = @[[SKYRole roleWithName:readerRoleName],
-                                      [SKYRole roleWithName:writerRoleName]];
-
+        NSArray<SKYRole *> *roles =
+            @[ [SKYRole roleWithName:readerRoleName], [SKYRole roleWithName:writerRoleName] ];
 
         __block SKYContainer *container = nil;
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:apiKey];
-            [container updateWithUserRecordID:[SKYUserRecordID recordIDWithUsername:currentUserName]
-                                  accessToken:[[SKYAccessToken alloc]
-                                               initWithTokenString:token]];
+            [container updateWithUserRecordID:currentUserID
+                                  accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
@@ -54,33 +52,31 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:default");
             expect(request.accessToken.tokenString).to.equal(token);
-            expect(request.payload)
-                .to.equal(@{ @"roles": @[readerRoleName, writerRoleName] });
+            expect(request.payload).to.equal(@{ @"roles" : @[ readerRoleName, writerRoleName ] });
         });
 
         it(@"should handle success response", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest * _Nonnull request) {
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
                 return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *response =
-                @{
-                  @"result": @{ @"roles": @[ readerRoleName, writerRoleName ] }
-                  };
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSDictionary *response =
+                        @{ @"result" : @{@"roles" : @[ readerRoleName, writerRoleName ]} };
 
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
-            }];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                            statusCode:200
+                                                               headers:nil];
+                }];
 
             SKYSetUserDefaultRoleOperation *operation =
-            [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+                [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
             [operation setContainer:container];
             [operation prepareForRequest];
 
             waitUntil(^(DoneCallback done) {
                 operation.setUserDefaultRoleCompletionBlock =
-                    ^(NSArray<SKYRole *> *roles, NSError *error){
+                    ^(NSArray<SKYRole *> *roles, NSError *error) {
                         expect(roles.count).to.equal(2);
                         expect(roles).to.contain([SKYRole roleWithName:readerRoleName]);
                         expect(roles).to.contain([SKYRole roleWithName:writerRoleName]);
