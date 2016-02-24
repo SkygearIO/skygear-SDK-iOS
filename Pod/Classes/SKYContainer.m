@@ -233,8 +233,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     }
 }
 
-- (void)updateWithUserRecordID:(NSString *)userRecord
-                   accessToken:(SKYAccessToken *)accessToken
+- (void)updateWithUserRecordID:(NSString *)userRecord accessToken:(SKYAccessToken *)accessToken
 {
     BOOL userRecordIDChanged =
         !([_userRecordID isEqual:userRecord] || (_userRecordID == nil && userRecord == nil));

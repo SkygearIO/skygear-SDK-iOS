@@ -107,10 +107,10 @@ describe(@"Access Control Entry", ^{
             [SKYAccessControlEntry readEntryForRelation:[SKYRelation friendRelation]];
         SKYAccessControlEntry *writeRelationEntry =
             [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
-        SKYAccessControlEntry *readUserIDEntry = [SKYAccessControlEntry
-            readEntryForUserID:@"userid0"];
-        SKYAccessControlEntry *writeUserIDEntry = [SKYAccessControlEntry
-            writeEntryForUserID:@"userid1"];
+        SKYAccessControlEntry *readUserIDEntry =
+            [SKYAccessControlEntry readEntryForUserID:@"userid0"];
+        SKYAccessControlEntry *writeUserIDEntry =
+            [SKYAccessControlEntry writeEntryForUserID:@"userid1"];
 
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
             readRelationEntry,

@@ -106,8 +106,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(NSString *user, NSErro
 
  @see -loadAccessCurrentUserRecordIDAndAccessToken
  */
-- (void)updateWithUserRecordID:(NSString *)userRecord
-                   accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUserRecordID:(NSString *)userRecord accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with

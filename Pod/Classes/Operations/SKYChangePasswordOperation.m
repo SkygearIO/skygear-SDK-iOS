@@ -22,7 +22,6 @@
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 
-
 @implementation SKYChangePasswordOperation
 
 - (instancetype)initWithOldPassword:(NSString *)oldPassword passwordToSet:(NSString *)newPassword

@@ -23,7 +23,6 @@
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
 
-
 @implementation SKYRemoveRelationsOperation
 
 - (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users

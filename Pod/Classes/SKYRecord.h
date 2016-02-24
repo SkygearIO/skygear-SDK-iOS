@@ -22,7 +22,6 @@
 #import "SKYAccessControl.h"
 #import "SKYRecordID.h"
 
-
 extern NSString *const SKYRecordTypeUserRecord;
 
 @interface SKYRecord : NSObject <NSCopying>

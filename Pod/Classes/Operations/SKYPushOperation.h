@@ -21,7 +21,6 @@
 
 #import "SKYNotificationInfo.h"
 
-
 @interface SKYPushOperation : SKYOperation
 
 - (instancetype)initWithUserRecordIDs:(NSArray /* NSString */ *)userRecordIDs

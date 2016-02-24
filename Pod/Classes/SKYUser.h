@@ -19,8 +19,6 @@
 
 #import "SKYRecord.h"
 
-
-
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 

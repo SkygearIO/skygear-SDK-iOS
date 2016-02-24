@@ -22,7 +22,6 @@
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 
-
 @implementation SKYLoginUserOperation {
     NSDictionary *_authPayload;
 }

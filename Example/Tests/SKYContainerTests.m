@@ -184,9 +184,9 @@ describe(@"save current user", ^{
 
     it(@"fetch record", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container updateWithUserRecordID:@"user1"
-                              accessToken:[[SKYAccessToken alloc]
-                                           initWithTokenString:@"accesstoken1"]];
+        [container
+            updateWithUserRecordID:@"user1"
+                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [[SKYContainer alloc] init];
         expect(container.currentUserRecordID).to.equal(@"user1");

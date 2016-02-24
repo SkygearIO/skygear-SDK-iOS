@@ -22,7 +22,6 @@
 #import "SKYAccessControl_Private.h"
 #import "SKYAccessControlEntry.h"
 
-
 @implementation SKYAccessControlDeserializer
 
 + (instancetype)deserializer

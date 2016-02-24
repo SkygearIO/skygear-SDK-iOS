@@ -19,8 +19,6 @@
 
 #import "SKYUserDeserializer.h"
 
-
-
 @implementation SKYUserDeserializer
 
 + (instancetype)deserializer

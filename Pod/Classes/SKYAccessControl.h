@@ -21,7 +21,6 @@
 
 #import "SKYRelation.h"
 
-
 @class SKYUser;
 
 @interface SKYAccessControl : NSObject <NSFastEnumeration>

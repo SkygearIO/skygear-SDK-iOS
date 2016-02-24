@@ -83,7 +83,6 @@
 #import "SKYLogoutUserOperation.h"
 #import "SKYUserDiscoverPredicate.h"
 
-
 #import "NSURLRequest+SKYRequest.h"
 #import "NSError+SKYError.h"
 #import "SKYErrorCreator.h"

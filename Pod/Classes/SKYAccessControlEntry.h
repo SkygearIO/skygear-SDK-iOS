@@ -22,7 +22,6 @@
 #import "SKYRelation.h"
 #import "SKYUser.h"
 
-
 typedef enum : NSUInteger {
     SKYAccessControlEntryLevelRead = 0,
     SKYAccessControlEntryLevelWrite = 1,

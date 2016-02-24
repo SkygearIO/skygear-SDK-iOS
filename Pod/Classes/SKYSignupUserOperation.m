@@ -21,7 +21,6 @@
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
 
-
 @implementation SKYSignupUserOperation
 
 + (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
