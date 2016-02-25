@@ -634,7 +634,7 @@ describe(@"manage roles", ^{
     });
 });
 
-describe(@"query user", ^{
+describe(@"manage user", ^{
     NSString *apiKey = @"CORRECT_KEY";
     NSString *currentUserId = @"CORRECT_USER_ID";
     NSString *token = @"CORRECT_TOKEN";
@@ -694,6 +694,45 @@ describe(@"query user", ^{
                         }];
         });
 
+    });
+
+    it(@"should be able to update user", ^{
+        SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *payload = @{
+                    @"result" : @{
+                        @"_id" : @"user_id",
+                        @"username" : @"user",
+                        @"email" : @"user@skygear.io",
+                        @"roles" : @[ developerRole.name ]
+                    }
+                };
+                return
+                    [OHHTTPStubsResponse responseWithJSONObject:payload statusCode:200 headers:nil];
+            }];
+
+        SKYUser *user = [SKYUser userWithUserID:@"user_id"];
+        [user setUsername:@"user"];
+        [user setEmail:@"user@skygear.io"];
+        [user addRole:developerRole];
+
+        waitUntil(^(DoneCallback done) {
+            [container saveUser:user
+                     completion:^(SKYUser *user, NSError *error) {
+                         expect(error).to.beNil();
+                         expect(user).notTo.beNil();
+                         expect(user.userID).to.equal(@"user_id");
+                         expect(user.username).to.equal(@"user");
+                         expect(user.email).to.equal(@"user@skygear.io");
+                         expect([user hasRole:developerRole]).to.equal(YES);
+
+                         done();
+                     }];
+        });
     });
 
     afterEach(^{

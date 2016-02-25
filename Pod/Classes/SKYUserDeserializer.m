@@ -34,6 +34,7 @@
     if (userID.length) {
         user = [[SKYUser alloc] initWithUserID:userID];
         user.email = dictionary[@"email"];
+        user.username = dictionary[@"username"];
         user.authData = dictionary[@"authData"];
 
         NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];

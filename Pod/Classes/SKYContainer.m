@@ -385,11 +385,29 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     operation.container = self;
 
     operation.queryUserCompletionBlock = ^(NSArray<SKYUser *> *users, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(users, error);
-            }
-        });
+
+            });
+        }
+    };
+
+    [_operationQueue addOperation:operation];
+}
+
+- (void)saveUser:(SKYUser *)user
+      completion:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYUpdateUserOperation *operation = [SKYUpdateUserOperation operationWithUser:user];
+    operation.container = self;
+
+    operation.updateUserCompletionBlock = ^(SKYUser *user, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
     };
 
     [_operationQueue addOperation:operation];

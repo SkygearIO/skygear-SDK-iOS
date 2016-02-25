@@ -72,7 +72,6 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
                 [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
 
             waitUntil(^(DoneCallback done) {
                 operation.setUserDefaultRoleCompletionBlock =
