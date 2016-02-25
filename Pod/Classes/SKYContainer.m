@@ -30,6 +30,8 @@
 #import "SKYSignupUserOperation.h"
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
+#import "SKYDefineAdminRolesOperation.h"
+#import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYLambdaOperation.h"
 
 NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
@@ -372,6 +374,43 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                 completionHandler(user, error);
             });
         };
+
+    [_operationQueue addOperation:operation];
+}
+
+#pragma mark - SKYRole
+- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
+              completion:(void (^)(NSError *error))completionBlock
+{
+    SKYDefineAdminRolesOperation *operation =
+        [SKYDefineAdminRolesOperation operationWithRoles:roles];
+    operation.container = self;
+
+    operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
+
+    [_operationQueue addOperation:operation];
+}
+
+- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
+                completion:(void (^)(NSError *error))completionBlock
+{
+    SKYSetUserDefaultRoleOperation *operation =
+        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+    operation.container = self;
+
+    operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
 
     [_operationQueue addOperation:operation];
 }

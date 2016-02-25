@@ -24,6 +24,7 @@
 #import "SKYAsset.h"
 #import "SKYNotification.h"
 #import "SKYPubsub.h"
+#import "SKYRole.h"
 
 @protocol SKYContainerDelegate <NSObject>
 
@@ -210,6 +211,22 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)callLambda:(NSString *)action
          arguments:(NSArray *)arguments
  completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+
+@end
+
+@interface SKYContainer (SKYRole)
+
+/**
+ *  Defines roles to have special powers
+ */
+- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
+              completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Sets default roles for new registered users
+ */
+- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
+                completion:(void (^)(NSError *error))completionBlock;
 
 @end
 
