@@ -634,4 +634,71 @@ describe(@"manage roles", ^{
     });
 });
 
+describe(@"query user", ^{
+    NSString *apiKey = @"CORRECT_KEY";
+    NSString *currentUserId = @"CORRECT_USER_ID";
+    NSString *token = @"CORRECT_TOKEN";
+
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:apiKey];
+        [container updateWithUserRecordID:currentUserId
+                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+    });
+
+    it(@"should be able to query by emails", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"result" : @[
+                        @{
+                           @"id" : @"user0",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user0",
+                               @"email" : @"john.doe@example.com",
+                           },
+                        },
+                        @{
+                           @"id" : @"user1",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user1",
+                               @"email" : @"jane.doe@example.com",
+                           },
+                        },
+                    ],
+                    @"info" : @{@"count" : @10}
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
+                        completionHandler:^(NSArray<SKYUser *> *users, NSError *error) {
+                            expect(error).to.beNil();
+                            expect(users).to.haveACountOf(2);
+                            expect(users[0].userID).to.equal(@"user0");
+                            expect(users[0].email).to.equal(@"john.doe@example.com");
+                            expect(users[1].userID).to.equal(@"user1");
+                            expect(users[1].email).to.equal(@"jane.doe@example.com");
+
+                            done();
+                        }];
+        });
+
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+});
+
 SpecEnd

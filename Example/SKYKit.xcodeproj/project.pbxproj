@@ -343,8 +343,8 @@
 				378558491AE63FEC00685319 /* SKYSubscriptionSerializerTests.m */,
 				37CDD6031B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m */,
 				37B10B1B1B1C5F0400052740 /* SKYUserDeserializerTests.m */,
-				6003F5B6195388D20070C39A /* Supporting Files */,
 				6031B9751C7D71C700132DED /* SKYUserTests.m */,
+				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

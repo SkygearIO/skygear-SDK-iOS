@@ -378,6 +378,23 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [_operationQueue addOperation:operation];
 }
 
+- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
+         completionHandler:(void (^)(NSArray<SKYUser *> *, NSError *))completionHandler
+{
+    SKYQueryUsersOperation *operation = [[SKYQueryUsersOperation alloc] initWithEmails:emails];
+    operation.container = self;
+
+    operation.queryUserCompletionBlock = ^(NSArray<SKYUser *> *users, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler) {
+                completionHandler(users, error);
+            }
+        });
+    };
+
+    [_operationQueue addOperation:operation];
+}
+
 #pragma mark - SKYRole
 - (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
               completion:(void (^)(NSError *error))completionBlock

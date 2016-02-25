@@ -212,6 +212,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
          arguments:(NSArray *)arguments
  completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
+- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
+         completionHandler:(void (^)(NSArray<SKYUser *> *, NSError *))completionHandler;
 @end
 
 @interface SKYContainer (SKYRole)
