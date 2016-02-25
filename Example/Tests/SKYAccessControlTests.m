@@ -102,21 +102,28 @@ describe(@"Access Control", ^{
 });
 
 describe(@"Access Control Entry", ^{
-    it(@"serializes correctly", ^{
-        SKYAccessControlEntry *readRelationEntry =
-            [SKYAccessControlEntry readEntryForRelation:[SKYRelation friendRelation]];
-        SKYAccessControlEntry *writeRelationEntry =
-            [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
-        SKYAccessControlEntry *readUserIDEntry =
-            [SKYAccessControlEntry readEntryForUserID:@"userid0"];
-        SKYAccessControlEntry *writeUserIDEntry =
-            [SKYAccessControlEntry writeEntryForUserID:@"userid1"];
+    SKYRole *godRole = [SKYRole roleWithName:@"God"];
+    SKYRelation *friendRelation = [SKYRelation friendRelation];
+    SKYRelation *followedRelation = [SKYRelation followedRelation];
 
+    SKYAccessControlEntry *readRelationEntry =
+        [SKYAccessControlEntry readEntryForRelation:friendRelation];
+    SKYAccessControlEntry *writeRelationEntry =
+        [SKYAccessControlEntry writeEntryForRelation:followedRelation];
+    SKYAccessControlEntry *readUserIDEntry = [SKYAccessControlEntry readEntryForUserID:@"userid0"];
+    SKYAccessControlEntry *writeUserIDEntry =
+        [SKYAccessControlEntry writeEntryForUserID:@"userid1"];
+    SKYAccessControlEntry *readRoleEntry = [SKYAccessControlEntry readEntryForRole:godRole];
+    SKYAccessControlEntry *writeRoleEntry = [SKYAccessControlEntry writeEntryForRole:godRole];
+
+    it(@"serializes correctly", ^{
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
             readRelationEntry,
             writeRelationEntry,
             readUserIDEntry,
             writeUserIDEntry,
+            readRoleEntry,
+            writeRoleEntry
         ]];
         expect(serializedAccessControl(accessControl))
             .to.equal(@[
@@ -130,7 +137,51 @@ describe(@"Access Control Entry", ^{
                 @{ @"relation" : @"$direct",
                    @"level" : @"write",
                    @"user_id" : @"userid1" },
+                @{ @"level" : @"read",
+                   @"role" : @"God" },
+                @{ @"level" : @"write",
+                   @"role" : @"God" },
             ]);
+    });
+
+    it(@"access checking correctly", ^{
+        SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
+            readRelationEntry,
+            writeRelationEntry,
+            readUserIDEntry,
+            writeUserIDEntry,
+            readRoleEntry,
+            writeRoleEntry
+        ]];
+
+        expect([accessControl hasReadAccessForRelation:friendRelation]).to.equal(YES);
+        expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(YES);
+        expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(YES);
+        expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(YES);
+        expect([accessControl hasReadAccessForRole:godRole]).to.equal(YES);
+        expect([accessControl hasWriteAccessForRole:godRole]).to.equal(YES);
+
+        [accessControl removeReadAccessForRelation:friendRelation];
+        [accessControl removeReadAccessForUserID:@"userid0"];
+        [accessControl removeReadAccessForRole:godRole];
+
+        expect([accessControl hasReadAccessForRelation:friendRelation]).to.equal(NO);
+        expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(YES);
+        expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(NO);
+        expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(YES);
+        expect([accessControl hasReadAccessForRole:godRole]).to.equal(NO);
+        expect([accessControl hasWriteAccessForRole:godRole]).to.equal(YES);
+
+        [accessControl removeWriteAccessForRelation:followedRelation];
+        [accessControl removeWriteAccessForUserID:@"userid1"];
+        [accessControl removeWriteAccessForRole:godRole];
+
+        expect([accessControl hasReadAccessForRelation:friendRelation]).to.equal(NO);
+        expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(NO);
+        expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(NO);
+        expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(NO);
+        expect([accessControl hasReadAccessForRole:godRole]).to.equal(NO);
+        expect([accessControl hasWriteAccessForRole:godRole]).to.equal(NO);
     });
 });
 
@@ -166,6 +217,10 @@ describe(@"SKYAccessControlDeserializer", ^{
             @{ @"relation" : @"$direct",
                @"level" : @"write",
                @"user_id" : @"userid1" },
+            @{ @"level" : @"read",
+               @"role" : @"God" },
+            @{ @"level" : @"write",
+               @"role" : @"God" },
         ];
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
         expect(accessControl.public).to.equal(NO);

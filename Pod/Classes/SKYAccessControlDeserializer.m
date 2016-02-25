@@ -60,7 +60,11 @@
     }
 
     NSString *rawRelation = dictionary[@"relation"];
-    if ([rawRelation isEqualToString:@"$direct"]) {
+    NSString *roleName = dictionary[@"role"];
+    if (rawRelation == nil && roleName != nil) {
+        SKYRole *role = [SKYRole roleWithName:roleName];
+        return [[SKYAccessControlEntry alloc] initWithAccessLevel:level role:role];
+    } else if ([rawRelation isEqualToString:@"$direct"]) {
         NSString *rawUserID = dictionary[@"user_id"];
         return [[SKYAccessControlEntry alloc] initWithAccessLevel:level userID:rawUserID];
     } else {

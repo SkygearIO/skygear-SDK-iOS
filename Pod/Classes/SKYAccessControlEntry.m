@@ -43,11 +43,23 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
         return NO;
     }
 
-    return (self.entryType == entry.entryType && self.accessLevel == entry.accessLevel &&
-            ((self.relation == nil && entry.relation == nil) ||
-             [self.relation isEqualToRelation:entry.relation]) &&
-            ((self.userID == nil && entry.userID == nil) ||
-             [self.userID isEqualToString:entry.userID]));
+    if (self.entryType != entry.entryType || self.accessLevel != entry.accessLevel) {
+        return NO;
+    }
+
+    if (self.relation != nil && entry.relation != nil) {
+        return [self.relation isEqualToRelation:entry.relation];
+    }
+
+    if (self.role != nil && entry.role != nil) {
+        return [self.role isEqual:entry.role];
+    }
+
+    if (self.userID != nil && entry.userID != nil) {
+        return [self.userID isEqualToString:entry.userID];
+    }
+
+    return NO;
 }
 
 - (BOOL)isEqual:(id)object
@@ -75,6 +87,8 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     if (self) {
         _entryType = SKYAccessControlEntryTypeDirect;
         _accessLevel = accessLevel;
+        _relation = nil;
+        _role = nil;
         _userID = [userID copy];
     }
     return self;
@@ -88,6 +102,21 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
         _entryType = SKYAccessControlEntryTypeRelation;
         _accessLevel = accessLevel;
         _relation = relation;
+        _role = nil;
+        _userID = nil;
+    }
+    return self;
+}
+
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel role:(SKYRole *)role
+{
+    self = [super init];
+    if (self) {
+        _entryType = SKYAccessControlEntryTypeRole;
+        _accessLevel = accessLevel;
+        _relation = nil;
+        _role = role;
+        _userID = nil;
     }
     return self;
 }
@@ -107,6 +136,11 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelRead relation:relation];
 }
 
++ (instancetype)readEntryForRole:(SKYRole *)role
+{
+    return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelRead role:role];
+}
+
 + (instancetype)writeEntryForUser:(SKYUser *)user
 {
     return [self writeEntryForUserID:user.userID];
@@ -120,6 +154,11 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
 + (instancetype)writeEntryForRelation:(SKYRelation *)relation
 {
     return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelWrite relation:relation];
+}
+
++ (instancetype)writeEntryForRole:(SKYRole *)role
+{
+    return [[self alloc] initWithAccessLevel:SKYAccessControlEntryLevelWrite role:role];
 }
 
 @end
