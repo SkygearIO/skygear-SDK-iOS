@@ -66,4 +66,14 @@
         [NSString stringWithFormat:@"%@ { name = %@ }", NSStringFromClass(self.class), self.name];
 }
 
+// override
+- (BOOL)isEqual:(id)object
+{
+    if ([object isKindOfClass:[SKYRole class]]) {
+        SKYRole *anotherRole = (SKYRole *)object;
+        return [self.name isEqualToString:anotherRole.name];
+    }
+    return NO;
+}
+
 @end

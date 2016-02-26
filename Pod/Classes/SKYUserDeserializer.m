@@ -34,7 +34,16 @@
     if (userID.length) {
         user = [[SKYUser alloc] initWithUserID:userID];
         user.email = dictionary[@"email"];
+        user.username = dictionary[@"username"];
         user.authData = dictionary[@"authData"];
+
+        NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
+        NSArray<NSString *> *roleNames = dictionary[@"roles"];
+        [roleNames enumerateObjectsUsingBlock:^(NSString *perName, NSUInteger idx, BOOL *stop) {
+            [roles addObject:[SKYRole roleWithName:perName]];
+        }];
+
+        user.roles = roles;
     }
 
     return user;

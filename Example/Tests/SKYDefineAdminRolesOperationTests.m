@@ -78,7 +78,6 @@ SpecBegin(SKYDefineAdminRolesOperation)
                 [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
 
             waitUntil(^(DoneCallback done) {
                 operation.defineAdminRolesCompletionBlock =

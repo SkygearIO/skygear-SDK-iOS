@@ -29,6 +29,11 @@
 
 @implementation SKYUser
 
++ (instancetype)userWithUserID:(NSString *)userID
+{
+    return [[self alloc] initWithUserID:userID];
+}
+
 - (instancetype)initWithUserID:(NSString *)userID
 {
     self = [super init];
@@ -38,9 +43,43 @@
     return self;
 }
 
-+ (instancetype)userWithUserID:(NSString *)userID
+- (void)addRole:(SKYRole *)aRole
 {
-    return [[self alloc] initWithUserID:userID];
+    if (![self hasRole:aRole]) {
+        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
+        [roles addObject:aRole];
+
+        [self setRoles:roles];
+    }
+}
+
+- (void)removeRole:(SKYRole *)aRole
+{
+    NSUInteger idx = [self indexOfRole:aRole];
+    if (idx != NSNotFound) {
+        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
+        [roles removeObjectAtIndex:idx];
+
+        [self setRoles:roles];
+    }
+}
+
+- (BOOL)hasRole:(SKYRole *)aRole
+{
+    return [self indexOfRole:aRole] != NSNotFound;
+}
+
+- (NSUInteger)indexOfRole:(SKYRole *)aRole
+{
+    __block NSUInteger foundIndex = NSNotFound;
+    [self.roles enumerateObjectsUsingBlock:^(SKYRole *perRole, NSUInteger idx, BOOL *stop) {
+        if ([perRole isEqual:aRole]) {
+            *stop = YES;
+            foundIndex = idx;
+        }
+    }];
+
+    return foundIndex;
 }
 
 @end

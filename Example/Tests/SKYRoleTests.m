@@ -38,6 +38,14 @@ SpecBegin(SKYRole)
             expect(testerRole).to.beIdenticalTo(alsoTesterRole);
         });
 
+        it(@"can be compared using isEqual", ^{
+            SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
+            SKYRole *testerRole = [SKYRole roleWithName:@"Tester"];
+            SKYRole *alsoTesterRole = [SKYRole roleWithName:@"Tester"];
+
+            expect([developerRole isEqual:testerRole]).to.equal(NO);
+            expect([testerRole isEqual:alsoTesterRole]).to.equal(YES);
+        });
     });
 
 SpecEnd

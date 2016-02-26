@@ -634,4 +634,110 @@ describe(@"manage roles", ^{
     });
 });
 
+describe(@"manage user", ^{
+    NSString *apiKey = @"CORRECT_KEY";
+    NSString *currentUserId = @"CORRECT_USER_ID";
+    NSString *token = @"CORRECT_TOKEN";
+
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:apiKey];
+        [container updateWithUserRecordID:currentUserId
+                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+    });
+
+    it(@"should be able to query by emails", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"result" : @[
+                        @{
+                           @"id" : @"user0",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user0",
+                               @"email" : @"john.doe@example.com",
+                           },
+                        },
+                        @{
+                           @"id" : @"user1",
+                           @"type" : @"user",
+                           @"data" : @{
+                               @"_id" : @"user1",
+                               @"email" : @"jane.doe@example.com",
+                           },
+                        },
+                    ],
+                    @"info" : @{@"count" : @10}
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
+                        completionHandler:^(NSArray<SKYUser *> *users, NSError *error) {
+                            expect(error).to.beNil();
+                            expect(users).to.haveACountOf(2);
+                            expect(users[0].userID).to.equal(@"user0");
+                            expect(users[0].email).to.equal(@"john.doe@example.com");
+                            expect(users[1].userID).to.equal(@"user1");
+                            expect(users[1].email).to.equal(@"jane.doe@example.com");
+
+                            done();
+                        }];
+        });
+
+    });
+
+    it(@"should be able to update user", ^{
+        SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
+
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *payload = @{
+                    @"result" : @{
+                        @"_id" : @"user_id",
+                        @"username" : @"user",
+                        @"email" : @"user@skygear.io",
+                        @"roles" : @[ developerRole.name ]
+                    }
+                };
+                return
+                    [OHHTTPStubsResponse responseWithJSONObject:payload statusCode:200 headers:nil];
+            }];
+
+        SKYUser *user = [SKYUser userWithUserID:@"user_id"];
+        [user setUsername:@"user"];
+        [user setEmail:@"user@skygear.io"];
+        [user addRole:developerRole];
+
+        waitUntil(^(DoneCallback done) {
+            [container saveUser:user
+                     completion:^(SKYUser *user, NSError *error) {
+                         expect(error).to.beNil();
+                         expect(user).notTo.beNil();
+                         expect(user.userID).to.equal(@"user_id");
+                         expect(user.username).to.equal(@"user");
+                         expect(user.email).to.equal(@"user@skygear.io");
+                         expect([user hasRole:developerRole]).to.equal(YES);
+
+                         done();
+                     }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+});
+
 SpecEnd
