@@ -462,6 +462,25 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [_operationQueue addOperation:operation];
 }
 
+- (void)defineCreationAccessWithRecordType:(NSString *)recordType
+                                     roles:(NSArray<SKYRole *> *)roles
+                                completion:(void (^)(NSError *error))completionBlock
+{
+    SKYDefineCreationAccessOperation *operation =
+        [SKYDefineCreationAccessOperation operationWithRecordType:recordType roles:roles];
+    operation.container = self;
+    operation.defineCreationAccessCompletionBlock =
+        ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
+            if (completionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(error);
+                });
+            }
+        };
+
+    [_operationQueue addOperation:operation];
+}
+
 #pragma mark - SKYRemoteNotification
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
                              existingDeviceID:(NSString *)existingDeviceID
