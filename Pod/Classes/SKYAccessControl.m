@@ -21,6 +21,8 @@
 
 #import "SKYAccessControl_Private.h"
 #import "SKYAccessControlEntry.h"
+#import "SKYAccessControlSerializer.h"
+#import "SKYAccessControlDeserializer.h"
 
 @implementation SKYAccessControl
 
@@ -32,6 +34,39 @@
 + (instancetype)accessControlWithEntries:(NSArray *)entries
 {
     return [[self alloc] initWithEntries:entries];
+}
+
++ (instancetype)defaultAccessControl
+{
+    static SKYAccessControlDeserializer *deserializer;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        deserializer = [SKYAccessControlDeserializer deserializer];
+    });
+
+    NSArray *aclData =
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYAccessControlDefault"];
+
+    return [deserializer accessControlWithArray:aclData];
+}
+
++ (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl
+{
+    static SKYAccessControlSerializer *serializer;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        serializer = [SKYAccessControlSerializer serializer];
+    });
+
+    if (!defaultAccessControl) {
+        defaultAccessControl = [SKYAccessControl publicReadWriteAccessControl];
+    }
+
+    NSArray *aclData = [serializer arrayWithAccessControl:defaultAccessControl];
+
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:aclData forKey:@"SKYAccessControlDefault"];
+    [userDefault synchronize];
 }
 
 - (instancetype)initForPublicReadWrite

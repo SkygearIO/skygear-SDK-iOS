@@ -22,6 +22,7 @@
 #import "SKYChangePasswordOperation.h"
 #import "SKYDatabase_Private.h"
 #import "SKYNotification_Private.h"
+#import "SKYAccessControl_Private.h"
 #import "SKYOperation.h"
 #import "SKYPushOperation.h"
 #import "SKYLoginUserOperation.h"
@@ -69,6 +70,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
+        _defaultAccessControl = [SKYAccessControl defaultAccessControl];
         _APIKey = nil;
         _pubsubClient =
             [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
@@ -221,6 +223,16 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (SKYAccessToken *)currentAccessToken
 {
     return _accessToken;
+}
+
+- (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl
+{
+    _defaultAccessControl = defaultAccessControl;
+    if (!_defaultAccessControl) {
+        _defaultAccessControl = [SKYAccessControl publicReadWriteAccessControl];
+    }
+
+    [SKYAccessControl setDefaultAccessControl:_defaultAccessControl];
 }
 
 - (void)loadAccessCurrentUserRecordIDAndAccessToken

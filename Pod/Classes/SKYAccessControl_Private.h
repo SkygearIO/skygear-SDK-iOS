@@ -24,6 +24,9 @@
 + (instancetype)publicReadWriteAccessControl;
 + (instancetype)accessControlWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries;
 
++ (instancetype)defaultAccessControl;
++ (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl;
+
 - (instancetype)initForPublicReadWrite NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries
     NS_DESIGNATED_INITIALIZER;
