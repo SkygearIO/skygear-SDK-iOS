@@ -191,7 +191,7 @@ describe(@"Access Control Entry", ^{
             ]);
     });
 
-    it(@"access checking correctly", ^{
+    it(@"checks access correctly", ^{
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
             readRelationEntry,
             writeRelationEntry,
