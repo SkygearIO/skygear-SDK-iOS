@@ -69,6 +69,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
 
+@property (nonatomic, strong) SKYAccessControl *defaultAccessControl;
+
 /**
  Returns the currently registered device ID.
  */
@@ -240,6 +242,16 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
                 completion:(void (^)(NSError *error))completionBlock;
 
+/**
+ *  Limit creation access of a record type to some roles
+ *
+ *  @param recordType      Record type to set creation access
+ *  @param roles           Roles can create the record
+ *  @param completionBlock Completion Block
+ */
+- (void)defineCreationAccessWithRecordType:(NSString *)recordType
+                                     roles:(NSArray<SKYRole *> *)roles
+                                completion:(void (^)(NSError *error))completionBlock;
 @end
 
 @interface SKYContainer (SKYPushOperation)

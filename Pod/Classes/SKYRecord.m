@@ -77,7 +77,7 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     if (self) {
         _recordID = [recordId copy];
         _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
-        _accessControl = [SKYAccessControl publicReadWriteAccessControl];
+        _accessControl = [SKYAccessControl defaultAccessControl];
         _transient = [NSMutableDictionary dictionary];
     }
     return self;

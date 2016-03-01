@@ -740,4 +740,51 @@ describe(@"manage user", ^{
     });
 });
 
+describe(@"record creation access", ^{
+    NSString *apiKey = @"CORRECT_KEY";
+    NSString *currentUserId = @"CORRECT_USER_ID";
+    NSString *token = @"CORRECT_TOKEN";
+
+    NSString *painterRoleName = @"Painter";
+    NSString *paintingRecordType = @"Painting";
+
+    SKYRole *painterRole = [SKYRole roleWithName:painterRoleName];
+
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:apiKey];
+        [container updateWithUserRecordID:currentUserId
+                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+    });
+
+    it(@"can define creation access of record", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *response = @{
+                    @"result" : @{@"type" : paintingRecordType, @"roles" : @[ painterRoleName ]}
+                };
+                return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                        statusCode:200
+                                                           headers:nil];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container defineCreationAccessWithRecordType:paintingRecordType
+                                                    roles:@[ painterRole ]
+                                               completion:^(NSError *error) {
+                                                   expect(error).to.beNil();
+                                                   done();
+                                               }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+});
+
 SpecEnd

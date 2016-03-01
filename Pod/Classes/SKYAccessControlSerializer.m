@@ -56,6 +56,9 @@
         case SKYAccessControlEntryTypeDirect:
             dict = [self dictionaryWithDirectAccessControlEntry:entry];
             break;
+        case SKYAccessControlEntryTypeRole:
+            dict = [self dictionaryWithRoleAccessControlEntry:entry];
+            break;
         default:
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                            reason:@"Unrecgonized access control entry type"
@@ -80,6 +83,14 @@
     dict[@"relation"] = @"$direct";
     dict[@"level"] = NSStringFromAccessControlEntryLevel(entry.accessLevel);
     dict[@"user_id"] = entry.userID;
+    return dict;
+}
+
+- (NSDictionary *)dictionaryWithRoleAccessControlEntry:(SKYAccessControlEntry *)entry
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[@"level"] = NSStringFromAccessControlEntryLevel(entry.accessLevel);
+    dict[@"role"] = entry.role.name;
     return dict;
 }
 

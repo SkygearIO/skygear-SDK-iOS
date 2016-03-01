@@ -31,6 +31,7 @@
 #import "SKYDatabase_Private.h"
 #import "SKYDefaults.h"
 #import "SKYDefineAdminRolesOperation.h"
+#import "SKYDefineCreationAccessOperation.h"
 #import "SKYDeleteRecordsOperation.h"
 #import "SKYDeleteSubscriptionsOperation.h"
 #import "SKYDownloadAssetOperation.h"

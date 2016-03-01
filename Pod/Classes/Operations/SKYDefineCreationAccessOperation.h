@@ -1,5 +1,5 @@
 //
-//  SKYAccessControl_Private.h
+//  SKYDefineCreationAccessOperation.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,21 +17,15 @@
 //  limitations under the License.
 //
 
-#import "SKYAccessControl.h"
+#import <SKYKit/SKYKit.h>
 
-@interface SKYAccessControl ()
+@interface SKYDefineCreationAccessOperation : SKYOperation
 
-+ (instancetype)publicReadWriteAccessControl;
-+ (instancetype)accessControlWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries;
+@property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
+@property (nonatomic, readonly, strong) NSString *recordType;
+@property (nonatomic, copy) void (^defineCreationAccessCompletionBlock)
+    (NSString *recordType, NSArray<SKYRole *> *roles, NSError *error);
 
-+ (instancetype)defaultAccessControl;
-+ (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl;
-
-- (instancetype)initForPublicReadWrite NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries
-    NS_DESIGNATED_INITIALIZER;
-
-@property (strong, nonatomic) NSMutableOrderedSet *entries;
-@property (nonatomic, readwrite) BOOL public;
++ (instancetype)operationWithRecordType:(NSString *)recordType roles:(NSArray<SKYRole *> *)roles;
 
 @end
