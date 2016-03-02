@@ -15,7 +15,7 @@ before_install:
 - pod install --project-directory=Example
 script:
 - xctool test -workspace Example/SkyKit.xcworkspace -scheme SKYKit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-- pod lib lint --quick
+- pod lib lint
 - ./clang-check.sh
 - lizard Pod/ -C 15 -w -i 0
 notifications:
