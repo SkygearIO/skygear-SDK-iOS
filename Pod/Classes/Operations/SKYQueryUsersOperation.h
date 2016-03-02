@@ -31,7 +31,7 @@ typedef enum : NSUInteger {
  <SKYQueryUsersOperation> is a subclass of <SKYOperation> that implements user query
  in Ourd. Use this operation to query other user in the same application.
  */
-__deprecated @interface SKYQueryUsersOperation : SKYOperation
+@interface SKYQueryUsersOperation : SKYOperation
 
 /**
  Returns an operation object that discovers users by their email.
