@@ -1,3 +1,11 @@
+## 0.7.0 (2016-03-02)
+
+### Features
+
+- Implement role-based ACL #245, #246, #247, #249
+- Implement user roles and update user #248
+- Implement SKYRole and related operations #244
+
 ## 0.6.0 (2016-02-24)
 
 ### Incompatible Changes
