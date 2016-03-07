@@ -51,10 +51,10 @@
         [roleNames addObject:perRole.name];
     }];
 
-    self.request = [[SKYRequest alloc] initWithAction:@"record:create_access"
+    self.request = [[SKYRequest alloc] initWithAction:@"schema:access"
                                               payload:@{
                                                   @"type" : self.recordType,
-                                                  @"access_roles" : roleNames
+                                                  @"create_roles" : roleNames
                                               }];
     self.request.accessToken = self.container.currentAccessToken;
 }

@@ -52,12 +52,12 @@ SpecBegin(SKYDefineCreationAccessOperation)
             [operation prepareForRequest];
 
             SKYRequest *request = operation.request;
-            expect(request.action).to.equal(@"record:create_access");
+            expect(request.action).to.equal(@"schema:access");
             expect(request.accessToken.tokenString).to.equal(token);
 
             NSString *recordTypePayload = [request.payload objectForKey:@"type"];
             NSArray<NSString *> *accessRolesPayload =
-                [request.payload objectForKey:@"access_roles"];
+                [request.payload objectForKey:@"create_roles"];
 
             expect(recordTypePayload).to.equal(sourceCodeRecordType);
             expect(accessRolesPayload).to.haveACountOf(2);
