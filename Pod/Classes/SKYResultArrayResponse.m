@@ -18,9 +18,9 @@
 //
 
 #import "SKYResultArrayResponse.h"
+#import "SKYDataSerialization.h"
 #import "SKYErrorCreator.h"
 #import "SKYOperation.h"
-#import "SKYDataSerialization.h"
 
 @implementation SKYResultArrayResponse {
     NSArray *resultArrayInResponse;

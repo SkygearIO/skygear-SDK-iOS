@@ -18,9 +18,9 @@
 //
 
 #import "SKYQueryCache.h"
-#import "SKYRecordSerializer.h"
-#import "SKYRecordDeserializer.h"
 #import "SKYQuery+Caching.h"
+#import "SKYRecordDeserializer.h"
+#import "SKYRecordSerializer.h"
 
 @implementation SKYQueryCache
 

@@ -18,10 +18,10 @@
 //
 
 #import "SKYRecordStorage.h"
-#import "SKYRecordStorage_Private.h"
 #import "SKYRecordChange.h"
-#import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorageFileBackedMemoryStore.h"
+#import "SKYRecordStorageMemoryStore.h"
+#import "SKYRecordStorage_Private.h"
 #import "SKYRecordSynchronizer.h"
 
 NSString *const SKYRecordStorageDidUpdateNotification = @"SKYRecordStorageDidUpdateNotification";
@@ -161,8 +161,8 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 }
 
 - (void)saveRecord:(SKYRecord *)record
-      whenConflict:(SKYRecordResolveMethod)resolution
- completionHandler:(id)handler
+         whenConflict:(SKYRecordResolveMethod)resolution
+    completionHandler:(id)handler
 {
     NSDictionary *attributesToSave = [self attributesToSaveWithRecord:record];
     SKYRecordChange *change = [[SKYRecordChange alloc] initWithRecord:record
@@ -187,8 +187,8 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 }
 
 - (void)deleteRecord:(SKYRecord *)record
-        whenConflict:(SKYRecordResolveMethod)resolution
-   completionHandler:(id)handler
+         whenConflict:(SKYRecordResolveMethod)resolution
+    completionHandler:(id)handler
 {
     SKYRecordChange *change = [[SKYRecordChange alloc] initWithRecord:record
                                                                action:SKYRecordChangeDelete

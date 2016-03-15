@@ -17,10 +17,10 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
 #import "SKYOperation_Private.h"
+#import <Foundation/Foundation.h>
+#import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYOperation)
 

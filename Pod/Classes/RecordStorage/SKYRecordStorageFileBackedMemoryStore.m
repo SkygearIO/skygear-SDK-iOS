@@ -18,9 +18,9 @@
 //
 
 #import "SKYRecordStorageFileBackedMemoryStore.h"
-#import "SKYRecordStorageMemoryStore_Private.h"
-#import "SKYRecordSerializer.h"
 #import "SKYRecordDeserializer.h"
+#import "SKYRecordSerializer.h"
+#import "SKYRecordStorageMemoryStore_Private.h"
 
 @implementation SKYRecordStorageFileBackedMemoryStore {
     NSString *_path;

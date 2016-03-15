@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYResponse.h"
+#import <Foundation/Foundation.h>
 
 /**
  <SKYResultArrayResponse> implements a common processing pattern for processing response dictionary.

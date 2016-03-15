@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
+#import "SKYRecordStorageMemoryStore.h"
+#import "SKYRecordSynchronizer.h"
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
-#import "SKYRecordStorageMemoryStore.h"
-#import "SKYRecordSynchronizer.h"
 
 SpecBegin(SKYRecordStorage)
 
@@ -133,17 +133,17 @@ SpecBegin(SKYRecordStorage)
             SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
             [storage saveRecord:record];
 
-            OCMStub([mockSyncher recordStorage:storage
-                                   saveChanges:[OCMArg checkWithBlock:^BOOL(id obj) {
-                                       expect([obj class]).to.beSubclassOf([NSArray class]);
-                                       expect(obj).to.haveCountOf(1);
-                                       SKYRecordChange *change = [obj objectAtIndex:0];
-                                       expect([change class])
-                                           .to.beSubclassOf([SKYRecordChange class]);
-                                       expect(change.recordID).to.equal(record.recordID);
-                                       return YES;
-                                   }]
-                             completionHandler:nil]);
+            OCMStub([mockSyncher
+                    recordStorage:storage
+                      saveChanges:[OCMArg checkWithBlock:^BOOL(id obj) {
+                          expect([obj class]).to.beSubclassOf([NSArray class]);
+                          expect(obj).to.haveCountOf(1);
+                          SKYRecordChange *change = [obj objectAtIndex:0];
+                          expect([change class]).to.beSubclassOf([SKYRecordChange class]);
+                          expect(change.recordID).to.equal(record.recordID);
+                          return YES;
+                      }]
+                completionHandler:nil]);
 
             OCMVerify(
                 [mockSyncher recordStorage:storage saveChanges:[OCMArg any] completionHandler:nil]);
@@ -174,8 +174,7 @@ SpecBegin(SKYRecordStorage)
             NSArray *records = [storage recordsWithType:@"book"];
             expect(records).to.haveCountOf(2);
             NSArray *recordIDs = @[
-                ((SKYRecord *)records[0])
-                    .recordID,
+                ((SKYRecord *)records[0]).recordID,
                 ((SKYRecord *)records[1]).recordID,
             ];
             expect(recordIDs).to.contain(recordToAdd.recordID);

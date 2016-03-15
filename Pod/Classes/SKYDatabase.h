@@ -19,8 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKYUser.h"
 #import "SKYRecord.h"
+#import "SKYUser.h"
 
 @class SKYDatabaseOperation;
 @class SKYQuery;
@@ -41,7 +41,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 - (void)commit;
 
 - (void)performQuery:(SKYQuery *)query
-   completionHandler:(void (^)(NSArray *results, NSError *error))completionHandler;
+    completionHandler:(void (^)(NSArray *results, NSError *error))completionHandler;
 - (void)performCachedQuery:(SKYQuery *)query
          completionHandler:
              (void (^)(NSArray *results, BOOL pending, NSError *error))completionHandler;
@@ -115,10 +115,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  also called when an operation error occurred.
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
--
-    (void)saveRecords:(NSArray *)records
-    completionHandler:(void (^)(NSArray *savedRecords, NSError *operationError))completionHandler
-perRecordErrorHandler:(void (^)(SKYRecord *record, NSError *error))errorHandler;
+- (void)saveRecords:(NSArray *)records
+        completionHandler:(void (^)(NSArray *savedRecords,
+                                    NSError *operationError))completionHandler
+    perRecordErrorHandler:(void (^)(SKYRecord *record, NSError *error))errorHandler;
 
 /**
  Saves multiple records atomically to Ourd.

@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 @interface SKYUploadAssetOperation ()
 
@@ -64,12 +64,11 @@ SpecBegin(SKYUploadAssetOperation)
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL).to.equal([NSURL URLWithString:@"http://ourd.test/files/boy.txt"]);
-            expect(request.allHTTPHeaderFields)
-                .to.equal(@{
-                    @"X-Skygear-API-Key" : @"API_KEY",
-                    @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
-                    @"Content-Type" : @"text/plain",
-                });
+            expect(request.allHTTPHeaderFields).to.equal(@{
+                @"X-Skygear-API-Key" : @"API_KEY",
+                @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
+                @"Content-Type" : @"text/plain",
+            });
         });
 
         it(@"makes request with escape character", ^{
@@ -85,11 +84,10 @@ SpecBegin(SKYUploadAssetOperation)
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
                 .to.equal([NSURL URLWithString:@"http://ourd.test/files/boy%25boy.txt"]);
-            expect(request.allHTTPHeaderFields)
-                .to.equal(@{
-                    @"X-Skygear-API-Key" : @"API_KEY",
-                    @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
-                });
+            expect(request.allHTTPHeaderFields).to.equal(@{
+                @"X-Skygear-API-Key" : @"API_KEY",
+                @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
+            });
         });
 
         it(@"parses response correctly", ^{

@@ -18,15 +18,15 @@
 //
 
 #import "SKYRecordStorageCoordinator.h"
-#import "SKYRecordStorage.h"
 #import "SKYContainer.h"
+#import "SKYQuery+Caching.h"
 #import "SKYQuery.h"
-#import "SKYRecordStorageMemoryStore.h"
+#import "SKYRecordStorage.h"
 #import "SKYRecordStorageFileBackedMemoryStore.h"
+#import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorageSqliteStore.h"
 #import "SKYRecordSynchronizer.h"
 #import "SKYSubscription.h"
-#import "SKYQuery+Caching.h"
 
 NSString *const SKYRecordStorageCoordinatorBackingStoreKey = @"backingStore";
 NSString *const SKYRecordStorageCoordinatorMemoryStore = @"MemoryStore";

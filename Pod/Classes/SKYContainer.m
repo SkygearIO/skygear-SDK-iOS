@@ -18,22 +18,22 @@
 //
 
 #import "SKYContainer.h"
-#import "SKYContainer_Private.h"
-#import "SKYChangePasswordOperation.h"
-#import "SKYDatabase_Private.h"
-#import "SKYNotification_Private.h"
 #import "SKYAccessControl_Private.h"
-#import "SKYOperation.h"
-#import "SKYPushOperation.h"
+#import "SKYChangePasswordOperation.h"
+#import "SKYContainer_Private.h"
+#import "SKYDatabase_Private.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
+#import "SKYNotification_Private.h"
+#import "SKYOperation.h"
+#import "SKYPushOperation.h"
 
-#import "SKYSignupUserOperation.h"
-#import "SKYRegisterDeviceOperation.h"
-#import "SKYUploadAssetOperation.h"
 #import "SKYDefineAdminRolesOperation.h"
-#import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYLambdaOperation.h"
+#import "SKYRegisterDeviceOperation.h"
+#import "SKYSetUserDefaultRoleOperation.h"
+#import "SKYSignupUserOperation.h"
+#import "SKYUploadAssetOperation.h"
 
 NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
 NSString *const SKYContainerPubsubBaseURL = @"ws://localhost:5000/pubsub";
@@ -548,7 +548,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 }
 
 - (void)uploadAsset:(SKYAsset *)asset
-  completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
+    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
     SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
     operation.uploadAssetCompletionBlock = completionHandler;
@@ -569,14 +569,14 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 }
 
 - (void)callLambda:(NSString *)action
- completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     [self callLambda:action arguments:nil completionHandler:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
-         arguments:(NSArray *)arguments
- completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+            arguments:(NSArray *)arguments
+    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     arguments = arguments ? arguments : @[];
     SKYLambdaOperation *operation =

@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYModifySubscriptionsOperation)
 
@@ -52,15 +52,14 @@ SpecBegin(SKYModifySubscriptionsOperation)
             expect(request.action).to.equal(@"subscription:save");
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.currentAccessToken);
-            expect(request.payload)
-                .to.equal(@{
-                    @"database_id" : database.databaseID,
-                    @"subscriptions" : @[
-                        @{@"id" : @"sub1", @"type" : @"query"},
-                        @{@"id" : @"sub2", @"type" : @"query"},
-                    ],
-                    @"device_id" : @"DEVICE_ID",
-                });
+            expect(request.payload).to.equal(@{
+                @"database_id" : database.databaseID,
+                @"subscriptions" : @[
+                    @{@"id" : @"sub1", @"type" : @"query"},
+                    @{@"id" : @"sub2", @"type" : @"query"},
+                ],
+                @"device_id" : @"DEVICE_ID",
+            });
         });
 
         it(@"make request", ^{

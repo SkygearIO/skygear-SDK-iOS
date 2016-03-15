@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 #import "SKYHexer.h"
 
@@ -592,8 +592,7 @@ describe(@"manage roles", ^{
 
         waitUntil(^(DoneCallback done) {
             [container defineAdminRoles:@[
-                [SKYRole roleWithName:developerRoleName],
-                [SKYRole roleWithName:testerRoleName],
+                [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
                              completion:^(NSError *error) {
@@ -618,8 +617,7 @@ describe(@"manage roles", ^{
 
         waitUntil(^(DoneCallback done) {
             [container setUserDefaultRole:@[
-                [SKYRole roleWithName:developerRoleName],
-                [SKYRole roleWithName:testerRoleName],
+                [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
                                completion:^(NSError *error) {

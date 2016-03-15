@@ -18,9 +18,9 @@
 //
 
 #import "SKYRegisterDeviceOperation.h"
+#import "SKYDefaults.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
-#import "SKYDefaults.h"
 
 @interface SKYRegisterDeviceOperation ()
 

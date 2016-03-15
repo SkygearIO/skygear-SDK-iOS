@@ -18,11 +18,11 @@
 //
 
 #import "SKYQueryOperation.h"
-#import "SKYOperationSubclass.h"
-#import "SKYRecordDeserializer.h"
-#import "SKYQuerySerializer.h"
-#import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
+#import "SKYOperationSubclass.h"
+#import "SKYQuerySerializer.h"
+#import "SKYRecordDeserializer.h"
+#import "SKYRecordSerialization.h"
 
 @interface SKYQueryOperation ()
 

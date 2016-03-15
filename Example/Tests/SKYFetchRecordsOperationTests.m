@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYFetchRecordsOperation)
 
@@ -66,8 +66,9 @@ SpecBegin(SKYFetchRecordsOperation)
             expect(request.action).to.equal(@"record:fetch");
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.currentAccessToken);
-            expect(request.payload[@"ids"])
-                .to.equal(@[ recordID1.canonicalString, recordID2.canonicalString ]);
+            expect(request.payload[@"ids"]).to.equal(@[
+                recordID1.canonicalString, recordID2.canonicalString
+            ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
             expect(request.payload).toNot.contain(@"desired_keys");
         });

@@ -22,15 +22,15 @@
 #import "SKYDatabaseOperation.h"
 #import "SKYDeleteRecordsOperation.h"
 #import "SKYDeleteSubscriptionsOperation.h"
+#import "SKYError.h"
 #import "SKYFetchRecordsOperation.h"
+#import "SKYFetchSubscriptionsOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYModifySubscriptionsOperation.h"
-#import "SKYFetchSubscriptionsOperation.h"
-#import "SKYQueryOperation.h"
 #import "SKYQueryCache.h"
-#import "SKYRecord_Private.h"
+#import "SKYQueryOperation.h"
 #import "SKYRecordID.h"
-#import "SKYError.h"
+#import "SKYRecord_Private.h"
 
 @interface SKYDatabase ()
 
@@ -407,7 +407,7 @@
 }
 
 - (void)performQuery:(SKYQuery *)query
-   completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+    completionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 

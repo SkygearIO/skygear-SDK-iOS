@@ -18,10 +18,10 @@
 //
 
 #import "SKYQuerySerializer.h"
-#import "SKYRecordSerialization.h"
-#import "SKYReference.h"
 #import "SKYDataSerialization.h"
 #import "SKYLocationSortDescriptor.h"
+#import "SKYRecordSerialization.h"
+#import "SKYReference.h"
 #import "SKYRelationPredicate.h"
 #import "SKYUserDiscoverPredicate.h"
 
@@ -270,8 +270,7 @@
                                     [NSExpression expressionForConstantValue:sd.relativeLocation]
                                 ]];
                 [result addObject:@[
-                    [self serializeWithExpression:expr],
-                    sd.ascending ? @"asc" : @"desc"
+                    [self serializeWithExpression:expr], sd.ascending ? @"asc" : @"desc"
                 ]];
             } else {
                 [result addObject:@[

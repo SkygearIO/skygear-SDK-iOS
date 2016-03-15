@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYDatabase)
 
@@ -350,15 +350,13 @@ SpecBegin(SKYDatabase)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[
-                            @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"error",
-                               @"code" : @(SKYErrorUnexpectedError),
-                               @"message" : @"An error.",
-                               @"name" : @"UnexpectedError",
-                            }
-                        ]
+                        @"result" : @[ @{
+                            @"_id" : @"book/book2",
+                            @"_type" : @"error",
+                            @"code" : @(SKYErrorUnexpectedError),
+                            @"message" : @"An error.",
+                            @"name" : @"UnexpectedError",
+                        } ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];

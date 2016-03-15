@@ -17,8 +17,8 @@
 //  limitations under the License.
 
 #import "SKYContainer+Facebook.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SKYContainer_Private.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @implementation SKYContainer (Facebook)
 

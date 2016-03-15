@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYRecordStorageMemoryStore.h"
+#import <Foundation/Foundation.h>
 
 @interface SKYRecordStorageFileBackedMemoryStore : SKYRecordStorageMemoryStore
 

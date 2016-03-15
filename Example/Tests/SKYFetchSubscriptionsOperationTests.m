@@ -17,9 +17,9 @@
 //  limitations under the License.
 //
 
-#import <UIKit/UIKit.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
+#import <UIKit/UIKit.h>
 
 SpecBegin(SKYFetchSubscriptionsOperation)
 
@@ -50,12 +50,11 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.currentAccessToken);
             expect(request.action).to.equal(@"subscription:fetch");
-            expect(request.payload)
-                .to.equal(@{
-                    @"database_id" : database.databaseID,
-                    @"ids" : @[ @"sub1" ],
-                    @"device_id" : @"DEVICE_ID",
-                });
+            expect(request.payload).to.equal(@{
+                @"database_id" : database.databaseID,
+                @"ids" : @[ @"sub1" ],
+                @"device_id" : @"DEVICE_ID",
+            });
 
         });
 
@@ -73,12 +72,11 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.currentAccessToken);
             expect(request.action).to.equal(@"subscription:fetch");
-            expect(request.payload)
-                .to.equal(@{
-                    @"database_id" : database.databaseID,
-                    @"ids" : @[ @"sub1", @"sub2" ],
-                    @"device_id" : @"DEVICE_ID",
-                });
+            expect(request.payload).to.equal(@{
+                @"database_id" : database.databaseID,
+                @"ids" : @[ @"sub1", @"sub2" ],
+                @"device_id" : @"DEVICE_ID",
+            });
         });
 
         it(@"make request", ^{

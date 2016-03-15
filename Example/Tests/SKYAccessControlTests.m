@@ -19,10 +19,10 @@
 
 #import <SKYKit/SKYKit.h>
 
-#import "SKYAccessControl_Private.h"
 #import "SKYAccessControlDeserializer.h"
 #import "SKYAccessControlEntry.h"
 #import "SKYAccessControlSerializer.h"
+#import "SKYAccessControl_Private.h"
 
 // Currently there are no methods to access the internal state of SKYAccessControl.
 // Before that comes, use serialization for assertion.
@@ -49,11 +49,10 @@ SpecBegin(SKYAccessControl)
         it(@"is not public after mutated", ^{
             [accessControl addReadAccessForRelation:[SKYRelation followedRelation]];
             expect(accessControl.public).to.equal(NO);
-            expect(serializedAccessControl(accessControl))
-                .to.equal(@[
-                    @{ @"relation" : @"follow",
-                       @"level" : @"read" },
-                ]);
+            expect(serializedAccessControl(accessControl)).to.equal(@[
+                @{ @"relation" : @"follow",
+                   @"level" : @"read" },
+            ]);
         });
     });
 
@@ -70,12 +69,11 @@ describe(@"Access Control", ^{
 
     it(@"is not public", ^{
         expect(accessControl.public).to.equal(NO);
-        expect(serializedAccessControl(accessControl))
-            .to.equal(@[
-                @{ @"relation" : @"$direct",
-                   @"level" : @"write",
-                   @"user_id" : @"userid" },
-            ]);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"$direct",
+               @"level" : @"write",
+               @"user_id" : @"userid" },
+        ]);
     });
 
     it(@"is not public after removing all entries", ^{
@@ -92,12 +90,11 @@ describe(@"Access Control", ^{
 
     it(@"does not add same entry twice", ^{
         [accessControl addWriteAccessForUserID:@"userid"];
-        expect(serializedAccessControl(accessControl))
-            .to.equal(@[
-                @{ @"relation" : @"$direct",
-                   @"level" : @"write",
-                   @"user_id" : @"userid" },
-            ]);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"$direct",
+               @"level" : @"write",
+               @"user_id" : @"userid" },
+        ]);
     });
 });
 
@@ -165,39 +162,30 @@ describe(@"Access Control Entry", ^{
 
     it(@"serializes correctly", ^{
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
-            readRelationEntry,
-            writeRelationEntry,
-            readUserIDEntry,
-            writeUserIDEntry,
-            readRoleEntry,
+            readRelationEntry, writeRelationEntry, readUserIDEntry, writeUserIDEntry, readRoleEntry,
             writeRoleEntry
         ]];
-        expect(serializedAccessControl(accessControl))
-            .to.equal(@[
-                @{ @"relation" : @"friend",
-                   @"level" : @"read" },
-                @{ @"relation" : @"follow",
-                   @"level" : @"write" },
-                @{ @"relation" : @"$direct",
-                   @"level" : @"read",
-                   @"user_id" : @"userid0" },
-                @{ @"relation" : @"$direct",
-                   @"level" : @"write",
-                   @"user_id" : @"userid1" },
-                @{ @"level" : @"read",
-                   @"role" : @"God" },
-                @{ @"level" : @"write",
-                   @"role" : @"God" },
-            ]);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"friend",
+               @"level" : @"read" },
+            @{ @"relation" : @"follow",
+               @"level" : @"write" },
+            @{ @"relation" : @"$direct",
+               @"level" : @"read",
+               @"user_id" : @"userid0" },
+            @{ @"relation" : @"$direct",
+               @"level" : @"write",
+               @"user_id" : @"userid1" },
+            @{ @"level" : @"read",
+               @"role" : @"God" },
+            @{ @"level" : @"write",
+               @"role" : @"God" },
+        ]);
     });
 
     it(@"checks access correctly", ^{
         SKYAccessControl *accessControl = [SKYAccessControl accessControlWithEntries:@[
-            readRelationEntry,
-            writeRelationEntry,
-            readUserIDEntry,
-            writeUserIDEntry,
-            readRoleEntry,
+            readRelationEntry, writeRelationEntry, readUserIDEntry, writeUserIDEntry, readRoleEntry,
             writeRoleEntry
         ]];
 

@@ -18,9 +18,9 @@
 //
 
 #import "SKYSubscriptionSerializer.h"
-#import "SKYSubscriptionSerialization.h"
-#import "SKYQuerySerializer.h"
 #import "SKYNotificationInfoSerializer.h"
+#import "SKYQuerySerializer.h"
+#import "SKYSubscriptionSerialization.h"
 
 @implementation SKYSubscriptionSerializer
 

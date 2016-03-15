@@ -18,11 +18,11 @@
 //
 
 #import "SKYRecordStorageSqliteStore.h"
-#import <FMDB/FMDB.h>
 #import "SKYRecord.h"
-#import "SKYRecordSerializer.h"
-#import "SKYRecordDeserializer.h"
 #import "SKYRecordChange_Private.h"
+#import "SKYRecordDeserializer.h"
+#import "SKYRecordSerializer.h"
+#import <FMDB/FMDB.h>
 
 @implementation SKYRecordStorageSqliteStore {
     NSString *_path;

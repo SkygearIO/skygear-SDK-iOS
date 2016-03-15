@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
+#import "SKYRecordStorageMemoryStore.h"
+#import "SKYRecordSynchronizer.h"
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
-#import "SKYRecordStorageMemoryStore.h"
-#import "SKYRecordSynchronizer.h"
 
 SpecBegin(SKYRecordStorageCoordinator)
 
