@@ -218,7 +218,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  *  Query user objects by emails
  */
 - (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYUser *> *, NSError *))completionHandler;
+         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
 
 /**
  *  Update user information

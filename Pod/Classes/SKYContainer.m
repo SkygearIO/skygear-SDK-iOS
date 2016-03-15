@@ -391,19 +391,20 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 }
 
 - (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYUser *> *, NSError *))completionHandler
+         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
 {
-    SKYQueryUsersOperation *operation = [[SKYQueryUsersOperation alloc] initWithEmails:emails];
+    SKYQuery *query =
+        [SKYQuery queryWithRecordType:@"user"
+                            predicate:[SKYUserDiscoverPredicate predicateWithEmails:emails]];
+    SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
     operation.container = self;
-
-    operation.queryUserCompletionBlock = ^(NSArray<SKYUser *> *users, NSError *error) {
-        if (completionHandler) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(users, error);
-
-            });
-        }
-    };
+    operation.database = self.publicCloudDatabase;
+    operation.queryRecordsCompletionBlock =
+        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+            if (completionHandler) {
+                completionHandler(fetchedRecords, operationError);
+            }
+        };
 
     [_operationQueue addOperation:operation];
 }
