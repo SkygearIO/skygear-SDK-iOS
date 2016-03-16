@@ -1,3 +1,9 @@
+## 0.9.0 (2016-03-16)
+
+### Other Notes
+
+- Return `SKYRecord` when query users by emails #255
+
 ## 0.8.0 (2016-03-09)
 
 ### Other Notes
