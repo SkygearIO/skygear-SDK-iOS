@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
 #import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYQuerySerializer)
@@ -244,8 +244,7 @@ describe(@"serialize predicate", ^{
         expect(result).to.equal(@[
             @"lt",
             @[
-               @"func",
-               @"distance",
+               @"func", @"distance",
                @{ @"$type" : @"keypath",
                   @"$val" : @"location" },
                @{ @"$type" : @"geo",
@@ -261,11 +260,11 @@ describe(@"serialize predicate", ^{
             serializeWithPredicate:[NSPredicate
                                        predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
 
-        expect(result)
-            .to.equal(@[ @"like",
-                         @{ @"$type" : @"keypath",
-                            @"$val" : @"content" },
-                         @"hello%" ]);
+        expect(result).to.equal(
+            @[ @"like",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"content" },
+               @"hello%" ]);
     });
 
     it(@"serialize endswith", ^{
@@ -273,11 +272,11 @@ describe(@"serialize predicate", ^{
             serializeWithPredicate:[NSPredicate
                                        predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
 
-        expect(result)
-            .to.equal(@[ @"like",
-                         @{ @"$type" : @"keypath",
-                            @"$val" : @"content" },
-                         @"%hello" ]);
+        expect(result).to.equal(
+            @[ @"like",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"content" },
+               @"%hello" ]);
     });
 
     it(@"serialize contains", ^{
@@ -285,11 +284,11 @@ describe(@"serialize predicate", ^{
             serializeWithPredicate:[NSPredicate
                                        predicateWithFormat:@"content CONTAINS %@", @"hello"]];
 
-        expect(result)
-            .to.equal(@[ @"like",
-                         @{ @"$type" : @"keypath",
-                            @"$val" : @"content" },
-                         @"%hello%" ]);
+        expect(result).to.equal(
+            @[ @"like",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"content" },
+               @"%hello%" ]);
     });
 
     it(@"serialize like", ^{
@@ -297,11 +296,11 @@ describe(@"serialize predicate", ^{
             [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content LIKE %@",
                                                                                 @"*hello?"]];
 
-        expect(result)
-            .to.equal(@[ @"like",
-                         @{ @"$type" : @"keypath",
-                            @"$val" : @"content" },
-                         @"%hello_" ]);
+        expect(result).to.equal(
+            @[ @"like",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"content" },
+               @"%hello_" ]);
     });
 
     it(@"serialize like[c]", ^{
@@ -309,11 +308,11 @@ describe(@"serialize predicate", ^{
             serializeWithPredicate:[NSPredicate
                                        predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
 
-        expect(result)
-            .to.equal(@[ @"ilike",
-                         @{ @"$type" : @"keypath",
-                            @"$val" : @"content" },
-                         @"%hello_" ]);
+        expect(result).to.equal(
+            @[ @"ilike",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"content" },
+               @"%hello_" ]);
     });
 
     it(@"serialize in", ^{
@@ -349,8 +348,7 @@ describe(@"serialize predicate", ^{
         NSArray *result = [serializer serializeWithPredicate:p];
 
         expect(result).to.equal(@[
-            @"func",
-            @"userRelation",
+            @"func", @"userRelation",
             @{ @"$type" : @"keypath",
                @"$val" : @"_owner" },
             @{ @"$type" : @"relation",
@@ -421,26 +419,22 @@ describe(@"serialize sort descriptors", ^{
 
     it(@"sort by distance", ^{
         CLLocation *location = [[CLLocation alloc] initWithLatitude:42 longitude:24];
-        NSArray *sd = @[
-            [SKYLocationSortDescriptor locationSortDescriptorWithKey:@"latlng"
-                                                    relativeLocation:location
-                                                           ascending:YES]
-        ];
+        NSArray *sd = @[ [SKYLocationSortDescriptor locationSortDescriptorWithKey:@"latlng"
+                                                                 relativeLocation:location
+                                                                        ascending:YES] ];
         NSArray *result = [serializer serializeWithSortDescriptors:sd];
-        NSArray *expected = @[
+        NSArray *expected = @[ @[
             @[
-               @[
-                  @"func",
-                  @"distance",
-                  @{ @"$type" : @"keypath",
-                     @"$val" : @"latlng" },
-                  @{ @"$type" : @"geo",
-                     @"$lng" : @24,
-                     @"$lat" : @42 },
-               ],
-               @"asc"
-            ]
-        ];
+               @"func",
+               @"distance",
+               @{ @"$type" : @"keypath",
+                  @"$val" : @"latlng" },
+               @{ @"$type" : @"geo",
+                  @"$lng" : @24,
+                  @"$lat" : @42 },
+            ],
+            @"asc"
+        ] ];
 
         expect(result).to.equal(expected);
     });

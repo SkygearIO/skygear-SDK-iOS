@@ -17,10 +17,10 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
 #import "SKYNotificationInfo.h"
+#import <Foundation/Foundation.h>
+#import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYSendPushNotificationOperation)
 
@@ -58,11 +58,10 @@ SpecBegin(SKYSendPushNotificationOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.APIKey).to.equal(container.APIKey);
             expect(request.action).to.equal(@"push:device");
-            expect(request.payload)
-                .to.equal(@{
-                    @"device_ids" : @[ @"johndoe" ],
-                    @"notification" : expectedNotificationPayload,
-                });
+            expect(request.payload).to.equal(@{
+                @"device_ids" : @[ @"johndoe" ],
+                @"notification" : expectedNotificationPayload,
+            });
         });
 
         it(@"send to user", ^{
@@ -76,11 +75,10 @@ SpecBegin(SKYSendPushNotificationOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.APIKey).to.equal(container.APIKey);
             expect(request.action).to.equal(@"push:user");
-            expect(request.payload)
-                .to.equal(@{
-                    @"user_ids" : @[ @"johndoe" ],
-                    @"notification" : expectedNotificationPayload,
-                });
+            expect(request.payload).to.equal(@{
+                @"user_ids" : @[ @"johndoe" ],
+                @"notification" : expectedNotificationPayload,
+            });
         });
 
         it(@"send multiple", ^{
@@ -94,11 +92,10 @@ SpecBegin(SKYSendPushNotificationOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.APIKey).to.equal(container.APIKey);
             expect(request.action).to.equal(@"push:user");
-            expect(request.payload)
-                .to.equal(@{
-                    @"user_ids" : @[ @"johndoe", @"janedoe" ],
-                    @"notification" : expectedNotificationPayload,
-                });
+            expect(request.payload).to.equal(@{
+                @"user_ids" : @[ @"johndoe", @"janedoe" ],
+                @"notification" : expectedNotificationPayload,
+            });
         });
 
         it(@"make request", ^{

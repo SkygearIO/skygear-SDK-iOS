@@ -20,9 +20,9 @@
 #import "SKYDeleteRecordsOperation.h"
 #import "SKYOperationSubclass.h"
 
-#import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
+#import "SKYRecordSerialization.h"
 
 @implementation SKYDeleteRecordsOperation
 

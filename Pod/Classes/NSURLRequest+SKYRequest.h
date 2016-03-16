@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYRequest.h"
+#import <Foundation/Foundation.h>
 
 extern NSString *const SKYRequestHeaderAPIKey;
 extern NSString *const SKYRequestHeaderAccessTokenKey;

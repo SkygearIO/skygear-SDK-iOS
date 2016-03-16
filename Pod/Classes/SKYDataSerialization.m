@@ -22,9 +22,9 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "SKYAsset_Private.h"
+#import "SKYError.h"
 #import "SKYReference.h"
 #import "SKYSequence.h"
-#import "SKYError.h"
 
 NSString *const SKYDataSerializationCustomTypeKey = @"$type";
 NSString *const SKYDataSerializationAssetType = @"asset";

@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYRecordStorageBackingStore.h"
+#import <Foundation/Foundation.h>
 
 @interface SKYRecordStorageSqliteStore : NSObject <SKYRecordStorageBackingStore>
 

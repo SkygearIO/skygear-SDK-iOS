@@ -18,8 +18,8 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
-#import <UIKit/UIKit.h>
 #import <SKYKit/SKYKit.h>
+#import <UIKit/UIKit.h>
 
 SpecBegin(SKYQueryDeserializer)
 
@@ -74,10 +74,9 @@ SpecBegin(SKYQueryDeserializer)
 
             SKYQuery *query = [deserializer queryWithDictionary:queryDict];
             expect(query.recordType).to.equal(@"recordType");
-            expect(query.sortDescriptors)
-                .to.equal(@[
-                    [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES],
-                ]);
+            expect(query.sortDescriptors).to.equal(@[
+                [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES],
+            ]);
         });
 
         it(@"deserialize limit, offset and overallCount", ^{
@@ -196,8 +195,7 @@ describe(@"deserialize predicate", ^{
         NSArray *predicateArray = @[
             @"lt",
             @[
-               @"func",
-               @"distance",
+               @"func", @"distance",
                @{ @"$type" : @"keypath",
                   @"$val" : @"location" },
                @{ @"$type" : @"geo",
@@ -232,8 +230,8 @@ describe(@"deserialize predicate", ^{
                @"%hello_" ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]);
+        expect(predicate).to.equal(
+            [NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]);
     });
 
     it(@"ilike", ^{
@@ -244,8 +242,8 @@ describe(@"deserialize predicate", ^{
                @"%hello_" ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]);
+        expect(predicate).to.equal(
+            [NSPredicate predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]);
     });
 
     it(@"in", ^{
@@ -263,11 +261,10 @@ describe(@"deserialize predicate", ^{
 
     it(@"and", ^{
         NSArray *predicateArray = @[
-            @"and",
-            @[ @"eq",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"name" },
-               @"Peter" ],
+            @"and", @[ @"eq",
+                       @{ @"$type" : @"keypath",
+                          @"$val" : @"name" },
+                       @"Peter" ],
             @[ @"gte",
                @{ @"$type" : @"keypath",
                   @"$val" : @"age" },
@@ -275,17 +272,16 @@ describe(@"deserialize predicate", ^{
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"name = %@ && age >= %d", @"Peter", 12]);
+        expect(predicate).to.equal(
+            [NSPredicate predicateWithFormat:@"name = %@ && age >= %d", @"Peter", 12]);
     });
 
     it(@"double and", ^{
         NSArray *predicateArray = @[
-            @"and",
-            @[ @"eq",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"name" },
-               @"Peter" ],
+            @"and", @[ @"eq",
+                       @{ @"$type" : @"keypath",
+                          @"$val" : @"name" },
+                       @"Peter" ],
             @[ @"gte",
                @{ @"$type" : @"keypath",
                   @"$val" : @"age" },
@@ -297,18 +293,17 @@ describe(@"deserialize predicate", ^{
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"name = %@ && age >= %d && interest <> %@",
-                                                       @"Peter", 12, @"reading"]);
+        expect(predicate).to.equal(
+            [NSPredicate predicateWithFormat:@"name = %@ && age >= %d && interest <> %@", @"Peter",
+                                             12, @"reading"]);
     });
 
     it(@"or", ^{
         NSArray *predicateArray = @[
-            @"or",
-            @[ @"eq",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"name" },
-               @"Peter" ],
+            @"or", @[ @"eq",
+                      @{ @"$type" : @"keypath",
+                         @"$val" : @"name" },
+                      @"Peter" ],
             @[ @"gte",
                @{ @"$type" : @"keypath",
                   @"$val" : @"age" },
@@ -316,17 +311,16 @@ describe(@"deserialize predicate", ^{
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        expect(predicate)
-            .to.equal([NSPredicate predicateWithFormat:@"name = %@ || age >= %d", @"Peter", 12]);
+        expect(predicate).to.equal(
+            [NSPredicate predicateWithFormat:@"name = %@ || age >= %d", @"Peter", 12]);
     });
 
     it(@"not", ^{
         NSArray *predicateArray =
-            @[ @"not",
-               @[ @"eq",
-                  @{ @"$type" : @"keypath",
-                     @"$val" : @"name" },
-                  @"Peter" ] ];
+            @[ @"not", @[ @"eq",
+                          @{ @"$type" : @"keypath",
+                             @"$val" : @"name" },
+                          @"Peter" ] ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
         expect(predicate).to.equal([NSPredicate predicateWithFormat:@"not (name = %@)", @"Peter"]);
@@ -334,8 +328,7 @@ describe(@"deserialize predicate", ^{
 
     it(@"user relation", ^{
         NSArray *predicateArray = @[
-            @"func",
-            @"userRelation",
+            @"func", @"userRelation",
             @{ @"$type" : @"keypath",
                @"$val" : @"_owner" },
             @{ @"$type" : @"relation",
@@ -388,16 +381,16 @@ describe(@"deserialize sort descriptors", ^{
         NSArray *sdArray = @[ @[ @{ @"$type" : @"keypath", @"$val" : @"name" }, @"asc" ] ];
 
         NSArray *sortDescriptors = [deserializer sortDescriptorsWithArray:sdArray];
-        expect(sortDescriptors)
-            .to.equal(@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]);
+        expect(sortDescriptors).to.equal(@[ [NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                          ascending:YES] ]);
     });
 
     it(@"sort desc", ^{
         NSArray *sdArray = @[ @[ @{ @"$type" : @"keypath", @"$val" : @"name" }, @"desc" ] ];
 
         NSArray *sortDescriptors = [deserializer sortDescriptorsWithArray:sdArray];
-        expect(sortDescriptors)
-            .to.equal(@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO] ]);
+        expect(sortDescriptors).to.equal(@[ [NSSortDescriptor sortDescriptorWithKey:@"name"
+                                                                          ascending:NO] ]);
     });
 
     it(@"sort multiple", ^{
@@ -411,19 +404,17 @@ describe(@"deserialize sort descriptors", ^{
         ];
 
         NSArray *sortDescriptors = [deserializer sortDescriptorsWithArray:sdArray];
-        expect(sortDescriptors)
-            .to.equal(@[
-                [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO],
-                [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:YES],
-            ]);
+        expect(sortDescriptors).to.equal(@[
+            [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:NO],
+            [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:YES],
+        ]);
     });
 
     it(@"sort distance", ^{
         NSArray *sdArray = @[
             @[
                @[
-                  @"func",
-                  @"distance",
+                  @"func", @"distance",
                   @{ @"$type" : @"keypath",
                      @"$val" : @"latlng" },
                   @{ @"$type" : @"geo",

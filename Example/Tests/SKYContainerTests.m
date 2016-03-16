@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 #import "SKYHexer.h"
 
@@ -592,8 +592,7 @@ describe(@"manage roles", ^{
 
         waitUntil(^(DoneCallback done) {
             [container defineAdminRoles:@[
-                [SKYRole roleWithName:developerRoleName],
-                [SKYRole roleWithName:testerRoleName],
+                [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
                              completion:^(NSError *error) {
@@ -618,8 +617,7 @@ describe(@"manage roles", ^{
 
         waitUntil(^(DoneCallback done) {
             [container setUserDefaultRole:@[
-                [SKYRole roleWithName:developerRoleName],
-                [SKYRole roleWithName:testerRoleName],
+                [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
                                completion:^(NSError *error) {
@@ -656,23 +654,17 @@ describe(@"manage user", ^{
                 NSDictionary *parameters = @{
                     @"result" : @[
                         @{
-                           @"id" : @"user0",
-                           @"type" : @"user",
-                           @"data" : @{
-                               @"_id" : @"user0",
-                               @"email" : @"john.doe@example.com",
-                           },
+                           @"_id" : @"user/user0",
+                           @"_type" : @"record",
+                           @"_transient" : @{@"_email" : @"john.doe@example.com"},
                         },
                         @{
-                           @"id" : @"user1",
-                           @"type" : @"user",
-                           @"data" : @{
-                               @"_id" : @"user1",
-                               @"email" : @"jane.doe@example.com",
-                           },
+                           @"_id" : @"user/user1",
+                           @"_type" : @"record",
+                           @"_transient" : @{@"_email" : @"jane.doe@example.com"},
                         },
                     ],
-                    @"info" : @{@"count" : @10}
+                    @"info" : @{@"count" : @2}
                 };
                 NSData *payload =
                     [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -682,13 +674,17 @@ describe(@"manage user", ^{
 
         waitUntil(^(DoneCallback done) {
             [container queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
-                        completionHandler:^(NSArray<SKYUser *> *users, NSError *error) {
+                        completionHandler:^(NSArray<SKYRecord *> *users, NSError *error) {
                             expect(error).to.beNil();
                             expect(users).to.haveACountOf(2);
-                            expect(users[0].userID).to.equal(@"user0");
-                            expect(users[0].email).to.equal(@"john.doe@example.com");
-                            expect(users[1].userID).to.equal(@"user1");
-                            expect(users[1].email).to.equal(@"jane.doe@example.com");
+
+                            expect(users[0].recordID.recordName).to.equal(@"user0");
+                            expect([users[0].transient objectForKey:@"_email"])
+                                .to.equal(@"john.doe@example.com");
+
+                            expect(users[1].recordID.recordName).to.equal(@"user1");
+                            expect([users[1].transient objectForKey:@"_email"])
+                                .to.equal(@"jane.doe@example.com");
 
                             done();
                         }];

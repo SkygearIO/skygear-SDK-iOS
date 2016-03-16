@@ -32,8 +32,7 @@ SpecBegin(SKYDefineAdminRolesOperation)
         NSString *pmRoleName = @"Project Manager";
 
         NSArray<SKYRole *> *roles = @[
-            [SKYRole roleWithName:developerRoleName],
-            [SKYRole roleWithName:testerRoleName],
+            [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
             [SKYRole roleWithName:pmRoleName]
         ];
 
@@ -56,9 +55,9 @@ SpecBegin(SKYDefineAdminRolesOperation)
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:admin");
             expect(request.accessToken.tokenString).to.equal(token);
-            expect(request.payload)
-                .to.equal(
-                    @{ @"roles" : @[ developerRoleName, testerRoleName, pmRoleName ] });
+            expect(request.payload).to.equal(@{
+                @"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]
+            });
         });
 
         it(@"should handle success response correctly", ^{

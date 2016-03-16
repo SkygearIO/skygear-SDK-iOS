@@ -17,13 +17,13 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
-#import "SKYRecordSynchronizer.h"
-#import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordChange_Private.h"
 #import "SKYRecordStorageFileBackedMemoryStore.h"
+#import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorageSqliteStore.h"
+#import "SKYRecordSynchronizer.h"
+#import <Foundation/Foundation.h>
+#import <SKYKit/SKYKit.h>
 
 @interface SKYRecordStorageBackingStoreSpecTempFileProvider : NSObject
 
@@ -408,9 +408,8 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithType:@"book"
                                      predicate:nil
-                               sortDescriptors:@[
-                                   [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:NO]
-                               ]
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
+                                                                                ascending:NO] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
                                         [recordIDs addObject:record.recordID.canonicalString];
                                     }];
@@ -423,9 +422,8 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithType:@"book"
                                      predicate:nil
-                               sortDescriptors:@[
-                                   [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]
-                               ]
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
+                                                                                ascending:YES] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
                                         [recordIDs addObject:record.recordID.canonicalString];
                                     }];

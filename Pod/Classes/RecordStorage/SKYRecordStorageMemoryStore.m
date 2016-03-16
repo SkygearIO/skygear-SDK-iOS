@@ -18,10 +18,10 @@
 //
 
 #import "SKYRecordStorageMemoryStore.h"
-#import "SKYRecordStorageMemoryStore_Private.h"
 #import "SKYRecord.h"
-#import "SKYRecordID.h"
 #import "SKYRecordChange_Private.h"
+#import "SKYRecordID.h"
+#import "SKYRecordStorageMemoryStore_Private.h"
 
 @implementation SKYRecordStorageMemoryStore
 

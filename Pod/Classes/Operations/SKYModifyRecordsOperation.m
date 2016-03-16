@@ -18,13 +18,13 @@
 //
 
 #import "SKYModifyRecordsOperation.h"
+#import "SKYDataSerialization.h"
+#import "SKYError.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
-#import "SKYRecordSerializer.h"
-#import "SKYRecordSerialization.h"
-#import "SKYDataSerialization.h"
 #import "SKYRecordDeserializer.h"
-#import "SKYError.h"
+#import "SKYRecordSerialization.h"
+#import "SKYRecordSerializer.h"
 
 @implementation SKYModifyRecordsOperation {
     NSMutableDictionary *recordsByRecordID;

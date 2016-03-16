@@ -17,12 +17,12 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
 #import <SKYKit/SKYKit.h>
 
-#import "SKYAccessControl_Private.h"
 #import "SKYAccessControlEntry.h"
+#import "SKYAccessControl_Private.h"
 #import "SKYAsset_Private.h"
 #import "SKYRecord_Private.h"
 
@@ -74,11 +74,10 @@ SpecBegin(SKYRecordSerializer)
                                     url:[NSURL URLWithString:@"http://ourd.test/files/asset-name"]];
             [record setObject:asset forKey:@"asset"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"asset"])
-                .to.equal(@{
-                    @"$type" : @"asset",
-                    @"$name" : @"asset-name",
-                });
+            expect(dictionary[@"asset"]).to.equal(@{
+                @"$type" : @"asset",
+                @"$name" : @"asset-name",
+            });
         });
 
         it(@"serialize reference", ^{
@@ -138,33 +137,30 @@ SpecBegin(SKYRecordSerializer)
             record.accessControl = [SKYAccessControl accessControlWithEntries:@[ entry ]];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"_access"])
-                .to.equal(@[
-                    @{ @"relation" : @"follow",
-                       @"level" : @"write" }
-                ]);
+            expect(dictionary[@"_access"]).to.equal(@[
+                @{ @"relation" : @"follow",
+                   @"level" : @"write" }
+            ]);
         });
 
         it(@"serialize location", ^{
             record[@"location"] = [[CLLocation alloc] initWithLatitude:1 longitude:2];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"location"])
-                .to.equal(@{
-                    @"$type" : @"geo",
-                    @"$lng" : @2,
-                    @"$lat" : @1,
-                });
+            expect(dictionary[@"location"]).to.equal(@{
+                @"$type" : @"geo",
+                @"$lng" : @2,
+                @"$lat" : @1,
+            });
         });
 
         it(@"serialize sequence", ^{
             record[@"seq"] = [SKYSequence sequence];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"seq"])
-                .to.equal(@{
-                    @"$type" : @"seq",
-                });
+            expect(dictionary[@"seq"]).to.equal(@{
+                @"$type" : @"seq",
+            });
         });
 
         it(@"serialize transient fields (enabled)", ^{

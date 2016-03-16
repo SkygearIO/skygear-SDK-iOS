@@ -17,10 +17,10 @@
 //  limitations under the License.
 //
 
+#import "SRWebSocket.h"
+#import <SKYKit/SKYKit.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import <SKYKit/SKYKit.h>
-#import "SRWebSocket.h"
 
 @interface SKYPubsub () <SRWebSocketDelegate>
 - (SRWebSocket *)makeWebSocket;

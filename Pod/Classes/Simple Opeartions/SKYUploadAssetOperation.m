@@ -20,10 +20,10 @@
 #import "SKYUploadAssetOperation.h"
 #import "SKYOperationSubclass.h"
 
+#import "NSURLRequest+SKYRequest.h"
 #import "SKYAsset_Private.h"
 #import "SKYDataSerialization.h"
 #import "SKYOperation+OverrideLifeCycle.h"
-#import "NSURLRequest+SKYRequest.h"
 
 @interface SKYUploadAssetOperation ()
 

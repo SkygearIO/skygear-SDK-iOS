@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYOperation.h"
+#import <Foundation/Foundation.h>
 
 @class SKYNotificationInfo;
 

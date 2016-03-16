@@ -19,9 +19,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKYDatabase.h"
 #import "SKYAccessToken.h"
 #import "SKYAsset.h"
+#import "SKYDatabase.h"
 #import "SKYNotification.h"
 #import "SKYPubsub.h"
 #import "SKYRole.h"
@@ -199,26 +199,26 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
 
 - (void)uploadAsset:(SKYAsset *)asset
-  completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
+    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
 
 /**
  Calls a registered lambda function without arguments.
  */
 - (void)callLambda:(NSString *)action
- completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 /**
  Calls a registered lambda function with arguments.
  */
 - (void)callLambda:(NSString *)action
-         arguments:(NSArray *)arguments
- completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+            arguments:(NSArray *)arguments
+    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 /**
  *  Query user objects by emails
  */
 - (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYUser *> *, NSError *))completionHandler;
+         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
 
 /**
  *  Update user information

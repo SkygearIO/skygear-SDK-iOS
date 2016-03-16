@@ -20,8 +20,8 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYRelation.h"
-#import "SKYUser.h"
 #import "SKYRole.h"
+#import "SKYUser.h"
 
 typedef enum : NSUInteger {
     SKYAccessControlEntryLevelRead = 0,

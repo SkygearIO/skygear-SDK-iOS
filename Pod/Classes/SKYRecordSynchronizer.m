@@ -18,12 +18,12 @@
 //
 
 #import "SKYRecordSynchronizer.h"
-#import "SKYRecordStorage.h"
-#import "SKYRecordStorage_Private.h"
-#import "SKYModifyRecordsOperation.h"
 #import "SKYDeleteRecordsOperation.h"
+#import "SKYModifyRecordsOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYRecordChange.h"
+#import "SKYRecordStorage.h"
+#import "SKYRecordStorage_Private.h"
 
 @implementation SKYRecordSynchronizer {
     BOOL _updating;

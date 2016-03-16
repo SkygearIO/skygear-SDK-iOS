@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
+#import "SKYLocationSortDescriptor.h"
+#import "SKYRecord.h"
+#import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "SKYLocationSortDescriptor.h"
-#import <CoreLocation/CoreLocation.h>
-#import "SKYRecord.h"
 
 SpecBegin(SKYLocationSortDescriptor)
 

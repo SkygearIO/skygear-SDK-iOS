@@ -62,8 +62,9 @@ SpecBegin(SKYDeleteRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
             expect(request.accessToken).to.equal(container.currentAccessToken);
-            expect(request.payload[@"ids"])
-                .to.equal(@[ recordID1.canonicalString, recordID2.canonicalString ]);
+            expect(request.payload[@"ids"]).to.equal(@[
+                recordID1.canonicalString, recordID2.canonicalString
+            ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         });
 
@@ -165,15 +166,13 @@ SpecBegin(SKYDeleteRecordsOperation)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[
-                            @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"error",
-                               @"code" : @(SKYErrorUnexpectedError),
-                               @"message" : @"An error.",
-                               @"name" : @"UnexpectedError",
-                            }
-                        ]
+                        @"result" : @[ @{
+                            @"_id" : @"book/book2",
+                            @"_type" : @"error",
+                            @"code" : @(SKYErrorUnexpectedError),
+                            @"message" : @"An error.",
+                            @"name" : @"UnexpectedError",
+                        } ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];

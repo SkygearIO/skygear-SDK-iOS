@@ -19,8 +19,8 @@
 
 #import "SKYPubsub.h"
 
-#import "SRWebSocket.h"
 #import "NSURLRequest+SKYRequest.h"
+#import "SRWebSocket.h"
 
 double const SKYPubsubPingInterval = 10.0;
 double const SKYPubsubReconnectWait = 1.0;
@@ -214,9 +214,9 @@ double const SKYPubsubReconnectWait = 1.0;
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket
- didCloseWithCode:(NSInteger)code
-           reason:(NSString *)reason
-         wasClean:(BOOL)wasClean
+    didCloseWithCode:(NSInteger)code
+              reason:(NSString *)reason
+            wasClean:(BOOL)wasClean
 {
     _webSocket = nil;
     _opened = false;

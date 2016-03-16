@@ -19,10 +19,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SKYNotification.h"
 #import "SKYRecord.h"
 #import "SKYRecordChange.h"
 #import "SKYRecordStorageBackingStore.h"
-#import "SKYNotification.h"
 
 extern NSString *const SKYRecordStorageDidUpdateNotification;
 extern NSString *const SKYRecordStorageWillSynchronizeChangesNotification;
@@ -130,8 +130,8 @@ typedef enum : NSInteger {
  */
 - (void)saveRecord:(SKYRecord *)record;
 - (void)saveRecord:(SKYRecord *)record
-      whenConflict:(SKYRecordResolveMethod)resolution
- completionHandler:(id)handler;
+         whenConflict:(SKYRecordResolveMethod)resolution
+    completionHandler:(id)handler;
 - (void)saveRecords:(NSArray *)records;
 
 /**
@@ -145,8 +145,8 @@ typedef enum : NSInteger {
  */
 - (void)deleteRecord:(SKYRecord *)record;
 - (void)deleteRecord:(SKYRecord *)record
-        whenConflict:(SKYRecordResolveMethod)resolution
-   completionHandler:(id)handler;
+         whenConflict:(SKYRecordResolveMethod)resolution
+    completionHandler:(id)handler;
 - (void)deleteRecords:(NSArray *)records;
 
 #pragma mark - Fetching and querying multiple records

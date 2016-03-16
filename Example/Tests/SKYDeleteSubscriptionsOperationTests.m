@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYDeleteSubscriptionsOperation)
 
@@ -48,12 +48,11 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
             expect(request.action).to.equal(@"subscription:delete");
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.currentAccessToken);
-            expect(request.payload)
-                .to.equal(@{
-                    @"device_id" : @"DEVICE_ID",
-                    @"database_id" : database.databaseID,
-                    @"ids" : @[ @"my notes", @"ben's notes" ],
-                });
+            expect(request.payload).to.equal(@{
+                @"device_id" : @"DEVICE_ID",
+                @"database_id" : database.databaseID,
+                @"ids" : @[ @"my notes", @"ben's notes" ],
+            });
         });
 
         it(@"make request", ^{

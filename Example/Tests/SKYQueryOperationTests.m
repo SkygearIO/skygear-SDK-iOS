@@ -18,8 +18,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYQueryOperation)
 
@@ -92,10 +92,11 @@ SpecBegin(SKYQueryOperation)
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
 
-            expect(request.payload[@"sort"][0])
-                .to.equal(@[ @{ @"$type" : @"keypath",
-                                @"$val" : @"name" },
-                             @"asc" ]);
+            expect(request.payload[@"sort"][0]).to.equal(@[
+                @{ @"$type" : @"keypath",
+                   @"$val" : @"name" },
+                @"asc"
+            ]);
         });
 
         it(@"transient", ^{
@@ -108,9 +109,9 @@ SpecBegin(SKYQueryOperation)
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
 
-            expect(request.payload[@"include"])
-                .to.equal(
-                    @{ @"shelf" : @{@"$type" : @"keypath", @"$val" : @"shelf"} });
+            expect(request.payload[@"include"]).to.equal(@{
+                @"shelf" : @{@"$type" : @"keypath", @"$val" : @"shelf"}
+            });
         });
 
         it(@"make request", ^{

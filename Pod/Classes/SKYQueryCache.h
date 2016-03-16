@@ -17,9 +17,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYDatabase.h"
 #import "SKYQuery.h"
+#import <Foundation/Foundation.h>
 
 @interface SKYQueryCache : NSObject
 

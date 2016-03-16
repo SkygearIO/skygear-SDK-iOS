@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <SKYKit/SKYKit.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYDiscoverUsersOperation)
 
@@ -35,8 +35,7 @@ SpecBegin(SKYDiscoverUsersOperation)
         it(@"multiple emails", ^{
             SKYQueryUsersOperation *operation =
                 [SKYQueryUsersOperation discoverUsersOperationByEmails:@[
-                    @"john.doe@example.com",
-                    @"jane.doe@example.com"
+                    @"john.doe@example.com", @"jane.doe@example.com"
                 ]];
             operation.container = container;
             [operation prepareForRequest];
@@ -44,10 +43,9 @@ SpecBegin(SKYDiscoverUsersOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"user:query");
             expect(request.accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-            expect(request.payload)
-                .to.equal(@{
-                    @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
-                });
+            expect(request.payload).to.equal(@{
+                @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
+            });
         });
 
         it(@"query relation", ^{
@@ -61,11 +59,10 @@ SpecBegin(SKYDiscoverUsersOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
             expect(request.action).to.equal(@"relation:query");
-            expect(request.payload)
-                .to.equal(@{
-                    @"name" : @"follow",
-                    @"direction" : @"mutual",
-                });
+            expect(request.payload).to.equal(@{
+                @"name" : @"follow",
+                @"direction" : @"mutual",
+            });
         });
 
         it(@"make request", ^{
@@ -158,8 +155,9 @@ SpecBegin(SKYDiscoverUsersOperation)
                             expect(users[0].userID).to.equal(@"user0");
                             expect(operationError).notTo.beNil();
                             expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                            expect(operationError.userInfo[SKYPartialEmailsNotFoundKey])
-                                .to.equal(@[ @"jane.doe@example.com" ]);
+                            expect(operationError.userInfo[SKYPartialEmailsNotFoundKey]).to.equal(@[
+                                @"jane.doe@example.com"
+                            ]);
                             done();
                         });
                     };

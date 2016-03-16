@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
 #import "SKYRecord.h"
+#import <Foundation/Foundation.h>
 
 @interface SKYRecordDeserializer : NSObject
 

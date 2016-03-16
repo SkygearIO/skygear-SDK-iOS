@@ -22,10 +22,10 @@
 
 #import "SKYUser.h"
 
-#import "SKYRecordDeserializer.h"
-#import "SKYRecordSerialization.h"
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
+#import "SKYRecordDeserializer.h"
+#import "SKYRecordSerialization.h"
 
 @implementation SKYFetchRecordsOperation
 
