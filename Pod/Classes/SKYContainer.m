@@ -229,7 +229,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     _defaultAccessControl = defaultAccessControl;
     if (!_defaultAccessControl) {
-        _defaultAccessControl = [SKYAccessControl publicReadWriteAccessControl];
+        _defaultAccessControl = [SKYAccessControl publicReadableAccessControl];
     }
 
     [SKYAccessControl setDefaultAccessControl:_defaultAccessControl];

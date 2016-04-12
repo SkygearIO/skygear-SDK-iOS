@@ -117,11 +117,11 @@ SpecBegin(SKYRecordSerializer)
             expect(serializedTopics).to.equal(topics);
         });
 
-        it(@"serialize public access control", ^{
-            record.accessControl = [SKYAccessControl publicReadWriteAccessControl];
+        it(@"serialize public readable access control", ^{
+            record.accessControl = [SKYAccessControl publicReadableAccessControl];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"_access"]).to.equal([NSNull null]);
+            expect(dictionary[@"_access"]).to.equal(@[ @{ @"public" : @YES, @"level" : @"read" } ]);
         });
 
         it(@"serialize empty access control", ^{

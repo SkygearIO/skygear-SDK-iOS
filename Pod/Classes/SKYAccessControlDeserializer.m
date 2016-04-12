@@ -32,7 +32,10 @@
 - (SKYAccessControl *)accessControlWithArray:(NSArray *)array
 {
     if (array == nil) {
-        return [SKYAccessControl publicReadWriteAccessControl];
+        SKYAccessControl *acl = [[SKYAccessControl alloc] initWithEntries:@[]];
+        acl.public = YES;
+
+        return acl;
     } else {
         NSMutableArray *entries = [NSMutableArray arrayWithCapacity:array.count];
         for (NSDictionary *entryDict in array) {
@@ -61,7 +64,10 @@
 
     NSString *rawRelation = dictionary[@"relation"];
     NSString *roleName = dictionary[@"role"];
-    if (rawRelation == nil && roleName != nil) {
+    BOOL isPublic = [dictionary[@"public"] boolValue];
+    if (isPublic) {
+        return [[SKYAccessControlEntry alloc] initWithPublicAccessLevel:level];
+    } else if (rawRelation == nil && roleName != nil) {
         SKYRole *role = [SKYRole roleWithName:roleName];
         return [[SKYAccessControlEntry alloc] initWithAccessLevel:level role:role];
     } else if ([rawRelation isEqualToString:@"$direct"]) {

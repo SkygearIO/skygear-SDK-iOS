@@ -26,9 +26,9 @@
 
 @implementation SKYAccessControl
 
-+ (instancetype)publicReadWriteAccessControl
++ (instancetype)publicReadableAccessControl
 {
-    return [[self alloc] initForPublicReadWrite];
+    return [[self alloc] initWithPublicReadableAccessControl];
 }
 
 + (instancetype)accessControlWithEntries:(NSArray *)entries
@@ -59,7 +59,7 @@
     });
 
     if (!defaultAccessControl) {
-        defaultAccessControl = [SKYAccessControl publicReadWriteAccessControl];
+        defaultAccessControl = [SKYAccessControl publicReadableAccessControl];
     }
 
     NSArray *aclData = [serializer arrayWithAccessControl:defaultAccessControl];
@@ -69,12 +69,13 @@
     [userDefault synchronize];
 }
 
-- (instancetype)initForPublicReadWrite
+- (instancetype)initWithPublicReadableAccessControl
 {
     self = [super init];
     if (self) {
-        self.entries = [NSMutableOrderedSet orderedSet];
-        self.public = YES;
+        self.public = NO;
+        self.entries = [NSMutableOrderedSet
+            orderedSetWithObjects:[SKYAccessControlEntry readEntryForPublic], nil];
     }
     return self;
 }
@@ -138,6 +139,11 @@
     [self addEntry:[SKYAccessControlEntry readEntryForRole:role]];
 }
 
+- (void)addReadAccessForPublic
+{
+    [self addEntry:[SKYAccessControlEntry readEntryForPublic]];
+}
+
 #pragma mark - add write access
 - (void)addWriteAccessForUser:(SKYUser *)user
 {
@@ -157,6 +163,11 @@
 - (void)addWriteAccessForRole:(SKYRole *)role
 {
     [self addEntry:[SKYAccessControlEntry writeEntryForRole:role]];
+}
+
+- (void)addWriteAccessForPublic
+{
+    [self addEntry:[SKYAccessControlEntry writeEntryForPublic]];
 }
 
 #pragma mark - remove read access
@@ -180,6 +191,11 @@
     [self removeEntry:[SKYAccessControlEntry readEntryForRole:role]];
 }
 
+- (void)removeReadAccessForPublic
+{
+    [self removeEntry:[SKYAccessControlEntry readEntryForPublic]];
+}
+
 #pragma mark - remove write access
 - (void)removeWriteAccessForUser:(SKYUser *)user
 {
@@ -201,6 +217,11 @@
     [self removeEntry:[SKYAccessControlEntry writeEntryForRole:role]];
 }
 
+- (void)removeWriteAccessForPublic
+{
+    [self removeEntry:[SKYAccessControlEntry writeEntryForPublic]];
+}
+
 #pragma mark - has read access checking
 - (BOOL)hasReadAccessForUser:(SKYUser *)user
 {
@@ -209,17 +230,25 @@
 
 - (BOOL)hasReadAccessForUserID:(NSString *)userID
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForUserID:userID]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForUserID:userID]] ||
+           [self hasReadAccessForPublic];
 }
 
 - (BOOL)hasReadAccessForRelation:(SKYRelation *)relation
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForRelation:relation]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForRelation:relation]] ||
+           [self hasReadAccessForPublic];
 }
 
 - (BOOL)hasReadAccessForRole:(SKYRole *)role
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForRole:role]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForRole:role]] ||
+           [self hasReadAccessForPublic];
+}
+
+- (BOOL)hasReadAccessForPublic
+{
+    return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForPublic]];
 }
 
 #pragma mark - has write access checking
@@ -230,17 +259,25 @@
 
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]] ||
+           [self hasWriteAccessForPublic];
 }
 
 - (BOOL)hasWriteAccessForRelation:(SKYRelation *)relation
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRelation:relation]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRelation:relation]] ||
+           [self hasWriteAccessForPublic];
 }
 
 - (BOOL)hasWriteAccessForRole:(SKYRole *)role
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]];
+    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]] ||
+           [self hasWriteAccessForPublic];
+}
+
+- (BOOL)hasWriteAccessForPublic
+{
+    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForPublic]];
 }
 
 @end

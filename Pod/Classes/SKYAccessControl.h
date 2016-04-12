@@ -28,44 +28,50 @@
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (void)setPublicReadWriteAccess;
+- (void)__deprecated setPublicReadWriteAccess;
 
 #pragma mark - add read access
 - (void)addReadAccessForUser:(SKYUser *)user;
 - (void)addReadAccessForUserID:(NSString *)userID;
 - (void)addReadAccessForRelation:(SKYRelation *)relation;
 - (void)addReadAccessForRole:(SKYRole *)role;
+- (void)addReadAccessForPublic;
 
 #pragma mark - add write access
 - (void)addWriteAccessForUser:(SKYUser *)user;
 - (void)addWriteAccessForUserID:(NSString *)userID;
 - (void)addWriteAccessForRelation:(SKYRelation *)relation;
 - (void)addWriteAccessForRole:(SKYRole *)role;
+- (void)addWriteAccessForPublic;
 
 #pragma mark - remove read access
 - (void)removeReadAccessForUser:(SKYUser *)user;
 - (void)removeReadAccessForUserID:(NSString *)userID;
 - (void)removeReadAccessForRelation:(SKYRelation *)relation;
 - (void)removeReadAccessForRole:(SKYRole *)role;
+- (void)removeReadAccessForPublic;
 
 #pragma mark - remove write access
 - (void)removeWriteAccessForUser:(SKYUser *)user;
 - (void)removeWriteAccessForUserID:(NSString *)userID;
 - (void)removeWriteAccessForRelation:(SKYRelation *)relation;
 - (void)removeWriteAccessForRole:(SKYRole *)role;
+- (void)removeWriteAccessForPublic;
 
 #pragma mark - has read access checking
 - (BOOL)hasReadAccessForUser:(SKYUser *)user;
 - (BOOL)hasReadAccessForUserID:(NSString *)userID;
 - (BOOL)hasReadAccessForRelation:(SKYRelation *)relation;
 - (BOOL)hasReadAccessForRole:(SKYRole *)role;
+- (BOOL)hasReadAccessForPublic;
 
 #pragma mark - has write access checking
 - (BOOL)hasWriteAccessForUser:(SKYUser *)user;
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID;
 - (BOOL)hasWriteAccessForRelation:(SKYRelation *)relation;
 - (BOOL)hasWriteAccessForRole:(SKYRole *)role;
+- (BOOL)hasWriteAccessForPublic;
 
-@property (nonatomic, readonly) BOOL public;
+@property (nonatomic, readonly) __deprecated BOOL public;
 
 @end

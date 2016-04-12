@@ -69,11 +69,16 @@
 // override
 - (BOOL)isEqual:(id)object
 {
-    if ([object isKindOfClass:[SKYRole class]]) {
-        SKYRole *anotherRole = (SKYRole *)object;
-        return [self.name isEqualToString:anotherRole.name];
+    if (self == object) {
+        return YES;
     }
-    return NO;
+
+    if (![object isKindOfClass:[SKYRole class]]) {
+        return NO;
+    }
+
+    SKYRole *anotherRole = (SKYRole *)object;
+    return [self.name isEqualToString:anotherRole.name];
 }
 
 @end
