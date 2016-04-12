@@ -20,6 +20,7 @@
 #import "SKYAccessControlSerializer.h"
 
 #import "SKYAccessControlEntry.h"
+#import "SKYAccessControl_Private.h"
 
 @implementation SKYAccessControlSerializer
 

@@ -72,6 +72,4 @@
 - (BOOL)hasWriteAccessForRole:(SKYRole *)role;
 - (BOOL)hasWriteAccessForPublic;
 
-@property (nonatomic, readonly) __deprecated BOOL public;
-
 @end
