@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "SKYRecordSynchronizer.h"
 #import "SKYRecordStorageMemoryStore.h"
+#import "SKYRecordSynchronizer.h"
 #import <Foundation/Foundation.h>
 #import <SKYKit/SKYKit.h>
 

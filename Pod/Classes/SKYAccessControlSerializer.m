@@ -20,6 +20,7 @@
 #import "SKYAccessControlSerializer.h"
 
 #import "SKYAccessControlEntry.h"
+#import "SKYAccessControl_Private.h"
 
 @implementation SKYAccessControlSerializer
 
@@ -30,20 +31,18 @@
 
 - (NSArray *)arrayWithAccessControl:(SKYAccessControl *)accessControl
 {
-    NSMutableArray *array = nil;
-
     if (accessControl == nil) {
-        return nil;
+        return @[ [self
+            dictionaryWithPublicAccessControlEntry:[SKYAccessControlEntry readEntryForPublic]] ];
     } else if (accessControl.public) {
-        // do nothing, let it returns nil
+        return nil;
     } else {
-        array = [NSMutableArray array];
+        NSMutableArray *array = [NSMutableArray array];
         for (SKYAccessControlEntry *entry in accessControl) {
             [array addObject:[self dictionaryWithAccessControlEntry:entry]];
         }
+        return array;
     }
-
-    return array;
 }
 
 - (NSDictionary *)dictionaryWithAccessControlEntry:(SKYAccessControlEntry *)entry
@@ -58,6 +57,9 @@
             break;
         case SKYAccessControlEntryTypeRole:
             dict = [self dictionaryWithRoleAccessControlEntry:entry];
+            break;
+        case SKYAccessControlEntryTypePublic:
+            dict = [self dictionaryWithPublicAccessControlEntry:entry];
             break;
         default:
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -91,6 +93,14 @@
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"level"] = NSStringFromAccessControlEntryLevel(entry.accessLevel);
     dict[@"role"] = entry.role.name;
+    return dict;
+}
+
+- (NSDictionary *)dictionaryWithPublicAccessControlEntry:(SKYAccessControlEntry *)entry
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[@"level"] = NSStringFromAccessControlEntryLevel(entry.accessLevel);
+    dict[@"public"] = @YES;
     return dict;
 }
 

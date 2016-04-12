@@ -34,11 +34,13 @@ NSArray *serializedAccessControl(SKYAccessControl *accessControl)
 
 SpecBegin(SKYAccessControl)
 
-    describe(@"Public Access Control", ^{
+    describe(@"Public Access Control (old)", ^{
         __block SKYAccessControl *accessControl = nil;
 
         beforeEach(^{
-            accessControl = [SKYAccessControl publicReadWriteAccessControl];
+            // deprecate the old public read write access control
+            accessControl = [[SKYAccessControl alloc] initWithEntries:@[]];
+            accessControl.public = YES;
         });
 
         it(@"is public", ^{
@@ -55,6 +57,24 @@ SpecBegin(SKYAccessControl)
             ]);
         });
     });
+
+describe(@"Public Access Control (new)", ^{
+    __block SKYAccessControl *accessControl = nil;
+
+    beforeEach(^{
+        accessControl = [SKYAccessControl publicReadableAccessControl];
+    });
+
+    it(@"is NOT public", ^{
+        expect(accessControl.public).to.equal(NO);
+    });
+
+    it(@"contains default public read entry", ^{
+        NSArray *serialized = serializedAccessControl(accessControl);
+        expect(serialized).notTo.beNil();
+        expect(serialized).to.equal(@[ @{ @"public" : @YES, @"level" : @"read" } ]);
+    });
+});
 
 describe(@"Access Control", ^{
     __block SKYAccessControl *accessControl = nil;
@@ -103,11 +123,15 @@ describe(@"Default Access Control", ^{
         [SKYAccessControl setDefaultAccessControl:nil];
     });
 
-    it(@"should be public read write ACL by default", ^{
+    it(@"should be public readable ACL by default", ^{
         SKYAccessControl *acl = [SKYAccessControl defaultAccessControl];
 
-        expect(acl.public).to.equal(YES);
-        expect(acl.entries).to.haveACountOf(0);
+        expect(acl.public).to.equal(NO);
+        expect(acl.entries).to.haveACountOf(1);
+
+        SKYAccessControlEntry *firstEntry = acl.entries[0];
+        expect(firstEntry.accessLevel).to.equal(SKYAccessControlEntryLevelRead);
+        expect(firstEntry.entryType).to.equal(SKYAccessControlEntryTypePublic);
     });
 
     it(@"should be able to set default ACL", ^{
@@ -116,12 +140,15 @@ describe(@"Default Access Control", ^{
         SKYRelation *friendRelation = [SKYRelation friendRelation];
 
         SKYAccessControl *defaultACL = [SKYAccessControl defaultAccessControl];
+        // Should be public readable
         expect([defaultACL hasReadAccessForRole:developerRole]).to.equal(YES);
-        expect([defaultACL hasWriteAccessForRole:developerRole]).to.equal(YES);
         expect([defaultACL hasReadAccessForUser:user0]).to.equal(YES);
-        expect([defaultACL hasWriteAccessForUser:user0]).to.equal(YES);
         expect([defaultACL hasReadAccessForRelation:friendRelation]).to.equal(YES);
-        expect([defaultACL hasWriteAccessForRelation:friendRelation]).to.equal(YES);
+
+        // Should be public NOT writable
+        expect([defaultACL hasWriteAccessForRole:developerRole]).to.equal(NO);
+        expect([defaultACL hasWriteAccessForUser:user0]).to.equal(NO);
+        expect([defaultACL hasWriteAccessForRelation:friendRelation]).to.equal(NO);
 
         SKYAccessControl *acl = [SKYAccessControl accessControlWithEntries:@[
             [SKYAccessControlEntry readEntryForRole:developerRole],
@@ -228,7 +255,7 @@ describe(@"SKYAccessControlDeserializer", ^{
         deserializer = [SKYAccessControlDeserializer deserializer];
     });
 
-    it(@"deserializes nil correctly", ^{
+    it(@"deserializes public access correctly", ^{
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:nil];
         expect(accessControl.public).to.equal(YES);
         expect(serializedAccessControl(accessControl)).to.equal(nil);
