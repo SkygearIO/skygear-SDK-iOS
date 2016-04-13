@@ -1,3 +1,9 @@
+## 0.10.0 (2016-04-13)
+
+### Features
+- Add support for public readable default ACL (oursky/skygear-SDK-iOS#259)
+
+
 ## 0.9.0 (2016-03-16)
 
 ### Other Notes
