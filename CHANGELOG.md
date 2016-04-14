@@ -1,3 +1,11 @@
+## 0.10.1 (2016-04-14)
+
+### Incompatible Changes
+- API Changes for ACL modification (oursky/skygear-SDK-iOS#259)
+  - Remove API for add / remove a specific ACL entry
+  - Add API for directly set no access / read only / read write access.
+
+
 ## 0.10.0 (2016-04-13)
 
 ### Features
