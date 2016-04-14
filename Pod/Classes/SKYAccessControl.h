@@ -24,39 +24,30 @@
 @class SKYUser;
 @class SKYRole;
 
-@interface SKYAccessControl : NSObject <NSFastEnumeration>
+@interface SKYAccessControl : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (void)__deprecated setPublicReadWriteAccess;
+#pragma mark - set no access
+- (void)setNoAccessForUser:(SKYUser *)user;
+- (void)setNoAccessForUserID:(NSString *)userID;
+- (void)setNoAccessForRelation:(SKYRelation *)relation;
+- (void)setNoAccessForRole:(SKYRole *)role;
+- (void)setNoAccessForPublic;
 
-#pragma mark - add read access
-- (void)addReadAccessForUser:(SKYUser *)user;
-- (void)addReadAccessForUserID:(NSString *)userID;
-- (void)addReadAccessForRelation:(SKYRelation *)relation;
-- (void)addReadAccessForRole:(SKYRole *)role;
-- (void)addReadAccessForPublic;
+#pragma mark - set read only
+- (void)setReadOnlyForUser:(SKYUser *)user;
+- (void)setReadOnlyForUserID:(NSString *)userID;
+- (void)setReadOnlyForRelation:(SKYRelation *)relation;
+- (void)setReadOnlyForRole:(SKYRole *)role;
+- (void)setReadOnlyForPublic;
 
-#pragma mark - add write access
-- (void)addWriteAccessForUser:(SKYUser *)user;
-- (void)addWriteAccessForUserID:(NSString *)userID;
-- (void)addWriteAccessForRelation:(SKYRelation *)relation;
-- (void)addWriteAccessForRole:(SKYRole *)role;
-- (void)addWriteAccessForPublic;
-
-#pragma mark - remove read access
-- (void)removeReadAccessForUser:(SKYUser *)user;
-- (void)removeReadAccessForUserID:(NSString *)userID;
-- (void)removeReadAccessForRelation:(SKYRelation *)relation;
-- (void)removeReadAccessForRole:(SKYRole *)role;
-- (void)removeReadAccessForPublic;
-
-#pragma mark - remove write access
-- (void)removeWriteAccessForUser:(SKYUser *)user;
-- (void)removeWriteAccessForUserID:(NSString *)userID;
-- (void)removeWriteAccessForRelation:(SKYRelation *)relation;
-- (void)removeWriteAccessForRole:(SKYRole *)role;
-- (void)removeWriteAccessForPublic;
+#pragma mark - set read write access
+- (void)setReadWriteAccessForUser:(SKYUser *)user;
+- (void)setReadWriteAccessForUserID:(NSString *)userID;
+- (void)setReadWriteAccessForRelation:(SKYRelation *)relation;
+- (void)setReadWriteAccessForRole:(SKYRole *)role;
+- (void)setReadWriteAccessForPublic;
 
 #pragma mark - has read access checking
 - (BOOL)hasReadAccessForUser:(SKYUser *)user;

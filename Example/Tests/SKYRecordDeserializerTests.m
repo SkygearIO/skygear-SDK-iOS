@@ -72,8 +72,7 @@ SpecBegin(SKYRecordDeserializer)
             data[@"_access"] = [NSNull null];
 
             SKYRecord *record = [deserializer recordWithDictionary:data];
-            expect(record.accessControl).notTo.beNil();
-            expect(record.accessControl.public).to.equal(YES);
+            expect(record.accessControl).to.beNil();
         });
 
         it(@"deserialize access control list", ^{
@@ -85,7 +84,12 @@ SpecBegin(SKYRecordDeserializer)
 
             SKYRecord *record = [deserializer recordWithDictionary:data];
             expect(record.accessControl).notTo.beNil();
-            expect(record.accessControl.public).to.equal(NO);
+            expect(record.accessControl.entries).to.haveCountOf(1);
+            expect(record.accessControl.entries[0].entryType)
+                .to.equal(SKYAccessControlEntryTypeRelation);
+            expect(record.accessControl.entries[0].accessLevel)
+                .to.equal(SKYAccessControlEntryLevelRead);
+            expect(record.accessControl.entries[0].relation.name).to.equal(@"friend");
         });
 
         it(@"deserialize string", ^{

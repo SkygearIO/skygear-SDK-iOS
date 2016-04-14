@@ -34,61 +34,32 @@ NSArray *serializedAccessControl(SKYAccessControl *accessControl)
 
 SpecBegin(SKYAccessControl)
 
-    describe(@"Public Access Control (old)", ^{
+    describe(@"Public Access Control (new)", ^{
         __block SKYAccessControl *accessControl = nil;
 
         beforeEach(^{
-            // deprecate the old public read write access control
-            accessControl = [[SKYAccessControl alloc] initWithEntries:@[]];
-            accessControl.public = YES;
+            accessControl = [SKYAccessControl publicReadableAccessControl];
         });
 
-        it(@"is public", ^{
-            expect(accessControl.public).to.equal(YES);
-            expect(serializedAccessControl(accessControl)).to.equal(nil);
-        });
-
-        it(@"is not public after mutated", ^{
-            [accessControl addReadAccessForRelation:[SKYRelation followedRelation]];
-            expect(accessControl.public).to.equal(NO);
-            expect(serializedAccessControl(accessControl)).to.equal(@[
-                @{ @"relation" : @"follow",
-                   @"level" : @"read" },
-            ]);
+        it(@"contains default public read entry", ^{
+            NSArray *serialized = serializedAccessControl(accessControl);
+            expect(serialized).notTo.beNil();
+            expect(serialized).to.equal(@[ @{ @"public" : @YES, @"level" : @"read" } ]);
         });
     });
 
-describe(@"Public Access Control (new)", ^{
-    __block SKYAccessControl *accessControl = nil;
-
-    beforeEach(^{
-        accessControl = [SKYAccessControl publicReadableAccessControl];
-    });
-
-    it(@"is NOT public", ^{
-        expect(accessControl.public).to.equal(NO);
-    });
-
-    it(@"contains default public read entry", ^{
-        NSArray *serialized = serializedAccessControl(accessControl);
-        expect(serialized).notTo.beNil();
-        expect(serialized).to.equal(@[ @{ @"public" : @YES, @"level" : @"read" } ]);
-    });
-});
-
-describe(@"Access Control", ^{
+describe(@"Access Control for user id", ^{
     __block SKYAccessControl *accessControl = nil;
     __block NSString *userID = nil;
 
     beforeEach(^{
         userID = @"userid";
 
-        SKYAccessControlEntry *entry = [SKYAccessControlEntry writeEntryForUserID:userID];
-        accessControl = [SKYAccessControl accessControlWithEntries:@[ entry ]];
+        accessControl = [SKYAccessControl
+            accessControlWithEntries:@[ [SKYAccessControlEntry writeEntryForUserID:userID] ]];
     });
 
-    it(@"is not public", ^{
-        expect(accessControl.public).to.equal(NO);
+    it(@"is serialized correctly", ^{
         expect(serializedAccessControl(accessControl)).to.equal(@[
             @{ @"relation" : @"$direct",
                @"level" : @"write",
@@ -96,24 +67,156 @@ describe(@"Access Control", ^{
         ]);
     });
 
-    it(@"is not public after removing all entries", ^{
-        [accessControl removeWriteAccessForUserID:userID];
-        expect(accessControl.public).to.equal(NO);
+    it(@"can be set to read only", ^{
+        [accessControl setReadOnlyForUserID:userID];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"$direct",
+               @"level" : @"read",
+               @"user_id" : @"userid" }
+        ]);
+    });
+
+    it(@"can be set to no access", ^{
+        [accessControl setNoAccessForUserID:userID];
+        expect(accessControl.entries).to.haveCountOf(0);
         expect(serializedAccessControl(accessControl)).to.equal(@[]);
     });
 
-    it(@"is public after setting public read write access", ^{
-        [accessControl setPublicReadWriteAccess];
-        expect(accessControl.public).to.equal(YES);
-        expect(serializedAccessControl(accessControl)).to.equal(nil);
-    });
-
-    it(@"does not add same entry twice", ^{
-        [accessControl addWriteAccessForUserID:@"userid"];
+    it(@"does not add duplicated entry", ^{
+        [accessControl setReadWriteAccessForUserID:@"userid"];
+        expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
             @{ @"relation" : @"$direct",
                @"level" : @"write",
                @"user_id" : @"userid" },
+        ]);
+    });
+});
+
+describe(@"Access Control for relation", ^{
+    __block SKYAccessControl *accessControl = nil;
+    __block SKYRelation *friendRelation = [SKYRelation friendRelation];
+
+    beforeEach(^{
+        friendRelation = [SKYRelation friendRelation];
+
+        accessControl =
+            [SKYAccessControl accessControlWithEntries:@[ [SKYAccessControlEntry
+                                                           writeEntryForRelation:friendRelation] ]];
+    });
+
+    it(@"is serialized correctly", ^{
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"friend",
+               @"level" : @"write" },
+        ]);
+    });
+
+    it(@"can be set to read only", ^{
+        [accessControl setReadOnlyForRelation:friendRelation];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"friend",
+               @"level" : @"read" }
+        ]);
+    });
+
+    it(@"can be set to no access", ^{
+        [accessControl setNoAccessForRelation:friendRelation];
+        expect(accessControl.entries).to.haveCountOf(0);
+        expect(serializedAccessControl(accessControl)).to.equal(@[]);
+    });
+
+    it(@"does not add duplicated entry", ^{
+        [accessControl setReadWriteAccessForRelation:friendRelation];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"relation" : @"friend",
+               @"level" : @"write" },
+        ]);
+    });
+});
+
+describe(@"Access Control for role", ^{
+    __block SKYAccessControl *accessControl = nil;
+    __block SKYRole *adminRole = nil;
+
+    beforeEach(^{
+        adminRole = [SKYRole roleWithName:@"admin"];
+
+        accessControl = [SKYAccessControl
+            accessControlWithEntries:@[ [SKYAccessControlEntry writeEntryForRole:adminRole] ]];
+    });
+
+    it(@"is serialized correctly", ^{
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"role" : @"admin",
+               @"level" : @"write" },
+        ]);
+    });
+
+    it(@"can be set to read only", ^{
+        [accessControl setReadOnlyForRole:adminRole];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"role" : @"admin",
+               @"level" : @"read" }
+        ]);
+    });
+
+    it(@"can be set to no access", ^{
+        [accessControl setNoAccessForRole:adminRole];
+        expect(accessControl.entries).to.haveCountOf(0);
+        expect(serializedAccessControl(accessControl)).to.equal(@[]);
+    });
+
+    it(@"does not add duplicated entry", ^{
+        [accessControl setReadWriteAccessForRole:adminRole];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"role" : @"admin",
+               @"level" : @"write" },
+        ]);
+    });
+});
+
+describe(@"Access Control for public", ^{
+    __block SKYAccessControl *accessControl = nil;
+
+    beforeEach(^{
+        accessControl = [SKYAccessControl
+            accessControlWithEntries:@[ [SKYAccessControlEntry writeEntryForPublic] ]];
+    });
+
+    it(@"is serialized correctly", ^{
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"public" : @YES,
+               @"level" : @"write" },
+        ]);
+    });
+
+    it(@"can be set to read only", ^{
+        [accessControl setReadOnlyForPublic];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"public" : @YES,
+               @"level" : @"read" }
+        ]);
+    });
+
+    it(@"can be set to no access", ^{
+        [accessControl setNoAccessForPublic];
+        expect(accessControl.entries).to.haveCountOf(0);
+        expect(serializedAccessControl(accessControl)).to.equal(@[]);
+    });
+
+    it(@"does not add duplicated entry", ^{
+        [accessControl setReadWriteAccessForPublic];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect(serializedAccessControl(accessControl)).to.equal(@[
+            @{ @"public" : @YES,
+               @"level" : @"write" },
         ]);
     });
 });
@@ -126,7 +229,6 @@ describe(@"Default Access Control", ^{
     it(@"should be public readable ACL by default", ^{
         SKYAccessControl *acl = [SKYAccessControl defaultAccessControl];
 
-        expect(acl.public).to.equal(NO);
         expect(acl.entries).to.haveACountOf(1);
 
         SKYAccessControlEntry *firstEntry = acl.entries[0];
@@ -173,6 +275,7 @@ describe(@"Default Access Control", ^{
 });
 
 describe(@"Access Control Entry", ^{
+    SKYRole *humanRole = [SKYRole roleWithName:@"Human"];
     SKYRole *godRole = [SKYRole roleWithName:@"God"];
     SKYRelation *friendRelation = [SKYRelation friendRelation];
     SKYRelation *followedRelation = [SKYRelation followedRelation];
@@ -181,10 +284,12 @@ describe(@"Access Control Entry", ^{
         [SKYAccessControlEntry readEntryForRelation:friendRelation];
     SKYAccessControlEntry *writeRelationEntry =
         [SKYAccessControlEntry writeEntryForRelation:followedRelation];
+
     SKYAccessControlEntry *readUserIDEntry = [SKYAccessControlEntry readEntryForUserID:@"userid0"];
     SKYAccessControlEntry *writeUserIDEntry =
         [SKYAccessControlEntry writeEntryForUserID:@"userid1"];
-    SKYAccessControlEntry *readRoleEntry = [SKYAccessControlEntry readEntryForRole:godRole];
+
+    SKYAccessControlEntry *readRoleEntry = [SKYAccessControlEntry readEntryForRole:humanRole];
     SKYAccessControlEntry *writeRoleEntry = [SKYAccessControlEntry writeEntryForRole:godRole];
 
     it(@"serializes correctly", ^{
@@ -204,7 +309,7 @@ describe(@"Access Control Entry", ^{
                @"level" : @"write",
                @"user_id" : @"userid1" },
             @{ @"level" : @"read",
-               @"role" : @"God" },
+               @"role" : @"Human" },
             @{ @"level" : @"write",
                @"role" : @"God" },
         ]);
@@ -220,29 +325,29 @@ describe(@"Access Control Entry", ^{
         expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(YES);
         expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(YES);
         expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(YES);
-        expect([accessControl hasReadAccessForRole:godRole]).to.equal(YES);
+        expect([accessControl hasReadAccessForRole:humanRole]).to.equal(YES);
         expect([accessControl hasWriteAccessForRole:godRole]).to.equal(YES);
 
-        [accessControl removeReadAccessForRelation:friendRelation];
-        [accessControl removeReadAccessForUserID:@"userid0"];
-        [accessControl removeReadAccessForRole:godRole];
+        [accessControl setNoAccessForRelation:friendRelation];
+        [accessControl setNoAccessForUserID:@"userid0"];
+        [accessControl setNoAccessForRole:humanRole];
 
         expect([accessControl hasReadAccessForRelation:friendRelation]).to.equal(NO);
         expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(YES);
         expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(NO);
         expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(YES);
-        expect([accessControl hasReadAccessForRole:godRole]).to.equal(NO);
+        expect([accessControl hasReadAccessForRole:humanRole]).to.equal(NO);
         expect([accessControl hasWriteAccessForRole:godRole]).to.equal(YES);
 
-        [accessControl removeWriteAccessForRelation:followedRelation];
-        [accessControl removeWriteAccessForUserID:@"userid1"];
-        [accessControl removeWriteAccessForRole:godRole];
+        [accessControl setReadOnlyForRelation:followedRelation];
+        [accessControl setReadOnlyForUserID:@"userid1"];
+        [accessControl setReadOnlyForRole:godRole];
 
         expect([accessControl hasReadAccessForRelation:friendRelation]).to.equal(NO);
         expect([accessControl hasWriteAccessForRelation:followedRelation]).to.equal(NO);
         expect([accessControl hasReadAccessForUserID:@"userid0"]).to.equal(NO);
         expect([accessControl hasWriteAccessForUserID:@"userid1"]).to.equal(NO);
-        expect([accessControl hasReadAccessForRole:godRole]).to.equal(NO);
+        expect([accessControl hasReadAccessForRole:humanRole]).to.equal(NO);
         expect([accessControl hasWriteAccessForRole:godRole]).to.equal(NO);
     });
 });
@@ -257,13 +362,12 @@ describe(@"SKYAccessControlDeserializer", ^{
 
     it(@"deserializes public access correctly", ^{
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:nil];
-        expect(accessControl.public).to.equal(YES);
-        expect(serializedAccessControl(accessControl)).to.equal(nil);
+        expect(accessControl).to.beNil();
     });
 
     it(@"empty array", ^{
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:@[]];
-        expect(accessControl.public).to.equal(NO);
+        expect(accessControl.entries).to.haveCountOf(0);
         expect(serializedAccessControl(accessControl)).to.equal(@[]);
     });
 
@@ -280,12 +384,12 @@ describe(@"SKYAccessControlDeserializer", ^{
                @"level" : @"write",
                @"user_id" : @"userid1" },
             @{ @"level" : @"read",
-               @"role" : @"God" },
+               @"role" : @"Human" },
             @{ @"level" : @"write",
                @"role" : @"God" },
         ];
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
-        expect(accessControl.public).to.equal(NO);
+        expect(accessControl.entries).to.haveCountOf(6);
         expect(serializedAccessControl(accessControl)).to.equal(undeserialized);
     });
 

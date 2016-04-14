@@ -32,17 +32,14 @@
 - (NSArray *)arrayWithAccessControl:(SKYAccessControl *)accessControl
 {
     if (accessControl == nil) {
-        return @[ [self
-            dictionaryWithPublicAccessControlEntry:[SKYAccessControlEntry readEntryForPublic]] ];
-    } else if (accessControl.public) {
         return nil;
-    } else {
-        NSMutableArray *array = [NSMutableArray array];
-        for (SKYAccessControlEntry *entry in accessControl) {
-            [array addObject:[self dictionaryWithAccessControlEntry:entry]];
-        }
-        return array;
     }
+
+    NSMutableArray *array = [NSMutableArray array];
+    for (SKYAccessControlEntry *entry in accessControl.entries) {
+        [array addObject:[self dictionaryWithAccessControlEntry:entry]];
+    }
+    return array;
 }
 
 - (NSDictionary *)dictionaryWithAccessControlEntry:(SKYAccessControlEntry *)entry

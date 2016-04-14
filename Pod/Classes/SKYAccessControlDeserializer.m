@@ -32,21 +32,18 @@
 - (SKYAccessControl *)accessControlWithArray:(NSArray *)array
 {
     if (array == nil) {
-        SKYAccessControl *acl = [[SKYAccessControl alloc] initWithEntries:@[]];
-        acl.public = YES;
-
-        return acl;
-    } else {
-        NSMutableArray *entries = [NSMutableArray arrayWithCapacity:array.count];
-        for (NSDictionary *entryDict in array) {
-            SKYAccessControlEntry *entry = [self accessControlEntryWithDictionary:entryDict];
-            if (entry != nil) {
-                [entries addObject:entry];
-            }
-        }
-
-        return [SKYAccessControl accessControlWithEntries:entries];
+        return nil;
     }
+
+    NSMutableArray *entries = [NSMutableArray arrayWithCapacity:array.count];
+    for (NSDictionary *entryDict in array) {
+        SKYAccessControlEntry *entry = [self accessControlEntryWithDictionary:entryDict];
+        if (entry != nil) {
+            [entries addObject:entry];
+        }
+    }
+
+    return [SKYAccessControl accessControlWithEntries:entries];
 }
 
 - (SKYAccessControlEntry *)accessControlEntryWithDictionary:(NSDictionary *)dictionary

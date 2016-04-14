@@ -18,20 +18,20 @@
 //
 
 #import "SKYAccessControl.h"
+#import "SKYAccessControlEntry.h"
 
 @interface SKYAccessControl ()
 
 + (instancetype)publicReadableAccessControl;
-+ (instancetype)accessControlWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries;
++ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries;
 
 + (instancetype)defaultAccessControl;
 + (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl;
 
-- (instancetype)initWithPublicReadableAccessControl NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithEntries:(NSArray /* SKYAccessControlEntry */ *)entries
+- (instancetype)initWithPublicReadableAccessControl;
+- (instancetype)initWithEntries:(NSArray<SKYAccessControlEntry *> *)entries
     NS_DESIGNATED_INITIALIZER;
 
-@property (strong, nonatomic) NSMutableOrderedSet *entries;
-@property (nonatomic, readwrite) BOOL public;
+@property (strong, nonatomic) NSMutableOrderedSet<SKYAccessControlEntry *> *entries;
 
 @end
