@@ -23,13 +23,13 @@
 @interface SKYAccessControl ()
 
 + (instancetype)publicReadableAccessControl;
-+ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *>*)entries;
++ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries;
 
 + (instancetype)defaultAccessControl;
 + (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl;
 
 - (instancetype)initWithPublicReadableAccessControl;
-- (instancetype)initWithEntries:(NSArray<SKYAccessControlEntry *>*)entries
+- (instancetype)initWithEntries:(NSArray<SKYAccessControlEntry *> *)entries
     NS_DESIGNATED_INITIALIZER;
 
 @property (strong, nonatomic) NSMutableOrderedSet<SKYAccessControlEntry *> *entries;

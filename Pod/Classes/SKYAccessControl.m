@@ -31,7 +31,7 @@
     return [[self alloc] initWithPublicReadableAccessControl];
 }
 
-+ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *>*)entries
++ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries
 {
     return [[self alloc] initWithEntries:entries];
 }
@@ -76,7 +76,7 @@
 
 - (instancetype)initWithPublicReadableAccessControl
 {
-    return [self initWithEntries:@[[SKYAccessControlEntry readEntryForPublic]]];
+    return [self initWithEntries:@[ [SKYAccessControlEntry readEntryForPublic] ]];
 }
 
 - (instancetype)initWithEntries:(NSArray<SKYAccessControlEntry *> *)entries
@@ -118,47 +118,41 @@
 
 - (void)setNoAccessForUserID:(NSString *)userID
 {
-    [self.entries filterUsingPredicate:
-        [NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                              NSDictionary* bindings)
-    {
-        return perEntry.entryType != SKYAccessControlEntryTypeDirect ||
-               perEntry.userID != userID;
-    }]];
+    [self.entries
+        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                   NSDictionary *bindings) {
+            return perEntry.entryType != SKYAccessControlEntryTypeDirect ||
+                   perEntry.userID != userID;
+        }]];
 }
 
 - (void)setNoAccessForRelation:(SKYRelation *)relation
 {
-    [self.entries filterUsingPredicate:
-     [NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                           NSDictionary* bindings)
-      {
-          return perEntry.entryType != SKYAccessControlEntryTypeRelation ||
-                 perEntry.relation != relation;
-      }]];
+    [self.entries
+        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                   NSDictionary *bindings) {
+            return perEntry.entryType != SKYAccessControlEntryTypeRelation ||
+                   perEntry.relation != relation;
+        }]];
 }
 
 - (void)setNoAccessForRole:(SKYRole *)role
 {
-    [self.entries filterUsingPredicate:
-     [NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                           NSDictionary* bindings)
-      {
-          return perEntry.entryType != SKYAccessControlEntryTypeRole ||
-                 perEntry.role != role;
-      }]];
+    [self.entries
+        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                   NSDictionary *bindings) {
+            return perEntry.entryType != SKYAccessControlEntryTypeRole || perEntry.role != role;
+        }]];
 }
 
 - (void)setNoAccessForPublic
 {
-    [self.entries filterUsingPredicate:
-     [NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                           NSDictionary* bindings)
-      {
-          return perEntry.entryType != SKYAccessControlEntryTypePublic;
-      }]];
+    [self.entries
+        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                   NSDictionary *bindings) {
+            return perEntry.entryType != SKYAccessControlEntryTypePublic;
+        }]];
 }
-
 
 #pragma mark - set read only
 - (void)setReadOnlyForUser:(SKYUser *)user
@@ -189,7 +183,6 @@
     [self setNoAccessForPublic];
     [self addEntry:[SKYAccessControlEntry readEntryForPublic]];
 }
-
 
 #pragma mark - set read write access
 - (void)setReadWriteAccessForUser:(SKYUser *)user
