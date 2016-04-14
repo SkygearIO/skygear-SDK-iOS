@@ -36,7 +36,7 @@
     }
 
     NSMutableArray *array = [NSMutableArray array];
-    for (SKYAccessControlEntry *entry in accessControl) {
+    for (SKYAccessControlEntry *entry in accessControl.entries) {
         [array addObject:[self dictionaryWithAccessControlEntry:entry]];
     }
     return array;
