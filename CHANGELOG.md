@@ -1,3 +1,9 @@
+## 0.11.0 (2016-05-09)
+
+### Other Notes
+- Update slack notification token (SkygearIO/skygear-server#19)
+
+
 ## 0.10.1 (2016-04-14)
 
 ### Incompatible Changes
