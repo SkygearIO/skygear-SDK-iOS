@@ -1,3 +1,7 @@
+## 0.12.0 (2016-05-30)
+
+No change since last release
+
 ## 0.11.0 (2016-05-09)
 
 ### Other Notes
