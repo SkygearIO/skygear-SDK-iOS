@@ -6,7 +6,7 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
   - Expecta (1.0.5)
-  - FBSDKCoreKit (4.11.0):
+  - FBSDKCoreKit (4.13.1):
     - Bolts (~> 1.7)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
@@ -25,15 +25,15 @@ PODS:
   - OHHTTPStubs/NSURLSession (4.6.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (4.6.0)
-  - SKYKit (0.10.0):
-    - SKYKit/Core (= 0.10.0)
-  - SKYKit/Core (0.10.0):
+  - SKYKit (0.12.0):
+    - SKYKit/Core (= 0.12.0)
+  - SKYKit/Core (0.12.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
-  - SKYKit/Facebook (0.10.0):
+  - SKYKit/Facebook (0.12.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
-  - SocketRocket (0.5.0)
+  - SocketRocket (0.5.1)
   - Specta (1.0.5)
 
 DEPENDENCIES:
@@ -46,17 +46,17 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   SKYKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
+  FBSDKCoreKit: 2807fe0da2ddb49a1469da6d6ff597f99912980f
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: a77fa2ad18ecaf965ff0bd0796946ac7ccd97152
-  SocketRocket: 2c51efccd2d73c99a923407ca4b06e7e9da95dbf
+  SKYKit: abba47bf32ecaf12e41f4b18fbb40ef2b5633d22
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 COCOAPODS: 0.39.0
