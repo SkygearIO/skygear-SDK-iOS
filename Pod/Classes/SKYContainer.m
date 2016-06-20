@@ -315,7 +315,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithEmail:username password:password];
+        [SKYSignupUserOperation operationWithUsername:username password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
