@@ -2,12 +2,12 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.1'
 
-target 'SKYKit', :exclusive => true do
+target 'SKYKit' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
 end
 
-target 'Tests', :exclusive => true do
+target 'Tests' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
 

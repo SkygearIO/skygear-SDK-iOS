@@ -43,7 +43,7 @@ SpecBegin(SKYUploadAssetOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container configAddress:@"ourd.test"];
+            [container configAddress:@"http://ourd.test/"];
             [container configureWithAPIKey:@"API_KEY"];
             [container updateWithUserRecordID:@"USER_ID"
                                   accessToken:[[SKYAccessToken alloc]

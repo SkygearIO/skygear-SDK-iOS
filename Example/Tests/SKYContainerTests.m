@@ -61,7 +61,7 @@ SpecBegin(SKYContainer)
     describe(@"config End Point address", ^{
         it(@"set the endPointAddress correctly", ^{
             SKYContainer *container = [[SKYContainer alloc] init];
-            [container configAddress:@"newpoint.com:4321"];
+            [container configAddress:@"http://newpoint.com:4321/"];
             NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
             expect(container.endPointAddress).to.equal(expectEndPoint);
             expect(container.pubsubClient.endPointAddress)
@@ -460,7 +460,7 @@ describe(@"maintains a private pubsub", ^{
         OCMExpect(
             [pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
 
-        [container configAddress:@"newpoint.com:4321"];
+        [container configAddress:@"http://newpoint.com:4321/"];
 
         OCMVerifyAll(pubsub);
     });
@@ -468,7 +468,7 @@ describe(@"maintains a private pubsub", ^{
     it(@"subscribes without deviceID", ^{
         OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
 
-        [container configAddress:@"newpoint.com:4321"];
+        [container configAddress:@"http://newpoint.com:4321/"];
 
         [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
                                                   forKey:@"SKYContainerDeviceID"];
@@ -484,7 +484,7 @@ describe(@"maintains a private pubsub", ^{
 
         [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
                                                   forKey:@"SKYContainerDeviceID"];
-        [container configAddress:@"newpoint.com:4321"];
+        [container configAddress:@"http://newpoint.com:4321/"];
 
         OCMVerifyAll(pubsub);
     });
@@ -505,7 +505,7 @@ describe(@"maintains a private pubsub", ^{
                     [invocation getArgument:&h atIndex:3];
                     handler = h;
                 });
-            [container configAddress:@"newpoint.com:4321"];
+            [container configAddress:@"http://newpoint.com:4321/"];
         });
 
         afterEach(^{

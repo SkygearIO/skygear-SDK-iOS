@@ -121,18 +121,27 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                       object:self];
 }
 
-/**
- Configurate the End-Point IP:PORT, no scheme is required. i.e. no http://
- */
 - (void)configAddress:(NSString *)address
 {
-    NSString *url = [NSString stringWithFormat:@"http://%@/", address];
-    _endPointAddress = [NSURL URLWithString:url];
-    _pubsubClient.endPointAddress =
-        [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/pubsub", address]];
+    NSURL *url = [NSURL URLWithString:address];
+    NSString *schema = url.scheme;
+    if (![schema isEqualToString:@"http"] && ![schema isEqualToString:@"https"]) {
+        NSLog(@"Error: only http or https schema is accepted");
+        return;
+    }
 
+    NSString *host = url.host;
+    if (url.port) {
+        host = [host stringByAppendingFormat:@":%@", url.port];
+    }
+
+    NSString *webSocketSchema = [schema isEqualToString:@"https"] ? @"wss" : @"ws";
+
+    _endPointAddress = url;
+    _pubsubClient.endPointAddress =
+        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
     _internalPubsubClient.endPointAddress =
-        [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@/_/pubsub", address]];
+        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
     [self configInternalPubsubClient];
 }
 
