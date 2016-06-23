@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SKYKit"
-  s.version          = "0.12.0"
+  s.version          = "0.12.1"
   s.summary          = "iOS SDK for Skygear"
   s.description      = <<-DESC
                        This is the client library for Skygear backend.
@@ -18,9 +18,6 @@ Pod::Spec.new do |s|
     core.requires_arc = true
 
     core.source_files = 'Pod/Classes/**/*'
-    core.resource_bundles = {
-      'SKYKit' => ['Pod/Assets/*.png']
-    }
 
     # core.public_header_files = 'Pod/Classes/**/*.h'
     # core.frameworks = 'UIKit', 'MapKit'

@@ -1,3 +1,15 @@
+## 0.12.1 (2016-06-23)
+
+### Incompatible Changes
+- Update config address format
+
+  Changed to use full url of endpoint in `- (void)configAddress:`,
+  for example, `[container configAddress:@"https://endpoint.skygeario.com/"]`
+
+### Bug fixes
+- Fix crash when deleting one record with error
+- Fix wrong data when sign up with username
+
 ## 0.12.0 (2016-05-30)
 
 No change since last release
