@@ -338,6 +338,7 @@
 
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+            SKYRecordID *deletedRecordID = nil;
             NSError *error = nil;
             if (operationError != nil) {
                 if (operationError.code == SKYErrorPartialOperationFailure) {
@@ -350,8 +351,11 @@
                     error = operationError;
                 }
             }
+            if ([recordIDs count] > 0) {
+                deletedRecordID = recordIDs[0];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordIDs[0], error);
+                completionHandler(deletedRecordID, error);
             });
         };
     }
