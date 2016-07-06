@@ -26,7 +26,6 @@
 #import "SKYLogoutUserOperation.h"
 #import "SKYNotification_Private.h"
 #import "SKYOperation.h"
-#import "SKYPushOperation.h"
 
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYLambdaOperation.h"
@@ -600,44 +599,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     };
 
     [self addOperation:operation];
-}
-
-#pragma mark - SKYPushOperation
-
-- (void)pushToUserRecordID:(NSString *)userRecordID alertBody:(NSString *)alertBody
-{
-    SKYPushOperation *pushOperation =
-        [[SKYPushOperation alloc] initWithUserRecordIDs:@[ userRecordID ] alertBody:alertBody];
-    [self addOperation:pushOperation];
-}
-
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody
-{
-    SKYPushOperation *pushOperation =
-        [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs alertBody:alertBody];
-    [self addOperation:pushOperation];
-}
-
-- (void)pushToUserRecordID:(NSString *)userRecordID
-      alertLocalizationKey:(NSString *)alertLocalizationKey
-     alertLocalizationArgs:(NSArray *)alertLocalizationArgs
-{
-    SKYPushOperation *pushOperation =
-        [[SKYPushOperation alloc] initWithUserRecordIDs:@[ userRecordID ]
-                                   alertLocalizationKey:alertLocalizationKey
-                                  alertLocalizationArgs:alertLocalizationArgs];
-    [self addOperation:pushOperation];
-}
-
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs
-       alertLocalizationKey:(NSString *)alertLocalizationKey
-      alertLocalizationArgs:(NSArray *)alertLocalizationArgs
-{
-    SKYPushOperation *pushOperation =
-        [[SKYPushOperation alloc] initWithUserRecordIDs:userRecordIDs
-                                   alertLocalizationKey:alertLocalizationKey
-                                  alertLocalizationArgs:alertLocalizationArgs];
-    [self addOperation:pushOperation];
 }
 
 @end
