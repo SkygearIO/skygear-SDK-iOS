@@ -253,17 +253,3 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
                                      roles:(NSArray<SKYRole *> *)roles
                                 completion:(void (^)(NSError *error))completionBlock;
 @end
-
-@interface SKYContainer (SKYPushOperation)
-
-- (void)pushToUserRecordID:(NSString *)userRecordID alertBody:(NSString *)alertBody;
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs alertBody:(NSString *)alertBody;
-
-- (void)pushToUserRecordID:(NSString *)userRecordID
-      alertLocalizationKey:(NSString *)alertLocalizationKey
-     alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
-- (void)pushToUserRecordIDs:(NSArray *)userRecordIDs
-       alertLocalizationKey:(NSString *)alertLocalizationKey
-      alertLocalizationArgs:(NSArray *)alertLocalizationArgs;
-
-@end
