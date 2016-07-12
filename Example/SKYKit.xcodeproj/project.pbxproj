@@ -421,7 +421,7 @@
 			attributes = {
 				CLASSPREFIX = SKY;
 				LastUpgradeCheck = 0710;
-				ORGANIZATIONNAME = "Kwok-kuen Cheung";
+				ORGANIZATIONNAME = "Oursky Ltd.";
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
