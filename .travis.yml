@@ -14,7 +14,7 @@ before_install:
 - sudo pip install lizard
 - pod install --project-directory=Example
 script:
-- xctool test -workspace Example/SkyKit.xcworkspace -scheme SKYKit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+- xctool test -workspace Example/SkyKit.xcworkspace -scheme "Test Runner" -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
 - pod lib lint
 - ./clang-check.sh
 - lizard Pod/ -C 15 -w -i 0
