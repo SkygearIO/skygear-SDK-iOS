@@ -19,7 +19,6 @@
 
 #import "SKYModifySubscriptionsOperation.h"
 #import "SKYDataSerialization.h"
-#import "SKYDefaults.h"
 #import "SKYError.h"
 #import "SKYOperationSubclass.h"
 #import "SKYSubscriptionSerialization.h"
@@ -61,12 +60,7 @@
         payload[@"subscriptions"] = dictionariesToSave;
     }
 
-    NSString *deviceID = nil;
-    if (self.deviceID) {
-        deviceID = self.deviceID;
-    } else {
-        deviceID = [SKYDefaults sharedDefaults].deviceID;
-    }
+    NSString *deviceID = self.deviceID;
     if (deviceID.length) {
         payload[@"device_id"] = deviceID;
     }

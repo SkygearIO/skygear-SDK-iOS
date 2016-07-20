@@ -21,7 +21,6 @@
 #import "SKYOperationSubclass.h"
 
 #import "SKYDataSerialization.h"
-#import "SKYDefaults.h"
 #import "SKYError.h"
 #import "SKYSubscription.h"
 
@@ -47,12 +46,7 @@
         @"database_id" : self.database.databaseID,
     } mutableCopy];
 
-    NSString *deviceID = nil;
-    if (self.deviceID) {
-        deviceID = self.deviceID;
-    } else {
-        deviceID = [SKYDefaults sharedDefaults].deviceID;
-    }
+    NSString *deviceID = self.deviceID;
     if (deviceID.length) {
         payload[@"device_id"] = deviceID;
     }

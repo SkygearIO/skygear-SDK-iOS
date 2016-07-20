@@ -176,32 +176,6 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
             });
         });
 
-        describe(@"when there exists device id", ^{
-            __block SKYDeleteSubscriptionsOperation *operation;
-
-            beforeEach(^{
-                id odDefaultsMock = OCMClassMock(SKYDefaults.class);
-                OCMStub([odDefaultsMock sharedDefaults]).andReturn(odDefaultsMock);
-                OCMStub([odDefaultsMock deviceID]).andReturn(@"EXISTING_DEVICE_ID");
-
-                operation =
-                    [[SKYDeleteSubscriptionsOperation alloc] initWithSubscriptionIDsToDelete:@[]];
-                operation.container = container;
-                operation.database = database;
-            });
-
-            it(@"request with device id", ^{
-                [operation prepareForRequest];
-                expect(operation.request.payload[@"device_id"]).to.equal(@"EXISTING_DEVICE_ID");
-            });
-
-            it(@"user-set device id overrides existing device id", ^{
-                operation.deviceID = @"ASSIGNED_DEVICE_ID";
-                [operation prepareForRequest];
-                expect(operation.request.payload[@"device_id"]).to.equal(@"ASSIGNED_DEVICE_ID");
-            });
-        });
-
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });

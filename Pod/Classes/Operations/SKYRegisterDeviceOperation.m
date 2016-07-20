@@ -18,7 +18,6 @@
 //
 
 #import "SKYRegisterDeviceOperation.h"
-#import "SKYDefaults.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 
@@ -81,12 +80,7 @@
         payload[@"device_token"] = deviceToken;
     }
 
-    NSString *deviceID;
-    if (self.deviceID.length) {
-        deviceID = self.deviceID;
-    } else {
-        deviceID = [SKYDefaults sharedDefaults].deviceID;
-    }
+    NSString *deviceID = self.deviceID;
     if (deviceID.length) {
         payload[@"id"] = deviceID;
     }
@@ -107,9 +101,6 @@
             NSDictionary *response = [weakSelf parseResponse:&error];
 
             NSString *deviceID = response[@"id"];
-            if (deviceID.length) {
-                [SKYDefaults sharedDefaults].deviceID = deviceID;
-            }
             weakSelf.registerCompletionBlock(deviceID, error);
         };
     } else {
