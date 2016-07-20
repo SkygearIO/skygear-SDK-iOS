@@ -12,6 +12,13 @@ target 'Test Runner' do
   pod "SKYKit/Facebook", :path => "../"
 end
 
+target 'Swift Example' do
+  use_frameworks!
+
+  pod "SKYKit", :path => "../"
+  pod "SKYKit/Facebook", :path => "../"
+end
+
 target 'Tests' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
