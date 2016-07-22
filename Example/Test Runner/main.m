@@ -1,5 +1,5 @@
 //
-//  SKYAppDelegate.h
+//  main.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -18,9 +18,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
-@interface SKYAppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-
-@end
+int main(int argc, char * argv[]) {
+    @autoreleasepool {
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+    }
+}

@@ -1,5 +1,5 @@
 //
-//  SKYViewController.h
+//  AppDelegate.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -19,6 +19,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SKYViewController : UIViewController
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
 
 @end
+

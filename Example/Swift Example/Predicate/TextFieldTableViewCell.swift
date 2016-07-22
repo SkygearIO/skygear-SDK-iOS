@@ -1,6 +1,6 @@
 //
-//  SKYViewController.m
-//  SKYKit
+//  TextFieldTableViewCell.swift
+//  SKYKit - Swift Example
 //
 //  Copyright 2015 Oursky Ltd.
 //
@@ -17,24 +17,21 @@
 //  limitations under the License.
 //
 
-#import "SKYViewController.h"
+import UIKit
 
-@interface SKYViewController ()
+class TextFieldTableViewCell: UITableViewCell {
 
-@end
+    @IBOutlet weak var textField: UITextField!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
 
-@implementation SKYViewController
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+        // Configure the view for the selected state
+    }
+
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-@end

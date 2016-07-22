@@ -2,7 +2,14 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.1'
 
-target 'SKYKit' do
+target 'Test Runner' do
+  pod "SKYKit", :path => "../"
+  pod "SKYKit/Facebook", :path => "../"
+end
+
+target 'Swift Example' do
+  use_frameworks!
+
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
 end
