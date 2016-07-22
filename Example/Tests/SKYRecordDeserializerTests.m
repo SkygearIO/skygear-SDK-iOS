@@ -126,11 +126,11 @@ SpecBegin(SKYRecordDeserializer)
             expect(authorRef.recordID.recordType).to.equal(@"author");
         });
 
-        it(@"deserialize date", ^{
+        it(@"deserialize date in RFC3339Nano", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"published"] = @{
                 SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
-                @"$date" : @"2001-01-01T08:00:00+08:00",
+                @"$date" : @"2001-01-01T00:00:00.000000Z",
             };
             SKYRecord *record = [deserializer recordWithDictionary:data];
             NSDate *publishDate = record[@"published"];

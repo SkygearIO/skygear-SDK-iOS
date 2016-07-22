@@ -35,19 +35,6 @@
     return [[SKYRecordDeserializer alloc] init];
 }
 
-+ (NSDateFormatter *)dateFormatter
-{
-    static NSDateFormatter *formatter;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
-    });
-
-    return formatter;
-}
-
 - (BOOL)isRecordDictionary:(NSDictionary *)obj
 {
     return [obj isKindOfClass:[NSDictionary class]] &&
@@ -72,7 +59,7 @@
         record.ownerUserRecordID = ownerID;
     }
 
-    NSDateFormatter *formatter = [self.class dateFormatter];
+    NSDateFormatter *formatter = [SKYDataSerialization dateFormatter];
     NSString *createdAt = obj[SKYRecordSerializationRecordCreatedAtKey];
     if (createdAt.length) {
         record.creationDate = [formatter dateFromString:createdAt];

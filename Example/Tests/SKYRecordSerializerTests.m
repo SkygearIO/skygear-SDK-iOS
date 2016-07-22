@@ -39,8 +39,7 @@ SpecBegin(SKYRecordSerializer)
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
                             data:nil];
 
-            dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+            dateFormatter = [SKYDataSerialization dateFormatter];
         });
 
         it(@"init", ^{
