@@ -79,11 +79,20 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     return formatter;
 }
 
++ (NSDate *)dateFromString:(NSString *)dateStr
+{
+    return [[self.class dateFormatter] dateFromString:dateStr];
+}
++ (NSString *)stringFromDate:(NSDate *)date
+{
+    return [[self.class dateFormatter] stringFromDate:date];
+}
+
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data
 {
     id obj = nil;
     if ([type isEqualToString:SKYDataSerializationDateType]) {
-        obj = [[self.class dateFormatter] dateFromString:data[@"$date"]];
+        obj = [self dateFromString:data[@"$date"]];
     } else if ([type isEqualToString:SKYDataSerializationReferenceType]) {
         SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:data[@"$id"]];
         obj = [[SKYReference alloc] initWithRecordID:recordID];
@@ -186,7 +195,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     if ([obj isKindOfClass:[NSDate class]]) {
         data = @{
             SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
-            @"$date" : [[self.class dateFormatter] stringFromDate:obj],
+            @"$date" : [self stringFromDate:obj],
         };
     } else if ([obj isKindOfClass:[SKYReference class]]) {
         data = @{

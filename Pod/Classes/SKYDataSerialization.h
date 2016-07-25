@@ -32,7 +32,8 @@ NSString *localFunctionName(NSString *remoteFunctionName);
 
 @interface SKYDataSerialization : NSObject
 
-+ (NSDateFormatter *)dateFormatter;
++ (NSDate *)dateFromString:(NSString *)dateStr;
++ (NSString *)stringFromDate:(NSDate *)date;
 + (id)deserializeObjectWithValue:(id)value;
 + (SKYAsset *)deserializeAssetWithDictionary:(NSDictionary *)data;
 

@@ -59,10 +59,9 @@
         record.ownerUserRecordID = ownerID;
     }
 
-    NSDateFormatter *formatter = [SKYDataSerialization dateFormatter];
     NSString *createdAt = obj[SKYRecordSerializationRecordCreatedAtKey];
     if (createdAt.length) {
-        record.creationDate = [formatter dateFromString:createdAt];
+        record.creationDate = [SKYDataSerialization dateFromString:createdAt];
     }
     NSString *creatorID = obj[SKYRecordSerializationRecordCreatorIDKey];
     if (creatorID.length) {
@@ -70,7 +69,7 @@
     }
     NSString *updatedAt = obj[SKYRecordSerializationRecordUpdatedAtKey];
     if (updatedAt.length) {
-        record.modificationDate = [formatter dateFromString:updatedAt];
+        record.modificationDate = [SKYDataSerialization dateFromString:updatedAt];
     }
     NSString *updaterID = obj[SKYRecordSerializationRecordUpdaterIDKey];
     if (updaterID.length) {

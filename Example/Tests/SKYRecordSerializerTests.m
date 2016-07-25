@@ -31,7 +31,6 @@ SpecBegin(SKYRecordSerializer)
     describe(@"serialize", ^{
         __block SKYRecordSerializer *serializer = nil;
         __block SKYRecord *record = nil;
-        __block NSDateFormatter *dateFormatter = nil;
 
         beforeEach(^{
             serializer = [SKYRecordSerializer serializer];
@@ -39,7 +38,6 @@ SpecBegin(SKYRecordSerializer)
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
                             data:nil];
 
-            dateFormatter = [SKYDataSerialization dateFormatter];
         });
 
         it(@"init", ^{
@@ -103,7 +101,7 @@ SpecBegin(SKYRecordSerializer)
             expect(publishDate[SKYDataSerializationCustomTypeKey])
                 .to.equal(SKYDataSerializationDateType);
 
-            expect([dateFormatter dateFromString:publishDate[@"$date"]])
+            expect([SKYDataSerialization dateFromString:publishDate[@"$date"]])
                 .to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
         });
 
