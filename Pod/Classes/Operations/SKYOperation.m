@@ -43,7 +43,6 @@
 {
     if ((self = [super init])) {
         _errorCreator = [[SKYErrorCreator alloc] init];
-        [self resetCompletionBlock];
     }
     return self;
 }
@@ -113,6 +112,17 @@
     return [NSURLRequest requestWithSKYRequest:self.request];
 }
 
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
+                                            request:(NSURLRequest *)request
+{
+    NSURLSessionTask *task;
+    task = [session dataTaskWithRequest:request
+                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                          [self handleRequestCompletionWithData:data response:response error:error];
+                      }];
+    return task;
+}
+
 - (void)prepareForRequest
 {
     @throw [NSException
@@ -149,11 +159,9 @@
 
     NSURLSessionConfiguration *myConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:myConfig];
-    NSURLSessionTask *task;
-    task = [session dataTaskWithRequest:[self makeURLRequest]
-                      completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                          [self handleRequestCompletionWithData:data response:response error:error];
-                      }];
+    NSURLSessionTask *task =
+        [self makeURLSessionTaskWithSession:session request:[self makeURLRequest]];
+
     [task resume];
 }
 
@@ -186,54 +194,35 @@
     return responseDictionary;
 }
 
-- (NSDictionary *)processResponseWithData:(NSData *)data
-                                 response:(NSHTTPURLResponse *)httpResponse
-                                    error:(NSError **)error
+- (NSError *)erorrWithResponse:(NSHTTPURLResponse *)response data:(NSData *)data
 {
-    if (!error) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"error must not be nil"
-                                     userInfo:nil];
-    }
-
-    [_errorCreator setDefaultUserInfoObject:[httpResponse.URL copy]
-                                     forKey:NSURLErrorFailingURLErrorKey];
-    [_errorCreator setDefaultUserInfoObject:@(httpResponse.statusCode)
-                                     forKey:SKYOperationErrorHTTPStatusCodeKey];
-
-    NSDictionary *response = [self parseResponse:data error:error];
-
-    if (httpResponse.statusCode >= 500 && *error) {
-        // There is an server error and the server sent a bad response.
-        // Replace the bad response error with an appropriate server error.
-        switch (httpResponse.statusCode) {
+    NSError *error = nil;
+    NSDictionary *responseDictionary = [self parseResponse:data error:&error];
+    if (error) {
+        // Provide an error object by information in status code
+        switch (response.statusCode) {
+            case 413:
+                return [_errorCreator errorWithCode:SKYErrorRequestPayloadTooLarge];
             case 503:
-                *error = [_errorCreator errorWithCode:SKYErrorServiceUnavailable];
+                return [_errorCreator errorWithCode:SKYErrorServiceUnavailable];
             default:
-                *error = [_errorCreator errorWithCode:SKYErrorUnexpectedError];
-                break;
+                return [_errorCreator errorWithCode:SKYErrorUnexpectedError];
         }
     }
 
-    if (httpResponse.statusCode >= 400 && !*error) {
-        // There is an error, and the server sent a good response. Create the error object
-        // from the "error" dictionary.
-        NSDictionary *errorDictionary = response[@"error"];
-        if ([errorDictionary isKindOfClass:[NSDictionary class]]) {
-            *error = [_errorCreator errorWithResponseDictionary:errorDictionary];
-        } else {
-            NSString *message =
-                [NSString stringWithFormat:@"HTTP Status Code \"%ld\" indicates that an error "
-                                           @"occurred, but no \"error\" dictionary exists.",
-                                           (long)httpResponse.statusCode];
-            *error = [_errorCreator errorWithCode:SKYErrorBadResponse
-                                         userInfo:@{
-                                             SKYErrorMessageKey : message,
-                                         }];
-        }
+    NSDictionary *errorDictionary = responseDictionary[@"error"];
+    if ([errorDictionary isKindOfClass:[NSDictionary class]]) {
+        return [_errorCreator errorWithResponseDictionary:errorDictionary];
+    } else {
+        NSString *message =
+            [NSString stringWithFormat:@"HTTP Status Code \"%ld\" indicates that an error "
+                                       @"occurred, but no \"error\" dictionary exists.",
+                                       (long)response.statusCode];
+        return [_errorCreator errorWithCode:SKYErrorBadResponse
+                                   userInfo:@{
+                                       SKYErrorMessageKey : message,
+                                   }];
     }
-
-    return response;
 }
 
 - (void)handleRequestCompletionWithData:(NSData *)data
@@ -241,44 +230,56 @@
                                   error:(NSError *)requestError
 {
     if (requestError) {
-        _response = nil;
-        _error = [_errorCreator errorWithCode:SKYErrorNetworkFailure
-                                     userInfo:@{
-                                         NSUnderlyingErrorKey : requestError,
-                                     }];
-    } else if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
-        // A NSHTTPURLResponse is required to check the HTTP status code of the response, which
-        // is required to determine if an error occurred.
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"Returned response is not NSHTTPURLResponse."
-                                     userInfo:nil];
-    } else {
-        NSError *error = nil;
-        _response =
-            [self processResponseWithData:data response:(NSHTTPURLResponse *)response error:&error];
-        _error = error;
+        NSError *error = [_errorCreator errorWithCode:SKYErrorNetworkFailure
+                                             userInfo:@{
+                                                 NSUnderlyingErrorKey : requestError,
+                                             }];
+        [self didEncounterError:error];
+        [self setFinished:YES];
+        return;
     }
 
-    NSAssert(_error != nil || _response != nil, @"either error or response must be non nil");
+    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]],
+             @"Returned response is not NSHTTPURLResponse");
+    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+    [_errorCreator setDefaultUserInfoObject:[response.URL copy]
+                                     forKey:NSURLErrorFailingURLErrorKey];
+    [_errorCreator setDefaultUserInfoObject:@(httpResponse.statusCode)
+                                     forKey:SKYOperationErrorHTTPStatusCodeKey];
+
+    if (httpResponse.statusCode >= 400) {
+        [self didEncounterError:[self erorrWithResponse:httpResponse data:data]];
+        [self setFinished:YES];
+        return;
+    }
+
+    [self handleResponseWithData:data];
     [self setFinished:YES];
-
-    if ([self isAuthFailureError:_error] && _container.authErrorHandler) {
-        _container.authErrorHandler(_container, _container.currentAccessToken, _error);
-    }
 }
 
-- (void)resetCompletionBlock
+- (void)handleResponseWithData:(NSData *)data
 {
-    __block __weak typeof(self) weakSelf = self;
-    self.completionBlock = ^{
-        __typeof__(self) strongSelf = weakSelf;
-        if (strongSelf->_error) {
-            [strongSelf handleRequestError:strongSelf->_error];
-        } else if (strongSelf->_response && [[strongSelf class] responseClass] != nil) {
-            SKYResponse *response = [strongSelf createResponseWithDictionary:strongSelf->_response];
-            [strongSelf handleResponse:response];
-        }
-    };
+    NSError *error = nil;
+    NSDictionary *responseDictionary = [self parseResponse:data error:&error];
+
+    if (error) {
+        [self didEncounterError:error];
+        return;
+    }
+
+    _response = responseDictionary;
+    SKYResponse *response = [self createResponseWithDictionary:responseDictionary];
+    [self handleResponse:response];
+}
+
+- (void)didEncounterError:(NSError *)error
+{
+    _error = error;
+    [self handleRequestError:error];
+
+    if ([self isAuthFailureError:error] && _container.authErrorHandler) {
+        _container.authErrorHandler(_container, _container.currentAccessToken, error);
+    }
 }
 
 - (void)handleRequestError:(NSError *)error

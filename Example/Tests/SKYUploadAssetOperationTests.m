@@ -60,7 +60,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeRequest];
+            NSURLRequest *request = [operation makeURLRequest];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL).to.equal([NSURL URLWithString:@"http://ourd.test/files/boy.txt"]);
@@ -79,7 +79,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeRequest];
+            NSURLRequest *request = [operation makeURLRequest];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
@@ -113,6 +113,31 @@ SpecBegin(SKYUploadAssetOperation)
                     ^(SKYAsset *returningAsset, NSError *operationError) {
                         expect(returningAsset).to.beIdenticalTo(asset);
                         expect(returningAsset.name).to.equal(@"prefixed-body.txt");
+                        done();
+                    };
+
+                [operation start];
+            });
+        });
+
+        it(@"handles 413 entity too large error", ^{
+            SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
+            operation.container = container;
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSData *data = [@"Entity too large" dataUsingEncoding:NSUTF8StringEncoding];
+                    return [OHHTTPStubsResponse responseWithData:data statusCode:413 headers:nil];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                operation.uploadAssetCompletionBlock =
+                    ^(SKYAsset *returningAsset, NSError *operationError) {
+                        expect(returningAsset).to.beIdenticalTo(asset);
+                        expect(operationError).notTo.beNil();
+                        expect(operationError.code).to.equal(SKYErrorRequestPayloadTooLarge);
                         done();
                     };
 

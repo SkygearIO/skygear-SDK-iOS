@@ -38,6 +38,7 @@
  The default implementation of this method throws an exception.
 
  This method is only called by <SKYOperation> when the <request> property is <nil>.
+ You are not expected to call this method directly.
  */
 - (void)prepareForRequest;
 
@@ -49,21 +50,61 @@
  method will be called, but not both.
 
  The default implementation of this method does nothing. Subclass is expected to implement this
- method.
+ method. You are not expected to call this method directly.
  */
 - (void)handleRequestError:(NSError *)error;
 
 /**
- Handles the response when operation completes.
+ Handles the response data when operation completes.
+
+ When no error occurred when making the request, this method will be called to handle the response
+ data.
+
+ The default implementation of this method parse the response and call -handleResponse:. If
+ you override this method, -handleResponse: is not be called. You are not expected to call this
+ method directly.
+ */
+
+- (void)handleResponseWithData:(NSData *)data;
+
+/**
+ Handles the parsed response when operation completes.
 
  When no error occurred when making the request or when processing the returned data, this
  method will be called to handle the response. Either this method or the -handleRequestError:
  method will be called, but not both.
 
  The default implementation of this method does nothing. Subclass is expected to implement this
- method.
+ method. You are not expected to call this method directly.
  */
 - (void)handleResponse:(SKYResponse *)response;
+
+/**
+ Create a <NSURLSessionTask> with the specified <NSURLSession> and <NSURLRequest>. <SKYOperation>
+ calls this method to create a NSURLSessionTask.
+
+ If you override this method, the task you created should call
+ -handleRequestCompletionWithData:response:error:.
+
+
+ This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
+ to call this method directly.
+ */
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
+                                            request:(NSURLRequest *)request;
+
+/**
+ Creates a <NSURLRequest> with <SKYRequest> specified as the property of this class.
+ <SKYOperation> calls this method to create a <NSURLRequest>.
+
+ This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
+ to call this method directly.
+ */
+- (NSURLRequest *)makeURLRequest;
+
+- (void)handleRequestCompletionWithData:(NSData *)data
+                               response:(NSURLResponse *)response
+                                  error:(NSError *)requestError;
 
 - (void)operationWillStart;
 

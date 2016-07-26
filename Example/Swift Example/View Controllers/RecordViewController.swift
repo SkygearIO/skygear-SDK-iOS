@@ -25,7 +25,7 @@ protocol RecordViewControllerDelegate {
     func recordViewController(controller: RecordViewController, didDeleteRecordID recordID:SKYRecordID)
 }
 
-class RecordViewController: UITableViewController, RecordTypeViewControllerDelegate {
+class RecordViewController: UITableViewController, RecordTypeViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     enum TableSection {
         case RecordType
@@ -49,6 +49,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     var delegate: RecordViewControllerDelegate? = nil
     var creatingNewRecord: Bool = false
     var readonly: Bool = false
+    var selectedAttributeName: String? = nil
     
     internal var attributes: [String] = []
     internal var dateFormatter: NSDateFormatter? = nil
@@ -230,6 +231,8 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         
         if let _ = record.objectForKey(attribute) as? String {
             return true
+        } else if let _ = record.objectForKey(attribute) as? SKYAsset {
+            return true
         }
         return false
     }
@@ -239,30 +242,12 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return
         }
         
-        if let val: String? = record.objectForKey(attribute) as? String {
-            let indexPath = NSIndexPath(forRow: self.attributes.indexOf(attribute)!, inSection: dataSectionIndex!)
-            
-            let alert = UIAlertController(title: "New Value", message: nil, preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler { (textField) in
-                textField.text = val
-            }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) in
-                guard let newVal = alert.textFields?.first?.text else {
-                    return
-                }
-                
-                record.setObject(newVal, forKey: attribute)
-                self.modified = true
-                
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-            }))
-            alert.preferredAction = alert.actions.last
-            self.presentViewController(alert, animated: true) {
-                if let indexPath = self.tableView.indexPathForSelectedRow {
-                    self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                }
-            }
+        selectedAttributeName = attribute
+        
+        if let _ = record.objectForKey(attribute) as? String {
+            editStringRecordAttribute()
+        } else if let _ = record.objectForKey(attribute) as? SKYAsset {
+            editAssetRecordAttribute()
         }
     }
     
@@ -283,15 +268,54 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         alert.addTextFieldWithConfigurationHandler({ (textField) in
             textField.placeholder = "Attribute Name"
         })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Add", style: .Default, handler: { (action) in
+            guard self.record != nil else {
+                return
+            }
+
+            guard let fieldName = alert.textFields?.first?.text else {
+                return
+            }
+            guard !fieldName.isEmpty else {
+                return
+            }
+            
+            self.selectedAttributeName = fieldName
+            self.chooseRecordAttributeType()
+        }))
+        alert.preferredAction = alert.actions.last
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func chooseRecordAttributeType() {
+        let alert = UIAlertController(title: "Attribute Type", message: "", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "String", style: .Default, handler: { (action) in
+            self.editStringRecordAttribute()
+        }))
+        alert.addAction(UIAlertAction(title: "Asset", style: .Default, handler: { (action) in
+            self.editAssetRecordAttribute()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.preferredAction = alert.actions.last
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func editStringRecordAttribute() {
+        let alert = UIAlertController(title: "String Value", message: "", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler({ (textField) in
-            textField.placeholder = "Attribute Value"
+            textField.placeholder = "Value"
+            
+            if let record = self.record {
+                textField.text = record.objectForKey(self.selectedAttributeName) as? String
+            }
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Add", style: .Default, handler: { (action) in
             guard let record = self.record else {
                 return
             }
-            guard let fieldName = alert.textFields?.first?.text, fieldValue = alert.textFields?.last?.text else {
+            guard let fieldName = self.selectedAttributeName, fieldValue = alert.textFields?.last?.text else {
                 return
             }
             guard !fieldName.isEmpty else {
@@ -299,22 +323,28 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             }
             
             record.setObject(fieldValue, forKey: fieldName)
-            if !self.attributes.contains(fieldName) {
-                self.attributes.append(fieldName)
-                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.attributes.count - 1, inSection: self.dataSectionIndex!)],
-                    withRowAnimation: .Automatic)
-            } else {
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: self.attributes.count - 1, inSection: self.dataSectionIndex!)],
-                    withRowAnimation: .Automatic)
-            }
-            
+            self.insertOrReloadAttribute(fieldName)
             self.modified = true
         }))
         alert.preferredAction = alert.actions.last
-        self.presentViewController(alert, animated: true) {
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            }
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func editAssetRecordAttribute() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .SavedPhotosAlbum
+        imagePicker.delegate = self
+        self.navigationController?.presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    
+    func insertOrReloadAttribute(attribute: String) {
+        if !self.attributes.contains(attribute) {
+            self.attributes.append(attribute)
+            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.attributes.count - 1, inSection: self.dataSectionIndex!)],
+                                                  withRowAnimation: .Automatic)
+        } else {
+            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: self.attributes.count - 1, inSection: self.dataSectionIndex!)],
+                                                  withRowAnimation: .Automatic)
         }
     }
     
@@ -467,6 +497,38 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             } else if indexPath.row < self.attributes.count {
                 self.editRecordAttribute(attributes[indexPath.row])
             }
+        }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    // MARK: - UIImagePickerControllerDelegate
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+        
+        let asset = SKYAsset(data: UIImagePNGRepresentation(image))
+        SKYContainer.defaultContainer().uploadAsset(asset) { (asset, error) in
+            if error != nil {
+                let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+                return
+            }
+            
+            guard let record = self.record else{
+                return
+            }
+            
+            guard let fieldName = self.selectedAttributeName else {
+                return
+            }
+
+            record.setObject(asset, forKey: fieldName)
+            self.insertOrReloadAttribute(fieldName)
+            self.modified = true
         }
     }
 }
