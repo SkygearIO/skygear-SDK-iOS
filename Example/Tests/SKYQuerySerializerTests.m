@@ -86,7 +86,7 @@ describe(@"serialize predicate", ^{
     beforeEach(^{
         serializer = [SKYQuerySerializer serializer];
         dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
     });
 
     it(@"lhs key path", ^{

@@ -133,7 +133,7 @@ describe(@"deserialize predicate", ^{
             @{ @"$type" : @"keypath",
                @"$val" : @"dob" },
             @{ @"$type" : @"date",
-               @"$date" : @"2015-02-02T01:43:19+00:00" }
+               @"$date" : @"2015-02-02T01:43:19.000Z" }
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];

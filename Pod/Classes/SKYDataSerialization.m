@@ -65,13 +65,34 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 @implementation SKYDataSerialization
 
++ (NSDateFormatter *)dateFormatter
+{
+    // Skygear-server use RFC3339Nano, ref: https://golang.org/pkg/time/
+    static NSDateFormatter *formatter;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
+    });
+
+    return formatter;
+}
+
++ (NSDate *)dateFromString:(NSString *)dateStr
+{
+    return [[self.class dateFormatter] dateFromString:dateStr];
+}
++ (NSString *)stringFromDate:(NSDate *)date
+{
+    return [[self.class dateFormatter] stringFromDate:date];
+}
+
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data
 {
     id obj = nil;
     if ([type isEqualToString:SKYDataSerializationDateType]) {
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-        obj = [formatter dateFromString:data[@"$date"]];
+        obj = [self dateFromString:data[@"$date"]];
     } else if ([type isEqualToString:SKYDataSerializationReferenceType]) {
         SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:data[@"$id"]];
         obj = [[SKYReference alloc] initWithRecordID:recordID];
@@ -172,11 +193,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 {
     id data = nil;
     if ([obj isKindOfClass:[NSDate class]]) {
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
         data = @{
             SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
-            @"$date" : [formatter stringFromDate:obj],
+            @"$date" : [self stringFromDate:obj],
         };
     } else if ([obj isKindOfClass:[SKYReference class]]) {
         data = @{
