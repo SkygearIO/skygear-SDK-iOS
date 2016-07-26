@@ -512,7 +512,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         let asset = SKYAsset(data: UIImagePNGRepresentation(image))
         SKYContainer.defaultContainer().uploadAsset(asset) { (asset, error) in
             if error != nil {
-                let alert = UIAlertController(title: "Unable to delete", message: error!.localizedDescription, preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .Alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 return
