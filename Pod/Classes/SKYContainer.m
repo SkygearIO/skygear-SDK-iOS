@@ -559,7 +559,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
     SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
-    operation.uploadAssetCompletionBlock = completionHandler;
+    operation.uploadAssetCompletionBlock = ^(SKYAsset *asset, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler) {
+                completionHandler(asset, error);
+            }
+        });
+    };
     [self addOperation:operation];
 }
 
