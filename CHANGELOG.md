@@ -1,4 +1,20 @@
-## 0.13.9 (2016-07-05)
+## 0.14.0 (2016-07-26)
+
+### Features
+
+- Add example app in Swift (#9)
+
+### Bug fixes
+
+- Fix request/response handling on asset operations (#5)
+- Fix date serialization format (#15)
+- Remove caching of device id in device-related operations (#12)
+
+### Other notes
+
+- Remove SKYPushOperation which never worked
+
+## 0.13.0 (2016-07-05)
 
 No change since last release
 
