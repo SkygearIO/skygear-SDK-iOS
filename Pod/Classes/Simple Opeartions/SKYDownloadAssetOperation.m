@@ -20,12 +20,10 @@
 #import "SKYDownloadAssetOperation.h"
 
 #import "SKYAsset_Private.h"
-#import "SKYOperation+OverrideLifeCycle.h"
 
 @interface SKYDownloadAssetOperation ()
 
 @property (nonatomic, readwrite) SKYAsset *asset;
-@property (nonatomic, readwrite) NSURLSession *session;
 @property (nonatomic, readwrite) NSURLSessionDownloadTask *task;
 
 @end
@@ -36,8 +34,6 @@
 {
     self = [super init];
     if (self) {
-        _session = [NSURLSession
-            sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         _asset = asset;
     }
     return self;
@@ -50,47 +46,50 @@
 
 #pragma mark - NSOperation
 
-- (void)start
+- (BOOL)shouldObserveProgress
 {
-    if (self.cancelled || self.executing || self.finished) {
-        return;
-    }
+    return self.downloadAssetProgressBlock != nil;
+}
 
-    [self operationWillStart];
+- (NSURLRequest *)makeURLRequest
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.asset.url];
+    return request;
+}
 
-    [self setExecuting:YES];
-
-    BOOL shouldObserveProgress = self.downloadAssetProgressBlock != nil;
-
-    NSURLRequest *request = [self makeRequest];
-    __weak typeof(self) weakSelf = self;
-    self.task = [self.session
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
+                                            request:(NSURLRequest *)request
+{
+    NSURLSessionDownloadTask *task;
+    task = [session
         downloadTaskWithRequest:request
               completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-                  __strong typeof(self) strongSelf = weakSelf;
-
-                  [strongSelf handleCompletionWithLocation:location response:response error:error];
-
-                  if (shouldObserveProgress) {
-                      [strongSelf.task
+                  if ([self shouldObserveProgress]) {
+                      [self.task
                           removeObserver:self
                               forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
                                  context:nil];
                   }
 
-                  [strongSelf setExecuting:NO];
-                  [strongSelf setFinished:YES];
+                  NSData *data = nil;
+                  if (!error) {
+                      data = [NSData dataWithContentsOfURL:location
+                                                   options:NSDataReadingMappedIfSafe
+                                                     error:&error];
+                  }
 
+                  [self handleRequestCompletionWithData:data response:response error:error];
               }];
 
-    if (shouldObserveProgress) {
-        [self.task addObserver:self
-                    forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
-                       options:0
-                       context:nil];
+    if ([self shouldObserveProgress]) {
+        [task addObserver:self
+               forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
+                  options:0
+                  context:nil];
     }
 
-    [self.task resume];
+    self.task = task;
+    return task;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -112,24 +111,17 @@
 
 #pragma mark - Other methods
 
-- (NSURLRequest *)makeRequest
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.asset.url];
-    return request;
-}
-
-- (void)handleCompletionWithLocation:(NSURL *)location
-                            response:(NSURLResponse *)response
-                               error:(NSError *)error
+- (void)handleResponseWithData:(NSData *)data
 {
     if (self.downloadAssetCompletionBlock) {
-        NSData *data = nil;
-        if (!error) {
-            data = [NSData dataWithContentsOfURL:location
-                                         options:NSDataReadingMappedIfSafe
-                                           error:&error];
-        }
-        self.downloadAssetCompletionBlock(_asset, data, error);
+        self.downloadAssetCompletionBlock(_asset, data, nil);
+    }
+}
+
+- (void)handleRequestError:(NSError *)error
+{
+    if (self.downloadAssetCompletionBlock) {
+        self.downloadAssetCompletionBlock(_asset, nil, error);
     }
 }
 

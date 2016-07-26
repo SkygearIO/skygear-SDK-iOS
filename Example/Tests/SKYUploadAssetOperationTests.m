@@ -60,7 +60,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeRequest];
+            NSURLRequest *request = [operation makeURLRequest];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL).to.equal([NSURL URLWithString:@"http://ourd.test/files/boy.txt"]);
@@ -79,7 +79,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeRequest];
+            NSURLRequest *request = [operation makeURLRequest];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
