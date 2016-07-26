@@ -41,6 +41,8 @@ NSString *SKYErrorNameWithCode(SKYErrorCode errorCode)
             return @"BadResponse";
         case SKYErrorInvalidData:
             return @"InvalidData";
+        case SKYErrorRequestPayloadTooLarge:
+            return @"RequestPayloadTooLarge";
         case SKYErrorNotAuthenticated:
             return @"NotAuthenticated";
         case SKYErrorPermissionDenied:
@@ -97,6 +99,8 @@ NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode)
             return @"The response sent by the server cannot be processed.";
         case SKYErrorInvalidData:
             return @"The data sent by the server cannot be processed.";
+        case SKYErrorRequestPayloadTooLarge:
+            return @"The data trying to be sent to the server is too large.";
         case SKYErrorNotAuthenticated:
             return @"You have to be authenticated to perform this operation.";
         case SKYErrorPermissionDenied:

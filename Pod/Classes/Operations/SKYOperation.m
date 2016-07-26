@@ -201,6 +201,8 @@
     if (error) {
         // Provide an error object by information in status code
         switch (response.statusCode) {
+            case 413:
+                return [_errorCreator errorWithCode:SKYErrorRequestPayloadTooLarge];
             case 503:
                 return [_errorCreator errorWithCode:SKYErrorServiceUnavailable];
             default:

@@ -120,6 +120,31 @@ SpecBegin(SKYUploadAssetOperation)
             });
         });
 
+        it(@"handles 413 entity too large error", ^{
+            SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
+            operation.container = container;
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSData *data = [@"Entity too large" dataUsingEncoding:NSUTF8StringEncoding];
+                    return [OHHTTPStubsResponse responseWithData:data statusCode:413 headers:nil];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                operation.uploadAssetCompletionBlock =
+                    ^(SKYAsset *returningAsset, NSError *operationError) {
+                        expect(returningAsset).to.beIdenticalTo(asset);
+                        expect(operationError).notTo.beNil();
+                        expect(operationError.code).to.equal(SKYErrorRequestPayloadTooLarge);
+                        done();
+                    };
+
+                [operation start];
+            });
+        });
+
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });
