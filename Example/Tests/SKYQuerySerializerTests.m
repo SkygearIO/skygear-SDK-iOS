@@ -359,7 +359,8 @@ describe(@"serialize predicate", ^{
 
     it(@"user discover predicate", ^{
         SKYUserDiscoverPredicate *p = [SKYUserDiscoverPredicate
-            predicateWithEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]];
+            predicateWithEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
+                      usernames:@[ @"john.doe" ]];
         NSArray *result = [serializer serializeWithPredicate:p];
 
         expect(result).to.equal(@[
@@ -367,6 +368,7 @@ describe(@"serialize predicate", ^{
             @"userDiscover",
             @{
                 @"emails" : @[ @"john.doe@example.com", @"jane.doe@example.com" ],
+                @"usernames" : @[ @"john.doe" ],
             },
         ]);
     });

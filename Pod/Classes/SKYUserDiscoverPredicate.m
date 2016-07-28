@@ -28,14 +28,29 @@
     return self;
 }
 
-+ (instancetype)predicateWithEmails:(NSArray *)emails
++ (instancetype)predicateWithEmails:(NSArray<NSString *> *)emails
+                          usernames:(NSArray<NSString *> *)usernames
 {
     SKYUserDiscoverPredicate *p = [[SKYUserDiscoverPredicate alloc] init];
     p->_emails = [emails copy];
     if (![p->_emails isKindOfClass:[NSArray class]]) {
         p->_emails = [NSArray array];
     }
+    p->_usernames = [usernames copy];
+    if (![p->_usernames isKindOfClass:[NSArray class]]) {
+        p->_usernames = [NSArray array];
+    }
     return p;
+}
+
++ (instancetype)predicateWithEmails:(NSArray<NSString *> *)emails
+{
+    return [SKYUserDiscoverPredicate predicateWithEmails:emails usernames:nil];
+}
+
++ (instancetype)predicateWithUsernames:(NSArray<NSString *> *)usernames
+{
+    return [SKYUserDiscoverPredicate predicateWithEmails:nil usernames:usernames];
 }
 
 @end

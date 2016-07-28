@@ -297,7 +297,8 @@
         if (![userData isKindOfClass:[NSDictionary class]]) {
             userData = [NSDictionary dictionary];
         }
-        return [SKYUserDiscoverPredicate predicateWithEmails:userData[@"emails"]];
+        return [SKYUserDiscoverPredicate predicateWithEmails:userData[@"emails"]
+                                                   usernames:userData[@"usernames"]];
     } else {
         NSLog(@"Unexpected functional predicate %@.", array[1]);
         return [NSPredicate predicateWithValue:YES];

@@ -236,12 +236,17 @@
         ];
     } else if ([predicate isKindOfClass:[SKYUserDiscoverPredicate class]]) {
         SKYUserDiscoverPredicate *userPredicate = (SKYUserDiscoverPredicate *)predicate;
+        NSMutableDictionary *args = [NSMutableDictionary dictionary];
+        if (userPredicate.usernames.count > 0) {
+            args[@"usernames"] = [userPredicate.usernames copy];
+        }
+        if (userPredicate.emails.count > 0) {
+            args[@"emails"] = [userPredicate.emails copy];
+        }
         return @[
             @"func",
             @"userDiscover",
-            @{
-                @"emails" : userPredicate.emails,
-            },
+            args,
         ];
     } else if (!predicate) {
         return [NSArray array];
