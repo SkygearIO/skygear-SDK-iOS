@@ -57,7 +57,6 @@
 #import "SKYQueryDeserializer.h"
 #import "SKYQueryOperation.h"
 #import "SKYQuerySerializer.h"
-#import "SKYQueryUsersOperation.h"
 #import "SKYRecord.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordID.h"
