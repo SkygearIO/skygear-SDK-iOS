@@ -401,16 +401,31 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)queryUsersByEmails:(NSArray<NSString *> *)emails
          completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
 {
-    SKYQuery *query =
-        [SKYQuery queryWithRecordType:@"user"
-                            predicate:[SKYUserDiscoverPredicate predicateWithEmails:emails]];
+    SKYUserDiscoverPredicate *predicate = [SKYUserDiscoverPredicate predicateWithEmails:emails];
+    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
+}
+
+- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
+            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
+{
+    SKYUserDiscoverPredicate *predicate =
+        [SKYUserDiscoverPredicate predicateWithUsernames:usernames];
+    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
+}
+
+- (void)queryUsersByPredicate:(SKYUserDiscoverPredicate *)predicate
+            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
+{
+    SKYQuery *query = [SKYQuery queryWithRecordType:@"user" predicate:predicate];
     SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
     operation.container = self;
     operation.database = self.publicCloudDatabase;
     operation.queryRecordsCompletionBlock =
         ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
             if (completionHandler) {
-                completionHandler(fetchedRecords, operationError);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(fetchedRecords, operationError);
+                });
             }
         };
 

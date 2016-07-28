@@ -675,6 +675,8 @@ describe(@"manage user", ^{
         waitUntil(^(DoneCallback done) {
             [container queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
                         completionHandler:^(NSArray<SKYRecord *> *users, NSError *error) {
+                            expect([NSThread isMainThread]).to.beTruthy();
+
                             expect(error).to.beNil();
                             expect(users).to.haveACountOf(2);
 

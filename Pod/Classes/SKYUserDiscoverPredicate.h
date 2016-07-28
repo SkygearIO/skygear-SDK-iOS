@@ -26,13 +26,29 @@
 @interface SKYUserDiscoverPredicate : NSPredicate
 
 /**
- * Sets or returns user email.
+ * Returns user email in predicate.
  */
-@property (nonatomic, readonly) NSArray *emails;
+@property (nonatomic, readonly) NSArray<NSString *> *emails;
 
 /**
- * Returns an instance of <SKYDiscoverPredicate>.
+ * Returns username in predicate.
  */
-+ (instancetype)predicateWithEmails:(NSArray *)emails;
+@property (nonatomic, readonly) NSArray<NSString *> *usernames;
+
+/**
+ * Returns an instance of <SKYDiscoverPredicate> for searching user by emails and usernames.
+ */
++ (instancetype)predicateWithEmails:(NSArray<NSString *> *)emails
+                          usernames:(NSArray<NSString *> *)usernames;
+
+/**
+ * Returns an instance of <SKYDiscoverPredicate> for searching user by emails.
+ */
++ (instancetype)predicateWithEmails:(NSArray<NSString *> *)emails;
+
+/**
+ * Returns an instance of <SKYDiscoverPredicate> for searching user by usernames.
+ */
++ (instancetype)predicateWithUsernames:(NSArray<NSString *> *)usernames;
 
 @end
