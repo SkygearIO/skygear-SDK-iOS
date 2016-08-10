@@ -121,7 +121,8 @@
        completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler
 {
     SKYModifySubscriptionsOperation *operation =
-        [[SKYModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[ subscription ]];
+        [SKYModifySubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                           subscriptionsToSave:@[ subscription ]];
     if (completionHandler) {
         operation.modifySubscriptionsCompletionBlock =
             ^(NSArray *savedSubscriptions, NSError *operationError) {
