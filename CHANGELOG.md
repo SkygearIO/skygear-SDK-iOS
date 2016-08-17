@@ -1,3 +1,13 @@
+## 0.15.0 (2016-08-17)
+
+### Features
+
+- Support user discovery with username (skygeario/skygear-server#90)
+
+### Other Notes
+
+- Remove SKYQueryUsersOperation
+
 ## 0.14.0 (2016-07-26)
 
 ### Features
