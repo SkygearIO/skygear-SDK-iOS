@@ -26,18 +26,21 @@
 
 @implementation SKYDeleteSubscriptionsOperation
 
-- (instancetype)initWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+         subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 {
     self = [super init];
     if (self) {
         self.subscriptionIDsToDelete = subscriptionIDsToDelete;
+        self.deviceID = deviceID;
     }
     return self;
 }
 
-+ (instancetype)operationWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+              subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 {
-    return [[self alloc] initWithSubscriptionIDsToDelete:subscriptionIDsToDelete];
+    return [[self alloc] initWithDeviceID:deviceID subscriptionIDsToDelete:subscriptionIDsToDelete];
 }
 
 - (void)prepareForRequest

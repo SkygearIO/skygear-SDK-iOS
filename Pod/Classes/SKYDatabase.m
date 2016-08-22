@@ -144,8 +144,9 @@
                completionHandler:
                    (void (^)(NSString *subscriptionID, NSError *error))completionHandler
 {
-    SKYDeleteSubscriptionsOperation *operation = [[SKYDeleteSubscriptionsOperation alloc]
-        initWithSubscriptionIDsToDelete:@[ subscriptionID ]];
+    SKYDeleteSubscriptionsOperation *operation =
+        [SKYDeleteSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                       subscriptionIDsToDelete:@[ subscriptionID ]];
     if (completionHandler) {
         operation.deleteSubscriptionsCompletionBlock =
             ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {
