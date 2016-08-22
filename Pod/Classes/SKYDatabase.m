@@ -83,7 +83,8 @@
 
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
-    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    SKYFetchSubscriptionsOperation *operation = [SKYFetchSubscriptionsOperation
+        fetchAllSubscriptionsOperationWithDeviceID:self.container.registeredDeviceID];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
@@ -99,7 +100,9 @@
 - (void)fetchSubscriptionWithID:(NSString *)subscriptionID
               completionHandler:(void (^)(SKYSubscription *, NSError *))completionHandler
 {
-    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    SKYFetchSubscriptionsOperation *operation =
+        [SKYFetchSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                              subscriptionIDs:@[ subscriptionID ]];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
