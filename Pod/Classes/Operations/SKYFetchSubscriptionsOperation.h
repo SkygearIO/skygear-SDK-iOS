@@ -21,14 +21,16 @@
 
 @interface SKYFetchSubscriptionsOperation : SKYDatabaseOperation
 
-- (instancetype)initWithSubscriptionIDs:(NSArray *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+                 subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)fetchAllSubscriptionsOperation;
-+ (instancetype)operationWithSubscriptionIDs:(NSArray *)subscriptionIDs;
++ (instancetype)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+                      subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
 
 @property (nonatomic, copy) NSString *deviceID;
 
-@property (nonatomic, copy) NSArray *subscriptionIDs;
+@property (nonatomic, copy) NSArray<NSString *> *subscriptionIDs;
 
 @property (nonatomic, copy) void (^perSubscriptionCompletionBlock)
     (SKYSubscription *subscription, NSString *subscriptionID, NSError *error);

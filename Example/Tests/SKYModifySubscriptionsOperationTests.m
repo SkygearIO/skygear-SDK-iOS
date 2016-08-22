@@ -42,8 +42,8 @@ SpecBegin(SKYModifySubscriptionsOperation)
 
         it(@"multiple subscriptions", ^{
             SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
-                operationWithSubscriptionsToSave:@[ subscription1, subscription2 ]];
-            operation.deviceID = @"DEVICE_ID";
+                operationWithDeviceID:@"DEVICE_ID"
+                  subscriptionsToSave:@[ subscription1, subscription2 ]];
             operation.container = container;
             operation.database = database;
             [operation prepareForRequest];
@@ -64,7 +64,8 @@ SpecBegin(SKYModifySubscriptionsOperation)
 
         it(@"make request", ^{
             SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
-                operationWithSubscriptionsToSave:@[ subscription1, subscription2 ]];
+                operationWithDeviceID:@"DEVICE_ID"
+                  subscriptionsToSave:@[ subscription1, subscription2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -128,7 +129,8 @@ SpecBegin(SKYModifySubscriptionsOperation)
 
         it(@"pass error", ^{
             SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
-                operationWithSubscriptionsToSave:@[ subscription1, subscription2 ]];
+                operationWithDeviceID:@"DEVICE_ID"
+                  subscriptionsToSave:@[ subscription1, subscription2 ]];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -153,7 +155,8 @@ SpecBegin(SKYModifySubscriptionsOperation)
 
         it(@"per block", ^{
             SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
-                operationWithSubscriptionsToSave:@[ subscription1, subscription2 ]];
+                operationWithDeviceID:@"DEVICE_ID"
+                  subscriptionsToSave:@[ subscription1, subscription2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

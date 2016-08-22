@@ -38,8 +38,8 @@ SpecBegin(SKYFetchSubscriptionsOperation)
 
         it(@"single subscription", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithSubscriptionIDs:@[ @"sub1" ]];
-            operation.deviceID = @"DEVICE_ID";
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                                      subscriptionIDs:@[ @"sub1" ]];
             operation.container = container;
             operation.database = database;
 
@@ -60,8 +60,8 @@ SpecBegin(SKYFetchSubscriptionsOperation)
 
         it(@"multiple subscriptions", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithSubscriptionIDs:@[ @"sub1", @"sub2" ]];
-            operation.deviceID = @"DEVICE_ID";
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                                      subscriptionIDs:@[ @"sub1", @"sub2" ]];
             operation.container = container;
             operation.database = database;
 
@@ -81,7 +81,8 @@ SpecBegin(SKYFetchSubscriptionsOperation)
 
         it(@"make request", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithSubscriptionIDs:@[ @"sub1", @"sub2" ]];
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                                      subscriptionIDs:@[ @"sub1", @"sub2" ]];
             operation.container = container;
             operation.database = database;
 
@@ -141,7 +142,8 @@ SpecBegin(SKYFetchSubscriptionsOperation)
 
         it(@"pass error", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithSubscriptionIDs:@[ @"sub1", @"sub2" ]];
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                                      subscriptionIDs:@[ @"sub1", @"sub2" ]];
             operation.container = container;
             operation.database = database;
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -168,7 +170,8 @@ SpecBegin(SKYFetchSubscriptionsOperation)
 
         it(@"per block", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithSubscriptionIDs:@[ @"sub1", @"sub2" ]];
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                                      subscriptionIDs:@[ @"sub1", @"sub2" ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

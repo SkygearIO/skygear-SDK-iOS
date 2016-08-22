@@ -26,7 +26,7 @@
 
 @interface SKYFetchSubscriptionsOperation ()
 
-- (instancetype)initFetchAll NS_DESIGNATED_INITIALIZER;
+- (instancetype)initFetchAllWithDeviceID:(NSString *)deviceID NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, assign) BOOL isFetchAll;
 
@@ -34,32 +34,36 @@
 
 @implementation SKYFetchSubscriptionsOperation
 
-- (instancetype)initWithSubscriptionIDs:(NSArray *)subscriptionIDs
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+                 subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs
 {
     self = [super init];
     if (self) {
+        _deviceID = deviceID;
         _subscriptionIDs = subscriptionIDs;
     }
     return self;
 }
 
-- (instancetype)initFetchAll
+- (instancetype)initFetchAllWithDeviceID:(NSString *)deviceID
 {
     self = [super init];
     if (self) {
+        _deviceID = deviceID;
         _isFetchAll = YES;
     }
     return self;
 }
 
-+ (instancetype)operationWithSubscriptionIDs:(NSArray *)subscriptionIDs
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+                      subscriptionIDs:(NSArray *)subscriptionIDs
 {
-    return [[self alloc] initWithSubscriptionIDs:subscriptionIDs];
+    return [[self alloc] initWithDeviceID:deviceID subscriptionIDs:subscriptionIDs];
 }
 
-+ (instancetype)fetchAllSubscriptionsOperation
++ (instancetype)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
 {
-    return [[self alloc] initFetchAll];
+    return [[self alloc] initFetchAllWithDeviceID:deviceID];
 }
 
 - (void)prepareForRequest

@@ -38,8 +38,8 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
 
         it(@"multiple subscriptions", ^{
             SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                operationWithSubscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
-            operation.deviceID = @"DEVICE_ID";
+                  operationWithDeviceID:@"DEVICE_ID"
+                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
             operation.database = database;
             operation.container = container;
             [operation prepareForRequest];
@@ -57,7 +57,8 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
 
         it(@"make request", ^{
             SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                operationWithSubscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+                  operationWithDeviceID:@"DEVICE_ID"
+                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -94,7 +95,8 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
 
         it(@"pass error", ^{
             SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                operationWithSubscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+                  operationWithDeviceID:@"DEVICE_ID"
+                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -121,7 +123,8 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
 
         it(@"pass per item error", ^{
             SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                operationWithSubscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+                  operationWithDeviceID:@"DEVICE_ID"
+                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

@@ -22,9 +22,11 @@
 
 @interface SKYModifySubscriptionsOperation : SKYDatabaseOperation
 
-- (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+             subscriptionsToSave:(NSArray *)subscriptionsToSave;
 
-+ (instancetype)operationWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+                  subscriptionsToSave:(NSArray *)subscriptionsToSave;
 
 @property (nonatomic, copy) NSString *deviceID;
 @property (nonatomic, copy) NSArray *subscriptionsToSave;
