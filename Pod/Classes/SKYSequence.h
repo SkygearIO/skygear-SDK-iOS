@@ -23,7 +23,7 @@
  SKYSequence is a special value that creates an auto-increment field on the record when
  saved.
  */
-@interface SKYSequence : NSObject
+@interface SKYSequence : NSObject <NSCoding>
 
 /**
  Returns an instance of SKYSequence.
