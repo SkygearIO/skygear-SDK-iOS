@@ -160,6 +160,85 @@ describe(@"user login and signup", ^{
     });
 });
 
+describe(@"get current user from server", ^{
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:@"Correct API Key"];
+    });
+
+    it(@"can handle success response", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{
+                    @"result" : @{
+                        @"user_id" : @"user-1",
+                        @"username" : @"user1",
+                        @"email" : @"user1@skygear.dev",
+                        @"roles" : @[ @"Developer", @"Designer" ],
+                        @"access_token" : @"token-1"
+                    }
+                }
+                                                               options:0
+                                                                 error:nil];
+                return [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+                expect(error).to.beNil();
+
+                expect(user).notTo.beNil();
+                expect(user.userID).to.equal(@"user-1");
+                expect(user.username).to.equal(@"user1");
+                expect(user.email).to.equal(@"user1@skygear.dev");
+                expect(user.roles).to.haveLengthOf(2);
+                expect(user.roles).to.contain([SKYRole roleWithName:@"Developer"]);
+                expect(user.roles).to.contain([SKYRole roleWithName:@"Designer"]);
+
+                done();
+            }];
+        });
+    });
+
+    it(@"can handle error response", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{
+                    @"error" : @{
+                        @"name" : @"NotAuthenticated",
+                        @"code" : @101,
+                        @"message" : @"Authentication is needed to get current user"
+                    }
+                }
+                                                               options:0
+                                                                 error:nil];
+                return [OHHTTPStubsResponse responseWithData:data statusCode:401 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+                expect(user).to.beNil();
+                expect(error).notTo.beNil();
+
+                done();
+            }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+
+        NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+        [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    });
+});
+
 describe(@"save current user", ^{
     it(@"logout user", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
