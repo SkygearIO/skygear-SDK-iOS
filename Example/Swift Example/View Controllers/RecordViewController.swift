@@ -194,6 +194,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             if let delegate = self.delegate {
                 delegate.recordViewController(self, didSaveRecord: record)
             }
+            self.record = record
             self.tableView.reloadData()
         }
     }
