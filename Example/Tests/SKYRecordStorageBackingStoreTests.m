@@ -17,13 +17,15 @@
 //  limitations under the License.
 //
 
+#import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
+#import <SKYKit/SKYKit.h>
+
 #import "SKYRecordChange_Private.h"
 #import "SKYRecordStorageFileBackedMemoryStore.h"
 #import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorageSqliteStore.h"
 #import "SKYRecordSynchronizer.h"
-#import <Foundation/Foundation.h>
-#import <SKYKit/SKYKit.h>
 
 @interface SKYRecordStorageBackingStoreSpecTempFileProvider : NSObject
 
@@ -153,6 +155,28 @@ SharedExamplesBegin(SKYRecordStorageBackingStore)
             expect([backingStore pendingChanges]).to.haveCountOf(0);
         });
 
+        it(@"Appended changes of various data types", ^{
+            NSDate *dateNow = [NSDate date];
+            CLLocation *loc = [[CLLocation alloc] initWithLatitude:1 longitude:2];
+
+            SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:@"book/book1"];
+            SKYRecordChange *change;
+            NSDictionary *attrs = @{
+                @"text" : @[ [NSNull null], @"Hello World" ],
+                @"sequence" : @[ [NSNull null], [[SKYSequence alloc] init] ],
+                @"number" : @[ [NSNull null], @(1) ],
+                @"date" : @[ [NSNull null], dateNow ],
+                @"loc" : @[ [NSNull null], loc ],
+            };
+            change = [[SKYRecordChange alloc] initWithRecordID:recordID
+                                                        action:SKYRecordChangeSave
+                                                 resolveMethod:SKYRecordResolveByReplacing
+                                              attributesToSave:attrs];
+
+            // Append pending change
+            [backingStore appendChange:change];
+            [backingStore synchronize];
+        });
     });
 
 sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {

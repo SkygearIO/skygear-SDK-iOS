@@ -31,4 +31,15 @@
     return [super init];
 }
 
+#pragma NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)decoder
+{
+    return [SKYSequence sequence];
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+}
+
 @end
