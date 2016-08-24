@@ -39,6 +39,7 @@
 #import "SKYFetchRecordsOperation.h"
 #import "SKYFetchSubscriptionsOperation.h"
 #import "SKYGCMNotificationInfo.h"
+#import "SKYGetCurrentUserOperation.h"
 #import "SKYLambdaOperation.h"
 #import "SKYLocationSortDescriptor.h"
 #import "SKYLoginUserOperation.h"
