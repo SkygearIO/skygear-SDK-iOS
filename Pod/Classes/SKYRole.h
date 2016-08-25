@@ -19,7 +19,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SKYRole : NSObject
+@interface SKYRole : NSObject <NSCoding>
 
 @property (strong, nonatomic, readonly) NSString *name;
 

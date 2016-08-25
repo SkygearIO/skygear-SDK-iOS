@@ -81,4 +81,17 @@
     return [self.name isEqualToString:anotherRole.name];
 }
 
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.name forKey:@"name"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return
+        [[self class] roleWithName:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
+}
+
 @end

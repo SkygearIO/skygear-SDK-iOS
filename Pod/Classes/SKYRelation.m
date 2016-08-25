@@ -113,4 +113,18 @@
     return [_name hash] ^ _direction;
 }
 
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.name forKey:@"name"];
+    [aCoder encodeInteger:self.direction forKey:@"direction"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithName:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]
+                    direction:[aDecoder decodeIntegerForKey:@"direction"]];
+}
+
 @end

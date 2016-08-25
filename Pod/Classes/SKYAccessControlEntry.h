@@ -38,7 +38,7 @@ typedef enum : NSUInteger {
 NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 
 // NOTE(limouren): this class is consider an implementation details of SKYAccessControl
-@interface SKYAccessControlEntry : NSObject
+@interface SKYAccessControlEntry : NSObject <NSCoding>
 
 + (instancetype)readEntryForUser:(SKYUser *)user;
 + (instancetype)readEntryForUserID:(NSString *)user;
