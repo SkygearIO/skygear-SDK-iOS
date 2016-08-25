@@ -174,6 +174,25 @@ SpecBegin(SKYRecordSerializer)
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             expect(dictionary[@"_transient"]).to.beNil();
         });
+
+        it(@"serialize metadata", ^{
+            record.creationDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+            record.creatorUserRecordID = @"creator_id";
+            record.modificationDate = [NSDate dateWithTimeIntervalSinceReferenceDate:1];
+            record.lastModifiedUserRecordID = @"modifier_id";
+            record.ownerUserRecordID = @"owner_id";
+
+            NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+            expect([SKYDataSerialization
+                       dateFromString:dictionary[SKYRecordSerializationRecordCreatedAtKey]])
+                .to.equal(record.creationDate);
+            expect(dictionary[SKYRecordSerializationRecordCreatorIDKey]).to.equal(@"creator_id");
+            expect([SKYDataSerialization
+                       dateFromString:dictionary[SKYRecordSerializationRecordUpdatedAtKey]])
+                .to.equal(record.modificationDate);
+            expect(dictionary[SKYRecordSerializationRecordUpdaterIDKey]).to.equal(@"modifier_id");
+            expect(dictionary[SKYRecordSerializationRecordOwnerIDKey]).to.equal(@"owner_id");
+        });
     });
 
 SpecEnd

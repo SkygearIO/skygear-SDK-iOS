@@ -44,6 +44,28 @@
     payload[SKYRecordSerializationRecordIDKey] = record.recordID.canonicalString;
     payload[SKYRecordSerializationRecordTypeKey] = @"record";
 
+    if (record.creationDate) {
+        payload[SKYRecordSerializationRecordCreatedAtKey] =
+            [SKYDataSerialization stringFromDate:record.creationDate];
+    }
+
+    if (record.creatorUserRecordID.length) {
+        payload[SKYRecordSerializationRecordCreatorIDKey] = record.creatorUserRecordID;
+    }
+
+    if (record.modificationDate) {
+        payload[SKYRecordSerializationRecordUpdatedAtKey] =
+            [SKYDataSerialization stringFromDate:record.modificationDate];
+    }
+
+    if (record.lastModifiedUserRecordID.length) {
+        payload[SKYRecordSerializationRecordUpdaterIDKey] = record.lastModifiedUserRecordID;
+    }
+
+    if (record.ownerUserRecordID) {
+        payload[SKYRecordSerializationRecordOwnerIDKey] = record.ownerUserRecordID;
+    }
+
     // NOTE(limouren): this checking is mostly for test cases.
     // It is not expected for a record deserialized from web response to have
     // nil accessControl.
