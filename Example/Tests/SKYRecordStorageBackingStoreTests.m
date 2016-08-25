@@ -196,6 +196,11 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         record = [[SKYRecord alloc] initWithRecordID:recordID data:nil];
         record[@"title"] = @"Hello World";
         record.transient[@"temporary"] = @YES;
+        record.creationDate = [NSDate date];
+        record.creatorUserRecordID = @"creator_user_id";
+        record.modificationDate = [NSDate date];
+        record.lastModifiedUserRecordID = @"modifier_user_id";
+        record.ownerUserRecordID = @"owner_user_id";
 
         localRecord = [[SKYRecord alloc] initWithRecordID:recordID data:nil];
         localRecord[@"title"] = @"Hello World 2";
@@ -214,6 +219,8 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         SKYRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:record.recordID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
         expect(fetchedRecord.transient[@"temporary"]).to.equal(@YES);
+        expect(fetchedRecord.creationDate).toNot.beNil();
+        expect(fetchedRecord.lastModifiedUserRecordID).to.equal(@"modifier_user_id");
 
         // Modify record
         record[@"title"] = @"Bye World";

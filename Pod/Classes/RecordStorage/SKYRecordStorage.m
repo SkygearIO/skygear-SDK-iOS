@@ -181,6 +181,9 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     if ([record creatorUserRecordID] == nil) {
         [record setCreatorUserRecordID:record.lastModifiedUserRecordID];
     }
+    if ([record ownerUserRecordID] == nil) {
+        [record setOwnerUserRecordID:record.lastModifiedUserRecordID];
+    }
 
     [self _setCacheRecord:record recordID:record.recordID];
     [self _appendChange:change record:record completion:handler];
