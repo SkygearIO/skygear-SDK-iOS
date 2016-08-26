@@ -276,4 +276,23 @@
     return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForPublic]];
 }
 
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:[self.entries array] forKey:@"entries"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    return [self initWithEntries:[aDecoder decodeObjectForKey:@"entries"]];
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [[[self class] alloc] initWithEntries:[self.entries array]];
+}
+
 @end

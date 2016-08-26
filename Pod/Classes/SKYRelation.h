@@ -25,7 +25,7 @@ typedef enum : NSInteger {
     SKYRelationDirectionMutual
 } SKYRelationDirection;
 
-@interface SKYRelation : NSObject
+@interface SKYRelation : NSObject <NSCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -113,6 +113,12 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     record->_recordID = [_recordID copyWithZone:zone];
     record->_object = [_object mutableCopyWithZone:zone];
     record->_transient = [_transient mutableCopyWithZone:zone];
+    record->_ownerUserRecordID = [_ownerUserRecordID copyWithZone:zone];
+    record->_creationDate = [_creationDate copyWithZone:zone];
+    record->_creatorUserRecordID = [_creatorUserRecordID copyWithZone:zone];
+    record->_modificationDate = [_modificationDate copyWithZone:zone];
+    record->_lastModifiedUserRecordID = [_lastModifiedUserRecordID copyWithZone:zone];
+    record->_accessControl = [_accessControl copyWithZone:zone];
     return record;
 }
 
