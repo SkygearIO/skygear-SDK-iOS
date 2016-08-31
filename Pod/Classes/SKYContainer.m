@@ -582,14 +582,36 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)uploadAsset:(SKYAsset *)asset
     completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
-    SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
-    operation.uploadAssetCompletionBlock = ^(SKYAsset *asset, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    __weak typeof(self) wself = self;
+
+    SKYGetAssetPostRequestOperation *operation =
+        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+    operation.getAssetPostRequestCompletionBlock = ^(
+        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+        NSError *operationError) {
+        if (operationError) {
             if (completionHandler) {
-                completionHandler(asset, error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, operationError);
+                });
             }
-        });
+
+            return;
+        }
+
+        SKYPostAssetOperation *postOperation =
+            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
+        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, postOperationError);
+                });
+            }
+        };
+
+        [wself addOperation:postOperation];
     };
+
     [self addOperation:operation];
 }
 
