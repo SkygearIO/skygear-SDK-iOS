@@ -23,21 +23,24 @@
 #import "SKYOperation.h"
 
 @interface SKYPostAssetOperation : SKYOperation
+NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
 
-+ (instancetype)operationWithAsset:(SKYAsset *_Nonnull)asset url:(NSURL *_Nonnull)url;
++ (instancetype)operationWithAsset:(SKYAsset *)asset url:(NSURL *)url;
 
-+ (instancetype)operationWithAsset:(SKYAsset *_Nonnull)asset
-                               url:(NSURL *_Nonnull)url
-                       extraFields:(NSDictionary *_Nullable)extraFields;
++ (instancetype)operationWithAsset:(SKYAsset *)asset
+                               url:(NSURL *)url
+                       extraFields:(nullable NSDictionary<NSString *, NSObject *> *)extraFields;
 
 @property (nonatomic, readonly) SKYAsset *asset;
 @property (nonatomic, readonly) NSURL *url;
 @property (nonatomic, readonly) NSDictionary *extraFields;
 
-@property (nonatomic, copy) void (^postAssetProgressBlock)(SKYAsset *asset, double progress);
-@property (nonatomic, copy) void (^postAssetCompletionBlock)
-    (SKYAsset *asset, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable postAssetProgressBlock)
+    (SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^_Nullable postAssetCompletionBlock)
+    (SKYAsset *asset, NSError *_Nullable operationError);
 
+NS_ASSUME_NONNULL_END
 @end
