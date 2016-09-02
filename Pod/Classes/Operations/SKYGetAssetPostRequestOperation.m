@@ -70,8 +70,13 @@
     [self.asset setName:result[@"asset"][@"$name"]];
 
     NSDictionary *rawPostRequest = result[@"post-request"];
-    NSURL *postURL = [NSURL URLWithString:rawPostRequest[@"action"]];
     NSDictionary *extraFields = rawPostRequest[@"extra-fields"];
+    NSURL *postURL = [NSURL URLWithString:rawPostRequest[@"action"]];
+
+    if (postURL.scheme == nil) {
+        postURL = [NSURL URLWithString:rawPostRequest[@"action"]
+                         relativeToURL:self.container.endPointAddress];
+    }
 
     if (self.getAssetPostRequestCompletionBlock) {
         self.getAssetPostRequestCompletionBlock(self.asset, postURL, extraFields, nil);
