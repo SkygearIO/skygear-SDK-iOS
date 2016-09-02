@@ -458,6 +458,19 @@
     }];
 }
 
+- (void)getTotalUnreadCount:(SKYContainerTotalUnreadCountOperationActionCompletion)completionHandler {
+    [self callLambda:@"chat:total_unread" completionHandler:^(NSDictionary *response, NSError *error) {
+        if (error) {
+            NSLog(@"error calling chat:total_unread: %@", error);
+        }
+        
+        NSLog(@"Received response = %@", response);
+        completionHandler(response, error);
+        
+    }];
+}
+
+// FIXME: chat plugin don't have chat:get_unread_message_count lambda function, use this will only get error
 - (void)getUnreadMessageCountWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerUnreadCountOperationActionCompletion)completionHandler{
     [self callLambda:@"chat:get_unread_message_count" arguments:@[conversationId] completionHandler:^(NSDictionary *response, NSError *error) {
         if (error) {
@@ -474,7 +487,6 @@
         }
         
     }];
-
 }
 
 - (void)getOrCreateUserChannelCompletionHandler:(SKYContainerChannelOperationActionCompletion)completionHandler{
