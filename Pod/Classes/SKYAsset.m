@@ -18,6 +18,7 @@
 //
 
 #import "SKYAsset.h"
+#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface SKYAsset ()
 
@@ -42,8 +43,7 @@
         _name = [name copy];
         _url = [url copy];
 
-        // derive fileSize
-        // mainly used in SKYUploadAssetOperation
+        // derive fileSize used in SKYGetAssetPostRequestOperation
         if (_url.isFileURL) {
             NSNumber *fileSize;
             NSError *error;
@@ -52,6 +52,24 @@
                 NSLog(@"Failed obtain file size in %@: %@", _url, error);
             }
             _fileSize = fileSize;
+        }
+
+        // derive mimeType used in SKYGetAssetPostRequestOperation
+        CFStringRef extension = (__bridge CFStringRef)_url.pathExtension;
+        CFStringRef UTI =
+            UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
+        if (UTI) {
+            NSString *mimetype =
+                CFBridgingRelease(UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType));
+            if (mimetype) {
+                _mimeType = mimetype;
+            } else {
+                NSLog(@"Cannot derive mimeType");
+            }
+
+            CFRelease(UTI);
+        } else {
+            NSLog(@"Cannot derive mimeType since UTI == NULL");
         }
     }
     return self;

@@ -72,6 +72,8 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6019C1E11D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6019C1E01D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m */; };
+		60209E5B1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60209E5A1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m */; };
+		60209E651D76F18400B7E10B /* SKYPostAssetOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60209E641D76F18400B7E10B /* SKYPostAssetOperationTests.m */; };
 		6031B9761C7D71C700132DED /* SKYUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6031B9751C7D71C700132DED /* SKYUserTests.m */; };
 		6031B97C1C7EB79400132DED /* SKYUpdateUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6031B97B1C7EB79400132DED /* SKYUpdateUserOperationTests.m */; };
 		604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */; };
@@ -172,6 +174,8 @@
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6019C1E01D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYGetCurrentUserOperationTests.m; sourceTree = "<group>"; };
+		60209E5A1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYGetAssetPostRequestOperationTests.m; sourceTree = "<group>"; };
+		60209E641D76F18400B7E10B /* SKYPostAssetOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPostAssetOperationTests.m; sourceTree = "<group>"; };
 		6031B9751C7D71C700132DED /* SKYUserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYUserTests.m; sourceTree = "<group>"; };
 		6031B97B1C7EB79400132DED /* SKYUpdateUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYUpdateUserOperationTests.m; sourceTree = "<group>"; };
 		604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineAdminRolesOperationTests.m; sourceTree = "<group>"; };
@@ -362,6 +366,7 @@
 				38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */,
 				CD98A8A51A9F34390056420F /* SKYFetchRecordsOperationTests.m */,
 				376CB11C1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m */,
+				60209E5A1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m */,
 				6019C1E01D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m */,
 				383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */,
 				38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */,
@@ -370,6 +375,7 @@
 				CD48CE0E1AA06C7900A1CD04 /* SKYModifyRecordsOperationTests.m */,
 				3785584E1AE6CF5D00685319 /* SKYModifySubscriptionsOperationTests.m */,
 				CD7FE2681A9D9F31002C076E /* SKYOperationTests.m */,
+				60209E641D76F18400B7E10B /* SKYPostAssetOperationTests.m */,
 				5F0532C01B8D912E00DA4D8B /* SKYPubsubTests.m */,
 				37B477B61AE8A9C100B8566D /* SKYQueryDeserializerTests.m */,
 				CD42FE131AA4499C0079B3DA /* SKYQueryOperationTests.m */,
@@ -911,6 +917,7 @@
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
 				38E053D91AC1489A00850988 /* SKYRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* SKYRecordTests.m in Sources */,
+				60209E5B1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m in Sources */,
 				3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */,
 				37CDD6041B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* SKYRecordDeserializerTests.m in Sources */,
@@ -945,6 +952,7 @@
 				5F9F71411B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m in Sources */,
 				37B10B1C1B1C5F0400052740 /* SKYUserDeserializerTests.m in Sources */,
 				383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */,
+				60209E651D76F18400B7E10B /* SKYPostAssetOperationTests.m in Sources */,
 				CD8FE8301A9F1FE10087FE71 /* SKYRecordSerializerTests.m in Sources */,
 				CD42FE141AA4499C0079B3DA /* SKYQueryOperationTests.m in Sources */,
 				CD7FE26B1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m in Sources */,

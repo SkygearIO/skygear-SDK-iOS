@@ -21,18 +21,6 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
-@interface SKYUploadAssetOperation ()
-
-- (NSURLRequest *)makeRequest;
-- (void)handleCompletionWithData:(NSData *)data
-                        response:(NSURLResponse *)response
-                           error:(NSError *)error;
-
-@property (nonatomic, readwrite) NSURLSession *session;
-@property (nonatomic, readwrite) NSURLSessionUploadTask *task;
-
-@end
-
 static NSString *const BASE64_ENCODED_CONTENT = @"SSBhbSBhIGJveS4=";
 
 SpecBegin(SKYUploadAssetOperation)
