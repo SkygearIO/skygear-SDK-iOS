@@ -34,4 +34,9 @@ Pod::Spec.new do |s|
     facebook.dependency 'SKYKit/Core'
     facebook.dependency 'FBSDKCoreKit', '~> 4.0'
   end
+  s.subspec 'Chat' do |chat|
+    chat.source_files = 'Pod/Extensions/Chat/**/*.{h,m}'
+    chat.requires_arc = true
+    chat.dependency 'SKYKit/Core'
+  end
 end
