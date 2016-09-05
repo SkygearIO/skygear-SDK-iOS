@@ -33,6 +33,7 @@ NSString *const SKYChatMetaDataAssetNameVoice = @"message-voice";
 @interface SKYContainer (Chat)
 typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversation *conversation, NSError *error);
 typedef void (^SKYContainerMessageOperationActionCompletion)(SKYMessage *message, NSError *error);
+typedef void (^SKYContainerMarkLastMessageReadOperationActionCompletion)(SKYUserConversation *conversation, NSError *error);
 typedef void (^SKYContainerLastMessageReadOperationActionCompletion)(SKYLastMessageRead *lastMessageRead, NSError *error);
 typedef void (^SKYContainerTotalUnreadCountOperationActionCompletion)(NSDictionary *response, NSError *error);
 typedef void (^SKYContainerUnreadCountOperationActionCompletion)(NSInteger count, NSError *error);
@@ -67,7 +68,7 @@ typedef void (^SKYContainerGetAssetsActionCompletion)(SKYAsset *assets, NSError 
 
 - (void)getMessagesWithConversationId:(NSString *)conversationId withLimit:(NSString *)limit withBeforeTime:(NSDate *)beforeTime completionHandler:(SKYContainerGetMessagesActionCompletion)completionHandler;
 
-- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerLastMessageReadOperationActionCompletion)completionHandler;
+- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerMarkLastMessageReadOperationActionCompletion)completionHandler;
 - (void)getOrCreateLastMessageReadithConversationId:(NSString *)conversationId completionHandler:(SKYContainerLastMessageReadOperationActionCompletion)completionHandler;
 - (void)getTotalUnreadCount:(SKYContainerTotalUnreadCountOperationActionCompletion)completionHandler;
 - (void)getUnreadMessageCountWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerUnreadCountOperationActionCompletion)completionHandler;

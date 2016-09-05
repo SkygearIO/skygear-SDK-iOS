@@ -47,14 +47,6 @@
 - (BOOL)isDirectMessage{
     return [self[@"is_direct_message"] boolValue];
 }
-//
-//- (NSString *)updatedAt{
-//    return self[@"updated_at"];
-//}
-//
-//- (void)setUpdatedAt:(NSString *)updatedAt{
-//    self[@"updated_at"] = updatedAt;
-//}
 
 - (NSDate *)updatedDate{
     return self.modificationDate;
