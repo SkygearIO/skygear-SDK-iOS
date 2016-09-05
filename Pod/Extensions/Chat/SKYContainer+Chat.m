@@ -131,13 +131,14 @@
     NSPredicate *pred1 =  [NSPredicate predicateWithFormat:@"user = %@",self.currentUserRecordID];
     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"conversation = %@", conversationId];
     NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1,pred2]];
-    SKYQuery *query = [SKYQuery queryWithRecordType:@"UserConversation" predicate:predicate];
+    SKYQuery *query = [SKYQuery queryWithRecordType:@"user_conversation" predicate:predicate];
+    query.transientIncludes = @{ @"conversation" : [NSExpression expressionForKeyPath:@"conversation"] ,@"user" : [NSExpression expressionForKeyPath:@"user"], @"last_read_message" : [NSExpression expressionForKeyPath:@"last_read_message"] };
     query.limit = 1;
     
     [self.publicCloudDatabase performQuery:query completionHandler:^(NSArray *results, NSError *error) {
         if ([results count] >0) {
             SKYUserConversation *con = [SKYUserConversation recordWithRecord:[results objectAtIndex:0]];
-            completionHandler(con.conversation,error);
+            completionHandler(con,error);
         }
         else{
             completionHandler(nil,error);
@@ -146,9 +147,9 @@
 }
 
 - (void)deleteConversationWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
-            [self.publicCloudDatabase deleteRecordWithID:conversation.recordID completionHandler:^(SKYRecordID *recordID, NSError *error) {
+            [self.publicCloudDatabase deleteRecordWithID:userCon.conversation.recordID completionHandler:^(SKYRecordID *recordID, NSError *error) {
                 completionHandler(nil,error);
             }];
         }
@@ -159,17 +160,17 @@
 }
 
 - (void)updateConversationWithConversationId:(NSString *)conversationId withChange:(SKYConversationChange *)change completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
             if (change.title) {
-                conversation.title = change.title;
-                [self.publicCloudDatabase saveRecord:conversation completion:^(SKYRecord *record, NSError *error) {
+                userCon.conversation.title = change.title;
+                [self.publicCloudDatabase saveRecord:userCon.conversation completion:^(SKYRecord *record, NSError *error) {
                     SKYConversation *con = [SKYConversation recordWithRecord:record];
                     completionHandler(con,error);
                 }];
             }
             else{
-                completionHandler(conversation,error);
+                completionHandler(userCon.conversation,error);
             }
         }
         else{
@@ -179,10 +180,10 @@
 }
 
 - (void)addParticipantsWithConversationId:(NSString *)conversationId withParticipantIds:(NSArray<NSString*> *)participantIds completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
-            conversation.participantIds = [[conversation.participantIds arrayByAddingObjectsFromArray:participantIds] mutableCopy];
-            [self.publicCloudDatabase saveRecord:conversation completion:^(SKYRecord *record, NSError *error) {
+            userCon.conversation.participantIds = [[userCon.conversation.participantIds arrayByAddingObjectsFromArray:participantIds] mutableCopy];
+            [self.publicCloudDatabase saveRecord:userCon.conversation completion:^(SKYRecord *record, NSError *error) {
                 SKYConversation *con = [SKYConversation recordWithRecord:record];
                 completionHandler(con,error);
             }];
@@ -194,13 +195,13 @@
 }
 
 - (void)removeParticipantsWithConversationId:(NSString *)conversationId withParticipantIds:(NSArray<NSString*> *)participantIds completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
             
-            NSMutableArray *newParticipantArray = [conversation.participantIds mutableCopy];
+            NSMutableArray *newParticipantArray = [userCon.conversation.participantIds mutableCopy];
             [newParticipantArray removeObjectsInArray:participantIds];
-            conversation.participantIds = [newParticipantArray mutableCopy];
-            [self.publicCloudDatabase saveRecord:conversation completion:^(SKYRecord *record, NSError *error) {
+            userCon.conversation.participantIds = [newParticipantArray mutableCopy];
+            [self.publicCloudDatabase saveRecord:userCon.conversation completion:^(SKYRecord *record, NSError *error) {
                 SKYConversation *con = [SKYConversation recordWithRecord:record];
                 completionHandler(con,error);
             }];
@@ -214,10 +215,10 @@
 
 
 - (void)addAdminsWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
-            conversation.adminIds = [[conversation.adminIds arrayByAddingObjectsFromArray:adminIds] mutableCopy];
-            [self.publicCloudDatabase saveRecord:conversation completion:^(SKYRecord *record, NSError *error) {
+            userCon.conversation.adminIds = [[userCon.conversation.adminIds arrayByAddingObjectsFromArray:adminIds] mutableCopy];
+            [self.publicCloudDatabase saveRecord:userCon.conversation completion:^(SKYRecord *record, NSError *error) {
                 SKYConversation *con = [SKYConversation recordWithRecord:record];
                 completionHandler(con,error);
             }];
@@ -230,13 +231,13 @@
 }
 
 - (void)removeAdminWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
-    [self getConversationWithConversationId:conversationId completionHandler:^(SKYConversation *conversation, NSError *error) {
+    [self getConversationWithConversationId:conversationId completionHandler:^(SKYUserConversation *userCon, NSError *error) {
         if(!error){
             
-            NSMutableArray *newParticipantArray = [conversation.adminIds mutableCopy];
+            NSMutableArray *newParticipantArray = [userCon.conversation.adminIds mutableCopy];
             [newParticipantArray removeObjectsInArray:adminIds];
-            conversation.adminIds = [newParticipantArray mutableCopy];
-            [self.publicCloudDatabase saveRecord:conversation completion:^(SKYRecord *record, NSError *error) {
+            userCon.conversation.adminIds = [newParticipantArray mutableCopy];
+            [self.publicCloudDatabase saveRecord:userCon.conversation completion:^(SKYRecord *record, NSError *error) {
                 SKYConversation *con = [SKYConversation recordWithRecord:record];
                 completionHandler(con,error);
             }];

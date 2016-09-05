@@ -31,7 +31,7 @@ NSString *const SKYChatMetaDataAssetNameVoice = @"message-voice";
 
 
 @interface SKYContainer (Chat)
-typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversation *conversation, NSError *error);
+typedef void (^SKYContainerConversationOperationActionCompletion)(SKYUserConversation *conversation, NSError *error);
 typedef void (^SKYContainerMessageOperationActionCompletion)(SKYMessage *message, NSError *error);
 typedef void (^SKYContainerMarkLastMessageReadOperationActionCompletion)(SKYUserConversation *conversation, NSError *error);
 typedef void (^SKYContainerLastMessageReadOperationActionCompletion)(SKYLastMessageRead *lastMessageRead, NSError *error);
