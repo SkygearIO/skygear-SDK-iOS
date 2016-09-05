@@ -34,6 +34,7 @@ typedef enum SKYNotificationType : NSInteger {
 @property (nonatomic, readonly, copy) SKYNotificationID *notificationID;
 @property (nonatomic, readonly, assign) SKYNotificationType notificationType;
 @property (nonatomic, readonly, copy) NSString *containerIdentifier;
+@property (nonatomic, readonly, copy) NSString *subscriptionID;
 
 @property (nonatomic, readonly, assign) BOOL isPruned;
 
