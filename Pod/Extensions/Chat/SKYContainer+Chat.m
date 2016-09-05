@@ -115,18 +115,16 @@
 - (void)getConversationsCompletionHandler:(SKYContainerGetConversationListActionCompletion)completionHandler{
     NSPredicate *predicate =  [NSPredicate predicateWithFormat:@"user = %@",self.currentUserRecordID];
     SKYQuery *query = [SKYQuery queryWithRecordType:@"user_conversation" predicate:predicate];
-    query.transientIncludes = @{ @"conversation" : [NSExpression expressionForKeyPath:@"conversation"] ,@"user" : [NSExpression expressionForKeyPath:@"user"] };
+    query.transientIncludes = @{ @"conversation" : [NSExpression expressionForKeyPath:@"conversation"] ,@"user" : [NSExpression expressionForKeyPath:@"user"], @"last_read_message" : [NSExpression expressionForKeyPath:@"last_read_message"] };
     [self.publicCloudDatabase performQuery:query completionHandler:^(NSArray *results, NSError *error) {
         NSMutableArray *resultArray = [[NSMutableArray alloc] init];
         for (SKYRecord *record in results) {
             NSLog(@"record :%@",[record transient]);
-            //            SKYConversation *con = [SKYConversation recordWithRecord:record];
             SKYUserConversation *con = [SKYUserConversation recordWithRecord:record];
             [resultArray addObject:con];
         }
         completionHandler(resultArray,error);
     }];
-
 }
 
 - (void)getConversationWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
@@ -443,18 +441,29 @@
 }
 
 - (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerLastMessageReadOperationActionCompletion)completionHandler{
-    [self getOrCreateLastMessageReadithConversationId:conversationId completionHandler:^(SKYLastMessageRead *lastMessageRead, NSError *error) {
-        if (error) {
-            completionHandler(lastMessageRead, error);
-        }
-        else{
-            lastMessageRead.messageId = messageId;
-            [self.publicCloudDatabase saveRecord:lastMessageRead completion:^(SKYRecord *record, NSError *error) {
-                SKYLastMessageRead *msg = [SKYLastMessageRead recordWithRecord:record];
-                completionHandler(msg,error);
+    
+    NSPredicate *pred1 =  [NSPredicate predicateWithFormat:@"user = %@",self.currentUserRecordID];
+    NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"conversation = %@", conversationId];
+    NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1,pred2]];
+    SKYQuery *query = [SKYQuery queryWithRecordType:@"user_conversation" predicate:predicate];
+    query.limit = 1;
+    
+    [self.publicCloudDatabase performQuery:query completionHandler:^(NSArray *results, NSError *error) {
+        if ([results count] >0) {
+            SKYUserConversation *con = [SKYUserConversation recordWithRecord:[results objectAtIndex:0]];
+            con.lastReadMessage = [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"message" name:messageId]];
+            
+            [self.publicCloudDatabase saveRecord:con completion:^(SKYRecord *record, NSError *error) {
+                if (error) {
+                    NSLog(@"error saving userConversation: %@", error);
+                }
+                SKYUserConversation *con = [SKYUserConversation recordWithRecord:record];
+                completionHandler(con, error);
             }];
         }
-        
+        else{
+            completionHandler(nil,error);
+        }
     }];
 }
 

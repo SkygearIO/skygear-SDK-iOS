@@ -9,6 +9,7 @@
 #import "SKYUserConversation.h"
 #import "SKYChatUser.h"
 #import "SKYConversation.h"
+#import "SKYMessage.h"
 
 @implementation SKYUserConversation
 
@@ -19,15 +20,33 @@
 - (id)assignVariableInTransientWithRecord:(SKYRecord *)record{
     SKYRecord *userRecord = [record.transient valueForKey:@"user"];
     SKYRecord *conversationRecord = [record.transient valueForKey:@"conversation"];
-    if (userRecord) {
+    SKYRecord *lastReadMessage = [record.transient valueForKey:@"last_read_message"];
+    if (userRecord != (id)[NSNull null]) {
         self.user = [SKYChatUser recordWithRecord:userRecord];
     }
-    if (conversationRecord) {
+    if (conversationRecord != (id)[NSNull null]) {
         self.conversation = [SKYConversation recordWithRecord:conversationRecord];
-
+    }
+    if (lastReadMessage != (id)[NSNull null]) {
+        self.lastReadMessage = [SKYMessage recordWithRecord:lastReadMessage];
     }
     return self;
-//    self.user =
+}
+
+- (void)setLastReadMessage:(SKYMessage *)lastReadMessage{
+    self[@"last_read_message"] = lastReadMessage;
+}
+
+- (SKYMessage *)lastReadMessage{
+    return self[@"last_read_message"];
+}
+
+- (void)setUnreadCount:(NSNumber *)unreadCount{
+    self[@"unread_count"] = unreadCount;
+}
+
+- (NSNumber *)unreadCount{
+    return self[@"unread_count"];
 }
 
 @end
