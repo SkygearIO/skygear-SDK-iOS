@@ -25,12 +25,14 @@ PODS:
   - OHHTTPStubs/NSURLSession (4.6.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (4.6.0)
-  - SKYKit (0.15.0):
-    - SKYKit/Core (= 0.15.0)
-  - SKYKit/Core (0.15.0):
+  - SKYKit (0.16.0):
+    - SKYKit/Core (= 0.16.0)
+  - SKYKit/Chat (0.16.0):
+    - SKYKit/Core
+  - SKYKit/Core (0.16.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
-  - SKYKit/Facebook (0.15.0):
+  - SKYKit/Facebook (0.16.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
   - SocketRocket (0.5.1)
@@ -41,12 +43,13 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs
   - SKYKit (from `../`)
+  - SKYKit/Chat (from `../`)
   - SKYKit/Facebook (from `../`)
   - Specta
 
 EXTERNAL SOURCES:
   SKYKit:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
@@ -55,10 +58,10 @@ SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 0d29d2829a43725994de2cfd3374b684326af1e7
+  SKYKit: 87a8c39b223a89e7bbc7d764514e70b492e49855
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: a27ec2d7e040773324262697418dfdc4a2481f63
+PODFILE CHECKSUM: 940bf63678256c90de8af8302792789ea3cc3a0e
 
 COCOAPODS: 1.0.1
