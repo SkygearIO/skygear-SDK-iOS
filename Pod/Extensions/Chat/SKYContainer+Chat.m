@@ -545,22 +545,10 @@
 - (void)subscribeHandler:(void (^)(NSDictionary *))messageHandler{
     [self getOrCreateUserChannelCompletionHandler:^(SKYUserChannel *userChannel, NSError *error) {
         if (!error) {
-//            [self.pubsubClient connect];
-//            [self.pubsubClient unsubscribe:userChannel.name];
             NSLog(@"subscribeHandler :%@",userChannel.name);
             [self.pubsubClient subscribeTo:userChannel.name handler:^(NSDictionary *data) {
                 messageHandler(data);
             }];
-//            SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"note" predicate:nil];
-//            SKYSubscription *subscription = [[SKYSubscription alloc] initWithQuery:query subscriptionID:@"my notes"];
-//            [[[SKYContainer defaultContainer] privateCloudDatabase] saveSubscription:subscription completionHandler:^(SKYSubscription *subscription, NSError *error) {
-//               if (error) {
-//                   NSLog(@"Failed to subscribe for my note: %@", error);
-//                   return;
-//               }
-//               
-//               NSLog(@"Subscription successful.");
-//           }];
         }
     }];
 }
