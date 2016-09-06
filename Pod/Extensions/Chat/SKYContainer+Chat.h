@@ -59,11 +59,12 @@ typedef void (^SKYContainerGetAssetsActionCompletion)(SKYAsset *assets, NSError 
 - (void)removeParticipantsWithConversationId:(NSString *)conversationId withParticipantIds:(NSArray<NSString*> *)participantIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
 - (void)addAdminsWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
 - (void)removeAdminWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-//-(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(id)metadata completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 
+- (void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(NSDictionary *)metadata withAsset:(SKYAsset *)asset completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;
+//-(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(id)metadata completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 -(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withURL:(NSURL *)url withType:(SKYChatMetaDataType)type withDuration:(float)duration completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 -(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withImages:(UIImage *)image withType:(SKYChatMetaDataType)type completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
-- (void)createMessageWithSKYMessage:(SKYMessage *)message completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;
+- (void)createMessageWithSKYMessage:(SKYMessage *)message completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 
 
 - (void)getMessagesWithConversationId:(NSString *)conversationId withLimit:(NSString *)limit withBeforeTime:(NSDate *)beforeTime completionHandler:(SKYContainerGetMessagesActionCompletion)completionHandler;

@@ -302,6 +302,32 @@
     }];
 }
 
+- (void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(NSDictionary *)metadata withAsset:(SKYAsset *)asset completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler{
+    SKYMessage *message = [SKYMessage recordWithRecordType:@"message"];
+    message.conversationId = [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"conversation" name:conversationId]];
+    if (body) {
+        message.body = body;
+    }
+    if (metadata) {
+        message.metadata = metadata;
+    }
+    if (asset) {
+        message.attachment = asset;
+    }
+    [self.publicCloudDatabase saveRecord:message completion:^(SKYRecord *record, NSError *error) {
+        if (error) {
+            message.isAlreadySyncToServer = false;
+            message.isFail = true;
+            completionHandler(message, error);
+        } else {
+            SKYMessage *msg = [SKYMessage recordWithRecord:record];
+            msg.isAlreadySyncToServer = true;
+            msg.isFail = false;
+            completionHandler(msg, error);
+        }
+    }];
+}
+
 - (void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withImages:(UIImage *)image withType:(SKYChatMetaDataType)type completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler{
     SKYMessage *message = [SKYMessage recordWithRecordType:@"message"];
     message.conversationId = [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"conversation" name:conversationId]];
