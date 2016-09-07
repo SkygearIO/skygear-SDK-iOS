@@ -13,9 +13,9 @@
 
 @interface SKYUserConversation : SKYChatRecord
 
-@property (strong, nonatomic) SKYChatUser* user;
-@property (strong, nonatomic) SKYConversation* conversation;
-@property (strong, nonatomic) SKYMessage* lastReadMessage;
-@property (assign, nonatomic) NSNumber* unreadCount;
+@property (strong, nonatomic) SKYChatUser *user;
+@property (strong, nonatomic) SKYConversation *conversation;
+@property (strong, nonatomic) SKYMessage *lastReadMessage;
+@property (assign, nonatomic) NSNumber *unreadCount;
 
 @end

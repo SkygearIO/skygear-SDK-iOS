@@ -9,11 +9,14 @@
 #import "SKYChatRecord.h"
 
 @implementation SKYChatRecord
-+ (instancetype)recordWithRecord:(SKYRecord *)record{
-    return [[[self alloc] initWithRecordID:record.recordID data:record.dictionary] initWithRecordData:record];
++ (instancetype)recordWithRecord:(SKYRecord *)record
+{
+    return [[[self alloc] initWithRecordID:record.recordID data:record.dictionary]
+        initWithRecordData:record];
 }
 
-- (id)initWithRecordData:(SKYRecord *)record{
+- (id)initWithRecordData:(SKYRecord *)record
+{
     self.ownerUserRecordID = record.ownerUserRecordID;
     self.creationDate = record.creationDate;
     self.creatorUserRecordID = record.creatorUserRecordID;

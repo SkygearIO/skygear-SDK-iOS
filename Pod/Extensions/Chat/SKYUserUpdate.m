@@ -10,19 +10,23 @@
 
 @implementation SKYUserUpdate
 
-- (void)setUsername:(NSString *)username{
+- (void)setUsername:(NSString *)username
+{
     self[@"username"] = username;
 }
 
-- (NSString *)username{
+- (NSString *)username
+{
     return self[@"username"];
 }
 
-- (void)setEmail:(NSString *)email{
+- (void)setEmail:(NSString *)email
+{
     self[@"email"] = email;
 }
 
-- (NSString *)email{
+- (NSString *)email
+{
     return self[@"email"];
 }
 

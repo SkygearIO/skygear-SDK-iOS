@@ -10,15 +10,18 @@
 
 @implementation SKYUserChannel
 
-- (instancetype)init{
+- (instancetype)init
+{
     return [super initWithRecordType:@"user_channel"];
 }
 
-- (void)setName:(NSString *)name{
+- (void)setName:(NSString *)name
+{
     self[@"name"] = name;
 }
 
-- (NSString *)name{
+- (NSString *)name
+{
     return self[@"name"];
 }
 

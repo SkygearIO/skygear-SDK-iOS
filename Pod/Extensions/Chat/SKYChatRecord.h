@@ -6,8 +6,8 @@
 //
 //
 
-#import <SKYKit/SKYKit.h>
 #import "SKYChatRecord.h"
+#import <SKYKit/SKYKit.h>
 
 @interface SKYChatRecord : SKYRecord
 + (instancetype)recordWithRecord:(SKYRecord *)record;

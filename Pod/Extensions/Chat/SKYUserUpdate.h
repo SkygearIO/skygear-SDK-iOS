@@ -6,11 +6,11 @@
 //
 //
 
-#import <SKYKit/SKYKit.h>
 #import "SKYChatRecord.h"
+#import <SKYKit/SKYKit.h>
 
 @interface SKYUserUpdate : SKYChatRecord
-@property (strong, nonatomic) NSString* email;
-@property (strong, nonatomic) NSString* username;
+@property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *username;
 
 @end

@@ -9,54 +9,60 @@
 #import "SKYChatUser.h"
 
 @implementation SKYChatUser
-- (void)setUsername:(NSString *)username{
+- (void)setUsername:(NSString *)username
+{
     self[@"username"] = username;
 }
 
-- (NSString *)username{
+- (NSString *)username
+{
     return self[@"username"];
 }
 
-- (void)setEmail:(NSString *)email{
+- (void)setEmail:(NSString *)email
+{
     self[@"email"] = email;
 }
 
-- (NSString *)email{
+- (NSString *)email
+{
     return self[@"email"];
 }
 
-- (void)setFirstName:(NSString *)firstName{
+- (void)setFirstName:(NSString *)firstName
+{
     self[@"first_name"] = firstName;
 }
 
-- (NSString *)firstName{
+- (NSString *)firstName
+{
     return self[@"first_name"];
-
 }
 
-- (void)setLastName:(NSString *)lastName{
+- (void)setLastName:(NSString *)lastName
+{
     self[@"last_name"] = lastName;
-
 }
 
-- (NSString *)lastName{
+- (NSString *)lastName
+{
     return self[@"last_name"];
-
 }
 
-- (void)setDisplayName:(NSString *)displayName{
+- (void)setDisplayName:(NSString *)displayName
+{
     self[@"display_name"] = displayName;
-
 }
 
-- (NSString *)displayName{
+- (NSString *)displayName
+{
     return self[@"display_name"];
-
 }
 
-- (NSString *)toString{
-    return  [NSString stringWithFormat:@"SKYChatUser :\nusername: %@\nemail: %@",self.username,self.email];
+- (NSString *)toString
+{
+    return [NSString
+        stringWithFormat:@"SKYChatUser :\nusername: %@\nemail: %@", self.username, self.email];
 }
-
 
 @end

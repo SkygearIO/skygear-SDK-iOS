@@ -6,12 +6,12 @@
 //
 //
 
-#import <SKYKit/SKYKit.h>
 #import "SKYChatRecord.h"
+#import <SKYKit/SKYKit.h>
 
 @interface SKYLastMessageRead : SKYChatRecord
-@property (strong, nonatomic) NSString* conversationId;
-@property (strong, nonatomic) NSString* messageId;
+@property (strong, nonatomic) NSString *conversationId;
+@property (strong, nonatomic) NSString *messageId;
 
 - (instancetype)init;
 

@@ -27,51 +27,119 @@ extern NSString *const SKYChatMetaDataAssetNameImage;
 extern NSString *const SKYChatMetaDataAssetNameVoice;
 extern NSString *const SKYChatMetaDataAssetNameText;
 
-@class FBSDKAccessToken, SKYConversation, SKYConversationChange, SKYMessage, SKYUserChannel, SKYLastMessageRead,SKYChatUser,SKYUserConversation;
-
-
+@class FBSDKAccessToken, SKYConversation, SKYConversationChange, SKYMessage, SKYUserChannel,
+    SKYLastMessageRead, SKYChatUser, SKYUserConversation;
 
 @interface SKYContainer (Chat)
-typedef void (^SKYContainerUserConversationOperationActionCompletion)(SKYUserConversation *conversation, NSError *error);
+typedef void (^SKYContainerUserConversationOperationActionCompletion)(
+    SKYUserConversation *conversation, NSError *error);
 typedef void (^SKYContainerMessageOperationActionCompletion)(SKYMessage *message, NSError *error);
-typedef void (^SKYContainerMarkLastMessageReadOperationActionCompletion)(SKYUserConversation *conversation, NSError *error);
-typedef void (^SKYContainerLastMessageReadOperationActionCompletion)(SKYLastMessageRead *lastMessageRead, NSError *error);
-typedef void (^SKYContainerTotalUnreadCountOperationActionCompletion)(NSDictionary *response, NSError *error);
+typedef void (^SKYContainerMarkLastMessageReadOperationActionCompletion)(
+    SKYUserConversation *conversation, NSError *error);
+typedef void (^SKYContainerLastMessageReadOperationActionCompletion)(
+    SKYLastMessageRead *lastMessageRead, NSError *error);
+typedef void (^SKYContainerTotalUnreadCountOperationActionCompletion)(NSDictionary *response,
+                                                                      NSError *error);
 typedef void (^SKYContainerUnreadCountOperationActionCompletion)(NSInteger count, NSError *error);
-typedef void (^SKYContainerChannelOperationActionCompletion)(SKYUserChannel *userChannel, NSError *error);
-typedef void (^SKYContainerGetAgentListActionCompletion)(NSArray<SKYChatUser*> *agentListArray, NSError *error);
-typedef void (^SKYContainerGetUserConversationListActionCompletion)(NSArray<SKYUserConversation*> *conversationList, NSError *error);
-typedef void (^SKYContainerGetMessagesActionCompletion)(NSArray<SKYMessage*> *messageList, NSError *error);
+typedef void (^SKYContainerChannelOperationActionCompletion)(SKYUserChannel *userChannel,
+                                                             NSError *error);
+typedef void (^SKYContainerGetAgentListActionCompletion)(NSArray<SKYChatUser *> *agentListArray,
+                                                         NSError *error);
+typedef void (^SKYContainerGetUserConversationListActionCompletion)(
+    NSArray<SKYUserConversation *> *conversationList, NSError *error);
+typedef void (^SKYContainerGetMessagesActionCompletion)(NSArray<SKYMessage *> *messageList,
+                                                        NSError *error);
 typedef void (^SKYContainerGetAssetsActionCompletion)(SKYAsset *assets, NSError *error);
-typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversation *conversation, NSError *error);
+typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversation *conversation,
+                                                                  NSError *error);
 
-- (void)createConversationWithParticipantIds:(NSArray *)participantIds withAdminIds:(NSArray *)adminIds withTitle:(NSString *)title completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)getOrCreateDirectConversationWithuUserId:(NSString *)userId completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)getUserConversationWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerUserConversationOperationActionCompletion)completionHandler;
-- (void)getUserConversationsCompletionHandler:(SKYContainerGetUserConversationListActionCompletion)completionHandler;
-- (void)deleteConversationWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)updateConversationWithConversationId:(NSString *)conversationId withChange:(SKYConversationChange *)change completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)addParticipantsWithConversationId:(NSString *)conversationId withParticipantIds:(NSArray<NSString*> *)participantIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)removeParticipantsWithConversationId:(NSString *)conversationId withParticipantIds:(NSArray<NSString*> *)participantIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)addAdminsWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)removeAdminWithConversationId:(NSString *)conversationId withAdminIds:(NSMutableArray *)adminIds  completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)createConversationWithParticipantIds:(NSArray *)participantIds
+                                withAdminIds:(NSArray *)adminIds
+                                   withTitle:(NSString *)title
+                           completionHandler:
+                               (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)getOrCreateDirectConversationWithuUserId:(NSString *)userId
+                               completionHandler:(SKYContainerConversationOperationActionCompletion)
+                                                     completionHandler;
+- (void)getUserConversationWithConversationId:(NSString *)conversationId
+                            completionHandler:
+                                (SKYContainerUserConversationOperationActionCompletion)
+                                    completionHandler;
+- (void)getUserConversationsCompletionHandler:
+    (SKYContainerGetUserConversationListActionCompletion)completionHandler;
+- (void)deleteConversationWithConversationId:(NSString *)conversationId
+                           completionHandler:
+                               (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)updateConversationWithConversationId:(NSString *)conversationId
+                                  withChange:(SKYConversationChange *)change
+                           completionHandler:
+                               (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)addParticipantsWithConversationId:(NSString *)conversationId
+                       withParticipantIds:(NSArray<NSString *> *)participantIds
+                        completionHandler:
+                            (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)removeParticipantsWithConversationId:(NSString *)conversationId
+                          withParticipantIds:(NSArray<NSString *> *)participantIds
+                           completionHandler:
+                               (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)addAdminsWithConversationId:(NSString *)conversationId
+                       withAdminIds:(NSMutableArray *)adminIds
+                  completionHandler:
+                      (SKYContainerConversationOperationActionCompletion)completionHandler;
+- (void)removeAdminWithConversationId:(NSString *)conversationId
+                         withAdminIds:(NSMutableArray *)adminIds
+                    completionHandler:
+                        (SKYContainerConversationOperationActionCompletion)completionHandler;
 
-- (void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(NSDictionary *)metadata withAsset:(SKYAsset *)asset completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;
-//-(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(id)metadata completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
--(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withURL:(NSURL *)url withType:(SKYChatMetaDataType)type withDuration:(float)duration completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
--(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withImages:(UIImage *)image withType:(SKYChatMetaDataType)type completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
-//- (void)createMessageWithSKYMessage:(SKYMessage *)message completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
+- (void)createMessageWithConversationId:(NSString *)conversationId
+                               withBody:(NSString *)body
+                           withMetadata:(NSDictionary *)metadata
+                              withAsset:(SKYAsset *)asset
+                      completionHandler:
+                          (SKYContainerMessageOperationActionCompletion)completionHandler;
+//-(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body
+// withMetadata:(id)metadata
+// completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
+- (void)createMessageWithConversationId:(NSString *)conversationId
+                               withBody:(NSString *)body
+                                withURL:(NSURL *)url
+                               withType:(SKYChatMetaDataType)type
+                           withDuration:(float)duration
+                      completionHandler:(SKYContainerMessageOperationActionCompletion)
+                                            completionHandler; // not finished
+- (void)createMessageWithConversationId:(NSString *)conversationId
+                               withBody:(NSString *)body
+                             withImages:(UIImage *)image
+                               withType:(SKYChatMetaDataType)type
+                      completionHandler:(SKYContainerMessageOperationActionCompletion)
+                                            completionHandler; // not finished
+//- (void)createMessageWithSKYMessage:(SKYMessage *)message
+// completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 
+- (void)getMessagesWithConversationId:(NSString *)conversationId
+                            withLimit:(NSString *)limit
+                       withBeforeTime:(NSDate *)beforeTime
+                    completionHandler:(SKYContainerGetMessagesActionCompletion)completionHandler;
 
-- (void)getMessagesWithConversationId:(NSString *)conversationId withLimit:(NSString *)limit withBeforeTime:(NSDate *)beforeTime completionHandler:(SKYContainerGetMessagesActionCompletion)completionHandler;
+- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId
+                                  withMessageId:(NSString *)messageId
+                              completionHandler:
+                                  (SKYContainerMarkLastMessageReadOperationActionCompletion)
+                                      completionHandler;
+- (void)getOrCreateLastMessageReadithConversationId:(NSString *)conversationId
+                                  completionHandler:
+                                      (SKYContainerLastMessageReadOperationActionCompletion)
+                                          completionHandler;
+- (void)getTotalUnreadCount:
+    (SKYContainerTotalUnreadCountOperationActionCompletion)completionHandler;
+- (void)getUnreadMessageCountWithConversationId:(NSString *)conversationId
+                              completionHandler:(SKYContainerUnreadCountOperationActionCompletion)
+                                                    completionHandler;
 
-- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerMarkLastMessageReadOperationActionCompletion)completionHandler;
-- (void)getOrCreateLastMessageReadithConversationId:(NSString *)conversationId completionHandler:(SKYContainerLastMessageReadOperationActionCompletion)completionHandler;
-- (void)getTotalUnreadCount:(SKYContainerTotalUnreadCountOperationActionCompletion)completionHandler;
-- (void)getUnreadMessageCountWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerUnreadCountOperationActionCompletion)completionHandler;
-
-- (void)getOrCreateUserChannelCompletionHandler:(SKYContainerChannelOperationActionCompletion)completionHandler;
+- (void)getOrCreateUserChannelCompletionHandler:
+    (SKYContainerChannelOperationActionCompletion)completionHandler;
 - (void)subscribeHandler:(void (^)(NSDictionary *dictionary))messageHandler;
-- (void)fetchAssetsByRecordId:(NSString *)recordId CompletionHandler:(SKYContainerGetAssetsActionCompletion)completionHandler;
+- (void)fetchAssetsByRecordId:(NSString *)recordId
+            CompletionHandler:(SKYContainerGetAssetsActionCompletion)completionHandler;
 
 @end

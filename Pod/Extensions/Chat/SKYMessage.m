@@ -11,107 +11,121 @@
 
 @implementation SKYMessage
 
-- (instancetype)init{
+- (instancetype)init
+{
     return [super initWithRecordType:@"message"];
 }
 
-- (void)setConversationId:(SKYReference *)conversationId{
+- (void)setConversationId:(SKYReference *)conversationId
+{
     self[@"conversation_id"] = conversationId;
 }
 
-- (SKYReference *)conversationId{
+- (SKYReference *)conversationId
+{
     return self[@"conversation_id"];
 }
 
-- (NSString *)conversationID{
+- (NSString *)conversationID
+{
     return self.conversationId.recordID.recordName;
 }
 
-- (void)setBody:(NSString *)body{
+- (void)setBody:(NSString *)body
+{
     self[@"body"] = body;
 }
 
-- (NSString *)body{
+- (NSString *)body
+{
     return self[@"body"];
 }
 
-- (void)setMetadata:(NSDictionary *)metadata{
+- (void)setMetadata:(NSDictionary *)metadata
+{
     self[@"metadata"] = metadata;
 }
 
-- (NSDictionary *)metadata{
+- (NSDictionary *)metadata
+{
     return self[@"metadata"];
 }
 
-- (NSDate *)createdAt{
+- (NSDate *)createdAt
+{
     return self.creationDate;
 }
 
-- (SKYAsset *)attachment{
+- (SKYAsset *)attachment
+{
     return self[@"attachment"];
 }
 
-- (void)setAttachment:(SKYAsset *)attachment{
+- (void)setAttachment:(SKYAsset *)attachment
+{
     self[@"attachment"] = attachment;
 }
 
-- (NSInteger)getMsgType{
-    if(!self.attachment) {
+- (NSInteger)getMsgType
+{
+    if (!self.attachment) {
         return 2;
     }
     NSString *name = self.attachment.name;
-    NSLog(@"getMsgType name:%@",name);
-    if(!name || name.length <1 ){
+    NSLog(@"getMsgType name:%@", name);
+    if (!name || name.length < 1) {
         return 2;
     }
-    if ([name containsString:@"message-image"] ){
+    if ([name containsString:@"message-image"]) {
         return 0;
-    }
-    else if([name containsString:@"message-voice"] ) {
+    } else if ([name containsString:@"message-voice"]) {
         return 1;
     }
     return 2;
 }
 
-- (NSString *)getAssetURLForImage{
-    if(!self.attachment) {
+- (NSString *)getAssetURLForImage
+{
+    if (!self.attachment) {
         return @"";
     }
-    if (![self.attachment.name containsString:@"message-image"] ){
+    if (![self.attachment.name containsString:@"message-image"]) {
         return @"";
     }
     NSString *metaDataString = self.attachment.url.absoluteString;
     return metaDataString;
 }
 
-- (NSString *)getAssetURLForVoice{
-    if(!self.attachment) {
+- (NSString *)getAssetURLForVoice
+{
+    if (!self.attachment) {
         return @"";
     }
-    if (![self.attachment.name containsString:@"message-voice"] ){
+    if (![self.attachment.name containsString:@"message-voice"]) {
         return @"";
     }
     NSString *metaDataString = self.attachment.url.absoluteString;
-    NSLog(@"getAssetURLForVoice :%@",metaDataString);
+    NSLog(@"getAssetURLForVoice :%@", metaDataString);
     return metaDataString;
-//    NSString *recordID = @"";
-//    NSString *metaDataString = [self.metadata valueForKey:@"message-voice"];
-//    NSArray *splitString = [metaDataString componentsSeparatedByString:@"-message-voice"];
-//    if (splitString.count > 0) {
-//        recordID = [splitString objectAtIndex:0];
-//    }
-//    return recordID;
+    //    NSString *recordID = @"";
+    //    NSString *metaDataString = [self.metadata valueForKey:@"message-voice"];
+    //    NSArray *splitString = [metaDataString componentsSeparatedByString:@"-message-voice"];
+    //    if (splitString.count > 0) {
+    //        recordID = [splitString objectAtIndex:0];
+    //    }
+    //    return recordID;
 }
 
-- (float)getVoiceDuration{
-    if(!self.attachment) {
+- (float)getVoiceDuration
+{
+    if (!self.attachment) {
         return 0.0;
     }
-    if (![self.attachment.name containsString:@"message-voice"] ){
+    if (![self.attachment.name containsString:@"message-voice"]) {
         return 0.0;
     }
     NSArray *splitArray = [self.attachment.name componentsSeparatedByString:@"duration"];
-    if(splitArray.count > 1){
+    if (splitArray.count > 1) {
         NSString *time = [splitArray objectAtIndex:1];
         return time.floatValue;
     }

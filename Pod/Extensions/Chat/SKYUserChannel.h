@@ -6,11 +6,11 @@
 //
 //
 
-#import <SKYKit/SKYKit.h>
 #import "SKYChatRecord.h"
+#import <SKYKit/SKYKit.h>
 
 @interface SKYUserChannel : SKYChatRecord
-@property (strong, nonatomic) NSString* name;
+@property (strong, nonatomic) NSString *name;
 
 - (instancetype)init;
 

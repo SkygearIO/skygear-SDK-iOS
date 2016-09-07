@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface SKYConversationChange : NSObject
-@property (strong, nonatomic)NSString* title;
+@property (strong, nonatomic) NSString *title;
 
 @end

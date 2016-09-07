@@ -10,23 +10,28 @@
 
 @implementation SKYLastMessageRead
 
-- (instancetype)init{
+- (instancetype)init
+{
     return [super initWithRecordType:@"last_message_read"];
 }
 
-- (void)setConversationId:(NSString *)conversationId{
+- (void)setConversationId:(NSString *)conversationId
+{
     self[@"conversation_id"] = conversationId;
 }
 
-- (NSString *)conversationId{
+- (NSString *)conversationId
+{
     return self[@"conversation_id"];
 }
 
-- (void)setMessageId:(NSString *)messageId{
+- (void)setMessageId:(NSString *)messageId
+{
     self[@"message_id"] = messageId;
 }
 
-- (NSString *)messageId{
+- (NSString *)messageId
+{
     return self[@"message_id"];
 }
 

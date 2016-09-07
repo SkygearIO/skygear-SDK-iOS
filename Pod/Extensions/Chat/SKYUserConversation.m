@@ -13,11 +13,13 @@
 
 @implementation SKYUserConversation
 
-+ (instancetype)recordWithRecord:(SKYRecord *)record{
++ (instancetype)recordWithRecord:(SKYRecord *)record
+{
     return [[super recordWithRecord:record] assignVariableInTransientWithRecord:record];
 }
 
-- (id)assignVariableInTransientWithRecord:(SKYRecord *)record{
+- (id)assignVariableInTransientWithRecord:(SKYRecord *)record
+{
     SKYRecord *userRecord = [record.transient valueForKey:@"user"];
     SKYRecord *conversationRecord = [record.transient valueForKey:@"conversation"];
     SKYRecord *lastReadMessage = [record.transient valueForKey:@"last_read_message"];
@@ -33,11 +35,13 @@
     return self;
 }
 
-- (void)setUnreadCount:(NSNumber *)unreadCount{
+- (void)setUnreadCount:(NSNumber *)unreadCount
+{
     self[@"unread_count"] = unreadCount;
 }
 
-- (NSNumber *)unreadCount{
+- (NSNumber *)unreadCount
+{
     return self[@"unread_count"];
 }
 
