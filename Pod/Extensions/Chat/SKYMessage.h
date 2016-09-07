@@ -25,7 +25,7 @@
 @property (assign, nonatomic)bool isAlreadySyncToServer;
 @property (assign, nonatomic)bool isFail;
 
-- (id)init;
+- (instancetype)init;
 - (NSInteger)getMsgType;
 - (NSString *)getAssetURLForImage;
 - (NSString *)getAssetURLForVoice;

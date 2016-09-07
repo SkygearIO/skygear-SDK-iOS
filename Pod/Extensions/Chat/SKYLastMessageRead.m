@@ -10,8 +10,8 @@
 
 @implementation SKYLastMessageRead
 
-- (id)init{
-    return [SKYRecord recordWithRecordType:@"last_message_read"];
+- (instancetype)init{
+    return [super initWithRecordType:@"last_message_read"];
 }
 
 - (void)setConversationId:(NSString *)conversationId{

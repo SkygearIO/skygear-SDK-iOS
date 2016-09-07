@@ -12,6 +12,6 @@
 @interface SKYUserChannel : SKYChatRecord
 @property (strong, nonatomic) NSString* name;
 
-- (id)init;
+- (instancetype)init;
 
 @end

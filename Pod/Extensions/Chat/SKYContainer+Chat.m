@@ -20,7 +20,6 @@
 #import "SKYContainer_Private.h"
 #import "SKYConversation.h"
 #import "SKYKit.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "SKYConversationChange.h"
 #import "SKYMessage.h"
 #import "SKYLastMessageRead.h"
@@ -29,24 +28,17 @@
 #import "SKYUserConversation.h"
 #import "SKYReference.h"
 
-@interface SKYContainer (Chat)
+@interface SKYContainer ()
 
 
 @end
 
+NSString *const SKYChatMetaDataAssetNameImage = @"message-image";
+NSString *const SKYChatMetaDataAssetNameVoice = @"message-voice";
+NSString *const SKYChatMetaDataAssetNameText  = @"message-text";
+
 @implementation SKYContainer (Chat)
 
-
-- (void)loginWithFacebookAccessToken:(FBSDKAccessToken *)accessToken
-                   completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithProvider:@"com.facebook"
-                                  authenticationData:@{
-                                      @"access_token" : accessToken.tokenString
-                                  }];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
 
 - (NSString *)getUUID{
     NSString *UUID = [[NSUUID UUID] UUIDString];
@@ -97,7 +89,7 @@
             SKYConversation *conv = [SKYConversation recordWithRecordType:@"conversation"];
             conv.participantIds= @[userId,self.currentUserRecordID];
             conv.adminIds = @[userId,self.currentUserRecordID];
-            conv.isDirectMessage = @YES;
+            conv.isDirectMessage = YES;
             SKYDatabase *publicDB = [[SKYContainer defaultContainer] publicCloudDatabase];
             [publicDB saveRecord:conv completion:^(SKYRecord *record, NSError *error) {
                 if (error) {
@@ -267,6 +259,9 @@
         case SKYChatMetaDataVoice:
             return SKYChatMetaDataAssetNameVoice;
             break;
+        case SKYChatMetaDataText:
+            return SKYChatMetaDataAssetNameText;
+            break;
     }
     return @"";
 }
@@ -279,12 +274,14 @@
         case SKYChatMetaDataVoice:
             return @"audio/aac";
             break;
+        case SKYChatMetaDataText:
+            return @"text/";
+            break;
     }
     return @"";
 }
 
 - (NSString *)encodeToBase64String:(UIImage *)image {
-    return @"SSBhbSBhIGJveS4=";
     NSString *baseString = [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     NSLog(@"baseString :%@",baseString);
     return baseString;
@@ -467,7 +464,7 @@
 
 }
 
-- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerLastMessageReadOperationActionCompletion)completionHandler{
+- (void)markAsLastMessageReadWithConversationId:(NSString *)conversationId withMessageId:(NSString *)messageId completionHandler:(SKYContainerMarkLastMessageReadOperationActionCompletion)completionHandler{
     
     NSPredicate *pred1 =  [NSPredicate predicateWithFormat:@"user = %@",self.currentUserRecordID];
     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"conversation = %@", conversationId];
@@ -478,7 +475,7 @@
     [self.publicCloudDatabase performQuery:query completionHandler:^(NSArray *results, NSError *error) {
         if ([results count] >0) {
             SKYUserConversation *con = [SKYUserConversation recordWithRecord:[results objectAtIndex:0]];
-            con.lastReadMessage = [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"message" name:messageId]];
+            con[@"last_read_message"] = [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"message" name:messageId]];
             
             [self.publicCloudDatabase saveRecord:con completion:^(SKYRecord *record, NSError *error) {
                 if (error) {
@@ -569,10 +566,8 @@
         if (resultArray.count > 0) {
             NSMutableArray *returnArray = [[NSMutableArray alloc] init];
             for(NSDictionary *obj in resultArray){
-                SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
                 NSMutableDictionary *mutObj = [obj mutableCopy];
                 [mutObj setObject:[@"message/" stringByAppendingString:[obj valueForKey:@"_id"]] forKey:@"_id"];
-//                [mutObj setObject:[[obj valueForKey:@"_created_at"] stringByAppendingString:@"+00:00"] forKey:@"_created_at"];
                 SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
                 SKYRecord *record = [deserializer recordWithDictionary:mutObj];
                 
@@ -583,7 +578,6 @@
                     [returnArray addObject:msg];
                 }
             }
-            returnArray = [[returnArray reverseObjectEnumerator] allObjects];
             completionHandler(returnArray,error);
         }
         else{

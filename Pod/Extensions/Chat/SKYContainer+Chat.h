@@ -23,8 +23,9 @@ typedef NS_ENUM(int, SKYChatMetaDataType) {
     SKYChatMetaDataText
 };
 
-NSString *const SKYChatMetaDataAssetNameImage = @"message-image";
-NSString *const SKYChatMetaDataAssetNameVoice = @"message-voice";
+extern NSString *const SKYChatMetaDataAssetNameImage;
+extern NSString *const SKYChatMetaDataAssetNameVoice;
+extern NSString *const SKYChatMetaDataAssetNameText;
 
 @class FBSDKAccessToken, SKYConversation, SKYConversationChange, SKYMessage, SKYUserChannel, SKYLastMessageRead,SKYChatUser,SKYUserConversation;
 
@@ -44,12 +45,6 @@ typedef void (^SKYContainerGetMessagesActionCompletion)(NSArray<SKYMessage*> *me
 typedef void (^SKYContainerGetAssetsActionCompletion)(SKYAsset *assets, NSError *error);
 typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversation *conversation, NSError *error);
 
-
-/**
- Login a facebook user.
- */
-- (void)loginWithFacebookAccessToken:(FBSDKAccessToken *)accessToken
-                   completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 - (void)createConversationWithParticipantIds:(NSArray *)participantIds withAdminIds:(NSArray *)adminIds withTitle:(NSString *)title completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
 - (void)getOrCreateDirectConversationWithuUserId:(NSString *)userId completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
 - (void)getUserConversationWithConversationId:(NSString *)conversationId completionHandler:(SKYContainerUserConversationOperationActionCompletion)completionHandler;
@@ -65,7 +60,7 @@ typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversatio
 //-(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withMetadata:(id)metadata completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 -(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withURL:(NSURL *)url withType:(SKYChatMetaDataType)type withDuration:(float)duration completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 -(void)createMessageWithConversationId:(NSString *)conversationId withBody:(NSString *)body withImages:(UIImage *)image withType:(SKYChatMetaDataType)type completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
-- (void)createMessageWithSKYMessage:(SKYMessage *)message completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
+//- (void)createMessageWithSKYMessage:(SKYMessage *)message completionHandler:(SKYContainerMessageOperationActionCompletion)completionHandler;//not finished
 
 
 - (void)getMessagesWithConversationId:(NSString *)conversationId withLimit:(NSString *)limit withBeforeTime:(NSDate *)beforeTime completionHandler:(SKYContainerGetMessagesActionCompletion)completionHandler;

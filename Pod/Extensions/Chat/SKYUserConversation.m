@@ -33,14 +33,6 @@
     return self;
 }
 
-- (void)setLastReadMessage:(SKYMessage *)lastReadMessage{
-    self[@"last_read_message"] = lastReadMessage;
-}
-
-- (SKYMessage *)lastReadMessage{
-    return self[@"last_read_message"];
-}
-
 - (void)setUnreadCount:(NSNumber *)unreadCount{
     self[@"unread_count"] = unreadCount;
 }

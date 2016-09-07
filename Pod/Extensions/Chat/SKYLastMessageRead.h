@@ -13,6 +13,6 @@
 @property (strong, nonatomic) NSString* conversationId;
 @property (strong, nonatomic) NSString* messageId;
 
-- (id)init;
+- (instancetype)init;
 
 @end
