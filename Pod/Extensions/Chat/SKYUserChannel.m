@@ -10,9 +10,9 @@
 
 @implementation SKYUserChannel
 
-- (instancetype)init
++ (instancetype)recordWithUserChannelRecordType
 {
-    return [super initWithRecordType:@"user_channel"];
+    return [[self alloc] initWithRecordType:@"user_channel"];
 }
 
 - (void)setName:(NSString *)name

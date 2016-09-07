@@ -318,7 +318,7 @@ NSString *const SKYChatMetaDataAssetNameText = @"message-text";
                       completionHandler:
                           (SKYContainerMessageOperationActionCompletion)completionHandler
 {
-    SKYMessage *message = [[SKYMessage alloc] init];
+    SKYMessage *message = [SKYMessage recordWithMessageRecordType];
     message.conversationId =
         [SKYReference referenceWithRecordID:[SKYRecordID recordIDWithRecordType:@"conversation"
                                                                            name:conversationId]];

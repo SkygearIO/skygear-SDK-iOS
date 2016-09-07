@@ -11,9 +11,9 @@
 
 @implementation SKYMessage
 
-- (instancetype)init
++ (instancetype)recordWithMessageRecordType
 {
-    return [super initWithRecordType:@"message"];
+    return [[self alloc] initWithRecordType:@"message"];
 }
 
 - (void)setConversationId:(SKYReference *)conversationId
