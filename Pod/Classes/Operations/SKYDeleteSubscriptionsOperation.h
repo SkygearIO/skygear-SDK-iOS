@@ -21,12 +21,14 @@
 
 @interface SKYDeleteSubscriptionsOperation : SKYDatabaseOperation
 
-- (instancetype)initWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete;
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+         subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
-+ (instancetype)operationWithSubscriptionIDsToDelete:(NSArray *)subscriptionIDsToDelete;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+              subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
 @property (nonatomic, copy) NSString *deviceID;
-@property (nonatomic, copy) NSArray *subscriptionIDsToDelete;
+@property (nonatomic, copy) NSArray<NSString *> *subscriptionIDsToDelete;
 
 @property (nonatomic, copy) void (^deleteSubscriptionsCompletionBlock)
     (NSArray *deletedSubscriptionIDs, NSError *operationError);

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SKYKit"
-  s.version          = "0.14.0"
+  s.version          = "0.16.0"
   s.summary          = "iOS SDK for Skygear"
   s.description      = <<-DESC
                        This is the client library for Skygear backend.

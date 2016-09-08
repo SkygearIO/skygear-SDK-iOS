@@ -28,18 +28,21 @@
     NSMutableDictionary *subscriptionsByID;
 }
 
-- (instancetype)initWithSubscriptionsToSave:(NSArray *)subscriptionsToSave
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+             subscriptionsToSave:(NSArray *)subscriptionsToSave
 {
     self = [super init];
     if (self) {
+        self.deviceID = deviceID;
         self.subscriptionsToSave = subscriptionsToSave;
     }
     return self;
 }
 
-+ (instancetype)operationWithSubscriptionsToSave:(NSArray *)subscriptionsToSave;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+                  subscriptionsToSave:(NSArray *)subscriptionsToSave
 {
-    return [[self alloc] initWithSubscriptionsToSave:subscriptionsToSave];
+    return [[self alloc] initWithDeviceID:deviceID subscriptionsToSave:subscriptionsToSave];
 }
 
 - (void)prepareForRequest

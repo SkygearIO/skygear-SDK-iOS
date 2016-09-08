@@ -119,6 +119,15 @@
         user = [SKYUser userWithUserID:response[@"user_id"]];
         user.email = response[@"email"];
         user.username = response[@"username"];
+
+        NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
+        NSArray<NSString *> *roleNames = response[@"roles"];
+        [roleNames enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
+            [roles addObject:[SKYRole roleWithName:perRoleName]];
+        }];
+
+        user.roles = roles;
+
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse

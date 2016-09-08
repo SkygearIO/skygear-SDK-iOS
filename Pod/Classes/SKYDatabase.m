@@ -83,7 +83,8 @@
 
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
-    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    SKYFetchSubscriptionsOperation *operation = [SKYFetchSubscriptionsOperation
+        fetchAllSubscriptionsOperationWithDeviceID:self.container.registeredDeviceID];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
@@ -99,7 +100,9 @@
 - (void)fetchSubscriptionWithID:(NSString *)subscriptionID
               completionHandler:(void (^)(SKYSubscription *, NSError *))completionHandler
 {
-    SKYFetchSubscriptionsOperation *operation = [[SKYFetchSubscriptionsOperation alloc] init];
+    SKYFetchSubscriptionsOperation *operation =
+        [SKYFetchSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                              subscriptionIDs:@[ subscriptionID ]];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
@@ -121,7 +124,8 @@
        completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler
 {
     SKYModifySubscriptionsOperation *operation =
-        [[SKYModifySubscriptionsOperation alloc] initWithSubscriptionsToSave:@[ subscription ]];
+        [SKYModifySubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                           subscriptionsToSave:@[ subscription ]];
     if (completionHandler) {
         operation.modifySubscriptionsCompletionBlock =
             ^(NSArray *savedSubscriptions, NSError *operationError) {
@@ -143,8 +147,9 @@
                completionHandler:
                    (void (^)(NSString *subscriptionID, NSError *error))completionHandler
 {
-    SKYDeleteSubscriptionsOperation *operation = [[SKYDeleteSubscriptionsOperation alloc]
-        initWithSubscriptionIDsToDelete:@[ subscriptionID ]];
+    SKYDeleteSubscriptionsOperation *operation =
+        [SKYDeleteSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+                                       subscriptionIDsToDelete:@[ subscriptionID ]];
     if (completionHandler) {
         operation.deleteSubscriptionsCompletionBlock =
             ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {

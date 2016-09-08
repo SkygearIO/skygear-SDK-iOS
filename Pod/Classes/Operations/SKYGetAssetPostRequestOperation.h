@@ -1,5 +1,5 @@
 //
-//  SKYRelation.h
+//  SKYGetAssetPostRequestOperation.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -19,25 +19,21 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum : NSInteger {
-    SKYRelationDirectionOutward,
-    SKYRelationDirectionInward,
-    SKYRelationDirectionMutual
-} SKYRelationDirection;
+#import "SKYAsset.h"
+#import "SKYOperation.h"
 
-@interface SKYRelation : NSObject <NSCoding>
+@interface SKYGetAssetPostRequestOperation : SKYOperation
+NS_ASSUME_NONNULL_BEGIN
 
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
++ (instancetype)operationWithAsset:(SKYAsset *)asset;
 
-+ (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction;
+@property (nonatomic, readwrite) SKYAsset *asset;
 
-+ (instancetype)friendRelation;
-+ (instancetype)followingRelation;
-+ (instancetype)followedRelation;
+@property (nonatomic, copy) void (^_Nullable getAssetPostRequestCompletionBlock)
+    (SKYAsset *_Nullable asset, NSURL *_Nullable postURL,
+     NSDictionary<NSString *, NSObject *> *_Nullable extraFields, NSError *_Nullable operationError)
+        ;
 
-- (BOOL)isEqualToRelation:(SKYRelation *)relation;
-
-@property (nonatomic, readonly, copy) NSString *name;
-@property (nonatomic, readonly) SKYRelationDirection direction;
-
+NS_ASSUME_NONNULL_END
 @end

@@ -43,6 +43,9 @@ SpecBegin(SKYRecordStorage)
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
 
+            expect(record.creationDate).toNot.beNil();
+            expect(record.modificationDate).toNot.beNil();
+
             // fetch
             SKYRecord *gotRecord = [storage recordWithRecordID:record.recordID];
             expect(gotRecord).to.beIdenticalTo(record);

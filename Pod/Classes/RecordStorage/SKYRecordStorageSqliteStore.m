@@ -17,12 +17,14 @@
 //  limitations under the License.
 //
 
-#import "SKYRecordStorageSqliteStore.h"
+#import <FMDB/FMDB.h>
+
+#import "SKYDataSerialization.h"
 #import "SKYRecord.h"
 #import "SKYRecordChange_Private.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordSerializer.h"
-#import <FMDB/FMDB.h>
+#import "SKYRecordStorageSqliteStore.h"
 
 @implementation SKYRecordStorageSqliteStore {
     NSString *_path;
@@ -495,9 +497,16 @@
                       "(recordID, attributesToSave, action, finished, resolveMethod, error) VALUES "
                       "(?, ?, ?, ?, ?, ?);";
 
+    NSData *attributesData = nil;
+    if (change.attributesToSave) {
+        attributesData = [NSJSONSerialization
+            dataWithJSONObject:[SKYDataSerialization serializeObject:change.attributesToSave]
+                       options:0
+                         error:nil];
+    }
+
     BOOL success __attribute__((unused)) =
-        [_db executeUpdate:stmt, change.recordID.canonicalString,
-                           [NSKeyedArchiver archivedDataWithRootObject:change.attributesToSave],
+        [_db executeUpdate:stmt, change.recordID.canonicalString, attributesData,
                            [NSNumber numberWithInt:change.action],
                            [NSNumber numberWithBool:change.finished],
                            [NSNumber numberWithInt:change.resolveMethod],
@@ -560,8 +569,16 @@
 
 - (SKYRecordChange *)_changeWithResultSet:(FMResultSet *)s
 {
-    NSDictionary *attributesToSave =
-        [NSKeyedUnarchiver unarchiveObjectWithData:[s dataForColumn:@"attributesToSave"]];
+    // Deserialize attributesToSave column
+    NSDictionary *attributesToSave = [NSDictionary dictionary];
+    NSData *attributesToSaveData = [s dataForColumn:@"attributesToSave"];
+    if (attributesToSaveData) {
+        id deserializedValue =
+            [NSJSONSerialization JSONObjectWithData:attributesToSaveData options:0 error:nil];
+        attributesToSave = [SKYDataSerialization deserializeObjectWithValue:deserializedValue];
+    }
+
+    // Create SKYRecordChange from columns
     SKYRecordID *recordID =
         [[SKYRecordID alloc] initWithCanonicalString:[s stringForColumn:@"recordID"]];
     SKYRecordChange *change =

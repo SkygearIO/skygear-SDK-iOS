@@ -308,11 +308,14 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         [(SKYLoginUserOperation *)operation setLoginCompletionBlock:completionBock];
     } else if ([operation isKindOfClass:[SKYSignupUserOperation class]]) {
         [(SKYSignupUserOperation *)operation setSignupCompletionBlock:completionBock];
+    } else if ([operation isKindOfClass:[SKYGetCurrentUserOperation class]]) {
+        [(SKYGetCurrentUserOperation *)operation setGetCurrentUserCompletionBlock:completionBock];
     } else {
-        @throw
-            [NSException exceptionWithName:NSInvalidArgumentException
-                                    reason:@"Only User Login or Create User Operation is supported."
-                                  userInfo:nil];
+        @throw [NSException
+            exceptionWithName:NSInvalidArgumentException
+                       reason:[NSString stringWithFormat:@"Unexpected operation: %@",
+                                                         NSStringFromClass(operation.class)]
+                     userInfo:nil];
     }
     operation.container = self;
     [_operationQueue addOperation:operation];
@@ -396,6 +399,12 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         };
 
     [_operationQueue addOperation:operation];
+}
+
+- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
 - (void)queryUsersByEmails:(NSArray<NSString *> *)emails
@@ -573,14 +582,36 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)uploadAsset:(SKYAsset *)asset
     completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
-    SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
-    operation.uploadAssetCompletionBlock = ^(SKYAsset *asset, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    __weak typeof(self) wself = self;
+
+    SKYGetAssetPostRequestOperation *operation =
+        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+    operation.getAssetPostRequestCompletionBlock = ^(
+        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+        NSError *operationError) {
+        if (operationError) {
             if (completionHandler) {
-                completionHandler(asset, error);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, operationError);
+                });
             }
-        });
+
+            return;
+        }
+
+        SKYPostAssetOperation *postOperation =
+            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
+        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, postOperationError);
+                });
+            }
+        };
+
+        [wself addOperation:postOperation];
     };
+
     [self addOperation:operation];
 }
 

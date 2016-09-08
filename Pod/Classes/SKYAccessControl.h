@@ -24,7 +24,7 @@
 @class SKYUser;
 @class SKYRole;
 
-@interface SKYAccessControl : NSObject
+@interface SKYAccessControl : NSObject <NSCoding, NSCopying>
 
 - (instancetype)init NS_UNAVAILABLE;
 

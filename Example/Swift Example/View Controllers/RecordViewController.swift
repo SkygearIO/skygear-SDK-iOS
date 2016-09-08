@@ -194,6 +194,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             if let delegate = self.delegate {
                 delegate.recordViewController(self, didSaveRecord: record)
             }
+            self.record = record
             self.tableView.reloadData()
         }
     }
@@ -331,6 +332,21 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     }
     
     func editAssetRecordAttribute() {
+        let alert = UIAlertController(title: "Asset",
+                                      message: "Choose image from:",
+                                      preferredStyle: .Alert)
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Camera", style: .Default, handler: { (action) in
+            self.editAssetRecordAttribute(.Camera)
+        }))
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .Default, handler: { (action) in
+            self.editAssetRecordAttribute(.PhotoLibrary)
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    func editAssetRecordAttribute(type: UIImagePickerControllerSourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = .SavedPhotosAlbum
         imagePicker.delegate = self
@@ -510,6 +526,8 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         }
         
         let asset = SKYAsset(data: UIImagePNGRepresentation(image))
+        asset.mimeType = "image/png"
+
         SKYContainer.defaultContainer().uploadAsset(asset) { (asset, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .Alert)

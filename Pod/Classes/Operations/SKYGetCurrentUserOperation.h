@@ -1,5 +1,5 @@
 //
-//  SKYSequence.m
+//  SKYGetCurrentUserOperation.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,29 +17,17 @@
 //  limitations under the License.
 //
 
-#import "SKYSequence.h"
+#import <SKYKit/SKYKit.h>
 
-@implementation SKYSequence
+/**
+ * <SKYGetCurrentUserOperation> is a <SKYOperation> for getting current user from server
+ */
+@interface SKYGetCurrentUserOperation : SKYOperation
 
-+ (instancetype)sequence
-{
-    return [[SKYSequence alloc] init];
-}
-
-- (instancetype)init
-{
-    return [super init];
-}
-
-#pragma NSCoding
-
-- (instancetype)initWithCoder:(NSCoder *)decoder
-{
-    return [SKYSequence sequence];
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder
-{
-}
+/**
+ *  Completiong Block of the Get Current User Operation
+ */
+@property (nonatomic, copy, nullable) void (^getCurrentUserCompletionBlock)
+    (SKYUser *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
 
 @end

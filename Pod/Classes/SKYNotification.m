@@ -31,7 +31,7 @@
         // we only have query notification at the moment
         self.notificationType = SKYNotificationTypeQuery;
 
-        self.subscriptionID = subscriptionID;
+        self.subscriptionID = [subscriptionID copy];
     }
     return self;
 }

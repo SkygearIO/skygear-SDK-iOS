@@ -1,3 +1,31 @@
+## 0.16.0 (2016-09-02)
+
+### Features
+
+- Support new asset upload mechanism (SkygearIO/skygear-server#107)
+- Add `whoami` API for querying and update currnetUser from server (SkygearIO/skygear-server#111)
+
+### Bug Fixes
+
+- Improve metadata handling in SKYRecord and SKYRecordStorage (#30, #36)
+- SKYRecordStorage should set SKYRecord metadata fields when saving (#30)
+- Make SKYSequence conform with NSCoding (#28)
+- Reload table view in Example after saving 
+
+### Other Notes
+
+- Specify deviceID when creating subscription operations (#23, #26)
+
+## 0.15.0 (2016-08-17)
+
+### Features
+
+- Support user discovery with username (skygeario/skygear-server#90)
+
+### Other Notes
+
+- Remove SKYQueryUsersOperation
+
 ## 0.14.0 (2016-07-26)
 
 ### Features

@@ -188,4 +188,38 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return [[self alloc] initWithPublicAccessLevel:SKYAccessControlEntryLevelWrite];
 }
 
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInteger:self.entryType forKey:@"entryType"];
+    [aCoder encodeInteger:self.accessLevel forKey:@"accessLevel"];
+    [aCoder encodeObject:self.relation forKey:@"relation"];
+    [aCoder encodeObject:self.role forKey:@"role"];
+    [aCoder encodeObject:self.userID forKey:@"userID"];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    SKYAccessControlEntryType entryType = [aDecoder decodeIntegerForKey:@"entryType"];
+    SKYAccessControlEntryLevel accessLevel = [aDecoder decodeIntegerForKey:@"accessLevel"];
+    switch (entryType) {
+        case SKYAccessControlEntryTypeRelation:
+            return [self initWithAccessLevel:accessLevel
+                                    relation:[aDecoder decodeObjectOfClass:[SKYRelation class]
+                                                                    forKey:@"relation"]];
+        case SKYAccessControlEntryTypeDirect:
+            return [self initWithAccessLevel:accessLevel
+                                      userID:[aDecoder decodeObjectOfClass:[NSString class]
+                                                                    forKey:@"userID"]];
+        case SKYAccessControlEntryTypeRole:
+            return [self
+                initWithAccessLevel:accessLevel
+                               role:[aDecoder decodeObjectOfClass:[SKYRole class] forKey:@"role"]];
+        case SKYAccessControlEntryTypePublic:
+            return [self initWithPublicAccessLevel:accessLevel];
+    }
+    return nil;
+}
+
 @end

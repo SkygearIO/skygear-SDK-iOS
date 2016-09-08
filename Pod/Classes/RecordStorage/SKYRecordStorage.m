@@ -18,11 +18,13 @@
 //
 
 #import "SKYRecordStorage.h"
+#import "SKYContainer.h"
 #import "SKYRecordChange.h"
 #import "SKYRecordStorageFileBackedMemoryStore.h"
 #import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorage_Private.h"
 #import "SKYRecordSynchronizer.h"
+#import "SKYRecord_Private.h"
 
 NSString *const SKYRecordStorageDidUpdateNotification = @"SKYRecordStorageDidUpdateNotification";
 NSString *const SKYRecordStorageWillSynchronizeChangesNotification =
@@ -169,6 +171,19 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                                                                action:SKYRecordChangeSave
                                                         resolveMethod:resolution
                                                      attributesToSave:attributesToSave];
+
+    // Simulate changes to record metadata that will happen on the server-side.
+    [record setModificationDate:[NSDate date]];
+    [record setLastModifiedUserRecordID:[[SKYContainer defaultContainer] currentUserRecordID]];
+    if ([record creationDate] == nil) {
+        [record setCreationDate:record.modificationDate];
+    }
+    if ([record creatorUserRecordID] == nil) {
+        [record setCreatorUserRecordID:record.lastModifiedUserRecordID];
+    }
+    if ([record ownerUserRecordID] == nil) {
+        [record setOwnerUserRecordID:record.lastModifiedUserRecordID];
+    }
 
     [self _setCacheRecord:record recordID:record.recordID];
     [self _appendChange:change record:record completion:handler];

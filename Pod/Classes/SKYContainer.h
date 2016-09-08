@@ -184,6 +184,13 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
+ *  Asks "Who am I" to server.
+ *
+ *  @param completionHandler the completion handler
+ */
+- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
  Registers a device token for push notification.
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
