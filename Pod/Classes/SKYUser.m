@@ -34,6 +34,14 @@
     return [[self alloc] initWithUserID:userID];
 }
 
++ (instancetype)userWithResponse:(NSDictionary *)response
+{
+    SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
+    user.email = response[@"email"];
+    user.username = response[@"username"];
+    return user;
+}
+
 - (instancetype)initWithUserID:(NSString *)userID
 {
     self = [super init];
