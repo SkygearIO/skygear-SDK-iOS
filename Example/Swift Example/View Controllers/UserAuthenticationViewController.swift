@@ -24,6 +24,10 @@ class UserAuthenticationViewController: UITableViewController {
     
     let actionSectionIndex = 0
     let statusSectionIndex = 1
+    var lastLoginAt : NSDate?
+    var lastSeenAt : NSDate?
+    
+    let dateFormatter = NSDateFormatter()
     
     var lastUsername : String? {
         get {
@@ -43,6 +47,23 @@ class UserAuthenticationViewController: UITableViewController {
     }
     
     // MARK: - Lifecycle
+    
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        self.dateFormatter.locale = NSLocale.currentLocale()
+        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.dateFormatter.locale = NSLocale.currentLocale()
+        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        if SKYContainer.defaultContainer().currentUserRecordID != nil {
+            self.whoami()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +88,22 @@ class UserAuthenticationViewController: UITableViewController {
             }
         }))
         self.presentViewController(alert, animated: true, completion: completion)
+    }
+    
+    func whoami() {
+        SKYContainer.defaultContainer().getWhoAmIWithCompletionHandler { (user, error) in
+            if error != nil {
+                self.showAuthenticationError(user, error: error, completion: {
+                    self.login(nil)
+                })
+                return
+            }
+            
+            self.lastUsername = user.username
+            self.lastLoginAt = user.lastLoginAt
+            self.lastSeenAt = user.lastSeenAt
+
+        }
     }
     
     func loginStatusDidChange() {
@@ -101,6 +138,8 @@ class UserAuthenticationViewController: UITableViewController {
                 }
                 
                 self.lastUsername = username
+                self.lastLoginAt = user.lastLoginAt
+                self.lastSeenAt = user.lastSeenAt
             })
         }))
         alert.preferredAction = alert.actions.last
@@ -172,7 +211,7 @@ class UserAuthenticationViewController: UITableViewController {
         case self.actionSectionIndex:
             return self.isLoggedIn ? 3 : 2
         case self.statusSectionIndex:
-            return 3
+            return 5
         default:
             return 0
         }
@@ -212,6 +251,22 @@ class UserAuthenticationViewController: UITableViewController {
             } else if indexPath.row == 2 {
                 cell.textLabel?.text = "Access Token"
                 cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentAccessToken.tokenString
+            } else if indexPath.row == 3 {
+                cell.textLabel?.text = "Last Login At"
+                if let lastLoginAt = self.lastLoginAt {
+                    let f = self.dateFormatter.stringFromDate(lastLoginAt)
+                    cell.detailTextLabel?.text = f
+                } else {
+                    cell.detailTextLabel?.text = "Querying..."
+                }
+            } else if indexPath.row == 4 {
+                cell.textLabel?.text = "Last Seen At"
+                if let lastSeenAt = self.lastSeenAt {
+                    let f = self.dateFormatter.stringFromDate(lastSeenAt)
+                    cell.detailTextLabel?.text = f
+                } else {
+                    cell.detailTextLabel?.text = "Querying..."
+                }
             }
             return cell
         default:
