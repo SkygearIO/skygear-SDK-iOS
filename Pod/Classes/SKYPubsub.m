@@ -158,7 +158,7 @@ double const SKYPubsubReconnectWait = 1.0;
 - (void)sendPing
 {
     if (_opened) {
-        NSLog(@"Ping Ourd websocket");
+        NSLog(@"Ping Skygear websocket");
         [_webSocket sendPing:nil];
     }
 }
