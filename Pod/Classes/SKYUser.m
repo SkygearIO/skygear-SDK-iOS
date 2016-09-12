@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "SKYDataSerialization.h"
 #import "SKYUser.h"
+#import "SKYDataSerialization.h"
 
 #import "SKYQueryOperation.h"
 
@@ -37,8 +37,7 @@
 
 + (instancetype)userWithResponse:(NSDictionary *)response
 {
-    SKYUser *user = [SKYUser userWithUserID:response
-                     [@"user_id"]];
+    SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
     user.email = response[@"email"];
     user.username = response[@"username"];
     user.lastLoginAt = [SKYDataSerialization dateFromString:response[@"last_login_at"]];

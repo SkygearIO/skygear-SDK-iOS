@@ -109,7 +109,6 @@
         self.completionBlock = ^{
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
-                
 
                 SKYUser *user = [SKYUser userWithResponse:response];
 
