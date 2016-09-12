@@ -11,12 +11,14 @@ target 'Swift Example' do
   use_frameworks!
 
   pod "SKYKit", :path => "../"
-  pod "SKYKit/Facebook", :path => "../"
+  pod "SKYKit/Facebook", :path => “../”
+  pod "SKYKit/Chat", :path => “../”
 end
 
 target 'Tests' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
+  pod "SKYKit/Chat", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'
