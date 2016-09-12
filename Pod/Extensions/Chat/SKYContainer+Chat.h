@@ -74,4 +74,11 @@ typedef void (^SKYContainerGetAssetsActionCompletion)(SKYAsset *assets, NSError 
 - (void)subscribeHandler:(void (^)(NSDictionary *dictionary))messageHandler;
 - (void)fetchAssetsByRecordId:(NSString *)recordId CompletionHandler:(SKYContainerGetAssetsActionCompletion)completionHandler;
 
+
+//MK related
+- (void)createMKConversationWithParticipantIds:(NSArray *)participantIds
+                                  withAdminIds:(NSArray *)adminIds withTitle:(NSString *)title
+                             completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler;
+
+
 @end

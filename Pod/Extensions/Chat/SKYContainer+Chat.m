@@ -133,7 +133,8 @@
     NSPredicate *pred1 =  [NSPredicate predicateWithFormat:@"user = %@",self.currentUserRecordID];
     NSPredicate *pred2 = [NSPredicate predicateWithFormat:@"conversation = %@", conversationId];
     NSCompoundPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[pred1,pred2]];
-    SKYQuery *query = [SKYQuery queryWithRecordType:@"UserConversation" predicate:predicate];
+    SKYQuery *query = [SKYQuery queryWithRecordType:@"user_conversation" predicate:predicate];
+    query.transientIncludes = @{ @"conversation" : [NSExpression expressionForKeyPath:@"conversation"] ,@"user" : [NSExpression expressionForKeyPath:@"user"] };
     query.limit = 1;
     
     [self.publicCloudDatabase performQuery:query completionHandler:^(NSArray *results, NSError *error) {
@@ -567,7 +568,34 @@
     }];
 }
 
-
+//Create Conversation For Usage of MK
+- (void)createMKConversationWithParticipantIds:(NSArray *)participantIds
+                                withAdminIds:(NSArray *)adminIds withTitle:(NSString *)title
+                           completionHandler:(SKYContainerConversationOperationActionCompletion)completionHandler{
+    
+    SKYConversation *conv = [SKYConversation recordWithRecordType:@"conversation"];
+    conv.participantIds = participantIds;
+    if(![adminIds containsObject:self.currentUserRecordID]){
+        NSMutableArray *array = [adminIds mutableCopy];
+        [array addObject:self.currentUserRecordID];
+        adminIds = [array copy];
+    }
+    conv.adminIds = adminIds;
+    conv.title = title;
+    conv.isActive = true;
+    conv.isPickedUp = false;
+    conv.isDirectMessage = false;
+    
+    [self.publicCloudDatabase saveRecord:conv completion:^(SKYRecord *record, NSError *error) {
+        if (error) {
+            NSLog(@"error saving todo: %@", error);
+        }
+        NSLog(@"saved todo with recordID = %@", record.recordID);
+        SKYConversation *con = [SKYConversation recordWithRecord:record];
+        completionHandler(con, error);
+    }];
+    
+}
 
 
 @end

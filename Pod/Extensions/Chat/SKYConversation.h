@@ -22,6 +22,12 @@
 @property (strong, nonatomic)NSString* lastMessage;
 @property (assign, nonatomic)int count;
 
+//MK related
+@property (assign, nonatomic)BOOL isActive;
+@property (assign, nonatomic)BOOL isPickedUp;
+@property (strong, nonatomic)SKYReference* pickedBy;
+
+
 - (NSString *)toString;
 - (NSString *)getOtherUserUserId:(NSString *)myUserId;
 

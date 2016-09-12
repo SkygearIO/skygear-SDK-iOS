@@ -47,6 +47,33 @@
 - (BOOL)isDirectMessage{
     return [self[@"is_direct_message"] boolValue];
 }
+
+- (BOOL)isActive{
+    return [self[@"is_active"] boolValue];
+}
+
+- (void)setIsActive:(BOOL)isActive{
+    self[@"is_active"] = isActive? @YES: @NO;
+;
+}
+
+- (BOOL)isPickedUp{
+    return [self[@"is_picked_up"] boolValue];
+
+}
+
+- (void)setIsPickedUp:(BOOL)isPickedUp{
+    self[@"is_picked_up"] = isPickedUp? @YES: @NO;
+}
+
+- (SKYReference *)pickedBy{
+    return  self[@"picked_by"];
+}
+
+- (void)setPickedBy:(SKYReference *)pickedBy{
+    self[@"picked_by"] = pickedBy;
+}
+
 //
 //- (NSString *)updatedAt{
 //    return self[@"updated_at"];
