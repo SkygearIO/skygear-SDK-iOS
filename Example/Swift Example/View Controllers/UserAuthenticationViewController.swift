@@ -120,7 +120,7 @@ class UserAuthenticationViewController: UITableViewController {
             }
             
             SKYContainer.defaultContainer().loginWithUsername(username, password: password, completionHandler: { (user, error) in
-                if error != nil {
+                guard error == nil else {
                     self.showAuthenticationError(user, error: error, completion: {
                         self.login(username)
                     })
