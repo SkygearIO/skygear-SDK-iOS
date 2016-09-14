@@ -48,29 +48,19 @@ class UserAuthenticationViewController: UITableViewController {
     
     // MARK: - Lifecycle
     
-    override init(style: UITableViewStyle) {
-        super.init(style: style)
-        self.dateFormatter.locale = NSLocale.currentLocale()
-        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.dateFormatter.locale = NSLocale.currentLocale()
-        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        if SKYContainer.defaultContainer().currentUserRecordID != nil {
-            self.whoami()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NSNotificationCenter.defaultCenter().addObserverForName(SKYContainerDidChangeCurrentUserNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (note) in
             
             self.loginStatusDidChange()
+        }
+        
+        self.dateFormatter.locale = NSLocale.currentLocale()
+        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        if SKYContainer.defaultContainer().currentUserRecordID != nil {
+            self.whoami()
         }
     }
 
