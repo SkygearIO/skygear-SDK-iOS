@@ -57,9 +57,7 @@
             accessToken =
                 [[SKYAccessToken alloc] initWithTokenString:resultDictionary[@"access_token"]];
 
-            user = [SKYUser userWithUserID:resultDictionary[@"user_id"]];
-            user.email = resultDictionary[@"email"];
-            user.username = resultDictionary[@"username"];
+            user = [SKYUser userWithResponse:resultDictionary];
 
             NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
             NSArray<NSString *> *roleNames = resultDictionary[@"roles"];

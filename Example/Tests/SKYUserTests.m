@@ -25,9 +25,26 @@ SpecBegin(SKYUser)
         it(@"should be initialized correctly", ^{
             SKYUser *user1 = [[SKYUser alloc] initWithUserID:@"user_id1"];
             expect(user1.userID).to.equal(@"user_id1");
+            expect(user1.lastLoginAt).to.beNil();
 
             SKYUser *user2 = [SKYUser userWithUserID:@"user_id2"];
             expect(user2.userID).to.equal(@"user_id2");
+        });
+
+        it(@"should be initialized correctly with meta date", ^{
+            NSDictionary *response = @{
+                @"user_id" : @"userid1",
+                @"username" : @"User 1",
+                @"email" : @"user1@example.com",
+                @"last_login_at" : @"2016-09-08T06:45:59.000Z",
+                @"last_seen_at" : @"2016-09-08T06:45:59.000Z"
+            };
+            SKYUser *user1 = [SKYUser userWithResponse:response];
+            expect(user1.userID).to.equal(@"userid1");
+            expect(user1.username).to.equal(@"User 1");
+            expect(user1.email).to.equal(@"user1@example.com");
+            expect(user1.lastLoginAt).notTo.beNil();
+            expect(user1.lastSeenAt).notTo.beNil();
         });
 
         it(@"should manipulate roles correctly", ^{

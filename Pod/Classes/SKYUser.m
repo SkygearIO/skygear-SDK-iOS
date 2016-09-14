@@ -18,6 +18,7 @@
 //
 
 #import "SKYUser.h"
+#import "SKYDataSerialization.h"
 
 #import "SKYQueryOperation.h"
 
@@ -32,6 +33,16 @@
 + (instancetype)userWithUserID:(NSString *)userID
 {
     return [[self alloc] initWithUserID:userID];
+}
+
++ (instancetype)userWithResponse:(NSDictionary *)response
+{
+    SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
+    user.email = response[@"email"];
+    user.username = response[@"username"];
+    user.lastLoginAt = [SKYDataSerialization dateFromString:response[@"last_login_at"]];
+    user.lastSeenAt = [SKYDataSerialization dateFromString:response[@"last_seen_at"]];
+    return user;
 }
 
 - (instancetype)initWithUserID:(NSString *)userID

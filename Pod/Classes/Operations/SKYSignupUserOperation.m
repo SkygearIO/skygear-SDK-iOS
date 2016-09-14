@@ -110,9 +110,7 @@
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
 
-                SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
-                user.username = response[@"username"];
-                user.email = response[@"email"];
+                SKYUser *user = [SKYUser userWithResponse:response];
 
                 NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
                 NSArray<NSString *> *roleNames = response[@"roles"];

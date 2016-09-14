@@ -116,9 +116,7 @@
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        user = [SKYUser userWithUserID:response[@"user_id"]];
-        user.email = response[@"email"];
-        user.username = response[@"username"];
+        user = [SKYUser userWithResponse:response];
 
         NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
         NSArray<NSString *> *roleNames = response[@"roles"];

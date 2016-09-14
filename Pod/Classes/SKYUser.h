@@ -33,9 +33,12 @@
 - (BOOL)hasRole:(SKYRole *)aRole;
 
 + (instancetype)userWithUserID:(NSString *)userID;
++ (instancetype)userWithResponse:(NSDictionary *)userID;
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;
+@property (nonatomic, copy) NSDate *lastLoginAt;
+@property (nonatomic, copy) NSDate *lastSeenAt;
 @property (nonatomic, copy) NSDictionary *authData;
 @property (nonatomic, strong) NSArray<SKYRole *> *roles;
 @property (nonatomic, readonly, assign) BOOL isNew;
