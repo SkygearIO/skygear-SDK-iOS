@@ -1,3 +1,20 @@
+## 0.17.0 (2016-09-15)
+
+### Features
+
+- Support last login and last seen at user object (SkygearIO/skygear-server#110)
+- Add Chat extension
+
+### Minor Fixes
+
+- Expose `-[SKYNotification subscriptionID]` (#41)
+
+### Other Notes
+
+- For the chat extension, it will work together with chat plugin:
+  https://github.com/SkygearIO/chat
+
+
 ## 0.16.0 (2016-09-02)
 
 ### Features
@@ -10,11 +27,12 @@
 - Improve metadata handling in SKYRecord and SKYRecordStorage (#30, #36)
 - SKYRecordStorage should set SKYRecord metadata fields when saving (#30)
 - Make SKYSequence conform with NSCoding (#28)
-- Reload table view in Example after saving 
+- Reload table view in Example after saving
 
 ### Other Notes
 
 - Specify deviceID when creating subscription operations (#23, #26)
+
 
 ## 0.15.0 (2016-08-17)
 
@@ -25,6 +43,7 @@
 ### Other Notes
 
 - Remove SKYQueryUsersOperation
+
 
 ## 0.14.0 (2016-07-26)
 
@@ -42,9 +61,11 @@
 
 - Remove SKYPushOperation which never worked
 
+
 ## 0.13.0 (2016-07-05)
 
 No change since last release
+
 
 ## 0.12.1 (2016-06-23)
 
@@ -58,9 +79,11 @@ No change since last release
 - Fix crash when deleting one record with error
 - Fix wrong data when sign up with username
 
+
 ## 0.12.0 (2016-05-30)
 
 No change since last release
+
 
 ## 0.11.0 (2016-05-09)
 
