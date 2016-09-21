@@ -21,6 +21,7 @@
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
+#import "SKYUserDeserializer.h"
 
 @implementation SKYLoginUserOperation {
     NSDictionary *_authPayload;
@@ -116,7 +117,7 @@
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
-        user = [SKYUser userWithResponse:response];
+        user = [[SKYUserDeserializer deserializer] userWithDictionary:response];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse

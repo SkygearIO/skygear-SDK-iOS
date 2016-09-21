@@ -20,6 +20,7 @@
 #import "SKYSignupUserOperation.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
+#import "SKYUserDeserializer.h"
 
 @implementation SKYSignupUserOperation
 
@@ -110,7 +111,7 @@
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
 
-                SKYUser *user = [SKYUser userWithResponse:response];
+                SKYUser *user = [[SKYUserDeserializer deserializer] userWithDictionary:response];
 
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];

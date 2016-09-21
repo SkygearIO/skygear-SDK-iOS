@@ -19,6 +19,7 @@
 
 #import "SKYUser.h"
 #import "SKYDataSerialization.h"
+#import "SKYUserDeserializer.h"
 #import "SKYUser_Private.h"
 
 #import "SKYQueryOperation.h"
@@ -34,22 +35,7 @@
 
 + (instancetype)userWithResponse:(NSDictionary *)response
 {
-    SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
-    user.email = response[@"email"];
-    user.username = response[@"username"];
-    user.lastLoginAt = [SKYDataSerialization dateFromString:response[@"last_login_at"]];
-    user.lastSeenAt = [SKYDataSerialization dateFromString:response[@"last_seen_at"]];
-    
-    // Parse roles
-    NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
-    NSArray<NSString *> *roleNames = response[@"roles"];
-    [roleNames
-     enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
-         [roles addObject:[SKYRole roleWithName:perRoleName]];
-     }];
-    user->_roles = roles;
-    
-    return user;
+    return [[SKYUserDeserializer deserializer] userWithDictionary:response];
 }
 
 - (instancetype)initWithUserID:(NSString *)userID

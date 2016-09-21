@@ -33,7 +33,7 @@
 - (BOOL)hasRole:(SKYRole *)aRole;
 
 + (instancetype)userWithUserID:(NSString *)userID;
-+ (instancetype)userWithResponse:(NSDictionary *)userID;
++ (instancetype)userWithResponse:(NSDictionary *)userID __deprecated;
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;

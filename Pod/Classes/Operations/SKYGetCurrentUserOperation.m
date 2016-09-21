@@ -19,6 +19,7 @@
 
 #import "SKYGetCurrentUserOperation.h"
 #import "SKYOperationSubclass.h"
+#import "SKYUserDeserializer.h"
 
 @interface SKYGetCurrentUserOperation ()
 
@@ -57,7 +58,7 @@
             accessToken =
                 [[SKYAccessToken alloc] initWithTokenString:resultDictionary[@"access_token"]];
 
-            user = [SKYUser userWithResponse:resultDictionary];
+            user = [[SKYUserDeserializer deserializer] userWithDictionary:resultDictionary];
         } else {
             error = [self.errorCreator errorWithCode:SKYErrorBadResponse
                                              message:@"Get a non-user object is received."];
