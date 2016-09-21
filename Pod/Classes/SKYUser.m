@@ -19,16 +19,13 @@
 
 #import "SKYUser.h"
 #import "SKYDataSerialization.h"
+#import "SKYUser_Private.h"
 
 #import "SKYQueryOperation.h"
 
-@interface SKYUser ()
-
-@property (nonatomic, readwrite, copy) NSString *recordID;
-
-@end
-
-@implementation SKYUser
+@implementation SKYUser {
+    NSMutableArray<SKYRole *> *_roles;
+}
 
 + (instancetype)userWithUserID:(NSString *)userID
 {
@@ -50,7 +47,7 @@
      enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
          [roles addObject:[SKYRole roleWithName:perRoleName]];
      }];
-    user->_roles = [roles copy];
+    user->_roles = roles;
     
     return user;
 }
@@ -60,17 +57,25 @@
     self = [super init];
     if (self) {
         _userID = [userID copy];
+        _roles = [NSMutableArray array];
     }
     return self;
+}
+
+- (NSArray<SKYRole *> *)roles
+{
+    return [_roles copy];
+}
+
+- (void)setRoles:(NSArray *)roles
+{
+    _roles = [roles mutableCopy];
 }
 
 - (void)addRole:(SKYRole *)aRole
 {
     if (![self hasRole:aRole]) {
-        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
-        [roles addObject:aRole];
-
-        [self setRoles:roles];
+        [_roles addObject:aRole];
     }
 }
 
@@ -78,10 +83,7 @@
 {
     NSUInteger idx = [self indexOfRole:aRole];
     if (idx != NSNotFound) {
-        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
-        [roles removeObjectAtIndex:idx];
-
-        [self setRoles:roles];
+        [_roles removeObjectAtIndex:idx];
     }
 }
 

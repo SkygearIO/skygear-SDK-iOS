@@ -19,6 +19,8 @@
 
 #import <SKYKit/SKYKit.h>
 
+#import "SKYUser_Private.h"
+
 SpecBegin(SKYUser)
 
     describe(@"SKYUser", ^{

@@ -40,7 +40,7 @@
 @property (nonatomic, copy) NSDate *lastLoginAt;
 @property (nonatomic, copy) NSDate *lastSeenAt;
 @property (nonatomic, copy) NSDictionary *authData;
-@property (nonatomic, strong) NSArray<SKYRole *> *roles;
+@property (nonatomic, readonly, copy) NSArray<SKYRole *> *roles;
 @property (nonatomic, readonly, assign) BOOL isNew;
 
 @property (nonatomic, readonly, copy) NSString *userID;
