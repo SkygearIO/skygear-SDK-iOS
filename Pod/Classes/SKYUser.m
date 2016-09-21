@@ -42,6 +42,16 @@
     user.username = response[@"username"];
     user.lastLoginAt = [SKYDataSerialization dateFromString:response[@"last_login_at"]];
     user.lastSeenAt = [SKYDataSerialization dateFromString:response[@"last_seen_at"]];
+    
+    // Parse roles
+    NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
+    NSArray<NSString *> *roleNames = response[@"roles"];
+    [roleNames
+     enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
+         [roles addObject:[SKYRole roleWithName:perRoleName]];
+     }];
+    user->_roles = [roles copy];
+    
     return user;
 }
 

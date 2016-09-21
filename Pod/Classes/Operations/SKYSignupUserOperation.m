@@ -112,15 +112,6 @@
 
                 SKYUser *user = [SKYUser userWithResponse:response];
 
-                NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
-                NSArray<NSString *> *roleNames = response[@"roles"];
-                [roleNames enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx,
-                                                        BOOL *stop) {
-                    [roles addObject:[SKYRole roleWithName:perRoleName]];
-                }];
-
-                user.roles = roles;
-
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
 

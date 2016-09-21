@@ -58,15 +58,6 @@
                 [[SKYAccessToken alloc] initWithTokenString:resultDictionary[@"access_token"]];
 
             user = [SKYUser userWithResponse:resultDictionary];
-
-            NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
-            NSArray<NSString *> *roleNames = resultDictionary[@"roles"];
-            [roleNames
-                enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
-                    [roles addObject:[SKYRole roleWithName:perRoleName]];
-                }];
-
-            user.roles = roles;
         } else {
             error = [self.errorCreator errorWithCode:SKYErrorBadResponse
                                              message:@"Get a non-user object is received."];

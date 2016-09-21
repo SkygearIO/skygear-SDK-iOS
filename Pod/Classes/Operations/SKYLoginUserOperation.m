@@ -117,15 +117,6 @@
     NSDictionary *response = aResponse.responseDictionary[@"result"];
     if (response[@"user_id"] && response[@"access_token"]) {
         user = [SKYUser userWithResponse:response];
-
-        NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
-        NSArray<NSString *> *roleNames = response[@"roles"];
-        [roleNames enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx, BOOL *stop) {
-            [roles addObject:[SKYRole roleWithName:perRoleName]];
-        }];
-
-        user.roles = roles;
-
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
