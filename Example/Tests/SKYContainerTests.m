@@ -82,6 +82,8 @@ describe(@"user login and signup", ^{
     __block void (^assertLoggedIn)(NSString *, NSError *) =
         ^(NSString *userRecordID, NSError *error) {
             expect(container.currentUserRecordID).to.equal(userRecordID);
+            expect(container.currentUser.username).to.equal(@"john.doe");
+            expect(container.currentUser.email).to.equal(@"john.doe@example.com");
             expect(error).to.beNil();
             expect(userRecordID).to.equal(@"UUID");
             expect(container.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
@@ -96,6 +98,8 @@ describe(@"user login and signup", ^{
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSDictionary *parameters = @{
                     @"user_id" : @"UUID",
+                    @"username" : @"john.doe",
+                    @"email" : @"john.doe@example.com",
                     @"access_token" : @"ACCESS_TOKEN",
                 };
                 NSData *payload = [NSJSONSerialization dataWithJSONObject:@{
@@ -261,7 +265,7 @@ describe(@"save current user", ^{
         });
     });
 
-    it(@"fetch record", ^{
+    it(@"fetch user with ID", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
         [container
             updateWithUserRecordID:@"user1"
@@ -272,12 +276,36 @@ describe(@"save current user", ^{
         expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
 
-    it(@"update with nil", ^{
+    it(@"fetch user with User", ^{
+        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYUser *user = [SKYUser userWithUserID:@"user1"];
+        user.username = @"username1";
+        [container updateWithUser:user
+                      accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
+
+        container = [[SKYContainer alloc] init];
+        expect(container.currentUserRecordID).to.equal(@"user1");
+        expect(container.currentUser.username).to.equal(@"username1");
+        expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
+    });
+
+    it(@"update with nil ID", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
         [container updateWithUserRecordID:nil accessToken:nil];
 
         container = [[SKYContainer alloc] init];
         expect(container.currentUserRecordID).to.beNil();
+        expect(container.currentUser).to.beNil();
+        expect(container.currentAccessToken).to.beNil();
+    });
+
+    it(@"update with nil User", ^{
+        SKYContainer *container = [[SKYContainer alloc] init];
+        [container updateWithUser:nil accessToken:nil];
+
+        container = [[SKYContainer alloc] init];
+        expect(container.currentUserRecordID).to.beNil();
+        expect(container.currentUser).to.beNil();
         expect(container.currentAccessToken).to.beNil();
     });
 
