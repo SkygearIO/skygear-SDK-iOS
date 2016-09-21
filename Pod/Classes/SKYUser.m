@@ -48,6 +48,35 @@
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSString *userID = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"userID"];
+    if (!userID) {
+        return nil;
+    }
+
+    self = [self initWithUserID:userID];
+    if (self) {
+        _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"username"];
+        _email = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"email"];
+        _lastLoginAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"lastLoginAt"];
+        _lastSeenAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"lastSeenAt"];
+        _roles = [[aDecoder decodeObjectOfClass:[NSArray class] forKey:@"roles"] mutableCopy];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    // authData is specifically not persisted because of unclear security implications.
+    [aCoder encodeObject:_userID forKey:@"userID"];
+    [aCoder encodeObject:_username forKey:@"username"];
+    [aCoder encodeObject:_email forKey:@"email"];
+    [aCoder encodeObject:_lastLoginAt forKey:@"lastLoginAt"];
+    [aCoder encodeObject:_lastSeenAt forKey:@"lastSeenAt"];
+    [aCoder encodeObject:[_roles copy] forKey:@"roles"];
+}
+
 - (NSArray<SKYRole *> *)roles
 {
     return [_roles copy];

@@ -23,7 +23,7 @@
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
-@interface SKYUser : NSObject
+@interface SKYUser : NSObject <NSCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithUserID:(NSString *)userID;

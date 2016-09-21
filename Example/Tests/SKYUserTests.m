@@ -54,6 +54,30 @@ SpecBegin(SKYUser)
             expect(user.roles).to.haveACountOf(2);
             expect([user hasRole:testerRole]).to.equal(NO);
         });
+
+        it(@"should encode and decode correctly", ^{
+            SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
+            SKYRole *testerRole = [SKYRole roleWithName:@"Tester"];
+
+            SKYUser *user = [SKYUser userWithUserID:@"user_id"];
+            user.username = @"username";
+            user.email = @"username@example.com";
+            user.lastLoginAt = [NSDate date];
+            user.lastSeenAt = [NSDate date];
+            user.roles = @[ developerRole, testerRole ];
+
+            NSData *encodedUser = [NSKeyedArchiver archivedDataWithRootObject:user];
+            SKYUser *decodedUser = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
+
+            expect(decodedUser.userID).to.equal(user.userID);
+            expect(decodedUser.username).to.equal(user.username);
+            expect(decodedUser.email).to.equal(user.email);
+            expect(decodedUser.lastLoginAt).to.equal(user.lastLoginAt);
+            expect(decodedUser.lastSeenAt).to.equal(user.lastSeenAt);
+            expect(decodedUser.roles[0].name).to.equal(user.roles[0].name);
+            expect(decodedUser.roles[1].name).to.equal(user.roles[1].name);
+        });
+
     });
 
 SpecEnd
