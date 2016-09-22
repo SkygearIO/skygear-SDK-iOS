@@ -24,8 +24,6 @@ class UserAuthenticationViewController: UITableViewController {
     
     let actionSectionIndex = 0
     let statusSectionIndex = 1
-    var lastLoginAt : NSDate?
-    var lastSeenAt : NSDate?
     
     let dateFormatter = NSDateFormatter()
     
@@ -36,7 +34,6 @@ class UserAuthenticationViewController: UITableViewController {
         set(value) {
             NSUserDefaults.standardUserDefaults().setObject(value, forKey: "LastUsername")
             NSUserDefaults.standardUserDefaults().synchronize()
-            self.loginStatusDidChange()
         }
     }
     
@@ -88,15 +85,14 @@ class UserAuthenticationViewController: UITableViewController {
                 })
                 return
             }
-            
-            self.lastUsername = user.username
-            self.lastLoginAt = user.lastLoginAt
-            self.lastSeenAt = user.lastSeenAt
-
         }
     }
     
     func loginStatusDidChange() {
+        if let user = SKYContainer.defaultContainer().currentUser {
+            self.lastUsername = user.username
+        }
+        
         self.tableView.reloadData()
     }
     
@@ -126,10 +122,6 @@ class UserAuthenticationViewController: UITableViewController {
                     })
                     return
                 }
-                
-                self.lastUsername = username
-                self.lastLoginAt = user.lastLoginAt
-                self.lastSeenAt = user.lastSeenAt
             })
         }))
         alert.preferredAction = alert.actions.last
@@ -161,8 +153,6 @@ class UserAuthenticationViewController: UITableViewController {
                     })
                     return
                 }
-                
-                self.lastUsername = username
             })
         }))
         alert.preferredAction = alert.actions.last
@@ -234,7 +224,7 @@ class UserAuthenticationViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier("plain", forIndexPath: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
-                cell.detailTextLabel?.text = self.lastUsername
+                cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentUser.username
             } else if indexPath.row == 1 {
                 cell.textLabel?.text = "User Record ID"
                 cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentUserRecordID
@@ -243,7 +233,7 @@ class UserAuthenticationViewController: UITableViewController {
                 cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentAccessToken.tokenString
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
-                if let lastLoginAt = self.lastLoginAt {
+                if let lastLoginAt = SKYContainer.defaultContainer().currentUser.lastLoginAt {
                     let f = self.dateFormatter.stringFromDate(lastLoginAt)
                     cell.detailTextLabel?.text = f
                 } else {
@@ -251,7 +241,7 @@ class UserAuthenticationViewController: UITableViewController {
                 }
             } else if indexPath.row == 4 {
                 cell.textLabel?.text = "Last Seen At"
-                if let lastSeenAt = self.lastSeenAt {
+                if let lastSeenAt = SKYContainer.defaultContainer().currentUser.lastSeenAt {
                     let f = self.dateFormatter.stringFromDate(lastSeenAt)
                     cell.detailTextLabel?.text = f
                 } else {
