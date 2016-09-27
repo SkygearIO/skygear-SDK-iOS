@@ -224,7 +224,11 @@ class UserAuthenticationViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier("plain", forIndexPath: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
-                cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentUser.username
+                if let user = SKYContainer.defaultContainer().currentUser {
+                    cell.detailTextLabel?.text = user.username
+                } else {
+                    cell.detailTextLabel?.text = "(Unavailable)"
+                }
             } else if indexPath.row == 1 {
                 cell.textLabel?.text = "User Record ID"
                 cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentUserRecordID
@@ -233,19 +237,27 @@ class UserAuthenticationViewController: UITableViewController {
                 cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentAccessToken.tokenString
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
-                if let lastLoginAt = SKYContainer.defaultContainer().currentUser.lastLoginAt {
-                    let f = self.dateFormatter.stringFromDate(lastLoginAt)
-                    cell.detailTextLabel?.text = f
+                if let user = SKYContainer.defaultContainer().currentUser {
+                    if let lastLoginAt = user.lastLoginAt {
+                        let f = self.dateFormatter.stringFromDate(lastLoginAt)
+                        cell.detailTextLabel?.text = f
+                    } else {
+                        cell.detailTextLabel?.text = "Querying..."
+                    }
                 } else {
-                    cell.detailTextLabel?.text = "Querying..."
+                    cell.detailTextLabel?.text = "(Unavailable)"
                 }
             } else if indexPath.row == 4 {
                 cell.textLabel?.text = "Last Seen At"
-                if let lastSeenAt = SKYContainer.defaultContainer().currentUser.lastSeenAt {
-                    let f = self.dateFormatter.stringFromDate(lastSeenAt)
-                    cell.detailTextLabel?.text = f
+                if let user = SKYContainer.defaultContainer().currentUser {
+                    if let lastSeenAt = user.lastSeenAt {
+                        let f = self.dateFormatter.stringFromDate(lastSeenAt)
+                        cell.detailTextLabel?.text = f
+                    } else {
+                        cell.detailTextLabel?.text = "Querying..."
+                    }
                 } else {
-                    cell.detailTextLabel?.text = "Querying..."
+                    cell.detailTextLabel?.text = "(Unavailable)"
                 }
             }
             return cell
