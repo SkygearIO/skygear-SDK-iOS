@@ -23,7 +23,7 @@
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
-@interface SKYUser : NSObject
+@interface SKYUser : NSObject <NSCoding>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithUserID:(NSString *)userID;
@@ -33,14 +33,14 @@
 - (BOOL)hasRole:(SKYRole *)aRole;
 
 + (instancetype)userWithUserID:(NSString *)userID;
-+ (instancetype)userWithResponse:(NSDictionary *)userID;
++ (instancetype)userWithResponse:(NSDictionary *)userID __deprecated;
 
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSDate *lastLoginAt;
 @property (nonatomic, copy) NSDate *lastSeenAt;
 @property (nonatomic, copy) NSDictionary *authData;
-@property (nonatomic, strong) NSArray<SKYRole *> *roles;
+@property (nonatomic, readonly, copy) NSArray<SKYRole *> *roles;
 @property (nonatomic, readonly, assign) BOOL isNew;
 
 @property (nonatomic, readonly, copy) NSString *userID;

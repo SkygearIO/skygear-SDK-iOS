@@ -53,6 +53,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 @implementation SKYContainer {
     SKYAccessToken *_accessToken;
     NSString *_userRecordID;
+    SKYUser *_currentUser;
     SKYDatabase *_publicCloudDatabase;
     NSString *_APIKey;
 }
@@ -78,7 +79,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];
 
-        [self loadAccessCurrentUserRecordIDAndAccessToken];
+        [self loadCurrentUserAndAccessToken];
     }
     return self;
 }
@@ -243,43 +244,96 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [SKYAccessControl setDefaultAccessControl:_defaultAccessControl];
 }
 
-- (void)loadAccessCurrentUserRecordIDAndAccessToken
+- (void)loadCurrentUserAndAccessToken
 {
     NSString *userRecordID =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
     NSString *accessToken =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
-    if (userRecordID && accessToken) {
-        _userRecordID = userRecordID;
+    SKYUser *user = nil;
+    NSData *encodedUser =
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUser"];
+    if ([encodedUser isKindOfClass:[NSData class]]) {
+        user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
+    }
+
+    if (accessToken && (userRecordID || user)) {
+        _currentUser = user;
+        if (user) {
+            _userRecordID = user.userID;
+        } else {
+            _userRecordID = userRecordID;
+        }
         _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
+    } else {
+        _currentUser = nil;
+        _userRecordID = nil;
+        _accessToken = nil;
     }
 }
 
-- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken
+- (void)saveCurrentUserAndAccessToken
 {
-    BOOL userRecordIDChanged =
-        !([_userRecordID isEqual:userRecordID] || (_userRecordID == nil && userRecordID == nil));
-    _userRecordID = userRecordID;
-    _accessToken = accessToken;
-
-    if (userRecordID && accessToken) {
-        [[NSUserDefaults standardUserDefaults] setObject:userRecordID
-                                                  forKey:@"SKYContainerCurrentUserRecordID"];
-        [[NSUserDefaults standardUserDefaults] setObject:accessToken.tokenString
+    if (_accessToken && (_userRecordID || _currentUser)) {
+        if (_userRecordID) {
+            [[NSUserDefaults standardUserDefaults] setObject:_userRecordID
+                                                      forKey:@"SKYContainerCurrentUserRecordID"];
+        }
+        if (_currentUser) {
+            [[NSUserDefaults standardUserDefaults]
+                setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
+                   forKey:@"SKYContainerCurrentUser"];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString
                                                   forKey:@"SKYContainerAccessToken"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
         [[NSUserDefaults standardUserDefaults]
             removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUser"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
-    if (userRecordIDChanged) {
-        [[NSNotificationCenter defaultCenter]
-            postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                          object:self
-                        userInfo:nil];
+- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken
+{
+    if (userRecordID && accessToken) {
+        _userRecordID = userRecordID;
+        _accessToken = accessToken;
+        _currentUser = nil;
+    } else {
+        _userRecordID = nil;
+        _accessToken = nil;
+        _currentUser = nil;
     }
+
+    [self saveCurrentUserAndAccessToken];
+
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SKYContainerDidChangeCurrentUserNotification
+                      object:self
+                    userInfo:nil];
+}
+
+- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken
+{
+    if (user && accessToken) {
+        _userRecordID = user.userID;
+        _accessToken = accessToken;
+        _currentUser = user;
+    } else {
+        _userRecordID = nil;
+        _accessToken = nil;
+        _currentUser = nil;
+    }
+
+    [self saveCurrentUserAndAccessToken];
+
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SKYContainerDidChangeCurrentUserNotification
+                      object:self
+                    userInfo:nil];
 }
 
 - (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
@@ -297,7 +351,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     void (^completionBock)(SKYUser *, SKYAccessToken *, NSError *) =
         ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
-                [weakSelf updateWithUserRecordID:user.userID accessToken:accessToken];
+                [weakSelf updateWithUser:user accessToken:accessToken];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);
@@ -373,7 +427,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     __weak typeof(self) weakSelf = self;
     operation.logoutCompletionBlock = ^(NSError *error) {
         if (!error) {
-            [weakSelf updateWithUserRecordID:nil accessToken:nil];
+            [weakSelf updateWithUser:nil accessToken:nil];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             completionHandler(nil, error);

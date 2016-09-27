@@ -29,7 +29,7 @@
  This method is called when <SKYContainer> is `-init` is called. You should not call this method
  manually.
  */
-- (void)loadAccessCurrentUserRecordIDAndAccessToken;
+- (void)loadCurrentUserAndAccessToken;
 
 - (void)performUserAuthOperation:(SKYOperation *)operation
                completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;

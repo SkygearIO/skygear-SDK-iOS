@@ -66,6 +66,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 @property (nonatomic, readonly) NSString *currentUserRecordID;
 @property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
+@property (nonatomic, readonly) SKYUser *currentUser;
 
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
 
@@ -106,10 +107,18 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  This method is called when operation sign up, log in and log out is performed using the container's
  convenient
  method and when the operation is completed successfully.
-
- @see -loadAccessCurrentUserRecordIDAndAccessToken
  */
 - (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
+
+/**
+ Updates the <currentUser> and <currentAccessToken>. The updated access credentials are also
+ stored in persistent storage.
+
+ This method is called when operation sign up, log in and log out is performed using the container's
+ convenient
+ method and when the operation is completed successfully.
+ */
+- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with

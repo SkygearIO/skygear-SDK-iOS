@@ -19,6 +19,8 @@
 
 #import <SKYKit/SKYKit.h>
 
+#import "SKYUser_Private.h"
+
 SpecBegin(SKYUser)
 
     describe(@"SKYUser", ^{
@@ -29,22 +31,6 @@ SpecBegin(SKYUser)
 
             SKYUser *user2 = [SKYUser userWithUserID:@"user_id2"];
             expect(user2.userID).to.equal(@"user_id2");
-        });
-
-        it(@"should be initialized correctly with meta date", ^{
-            NSDictionary *response = @{
-                @"user_id" : @"userid1",
-                @"username" : @"User 1",
-                @"email" : @"user1@example.com",
-                @"last_login_at" : @"2016-09-08T06:45:59.000Z",
-                @"last_seen_at" : @"2016-09-08T06:45:59.000Z"
-            };
-            SKYUser *user1 = [SKYUser userWithResponse:response];
-            expect(user1.userID).to.equal(@"userid1");
-            expect(user1.username).to.equal(@"User 1");
-            expect(user1.email).to.equal(@"user1@example.com");
-            expect(user1.lastLoginAt).notTo.beNil();
-            expect(user1.lastSeenAt).notTo.beNil();
         });
 
         it(@"should manipulate roles correctly", ^{
@@ -68,6 +54,30 @@ SpecBegin(SKYUser)
             expect(user.roles).to.haveACountOf(2);
             expect([user hasRole:testerRole]).to.equal(NO);
         });
+
+        it(@"should encode and decode correctly", ^{
+            SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
+            SKYRole *testerRole = [SKYRole roleWithName:@"Tester"];
+
+            SKYUser *user = [SKYUser userWithUserID:@"user_id"];
+            user.username = @"username";
+            user.email = @"username@example.com";
+            user.lastLoginAt = [NSDate date];
+            user.lastSeenAt = [NSDate date];
+            user.roles = @[ developerRole, testerRole ];
+
+            NSData *encodedUser = [NSKeyedArchiver archivedDataWithRootObject:user];
+            SKYUser *decodedUser = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
+
+            expect(decodedUser.userID).to.equal(user.userID);
+            expect(decodedUser.username).to.equal(user.username);
+            expect(decodedUser.email).to.equal(user.email);
+            expect(decodedUser.lastLoginAt).to.equal(user.lastLoginAt);
+            expect(decodedUser.lastSeenAt).to.equal(user.lastSeenAt);
+            expect(decodedUser.roles[0].name).to.equal(user.roles[0].name);
+            expect(decodedUser.roles[1].name).to.equal(user.roles[1].name);
+        });
+
     });
 
 SpecEnd

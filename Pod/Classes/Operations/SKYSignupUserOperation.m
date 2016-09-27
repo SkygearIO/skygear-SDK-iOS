@@ -20,6 +20,7 @@
 #import "SKYSignupUserOperation.h"
 #import "SKYOperation_Private.h"
 #import "SKYRequest.h"
+#import "SKYUserDeserializer.h"
 
 @implementation SKYSignupUserOperation
 
@@ -110,16 +111,7 @@
             if (!weakSelf.error) {
                 NSDictionary *response = weakSelf.response[@"result"];
 
-                SKYUser *user = [SKYUser userWithResponse:response];
-
-                NSMutableArray<SKYRole *> *roles = [[NSMutableArray alloc] init];
-                NSArray<NSString *> *roleNames = response[@"roles"];
-                [roleNames enumerateObjectsUsingBlock:^(NSString *perRoleName, NSUInteger idx,
-                                                        BOOL *stop) {
-                    [roles addObject:[SKYRole roleWithName:perRoleName]];
-                }];
-
-                user.roles = roles;
+                SKYUser *user = [[SKYUserDeserializer deserializer] userWithDictionary:response];
 
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];

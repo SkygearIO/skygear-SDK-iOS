@@ -19,16 +19,14 @@
 
 #import "SKYUser.h"
 #import "SKYDataSerialization.h"
+#import "SKYUserDeserializer.h"
+#import "SKYUser_Private.h"
 
 #import "SKYQueryOperation.h"
 
-@interface SKYUser ()
-
-@property (nonatomic, readwrite, copy) NSString *recordID;
-
-@end
-
-@implementation SKYUser
+@implementation SKYUser {
+    NSMutableArray<SKYRole *> *_roles;
+}
 
 + (instancetype)userWithUserID:(NSString *)userID
 {
@@ -37,12 +35,7 @@
 
 + (instancetype)userWithResponse:(NSDictionary *)response
 {
-    SKYUser *user = [SKYUser userWithUserID:response[@"user_id"]];
-    user.email = response[@"email"];
-    user.username = response[@"username"];
-    user.lastLoginAt = [SKYDataSerialization dateFromString:response[@"last_login_at"]];
-    user.lastSeenAt = [SKYDataSerialization dateFromString:response[@"last_seen_at"]];
-    return user;
+    return [[SKYUserDeserializer deserializer] userWithDictionary:response];
 }
 
 - (instancetype)initWithUserID:(NSString *)userID
@@ -50,17 +43,54 @@
     self = [super init];
     if (self) {
         _userID = [userID copy];
+        _roles = [NSMutableArray array];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSString *userID = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"userID"];
+    if (!userID) {
+        return nil;
+    }
+
+    self = [self initWithUserID:userID];
+    if (self) {
+        _username = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"username"];
+        _email = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"email"];
+        _lastLoginAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"lastLoginAt"];
+        _lastSeenAt = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"lastSeenAt"];
+        _roles = [[aDecoder decodeObjectOfClass:[NSArray class] forKey:@"roles"] mutableCopy];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    // authData is specifically not persisted because of unclear security implications.
+    [aCoder encodeObject:_userID forKey:@"userID"];
+    [aCoder encodeObject:_username forKey:@"username"];
+    [aCoder encodeObject:_email forKey:@"email"];
+    [aCoder encodeObject:_lastLoginAt forKey:@"lastLoginAt"];
+    [aCoder encodeObject:_lastSeenAt forKey:@"lastSeenAt"];
+    [aCoder encodeObject:[_roles copy] forKey:@"roles"];
+}
+
+- (NSArray<SKYRole *> *)roles
+{
+    return [_roles copy];
+}
+
+- (void)setRoles:(NSArray *)roles
+{
+    _roles = [roles mutableCopy];
 }
 
 - (void)addRole:(SKYRole *)aRole
 {
     if (![self hasRole:aRole]) {
-        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
-        [roles addObject:aRole];
-
-        [self setRoles:roles];
+        [_roles addObject:aRole];
     }
 }
 
@@ -68,10 +98,7 @@
 {
     NSUInteger idx = [self indexOfRole:aRole];
     if (idx != NSNotFound) {
-        NSMutableArray<SKYRole *> *roles = [self.roles mutableCopy];
-        [roles removeObjectAtIndex:idx];
-
-        [self setRoles:roles];
+        [_roles removeObjectAtIndex:idx];
     }
 }
 
