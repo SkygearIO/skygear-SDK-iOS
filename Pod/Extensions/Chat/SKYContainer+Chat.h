@@ -58,9 +58,6 @@ typedef void (^SKYContainerConversationOperationActionCompletion)(SKYConversatio
                                    withTitle:(NSString *)title
                            completionHandler:
                                (SKYContainerConversationOperationActionCompletion)completionHandler;
-- (void)getOrCreateDirectConversationWithuUserId:(NSString *)userId
-                               completionHandler:(SKYContainerConversationOperationActionCompletion)
-                                                     completionHandler;
 - (void)getUserConversationWithConversationId:(NSString *)conversationId
                             completionHandler:
                                 (SKYContainerUserConversationOperationActionCompletion)

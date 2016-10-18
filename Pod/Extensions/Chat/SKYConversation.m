@@ -45,16 +45,6 @@
     return self[@"title"];
 }
 
-- (void)setIsDirectMessage:(BOOL)isDirectMessage
-{
-    self[@"is_direct_message"] = isDirectMessage ? @YES : @NO;
-}
-
-- (BOOL)isDirectMessage
-{
-    return [self[@"is_direct_message"] boolValue];
-}
-
 - (NSDate *)updatedDate
 {
     return self.modificationDate;
@@ -63,9 +53,9 @@
 - (NSString *)toString
 {
     return [NSString stringWithFormat:@"SKYConversation Detail:\nparticipantIds: %@\nadminIds: "
-                                      @"%@\ntitle: %@\nisDirectMessage: %@\nupdatedAt: %@",
+                                      @"%@\ntitle: %@\nupdatedAt: %@",
                                       self.participantIds, self.adminIds, self.title,
-                                      self.isDirectMessage ? @"YES" : @"NO", self.updatedDate];
+                                      self.updatedDate];
 }
 
 - (NSString *)getOtherUserUserId:(NSString *)myUserId
