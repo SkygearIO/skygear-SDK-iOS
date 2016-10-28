@@ -1,3 +1,9 @@
+## 0.18.0 (2016-10-28)
+
+### Features
+
+- Persist current user information (#49)
+
 ## 0.17.0 (2016-09-15)
 
 ### Features
