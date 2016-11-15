@@ -721,11 +721,8 @@ NSString *const SKYChatMetaDataAssetNameText = @"message-text";
             if (resultArray.count > 0) {
                 NSMutableArray *returnArray = [[NSMutableArray alloc] init];
                 for (NSDictionary *obj in resultArray) {
-                    NSMutableDictionary *mutObj = [obj mutableCopy];
-                    [mutObj setObject:[@"message/" stringByAppendingString:[obj valueForKey:@"_id"]]
-                               forKey:@"_id"];
                     SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
-                    SKYRecord *record = [deserializer recordWithDictionary:mutObj];
+                    SKYRecord *record = [deserializer recordWithDictionary:[obj copy]];
 
                     SKYMessage *msg = [SKYMessage recordWithRecord:record];
                     msg.isAlreadySyncToServer = true;
