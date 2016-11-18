@@ -56,6 +56,10 @@
 {
     NSDictionary *payload = @{ @"args" : _arrayArguments ? _arrayArguments : _dictionaryArguments };
     self.request = [[SKYRequest alloc] initWithAction:self.action payload:payload];
+
+    // Lambda request may not be user-authenticated. Therefore an API key
+    // is also supplied.
+    self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.currentAccessToken;
 }
 
