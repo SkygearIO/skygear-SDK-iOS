@@ -7,7 +7,6 @@ os: osx
 osx_image: xcode7.2
 before_install:
 - export LANG=en_US.UTF-8
-- gem install cocoapods -v '~>0.39.0' # Since Travis is not always on latest version
 - brew update
 - brew install clang-format
 - brew install python
