@@ -25,7 +25,7 @@ protocol PredicateViewControllerDelegate {
 }
 
 class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
-    
+
     var delegate: PredicateViewControllerDelegate? = nil
     var attributeNameCell: TextFieldTableViewCell? = nil
     var attributeValueCell: TextFieldTableViewCell? = nil
@@ -40,12 +40,12 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         get {
             return self.createPredicateWithUI()
         }
-        
+
         set {
             self.updateUIWithPredicate(newValue)
         }
     }
-    
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -55,13 +55,13 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
             self.navigationItem.rightBarButtonItem = nil
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         if let attributeNameCell = self.attributeNameCell {
             attributeNameCell.textField.becomeFirstResponder()
         }
     }
-    
+
     override func viewWillDisappear(animated: Bool) {
         if let cell = self.attributeNameCell {
             attributeName = cell.textField.text
@@ -72,7 +72,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         if let cell = self.comparisonPickerCell {
             predicateOperator = cell.picker.selectedRowInComponent(0)
         }
-        
+
         if self.predicate != nil && !isDeleting {
             if let delegate = self.delegate {
                 delegate.predicate(self, didFinish: predicate!)
@@ -83,9 +83,9 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     // MARK: - Actions
-    
+
     func updateUIWithPredicate(optionalPredicate: NSComparisonPredicate?) {
         guard let predicate = optionalPredicate else {
             attributeName = nil
@@ -93,10 +93,10 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
             attributeValue = nil
             return
         }
-        
+
         attributeName = predicate.leftExpression.keyPath
         attributeValue = predicate.rightExpression.constantValue
-        
+
         switch predicate.predicateOperatorType {
         case .EqualToPredicateOperatorType:
             predicateOperator = 0
@@ -115,24 +115,24 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
             predicateOperator = 0
         }
     }
-    
+
     func createPredicateWithUI() -> NSComparisonPredicate? {
         guard let attributeName = self.attributeName else {
             return nil
         }
-        
+
         guard !attributeName.isEmpty else {
             return nil
         }
-        
+
         guard let attributeValue = self.attributeValue else {
             return nil
         }
-        
+
         let leftExpr = NSExpression(forKeyPath: attributeName)
         let rightExpr = NSExpression(forConstantValue: attributeValue)
         var predicate: NSComparisonPredicate? = nil
-        
+
         switch predicateOperator {
         case 0:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
@@ -175,7 +175,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
         self.navigationController?.popViewControllerAnimated(true)
     }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -194,7 +194,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
             return 0
         }
     }
-    
+
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
@@ -207,7 +207,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
             return ""
         }
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -240,10 +240,10 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 return cell
             }
         }
-        
+
         return UITableViewCell()
     }
-    
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.isEqual(NSIndexPath(forRow: 0, inSection: 1)) {
             return 150
@@ -253,15 +253,15 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
 
     // MARK: - UIPickerViewDelegate
-    
+
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 4
     }
-    
+
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch row {
         case 0:
@@ -278,7 +278,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
 
     // MARK: - UITextFieldDelegate
-    
+
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == attributeNameCell?.textField {
             textField.resignFirstResponder()
@@ -286,6 +286,5 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
         return true
     }
-
 
 }

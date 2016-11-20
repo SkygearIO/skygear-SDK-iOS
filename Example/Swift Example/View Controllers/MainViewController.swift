@@ -20,7 +20,7 @@
 import UIKit
 
 class MainViewController: UITableViewController {
-    
+
     var hasPromptedForConfiguration: Bool {
         get {
             return NSUserDefaults.standardUserDefaults().boolForKey("HasPromptedForConfiguration")
@@ -30,12 +30,12 @@ class MainViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if !self.hasPromptedForConfiguration {
             let alert = UIAlertController(title: "Configuration Required",
                                           message: "The app does not know how to connect to your Skygear Server. Configure the app now?",

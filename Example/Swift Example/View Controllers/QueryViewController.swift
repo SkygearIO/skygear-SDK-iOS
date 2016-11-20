@@ -21,14 +21,14 @@ import UIKit
 import SKYKit
 
 class QueryViewController: UITableViewController, PredicateViewControllerDelegate, RecordTypeViewControllerDelegate {
-    
+
     var records = [SKYRecord]()
     var recordType: String? = nil
     var predicates = [NSPredicate]()
-    
+
     var recordTypeSectionIndex = 0
     var predicateSectionIndex = 1
-    
+
     var lastQueryRecordType: String? {
         get {
             return NSUserDefaults.standardUserDefaults().stringForKey("LastQueryRecordType")
@@ -38,19 +38,19 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         recordType = self.lastQueryRecordType
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     // MARK: - Actions
 
     @IBAction func triggerSubmit(sender: AnyObject) {
@@ -65,7 +65,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             self.performSegueWithIdentifier("submit", sender: nil)
         })
     }
-    
+
     func predicateFromUI() -> NSPredicate? {
         if self.predicates.count == 0 {
             return nil
@@ -76,7 +76,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             return predicate
         }
     }
-    
+
     func performQuery(query: SKYQuery, handler: (() -> Void)?) {
         SKYContainer.defaultContainer().publicCloudDatabase.performQuery(query) { (objs, error) in
             if error != nil {
@@ -85,20 +85,20 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
                 self.presentViewController(alert, animated: true, completion: nil)
                 return
             }
-            
+
             guard let records = objs as? [SKYRecord] else {
                 NSException.raise(NSInternalInconsistencyException, format: "Unable to cast to Records array", arguments: getVaList([]))
                 return
             }
-            
+
             self.records = records
-            
+
             if handler != nil {
                 handler!()
             }
         }
     }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -125,12 +125,12 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
                 let cell = tableView.dequeueReusableCellWithIdentifier("new_predicate", forIndexPath: indexPath)
                 return cell
             }
-            
+
             let cell = tableView.dequeueReusableCellWithIdentifier("predicate", forIndexPath: indexPath)
             cell.textLabel?.text = self.predicates[indexPath.row].predicateFormat
             return cell
         }
-        
+
         return UITableViewCell()
     }
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -150,7 +150,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             guard let resultUI = segue.destinationViewController as? RecordResultViewController else {
                 return
             }
-            
+
             resultUI.records = records
         } else if segue.identifier == "new_predicate" {
             let controller = segue.destinationViewController as! PredicateViewController
@@ -163,7 +163,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
         } else {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let predicate = predicates[indexPath.row]
-                
+
                 let controller = segue.destinationViewController as! PredicateViewController
                 controller.predicate = predicate as? NSComparisonPredicate
                 controller.delegate = self
@@ -171,14 +171,14 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             }
         }
     }
-    
+
     // MARK: - RecordTypeViewControllerDelegate
 
     func recordTypeViewController(controller: RecordTypeViewController, didSelectRecordType recordType: String) {
         self.recordType = recordType
         self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection:0)], withRowAnimation: .None)
     }
-    
+
     // MARK: - PredicateViewControllerDelegate
 
     func predicate(controller: PredicateViewController, didFinish predicate: NSComparisonPredicate) {
@@ -196,7 +196,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
     }
-    
+
     func predicateDidDelete(controller: PredicateViewController) {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             if indexPath.row < self.predicates.count {
@@ -205,5 +205,5 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             }
         }
     }
-    
+
 }
