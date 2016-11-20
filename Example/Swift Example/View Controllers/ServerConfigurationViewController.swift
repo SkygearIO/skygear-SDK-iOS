@@ -30,7 +30,7 @@ class ServerConfigurationViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -43,7 +43,7 @@ class ServerConfigurationViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("plainTableViewCell", forIndexPath: indexPath)
-        
+
         if indexPath.row == 0 {
             cell.textLabel?.text = "Endpoint"
             cell.detailTextLabel?.text = NSUserDefaults.standardUserDefaults().stringForKey("SkygearEndpoint")
@@ -53,7 +53,7 @@ class ServerConfigurationViewController: UITableViewController {
         }
         return cell
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
             let alert = UIAlertController(title: "Endpoint", message: "Enter the Skygear Endpoint (you can obtained this from portal)", preferredStyle: .Alert)

@@ -24,7 +24,7 @@ protocol RecordTypeViewControllerDelegate {
 }
 
 class RecordTypeViewController: UITableViewController {
-    
+
     var knownRecordTypes: [String] {
         get {
             if let value = NSUserDefaults.standardUserDefaults().arrayForKey("KnownRecordTypes") as? [String] {
@@ -37,19 +37,19 @@ class RecordTypeViewController: UITableViewController {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
+
     var selectedRecordTypeIndex: Int? = nil
-    
+
     var selectedRecordType: String? {
         get {
             guard let index = selectedRecordTypeIndex else {
                 return nil
             }
-            
+
             guard index < knownRecordTypes.count else {
                 return nil
             }
-            
+
             return knownRecordTypes[index]
         }
         set {
@@ -57,29 +57,29 @@ class RecordTypeViewController: UITableViewController {
                 self.selectedRecordTypeIndex = nil
                 return
             }
-            
+
             guard val != "" else {
                 self.selectedRecordTypeIndex = nil
                 return
             }
-            
+
             guard knownRecordTypes.contains(val) else {
                 self.knownRecordTypes.append(val)
                 self.selectedRecordTypeIndex = self.knownRecordTypes.count - 1
                 return
             }
-            
+
             self.selectedRecordTypeIndex = knownRecordTypes.indexOf(val)
         }
     }
-    
+
     var delegate: RecordTypeViewControllerDelegate? = nil
-    
+
     let listSectionIndex = 0
     let addNewSectionIndex = 1
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -89,7 +89,7 @@ class RecordTypeViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
+
     override func viewWillDisappear(animated: Bool) {
         if let delegate = self.delegate {
             if let recordType = self.selectedRecordType {
@@ -119,7 +119,7 @@ class RecordTypeViewController: UITableViewController {
             return 0
         }
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("default", forIndexPath: indexPath)
         switch indexPath.section {
@@ -141,7 +141,7 @@ class RecordTypeViewController: UITableViewController {
         }
         return cell
     }
-    
+
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case listSectionIndex:
@@ -150,21 +150,21 @@ class RecordTypeViewController: UITableViewController {
             return ""
         }
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.section {
         case listSectionIndex:
             guard indexPath.row < self.knownRecordTypes.count else {
                 return
             }
-            
+
             var indexPathsToUpdate = [indexPath]
             if let selectedRecordTypeIndex = self.selectedRecordTypeIndex {
                 indexPathsToUpdate.append(NSIndexPath(forRow: selectedRecordTypeIndex, inSection: listSectionIndex))
             }
-            
+
             self.selectedRecordTypeIndex = indexPath.row
-            
+
             self.tableView.reloadRowsAtIndexPaths(indexPathsToUpdate, withRowAnimation: .None)
             break
         case addNewSectionIndex:
@@ -177,11 +177,11 @@ class RecordTypeViewController: UITableViewController {
                 guard let recordTypeToAdd = alert.textFields?.first?.text else {
                     return
                 }
-                
+
                 guard !recordTypeToAdd.isEmpty else {
                     return
                 }
-                
+
                 var indexPathsToUpdate: [NSIndexPath] = []
                 if let selectedRecordTypeIndex = self.selectedRecordTypeIndex {
                     indexPathsToUpdate.append(NSIndexPath(forRow: selectedRecordTypeIndex, inSection: self.listSectionIndex))
@@ -206,6 +206,6 @@ class RecordTypeViewController: UITableViewController {
         default:
             break
         }
-        
+
     }
 }

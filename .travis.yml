@@ -11,12 +11,14 @@ cache:
 before_install:
 - gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
 - brew install clang-format
+- brew install swiftlint
 - sudo pip install lizard
 - pod install --project-directory=Example
 script:
 - xcodebuild -scheme "$SCHEME" -workspace "$WORKSPACE" -sdk "$SDK" -destination "$DESTINATION" build test | xcpretty
 - pod lib lint --allow-warnings
 - ./clang-check.sh
+- swiftlint
 - lizard Pod/ -C 15 -w -i 0
 env:
   global:

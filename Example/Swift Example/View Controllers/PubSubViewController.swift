@@ -26,16 +26,16 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var sendMessageButton: UIButton!
     @IBOutlet weak var bottomEdgeConstraint: NSLayoutConstraint!
-    
+
     var subscribedChannel: String? = nil
     var messageDictionaries: [NSDictionary] = []
-    
+
     var pubsubClient: SKYPubsub {
         get {
             return SKYContainer.defaultContainer().pubsubClient
         }
     }
-    
+
     var lastSubscribedChannel: String? {
         get {
             return NSUserDefaults.standardUserDefaults().stringForKey("LastSubscribedChannel")
@@ -45,14 +45,14 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
-    
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+
         NSNotificationCenter.defaultCenter().addObserverForName(UIKeyboardWillChangeFrameNotification, object: nil, queue: nil) { (note) in
             let keyboardFrame: CGRect = (note.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
             let animationDuration: NSTimeInterval = (note.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
@@ -63,20 +63,20 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
                 self.view.layoutIfNeeded()
             })
         }
-        
+
         NSNotificationCenter.defaultCenter().addObserverForName(UIKeyboardWillHideNotification, object: nil, queue: nil) { (note) in
             let animationDuration: NSTimeInterval = (note.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-            
+
             UIView.animateWithDuration(animationDuration, animations: {
                 self.bottomEdgeConstraint.constant = 0
                 self.view.layoutIfNeeded()
             })
 
         }
-        
+
         updateMessageWidgetState()
     }
-    
+
     override func viewDidDisappear(animated: Bool) {
         if let channel: String = subscribedChannel {
             self.unsubscribe(channel)
@@ -86,9 +86,9 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
     // MARK: - Actions
-    
+
     @IBAction func triggerSubscribe(sender: AnyObject?) {
         let alert = UIAlertController(title: "Subscribe", message: "Enter the channel name to subscribe", preferredStyle: .Alert)
         alert.addTextFieldWithConfigurationHandler { (textField) in
@@ -97,15 +97,15 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Subscribe", style: .Default, handler: { (action) in
             let channel: String = alert.textFields!.first!.text as String!
-            
+
             guard channel.characters.count > 0 else {
                 return
             }
-            
+
             self.subscribe(channel)
             self.subscribedChannel = channel
             self.lastSubscribedChannel = channel
-            
+
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Unsubscribe", style: .Plain, target: self, action: #selector(PubSubViewController.triggerUnsubscribe(_:)))
             self.updateMessageWidgetState()
             self.messageTextField.becomeFirstResponder()
@@ -113,15 +113,15 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         alert.preferredAction = alert.actions.last
         self.presentViewController(alert, animated: true, completion: nil)
     }
-    
+
     @IBAction func triggerUnsubscribe(sender: AnyObject) {
         guard let channel = self.subscribedChannel else {
             return
         }
-        
+
         self.unsubscribe(channel)
         self.subscribedChannel = nil
-        
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Subscribe", style: .Plain, target: self, action: #selector(PubSubViewController.triggerSubscribe(_:)))
         self.updateMessageWidgetState()
     }
@@ -130,33 +130,33 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         guard let message: String = self.messageTextField.text else {
             return
         }
-        
+
         guard message.characters.count >= 0 else {
             return
         }
-        
+
         guard let channel = self.subscribedChannel else {
             return
         }
-        
+
         self.sendMessage(message, channel: channel)
     }
-    
+
     func updateMessageWidgetState() {
         self.sendMessageButton.enabled = self.messageTextField.text?.characters.count > 0 && self.subscribedChannel != nil
         self.messageTextField.enabled = self.subscribedChannel != nil
     }
-    
+
     func isLastRowVisible() -> Bool {
         let indexPaths = self.tableView.indexPathsForVisibleRows
         guard indexPaths != nil else {
             return true
         }
-        
+
         guard let lastVisibleIndexPath: NSIndexPath = indexPaths!.last else {
             return true
         }
-        
+
         return lastVisibleIndexPath.row >= self.messageDictionaries.count-2
     }
 
@@ -166,17 +166,17 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         self.pubsubClient.publishMessage(["message": message], toChannel: channel)
         self.messageTextField.text = ""
     }
-    
+
     func handle(info: NSDictionary) {
         messageDictionaries.append(info)
         let indexPath = NSIndexPath(forRow: messageDictionaries.count-1, inSection: 0)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        
+
         if isLastRowVisible() {
             self.tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Bottom, animated: true)
         }
     }
-    
+
     func subscribe(channel: String) {
         self.pubsubClient.subscribeTo(channel) { (obj) in
             guard let info: NSDictionary = obj as NSDictionary else {
@@ -185,45 +185,45 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
             self.handle(info)
         }
     }
-    
+
     func unsubscribe(channel: String) {
         self.pubsubClient.unsubscribe(channel)
     }
-    
+
     // MARK: - UITextFieldDelegate
-    
+
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         guard let message: String = self.messageTextField.text else {
             return false
         }
-        
+
         guard message.characters.count >= 0 else {
             return false
         }
-        
+
         guard let channel = self.subscribedChannel else {
             return false
         }
-        
+
         self.sendMessage(message, channel: channel)
         return true
     }
-    
+
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         updateMessageWidgetState()
         return true
     }
-    
+
     // MARK: - Table view data source
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.messageDictionaries.count
     }
-    
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .Default, reuseIdentifier: "message")
         cell.textLabel?.text = messageDictionaries[indexPath.row]["message"] as? String
