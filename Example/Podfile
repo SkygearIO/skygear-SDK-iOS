@@ -5,7 +5,6 @@ platform :ios, '7.1'
 target 'Test Runner' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
-  pod "SKYKit/Chat", :path => "../"
 end
 
 target 'Swift Example' do
@@ -13,13 +12,11 @@ target 'Swift Example' do
 
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
-  pod "SKYKit/Chat", :path => "../"
 end
 
 target 'Tests' do
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
-  pod "SKYKit/Chat", :path => "../"
 
   pod 'Specta'
   pod 'Expecta'
