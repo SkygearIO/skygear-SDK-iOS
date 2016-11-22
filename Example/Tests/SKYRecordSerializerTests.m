@@ -160,6 +160,25 @@ SpecBegin(SKYRecordSerializer)
             });
         });
 
+        it(@"serialize unknown value", ^{
+            record[@"money"] = [SKYUnknownValue unknownValueWithUnderlyingType:@"money"];
+
+            NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+            expect(dictionary[@"money"]).to.equal(@{
+                @"$type" : @"unknown",
+                @"$underlying_type" : @"money",
+            });
+        });
+
+        it(@"serialize unknown value with no underlying type", ^{
+            record[@"money"] = [SKYUnknownValue unknownValueWithUnderlyingType:nil];
+
+            NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
+            expect(dictionary[@"money"]).to.equal(@{
+                @"$type" : @"unknown",
+            });
+        });
+
         it(@"serialize transient fields (enabled)", ^{
             record.transient[@"hello"] = @"world";
 

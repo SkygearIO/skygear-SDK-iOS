@@ -169,6 +169,27 @@ SpecBegin(SKYRecordDeserializer)
 
         });
 
+        it(@"deserialize unknown value", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"money"] = @{
+                @"$type" : @"unknown",
+                @"$underlying_type" : @"money",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect([record[@"money"] class]).to.beSubclassOf([SKYUnknownValue class]);
+            expect([(SKYUnknownValue *)record[@"money"] underlyingType]).to.equal(@"money");
+        });
+
+        it(@"deserialize unknown value with no underlying type", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"money"] = @{
+                @"$type" : @"unknown",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect([record[@"money"] class]).to.beSubclassOf([SKYUnknownValue class]);
+            expect([(SKYUnknownValue *)record[@"money"] underlyingType]).to.beNil();
+        });
+
         it(@"deserialize transient fields", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"_transient"] = @{ @"hello" : @"world" };
