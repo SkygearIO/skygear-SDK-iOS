@@ -72,45 +72,6 @@ NSString *const SKYChatMetaDataAssetNameText = @"message-text";
                               }];
 }
 
-- (void)getOrCreateDirectConversationWithuUserId:(NSString *)userId
-                               completionHandler:(SKYContainerConversationOperationActionCompletion)
-                                                     completionHandler
-{
-    NSPredicate *pred1 = [NSPredicate predicateWithFormat:@"%@ in participant_ids", userId];
-    NSPredicate *pred2 =
-        [NSPredicate predicateWithFormat:@"%@ in participant_ids", self.currentUserRecordID];
-    NSPredicate *pred3 = [NSPredicate predicateWithFormat:@"is_direct_message = %@", @YES];
-
-    NSCompoundPredicate *predicate =
-        [NSCompoundPredicate andPredicateWithSubpredicates:@[ pred1, pred2, pred3 ]];
-    SKYQuery *query = [SKYQuery queryWithRecordType:@"conversation" predicate:predicate];
-    query.limit = 1;
-
-    [self.publicCloudDatabase
-             performQuery:query
-        completionHandler:^(NSArray *results, NSError *error) {
-            if ([results count] > 0) {
-                SKYConversation *con = [SKYConversation recordWithRecord:[results objectAtIndex:0]];
-                completionHandler(con, error);
-            } else {
-                SKYConversation *conv = [SKYConversation recordWithRecordType:@"conversation"];
-                conv.participantIds = @[ userId, self.currentUserRecordID ];
-                conv.adminIds = @[ userId, self.currentUserRecordID ];
-                conv.isDirectMessage = YES;
-                SKYDatabase *publicDB = [[SKYContainer defaultContainer] publicCloudDatabase];
-                [publicDB saveRecord:conv
-                          completion:^(SKYRecord *record, NSError *error) {
-                              if (error) {
-                                  NSLog(@"error saving todo: %@", error);
-                              }
-                              NSLog(@"saved todo with recordID = %@", record.recordID);
-                              SKYConversation *con = [SKYConversation recordWithRecord:record];
-                              completionHandler(con, error);
-                          }];
-            }
-        }];
-}
-
 - (void)getUserConversationsCompletionHandler:
     (SKYContainerGetUserConversationListActionCompletion)completionHandler
 {

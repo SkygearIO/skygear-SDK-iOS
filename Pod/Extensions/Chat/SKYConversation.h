@@ -15,7 +15,6 @@
 @property (strong, nonatomic) NSArray<NSString *> *participantIds;
 @property (strong, nonatomic) NSArray<NSString *> *adminIds;
 @property (strong, nonatomic) NSString *title;
-@property (assign, nonatomic) BOOL isDirectMessage;
 @property (strong, nonatomic) NSDate *updatedDate;
 @property (strong, nonatomic) SKYChatUser *otherUser;
 
