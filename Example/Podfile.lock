@@ -1,12 +1,12 @@
 PODS:
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
+  - Bolts/Tasks (1.8.4)
   - Expecta (1.0.5)
-  - FBSDKCoreKit (4.13.1):
+  - FBSDKCoreKit (4.17.0):
     - Bolts (~> 1.7)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
@@ -27,8 +27,6 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (4.6.0)
   - SKYKit (0.19.0):
     - SKYKit/Core (= 0.19.0)
-  - SKYKit/Chat (0.19.0):
-    - SKYKit/Core
   - SKYKit/Core (0.19.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
@@ -43,7 +41,6 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs
   - SKYKit (from `../`)
-  - SKYKit/Chat (from `../`)
   - SKYKit/Facebook (from `../`)
   - Specta
 
@@ -52,16 +49,16 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FBSDKCoreKit: 2807fe0da2ddb49a1469da6d6ff597f99912980f
+  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 4554ffca7cf709a9b03b88bb680d9648526c0167
+  SKYKit: 14d7ffed0350e0ca95aa60c76f2aaa5d7bbb24d2
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: 940bf63678256c90de8af8302792789ea3cc3a0e
+PODFILE CHECKSUM: a27ec2d7e040773324262697418dfdc4a2481f63
 
 COCOAPODS: 1.1.1
