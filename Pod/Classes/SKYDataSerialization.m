@@ -25,6 +25,7 @@
 #import "SKYError.h"
 #import "SKYReference.h"
 #import "SKYSequence.h"
+#import "SKYUnknownValue.h"
 
 NSString *const SKYDataSerializationCustomTypeKey = @"$type";
 NSString *const SKYDataSerializationAssetType = @"asset";
@@ -33,6 +34,7 @@ NSString *const SKYDataSerializationDateType = @"date";
 NSString *const SKYDataSerializationLocationType = @"geo";
 NSString *const SKYDataSerializationRelationType = @"relation";
 NSString *const SKYDataSerializationSequenceType = @"seq";
+NSString *const SKYDataSerializationUnknownValueType = @"unknown";
 
 static NSDictionary *remoteFunctionNameDict;
 static NSDictionary *localFunctionNameDict;
@@ -104,6 +106,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         obj = [self deserializeRelationWithDictionary:data];
     } else if ([type isEqualToString:SKYDataSerializationSequenceType]) {
         obj = [SKYSequence sequence];
+    } else if ([type isEqualToString:SKYDataSerializationUnknownValueType]) {
+        obj = [SKYUnknownValue unknownValueWithUnderlyingType:data[@"$underlying_type"]];
     }
     return obj;
 }
@@ -247,6 +251,14 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         };
     } else if ([obj isKindOfClass:[SKYSequence class]]) {
         data = @{ @"$type" : @"seq" };
+    } else if ([obj isKindOfClass:[SKYUnknownValue class]]) {
+        SKYUnknownValue *unknownValue = (SKYUnknownValue *)obj;
+        NSMutableDictionary *unknownValueDict = [NSMutableDictionary dictionary];
+        unknownValueDict[@"$type"] = @"unknown";
+        if (unknownValue.underlyingType) {
+            unknownValueDict[@"$underlying_type"] = unknownValue.underlyingType;
+        }
+        data = [unknownValueDict copy];
     } else {
         data = obj;
     }
