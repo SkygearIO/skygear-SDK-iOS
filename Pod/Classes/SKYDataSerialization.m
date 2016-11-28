@@ -65,27 +65,59 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 @implementation SKYDataSerialization
 
-+ (NSDateFormatter *)dateFormatter
+/**
+ Returns an array of date formatters for date serialization/deserialization.
+
+ The date formatters are suitable for serializing/deserializing date for skygear-server
+ record API. Since the NSDateFormatter has a strict format in serialization and skygear-server
+ may return date in different formats depending on whether the date value has sub-second precision,
+ multiple date formatters should be attempted in order. Serialization should stop with
+ the first formatter that produce a value.
+ */
++ (NSArray<NSDateFormatter *> *)dateFormatters
 {
     // Skygear-server use RFC3339Nano, ref: https://golang.org/pkg/time/
-    static NSDateFormatter *formatter;
+    static NSArray<NSDateFormatter *> *formatters;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
+        NSDateFormatter *nanoSecondPrecisionFormatter = [[NSDateFormatter alloc] init];
+        [nanoSecondPrecisionFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
+
+        NSDateFormatter *secondPrecisionFormatter = [[NSDateFormatter alloc] init];
+        [secondPrecisionFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
+
+        formatters = @[ nanoSecondPrecisionFormatter, secondPrecisionFormatter ];
     });
 
-    return formatter;
+    return formatters;
 }
 
 + (NSDate *)dateFromString:(NSString *)dateStr
 {
-    return [[self.class dateFormatter] dateFromString:dateStr];
+    if (!dateStr) {
+        return nil;
+    }
+
+    for (NSDateFormatter *formatter in [self dateFormatters]) {
+        NSDate *date = [formatter dateFromString:dateStr];
+        if (date) {
+            return date;
+        }
+    }
+
+    NSLog(@"Unable to deserialize date \"%@\" because its format is unrecognized.", dateStr);
+    return nil;
 }
+
 + (NSString *)stringFromDate:(NSDate *)date
 {
-    return [[self.class dateFormatter] stringFromDate:date];
+    if (!date) {
+        return nil;
+    }
+
+    // Only try the first formatter because it is almost certain it will produce a value.
+    return [[[self.class dateFormatters] firstObject] stringFromDate:date];
 }
 
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data

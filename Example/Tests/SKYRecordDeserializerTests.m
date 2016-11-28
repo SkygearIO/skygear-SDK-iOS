@@ -138,6 +138,18 @@ SpecBegin(SKYRecordDeserializer)
             expect(publishDate).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
         });
 
+        it(@"deserialize date in RFC3339", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"published"] = @{
+                SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
+                @"$date" : @"2001-01-01T00:00:00Z",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            NSDate *publishDate = record[@"published"];
+            expect([publishDate class]).to.beSubclassOf([NSDate class]);
+            expect(publishDate).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
+        });
+
         it(@"deserialize array", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             NSArray *topics = [NSArray arrayWithObjects:@"fiction", @"classic", nil];
