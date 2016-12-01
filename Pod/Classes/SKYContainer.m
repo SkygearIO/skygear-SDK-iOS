@@ -426,6 +426,15 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
     __weak typeof(self) weakSelf = self;
     operation.logoutCompletionBlock = ^(NSError *error) {
+        if (error) {
+            // Any of the following error code will be treated as successful logout
+            switch (error.code) {
+                case SKYErrorNotAuthenticated:
+                case SKYErrorAccessKeyNotAccepted:
+                case SKYErrorAccessTokenNotAccepted:
+                    error = nil;
+            }
+        }
         if (!error) {
             [weakSelf updateWithUser:nil accessToken:nil];
         }
