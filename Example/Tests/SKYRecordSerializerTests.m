@@ -101,8 +101,7 @@ SpecBegin(SKYRecordSerializer)
             expect(publishDate[SKYDataSerializationCustomTypeKey])
                 .to.equal(SKYDataSerializationDateType);
 
-            expect([SKYDataSerialization dateFromString:publishDate[@"$date"]])
-                .to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
+            expect(publishDate[@"$date"]).to.equal(@"2001-01-01T00:00:00.000000Z");
         });
 
         it(@"serialize array", ^{

@@ -68,18 +68,18 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 @implementation SKYDataSerialization
 
 /**
- Returns an array of date formatters for date serialization/deserialization.
+ Returns an array of date formatters for date deserialization.
 
- The date formatters are suitable for serializing/deserializing date for skygear-server
- record API. Since the NSDateFormatter has a strict format in serialization and skygear-server
+ The date formatters are suitable for deserializing date for skygear-server
+ record API. Since the NSDateFormatter has a strict format in deserialization and skygear-server
  may return date in different formats depending on whether the date value has sub-second precision,
- multiple date formatters should be attempted in order. Serialization should stop with
+ multiple date formatters should be attempted in order. Deserialization should stop with
  the first formatter that produce a value.
  */
-+ (NSArray<NSDateFormatter *> *)dateFormatters
++ (NSArray<NSDateFormatter *> *)dateFormattersForDeserialization
 {
     // Skygear-server use RFC3339Nano, ref: https://golang.org/pkg/time/
-    static NSArray<NSDateFormatter *> *formatters;
+    static NSArray<NSDateFormatter *> *deserializationDateFormatters;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
@@ -89,10 +89,29 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         NSDateFormatter *secondPrecisionFormatter = [[NSDateFormatter alloc] init];
         [secondPrecisionFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
 
-        formatters = @[ nanoSecondPrecisionFormatter, secondPrecisionFormatter ];
+        deserializationDateFormatters = @[ nanoSecondPrecisionFormatter, secondPrecisionFormatter ];
     });
 
-    return formatters;
+    return deserializationDateFormatters;
+}
+
+/**
+ Returns a date formatter for date serialization
+ */
++ (NSDateFormatter *)dateFormatterForSerialization
+{
+    static NSDateFormatter *serializationDateFormatters;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"];
+
+        serializationDateFormatters = formatter;
+    });
+
+    return serializationDateFormatters;
 }
 
 + (NSDate *)dateFromString:(NSString *)dateStr
@@ -101,7 +120,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         return nil;
     }
 
-    for (NSDateFormatter *formatter in [self dateFormatters]) {
+    for (NSDateFormatter *formatter in [self dateFormattersForDeserialization]) {
         NSDate *date = [formatter dateFromString:dateStr];
         if (date) {
             return date;
@@ -118,8 +137,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         return nil;
     }
 
-    // Only try the first formatter because it is almost certain it will produce a value.
-    return [[[self.class dateFormatters] firstObject] stringFromDate:date];
+    return [[self.class dateFormatterForSerialization] stringFromDate:date];
 }
 
 + (id)deserializeSimpleObjectWithType:(NSString *)type value:(NSDictionary *)data
