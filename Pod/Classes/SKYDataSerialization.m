@@ -259,8 +259,16 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else if ([obj isKindOfClass:[SKYAsset class]]) {
         data = @{
             SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType,
-            @"$name" : [obj name],
+            @"$name" : [obj name]
         };
+
+        NSURL *assetURL = [obj url];
+        if (assetURL != nil) {
+            NSMutableDictionary *mutableData = [data mutableCopy];
+            [mutableData setObject:[assetURL absoluteString] forKey:@"$url"];
+
+            data = [mutableData copy];
+        }
     } else if ([obj isKindOfClass:[CLLocation class]]) {
         CLLocationCoordinate2D coordinate = [obj coordinate];
         data = @{

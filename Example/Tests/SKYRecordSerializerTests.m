@@ -74,6 +74,7 @@ SpecBegin(SKYRecordSerializer)
             expect(dictionary[@"asset"]).to.equal(@{
                 @"$type" : @"asset",
                 @"$name" : @"asset-name",
+                @"$url" : @"http://skygear.test/files/asset-name",
             });
         });
 
