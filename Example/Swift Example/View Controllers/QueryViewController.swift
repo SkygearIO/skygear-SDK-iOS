@@ -153,19 +153,25 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
             resultUI.records = records
         } else if segue.identifier == "new_predicate" {
-            let controller = segue.destinationViewController as! PredicateViewController
+            guard let controller = segue.destinationViewController as? PredicateViewController else {
+                return
+            }
             controller.delegate = self
             controller.deletable = false
         } else if segue.identifier == "record_type" {
-            let controller = segue.destinationViewController as! RecordTypeViewController
+            guard let controller = segue.destinationViewController as? RecordTypeViewController else {
+                return
+            }
             controller.selectedRecordType = recordType
             controller.delegate = self
         } else {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let predicate = predicates[indexPath.row]
+                guard let controller = segue.destinationViewController as? PredicateViewController else {
+                    return
+                }
 
-                let controller = segue.destinationViewController as! PredicateViewController
-                controller.predicate = predicate as? NSComparisonPredicate
+                let predicate = predicates[indexPath.row] as? NSComparisonPredicate
+                controller.predicate = predicate
                 controller.delegate = self
                 controller.deletable = true
             }
