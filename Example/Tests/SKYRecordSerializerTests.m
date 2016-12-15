@@ -66,9 +66,9 @@ SpecBegin(SKYRecordSerializer)
         });
 
         it(@"serialize asset", ^{
-            SKYAsset *asset =
-                [SKYAsset assetWithName:@"asset-name"
-                                    url:[NSURL URLWithString:@"http://ourd.test/files/asset-name"]];
+            SKYAsset *asset = [SKYAsset
+                assetWithName:@"asset-name"
+                          url:[NSURL URLWithString:@"http://skygear.test/files/asset-name"]];
             [record setObject:asset forKey:@"asset"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             expect(dictionary[@"asset"]).to.equal(@{

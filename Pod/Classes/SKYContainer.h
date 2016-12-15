@@ -40,7 +40,7 @@ extern NSString *const SKYContainerDidChangeCurrentUserNotification;
 
 /**
  Notification posted by <SKYContainer> when the current device
- has been registered with ourd.
+ has been registered with skygear.
  */
 extern NSString *const SKYContainerDidRegisterDeviceNotification;
 
