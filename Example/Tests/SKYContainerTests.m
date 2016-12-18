@@ -399,6 +399,83 @@ describe(@"register device", ^{
     });
 });
 
+describe(@"unregister device", ^{
+
+    __block SKYContainer *container = nil;
+
+    beforeAll(^{
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault setObject:@"device_id_001" forKey:@"SKYContainerDeviceID"];
+        [userDefault synchronize];
+    });
+
+    afterAll(^{
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault removeObjectForKey:@"SKYContainerDeviceID"];
+        [userDefault synchronize];
+    });
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container
+            updateWithUserRecordID:@"user_id_001"
+                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];
+    });
+
+    afterEach(^{
+        container = nil;
+        [OHHTTPStubs removeAllStubs];
+    });
+
+    it(@"handles response correctly", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *payloadDict = @{ @"result" : @{@"id" : @"device_id_001"} };
+                NSData *payloadData =
+                    [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                return
+                    [OHHTTPStubsResponse responseWithData:payloadData statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                expect(deviceID).to.equal(@"device_id_001");
+                expect(error).to.beNil();
+                done();
+            }];
+        });
+    });
+
+    it(@"handles error correctly", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *payloadDict = @{
+                    @"error" : @{
+                        @"name" : @"ResourceNotFound",
+                        @"code" : @110,
+                        @"message" : @"device not found"
+                    }
+                };
+                NSData *payloadData =
+                    [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                return
+                    [OHHTTPStubsResponse responseWithData:payloadData statusCode:400 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                expect(deviceID).to.beNil();
+                expect(error).notTo.beNil();
+                done();
+            }];
+        });
+    });
+});
+
 describe(@"AuthenticationError callback", ^{
     __block SKYContainer *container = nil;
 

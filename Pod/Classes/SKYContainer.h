@@ -214,6 +214,20 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  */
 - (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
 
+/**
+ * Unregister the current user from the current device.
+ */
+- (void)unregisterDevice;
+
+/**
+ * Unregister the current user from the current device.
+ *
+ * @param completionHandler the completion handler
+ *
+ */
+- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
+                                                    NSError *error))completionHandler;
+
 - (void)uploadAsset:(SKYAsset *)asset
     completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
 

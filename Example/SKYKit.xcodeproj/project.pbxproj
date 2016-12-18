@@ -78,6 +78,7 @@
 		6031B97C1C7EB79400132DED /* SKYUpdateUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6031B97B1C7EB79400132DED /* SKYUpdateUserOperationTests.m */; };
 		604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */; };
 		604A899D1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899C1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m */; };
+		604CBFD01E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */; };
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */; };
 		A3146DAC57A1BAB2F2B7C597 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8C71207B2B56D001272DBE /* libPods-Tests.a */; };
@@ -180,6 +181,7 @@
 		6031B97B1C7EB79400132DED /* SKYUpdateUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYUpdateUserOperationTests.m; sourceTree = "<group>"; };
 		604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineAdminRolesOperationTests.m; sourceTree = "<group>"; };
 		604A899C1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSetUserDefaultRoleOperationTests.m; sourceTree = "<group>"; };
+		604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYUnregisterDeviceOperationTests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		607B788C1C7B0DD500498FAC /* SKYRoleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRoleTests.m; sourceTree = "<group>"; };
 		60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineCreationAccessOperationTests.m; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				CD7FE2711A9EDD5B002C076E /* SKYSignupUserOperationTests.m */,
 				376CB11A1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m */,
 				378558491AE63FEC00685319 /* SKYSubscriptionSerializerTests.m */,
+				604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */,
 				6031B97B1C7EB79400132DED /* SKYUpdateUserOperationTests.m */,
 				37CDD6031B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m */,
 				37B10B1B1B1C5F0400052740 /* SKYUserDeserializerTests.m */,
@@ -930,6 +933,7 @@
 				38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */,
 				38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
+				604CBFD01E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m in Sources */,
 				38E053D91AC1489A00850988 /* SKYRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* SKYRecordTests.m in Sources */,
 				60209E5B1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m in Sources */,

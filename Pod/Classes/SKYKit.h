@@ -86,6 +86,7 @@
 #import "SKYSubscriptionSerialization.h"
 #import "SKYSubscriptionSerializer.h"
 #import "SKYUnknownValue.h"
+#import "SKYUnregisterDeviceOperation.h"
 #import "SKYUpdateUserOperation.h"
 #import "SKYUploadAssetOperation.h"
 #import "SKYUser.h"
