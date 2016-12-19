@@ -164,19 +164,20 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (id)deserializeObjectWithValue:(id)value
 {
-    if (value == nil || value == [NSNull null]) {
-        return [NSNull null];
+    id deserializeValue = nil;
+    if (value == nil) {
+        deserializeValue = nil;
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *newArray = [NSMutableArray array];
         [(NSArray *)value
             enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
                 [newArray addObject:[self deserializeObjectWithValue:valueInArray]];
             }];
-        return newArray;
+        deserializeValue = newArray;
     } else if ([value isKindOfClass:[NSDictionary class]]) {
         NSString *type = [(NSDictionary *)value objectForKey:SKYDataSerializationCustomTypeKey];
         if (type) {
-            return [self deserializeSimpleObjectWithType:type value:value];
+            deserializeValue = [self deserializeSimpleObjectWithType:type value:value];
         } else {
             NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
             [(NSDictionary *)value
@@ -184,11 +185,13 @@ NSString *localFunctionName(NSString *remoteFunctionName)
                     [newDictionary setObject:[self deserializeObjectWithValue:valueInDictionary]
                                       forKey:key];
                 }];
-            return newDictionary;
+            deserializeValue = newDictionary;
         }
     } else {
-        return value;
+        deserializeValue = value;
     }
+
+    return deserializeValue != nil ? deserializeValue : [NSNull null];
 }
 
 + (SKYAsset *)deserializeAssetWithDictionary:(NSDictionary *)data

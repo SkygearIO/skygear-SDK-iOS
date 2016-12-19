@@ -166,6 +166,16 @@ SpecBegin(SKYRecordDeserializer)
             expect(publishDate).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
         });
 
+        it(@"deserialize date with wrong format", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"published"] = @{
+                SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
+                @"$date" : @"badformat",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect(record[@"published"]).to.beNil();
+        });
+
         it(@"deserialize array", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             NSArray *topics = [NSArray arrayWithObjects:@"fiction", @"classic", nil];
