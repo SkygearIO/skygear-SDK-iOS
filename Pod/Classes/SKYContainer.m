@@ -421,11 +421,11 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
-    operation.container = self;
+    SKYLogoutUserOperation *logoutOperation = [[SKYLogoutUserOperation alloc] init];
+    logoutOperation.container = self;
 
     __weak typeof(self) weakSelf = self;
-    operation.logoutCompletionBlock = ^(NSError *error) {
+    logoutOperation.logoutCompletionBlock = ^(NSError *error) {
         if (error) {
             // Any of the following error code will be treated as successful logout
             switch (error.code) {
@@ -443,7 +443,18 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         });
     };
 
-    [_operationQueue addOperation:operation];
+    NSString *deviceID = self.registeredDeviceID;
+    if (deviceID != nil) {
+        [self unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+            if (error != nil) {
+                NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
+            }
+
+            [weakSelf.operationQueue addOperation:logoutOperation];
+        }];
+    } else {
+        [self.operationQueue addOperation:logoutOperation];
+    }
 }
 
 - (void)setNewPassword:(NSString *)newPassword
@@ -640,6 +651,35 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                                       completionHandler(deviceID, error);
                                   }
                               }];
+}
+
+- (void)unregisterDevice
+{
+    [self unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+        if (error != nil) {
+            NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
+            return;
+        }
+    }];
+}
+
+- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
+                                                    NSError *error))completionHandler
+{
+    NSString *existingDeviceID = self.registeredDeviceID;
+    if (existingDeviceID != nil) {
+        SKYUnregisterDeviceOperation *operation =
+            [SKYUnregisterDeviceOperation operationWithDeviceID:existingDeviceID];
+        operation.unregisterCompletionBlock = ^(NSString *deviceID, NSError *error) {
+            if (completionHandler != nil) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(deviceID, error);
+                });
+            }
+        };
+
+        [self addOperation:operation];
+    }
 }
 
 - (void)uploadAsset:(SKYAsset *)asset
