@@ -164,8 +164,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (id)deserializeObjectWithValue:(id)value
 {
-    if (!value) {
-        return nil;
+    if (value == nil || value == [NSNull null]) {
+        return [NSNull null];
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *newArray = [NSMutableArray array];
         [(NSArray *)value
@@ -325,8 +325,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (id)serializeObject:(id)obj
 {
-    if (!obj) {
-        return nil;
+    if (obj == nil || obj == [NSNull null]) {
+        return [NSNull null];
     }
 
     if ([obj isKindOfClass:[NSArray class]]) {

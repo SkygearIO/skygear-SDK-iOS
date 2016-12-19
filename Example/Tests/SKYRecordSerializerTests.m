@@ -52,17 +52,23 @@ SpecBegin(SKYRecordSerializer)
             expect(dictionary[SKYRecordSerializationRecordIDKey]).to.equal(@"book/book1");
         });
 
-        it(@"serialize record with null field", ^{
-            record[@"null"] = [NSNull null];
-            NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"null"]).to.equal([NSNull null]);
-        });
-
         it(@"serialize string", ^{
             NSString *bookTitle = @"The tale of two cities";
             [record setObject:bookTitle forKey:@"title"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             expect(dictionary[@"title"]).to.equal(bookTitle);
+        });
+
+        it(@"serialize nil", ^{
+            [record setObject:nil forKey:@"nil"];
+            NSDictionary *dict = [serializer dictionaryWithRecord:record];
+            expect(dict[@"nil"]).to.equal([NSNull null]);
+        });
+
+        it(@"serialize NSNull", ^{
+            record[@"null"] = [NSNull null];
+            NSDictionary *dict = [serializer dictionaryWithRecord:record];
+            expect(dict[@"null"]).to.equal([NSNull null]);
         });
 
         it(@"serialize asset", ^{
