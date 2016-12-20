@@ -1,12 +1,46 @@
+## 0.20.0 (2016-12-20)
+
+### Features
+
+- Support unregister device (SkygearIO/skygear-server#245, SkygearIO/skygear-server#249)
+- Implement SKYUnknownValue (SkygearIO/skygear-server#231)
+
+### Bug Fixes
+
+- Prevent nil as dict value when deserializing (#71)
+- Include url of asset on serialization (#64)
+- Serialize NSDate consistently in UTC timezone
+- Fix logout error handling
+- Fix date serialization (SkygearIO/skygear-server#237)
+- Fix API key not attached to lambda request (#55)
+
+### Other Notes
+
+- Remove Chat extension
+
+    Use SKYKitChat instead: https://github.com/SkygearIO/skygear-SDK-iOS
+
+- Add usage description for photos and cameras
+
+    These are required in iOS 10.
+
+- Use Xcode 8, XcodeBuild and new CocoaPods
+
+    This is fix travis error due to Xcode 7 not compatible with
+    FBSDKCoreKit.
+
+
 ## 0.19.0 (2016-11-10)
 
 No change since last release
+
 
 ## 0.18.0 (2016-10-28)
 
 ### Features
 
 - Persist current user information (#49)
+
 
 ## 0.17.0 (2016-09-15)
 
