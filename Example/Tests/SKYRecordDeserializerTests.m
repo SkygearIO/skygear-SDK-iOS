@@ -67,6 +67,22 @@ SpecBegin(SKYRecordDeserializer)
             expect(record.lastModifiedUserRecordID).to.equal(@"updaterID");
         });
 
+        it(@"deserialize nil", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"nil"] = nil;
+
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect(record[@"nil"]).to.beNil();
+        });
+
+        it(@"deserialize NSNull", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"null"] = [NSNull null];
+
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect(record[@"null"]).to.beNil();
+        });
+
         it(@"deserialize null access control", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"_access"] = [NSNull null];
@@ -148,6 +164,16 @@ SpecBegin(SKYRecordDeserializer)
             NSDate *publishDate = record[@"published"];
             expect([publishDate class]).to.beSubclassOf([NSDate class]);
             expect(publishDate).to.equal([NSDate dateWithTimeIntervalSinceReferenceDate:0]);
+        });
+
+        it(@"deserialize date with wrong format", ^{
+            NSMutableDictionary *data = [basicPayload mutableCopy];
+            data[@"published"] = @{
+                SKYDataSerializationCustomTypeKey : SKYDataSerializationDateType,
+                @"$date" : @"badformat",
+            };
+            SKYRecord *record = [deserializer recordWithDictionary:data];
+            expect(record[@"published"]).to.beNil();
         });
 
         it(@"deserialize array", ^{
