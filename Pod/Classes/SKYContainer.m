@@ -593,8 +593,9 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                              existingDeviceID:(NSString *)existingDeviceID
                             completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
+    NSString *topic = [[NSBundle mainBundle] bundleIdentifier];
     SKYRegisterDeviceOperation *op =
-        [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken];
+        [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken topic:topic];
     op.deviceID = existingDeviceID;
     op.registerCompletionBlock = ^(NSString *deviceID, NSError *error) {
         BOOL willRetry = NO;

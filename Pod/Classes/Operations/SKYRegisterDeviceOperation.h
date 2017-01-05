@@ -22,7 +22,9 @@
 
 @interface SKYRegisterDeviceOperation : SKYOperation
 
-- (instancetype)initWithDeviceToken:(NSData *)deviceToken;
+- (instancetype)initWithDeviceToken:(NSData *)deviceToken
+    __attribute__((deprecated("Use -(void)initWithDeviceToken:topic: instead")));
+- (instancetype)initWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic;
 
 /**
  Returns an instance of operation that registers a device without supplying a device token.
@@ -32,9 +34,12 @@
  instead of remote notification.
  */
 + (instancetype)operation;
-+ (instancetype)operationWithDeviceToken:(NSData *)deviceToken;
++ (instancetype)operationWithDeviceToken:(NSData *)deviceToken
+    __attribute__((deprecated("Use +(instancetype)operationWithDeviceToken:topic: instead")));
++ (instancetype)operationWithDeviceToken:(NSData *)topic topic:(NSString *)topic;
 
 @property (nonatomic, readonly, copy) NSData *deviceToken;
+@property (nonatomic, readonly, copy) NSString *topic;
 @property (nonatomic, readwrite, copy) NSString *deviceID;
 @property (nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
 
