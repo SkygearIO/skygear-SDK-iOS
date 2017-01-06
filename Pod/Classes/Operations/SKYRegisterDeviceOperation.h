@@ -23,7 +23,7 @@
 @interface SKYRegisterDeviceOperation : SKYOperation
 
 - (instancetype)initWithDeviceToken:(NSData *)deviceToken
-    __attribute__((deprecated("Use -(void)initWithDeviceToken:topic: instead")));
+    __attribute__((deprecated("Use -initWithDeviceToken:topic: instead")));
 - (instancetype)initWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic;
 
 /**
@@ -35,7 +35,7 @@
  */
 + (instancetype)operation;
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
-    __attribute__((deprecated("Use +(instancetype)operationWithDeviceToken:topic: instead")));
+    __attribute__((deprecated("Use +operationWithDeviceToken:topic: instead")));
 + (instancetype)operationWithDeviceToken:(NSData *)topic topic:(NSString *)topic;
 
 @property (nonatomic, readonly, copy) NSData *deviceToken;
