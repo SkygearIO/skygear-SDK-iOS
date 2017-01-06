@@ -29,14 +29,20 @@
 
 @implementation SKYRegisterDeviceOperation
 
-- (instancetype)initWithDeviceToken:(NSData *)deviceToken
+- (instancetype)initWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic
 {
     self = [super init];
     if (self) {
         _deviceToken = [deviceToken copy];
+        _topic = [topic copy];
         _deviceID = nil;
     }
     return self;
+}
+
+- (instancetype)initWithDeviceToken:(NSData *)deviceToken
+{
+    return [self initWithDeviceToken:deviceToken topic:nil];
 }
 
 + (instancetype)operation
@@ -47,6 +53,11 @@
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
 {
     return [[self alloc] initWithDeviceToken:deviceToken];
+}
+
++ (instancetype)operationWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic
+{
+    return [[self alloc] initWithDeviceToken:deviceToken topic:topic];
 }
 
 - (NSString *)hexDeviceToken
@@ -78,6 +89,11 @@
     NSString *deviceToken = self.hexDeviceToken;
     if (deviceToken) {
         payload[@"device_token"] = deviceToken;
+    }
+
+    NSString *topic = self.topic;
+    if (topic.length) {
+        payload[@"topic"] = topic;
     }
 
     NSString *deviceID = self.deviceID;

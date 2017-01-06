@@ -33,10 +33,22 @@
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend
 {
+    return [self initWithNotificationInfo:notificationInfo
+                               pushTarget:pushTarget
+                                IDsToSend:IDsToSend
+                                    topic:nil];
+}
+
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              pushTarget:(SKYPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend
+                                   topic:(NSString *)topic
+{
     self = [super init];
     if (self) {
         _notificationInfo = [notificationInfo copy];
         _IDsToSend = [IDsToSend copy];
+        _topic = [topic copy];
         _pushTarget = pushTarget;
 
         [_IDsToSend enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -52,20 +64,42 @@
     return self;
 }
 
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                                 userIDsToSend:(NSArray *)userIDsToSend
 {
-    return [[self alloc] initWithNotificationInfo:noteInfo
+    return [[self alloc] initWithNotificationInfo:notificationInfo
                                        pushTarget:SKYPushTargetIsUser
-                                        IDsToSend:userIDsToSend];
+                                        IDsToSend:userIDsToSend
+                                            topic:nil];
 }
 
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                                userIDsToSend:(NSArray *)userIDsToSend
+                                        topic:(NSString *)topic
+{
+    return [[self alloc] initWithNotificationInfo:notificationInfo
+                                       pushTarget:SKYPushTargetIsUser
+                                        IDsToSend:userIDsToSend
+                                            topic:topic];
+}
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               deviceIDsToSend:(NSArray *)deviceIDsToSend
 {
-    return [[self alloc] initWithNotificationInfo:noteInfo
+    return [[self alloc] initWithNotificationInfo:notificationInfo
                                        pushTarget:SKYPushTargetIsDevice
-                                        IDsToSend:deviceIDsToSend];
+                                        IDsToSend:deviceIDsToSend
+                                            topic:nil];
+}
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend
+                                        topic:(NSString *)topic
+{
+    return [[self alloc] initWithNotificationInfo:notificationInfo
+                                       pushTarget:SKYPushTargetIsDevice
+                                        IDsToSend:deviceIDsToSend
+                                            topic:topic];
 }
 
 + (Class)responseClass
@@ -105,6 +139,11 @@
                                          userInfo:nil];
         }
     }
+
+    if (self.topic.length) {
+        [payload setObject:self.topic forKey:@"topic"];
+    }
+
     self.request = [[SKYRequest alloc] initWithAction:action payload:payload];
     self.request.APIKey = self.container.APIKey;
 }

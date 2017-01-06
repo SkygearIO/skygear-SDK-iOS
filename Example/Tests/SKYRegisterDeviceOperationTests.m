@@ -36,7 +36,8 @@ SpecBegin(SKYRegisterDeviceOperation)
 
         it(@"new device request", ^{
             SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
+                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                   topic:@"com.example.app"];
             operation.container = container;
             [operation prepareForRequest];
 
@@ -47,11 +48,12 @@ SpecBegin(SKYRegisterDeviceOperation)
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
             expect(request.payload[@"id"]).to.beNil();
+            expect(request.payload[@"topic"]).to.equal(@"com.example.app");
         });
 
         it(@"new device request without device token", ^{
             SKYRegisterDeviceOperation *operation =
-                [SKYRegisterDeviceOperation operationWithDeviceToken:nil];
+                [SKYRegisterDeviceOperation operationWithDeviceToken:nil topic:@"com.example.app"];
             operation.container = container;
             [operation prepareForRequest];
 
@@ -62,11 +64,13 @@ SpecBegin(SKYRegisterDeviceOperation)
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.beNil();
             expect(request.payload[@"id"]).to.beNil();
+            expect(request.payload[@"topic"]).to.equal(@"com.example.app");
         });
 
         it(@"update device request", ^{
             SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
+                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                   topic:@"com.example.app"];
             operation.deviceID = @"DEVICE_ID";
             operation.container = container;
             [operation prepareForRequest];
@@ -78,11 +82,13 @@ SpecBegin(SKYRegisterDeviceOperation)
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
             expect(request.payload[@"id"]).to.equal(@"DEVICE_ID");
+            expect(request.payload[@"topic"]).to.equal(@"com.example.app");
         });
 
         it(@"new device response", ^{
             SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
+                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                   topic:@"com.example.app"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -113,7 +119,8 @@ SpecBegin(SKYRegisterDeviceOperation)
 
         it(@"error with response without id", ^{
             SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
+                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                   topic:@"com.example.app"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -142,7 +149,8 @@ SpecBegin(SKYRegisterDeviceOperation)
 
         it(@"pass error", ^{
             SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]];
+                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                   topic:@"com.example.app"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }

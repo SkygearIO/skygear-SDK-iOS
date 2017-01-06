@@ -29,17 +29,33 @@ typedef enum : NSUInteger {
 
 @interface SKYSendPushNotificationOperation : SKYOperation
 
-- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)noteInfo
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend;
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
+
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              pushTarget:(SKYPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend
+                                   topic:(NSString *)topic;
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                                 userIDsToSend:(NSArray *)userIDsToSend;
-+ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)noteInfo
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                                userIDsToSend:(NSArray *)userIDsToSend
+                                        topic:(NSString *)topic;
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               deviceIDsToSend:(NSArray *)deviceIDsToSend;
+
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend
+                                        topic:(NSString *)topic;
 
 @property (nonatomic, readwrite, copy) SKYNotificationInfo *notificationInfo;
 @property (nonatomic, readwrite) SKYPushTarget pushTarget;
 @property (nonatomic, readwrite, copy) NSArray *IDsToSend;
+@property (nonatomic, readwrite, copy) NSString *topic;
 @property (nonatomic, copy) void (^perSendCompletionHandler)(NSString *userID, NSError *error);
 @property (nonatomic, copy) void (^sendCompletionHandler)(NSArray *userIDs, NSError *error);
 

@@ -98,6 +98,25 @@ SpecBegin(SKYSendPushNotificationOperation)
             });
         });
 
+        it(@"topic", ^{
+            SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
+                operationWithNotificationInfo:notificationInfo
+                                userIDsToSend:@[ @"johndoe" ]
+                                        topic:@"io.skygear.example"];
+            operation.container = container;
+            [operation prepareForRequest];
+
+            SKYRequest *request = operation.request;
+            expect([request class]).to.beSubclassOf([SKYRequest class]);
+            expect(request.APIKey).to.equal(container.APIKey);
+            expect(request.action).to.equal(@"push:user");
+            expect(request.payload).to.equal(@{
+                @"user_ids" : @[ @"johndoe" ],
+                @"notification" : expectedNotificationPayload,
+                @"topic" : @"io.skygear.example"
+            });
+        });
+
         it(@"make request", ^{
             SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
                 operationWithNotificationInfo:notificationInfo
