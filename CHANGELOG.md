@@ -1,3 +1,10 @@
+## 0.21.0 (2017-01-11)
+
+### Features
+
+- Support send push notification by topic (SkygearIO/skygear-server#239)
+
+
 ## 0.20.0 (2016-12-20)
 
 ### Features
