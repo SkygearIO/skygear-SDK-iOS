@@ -82,6 +82,13 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  */
 @property (nonatomic, readonly) NSString *APIKey;
 
+/**
+ The maximum amount of time to wait before the request is considered timed out.
+
+ The default time interval is 60 seconds.
+ */
+@property (nonatomic, readwrite) NSTimeInterval defaultTimeoutInterval;
+
 // Configuration on the container End-Point, API-Token
 - (void)configAddress:(NSString *)address;
 

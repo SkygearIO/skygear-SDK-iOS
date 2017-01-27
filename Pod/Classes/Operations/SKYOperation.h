@@ -28,6 +28,11 @@
 @property (nonatomic, strong) SKYContainer *container;
 @property (nonatomic, strong) SKYRequest *request;
 
+/**
+ The maximum time to wait before the request is considered time out.
+ */
+@property (nonatomic, readwrite) NSTimeInterval timeoutInterval;
+
 - (instancetype)initWithRequest:(SKYRequest *)request;
 
 /**

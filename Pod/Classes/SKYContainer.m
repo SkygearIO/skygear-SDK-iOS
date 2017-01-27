@@ -78,6 +78,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _internalPubsubClient = [[SKYPubsub alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];
+        _defaultTimeoutInterval = 60.0;
 
         [self loadCurrentUserAndAccessToken];
     }
@@ -226,6 +227,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)addOperation:(SKYOperation *)operation
 {
     operation.container = self;
+    operation.timeoutInterval = self.defaultTimeoutInterval;
     [self.operationQueue addOperation:operation];
 }
 

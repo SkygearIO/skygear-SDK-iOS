@@ -109,7 +109,9 @@
         [self prepareForRequest];
         self.request.baseURL = self.container.endPointAddress;
     }
-    return [NSURLRequest requestWithSKYRequest:self.request];
+    NSMutableURLRequest *request = [NSMutableURLRequest mutableRequestWithSKYRequest:self.request];
+    request.timeoutInterval = self.timeoutInterval;
+    return [request copy];
 }
 
 - (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session

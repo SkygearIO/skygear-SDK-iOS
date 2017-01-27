@@ -24,7 +24,7 @@ NSString *const SKYRequestHeaderAccessTokenKey = @"X-Skygear-Access-Token";
 
 @implementation NSURLRequest (SKYRequest)
 
-+ (NSURLRequest *)requestWithSKYRequest:(SKYRequest *)request
++ (NSMutableURLRequest *)mutableRequestWithSKYRequest:(SKYRequest *)request
 {
     NSURL *url = [NSURL URLWithString:request.requestPath relativeToURL:request.baseURL];
 
@@ -48,8 +48,12 @@ NSString *const SKYRequestHeaderAccessTokenKey = @"X-Skygear-Access-Token";
     [urlRequest setValue:[[NSNumber numberWithUnsignedInteger:[requestContent length]] stringValue]
         forHTTPHeaderField:@"Content-Length"];
     urlRequest.HTTPBody = requestContent;
-
     return urlRequest;
+}
+
++ (NSURLRequest *)requestWithSKYRequest:(SKYRequest *)request
+{
+    return [[NSMutableURLRequest mutableRequestWithSKYRequest:request] copy];
 }
 
 @end
