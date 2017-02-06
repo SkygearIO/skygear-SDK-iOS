@@ -91,11 +91,13 @@ describe(@"user login and signup", ^{
 
     beforeEach(^{
         container = [[SKYContainer alloc] init];
+        container.defaultTimeoutInterval = 1.0;
         [container configureWithAPIKey:@"API_KEY"];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                expect(request.timeoutInterval).to.equal(1.0);
                 NSDictionary *parameters = @{
                     @"user_id" : @"UUID",
                     @"username" : @"john.doe",

@@ -78,6 +78,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _internalPubsubClient = [[SKYPubsub alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];
+        _defaultTimeoutInterval = 60.0;
 
         [self loadCurrentUserAndAccessToken];
     }
@@ -226,6 +227,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)addOperation:(SKYOperation *)operation
 {
     operation.container = self;
+    operation.timeoutInterval = self.defaultTimeoutInterval;
     [self.operationQueue addOperation:operation];
 }
 
@@ -371,8 +373,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                                                          NSStringFromClass(operation.class)]
                      userInfo:nil];
     }
-    operation.container = self;
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 - (void)signupWithUsername:(NSString *)username
@@ -422,7 +423,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYLogoutUserOperation *logoutOperation = [[SKYLogoutUserOperation alloc] init];
-    logoutOperation.container = self;
 
     __weak typeof(self) weakSelf = self;
     logoutOperation.logoutCompletionBlock = ^(NSError *error) {
@@ -450,10 +450,10 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                 NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
             }
 
-            [weakSelf.operationQueue addOperation:logoutOperation];
+            [weakSelf addOperation:logoutOperation];
         }];
     } else {
-        [self.operationQueue addOperation:logoutOperation];
+        [self addOperation:logoutOperation];
     }
 }
 
@@ -463,7 +463,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYChangePasswordOperation *operation =
         [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
-    operation.container = self;
 
     operation.changePasswordCompletionBlock =
         ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
@@ -472,7 +471,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             });
         };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 - (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
@@ -501,7 +500,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYQuery *query = [SKYQuery queryWithRecordType:@"user" predicate:predicate];
     SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
-    operation.container = self;
     operation.database = self.publicCloudDatabase;
     operation.queryRecordsCompletionBlock =
         ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
@@ -512,14 +510,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             }
         };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 - (void)saveUser:(SKYUser *)user
       completion:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYUpdateUserOperation *operation = [SKYUpdateUserOperation operationWithUser:user];
-    operation.container = self;
 
     operation.updateUserCompletionBlock = ^(SKYUser *user, NSError *error) {
         if (completionHandler) {
@@ -529,7 +526,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         }
     };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 #pragma mark - SKYRole
@@ -538,7 +535,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYDefineAdminRolesOperation *operation =
         [SKYDefineAdminRolesOperation operationWithRoles:roles];
-    operation.container = self;
 
     operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -548,7 +544,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         }
     };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 - (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
@@ -556,7 +552,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYSetUserDefaultRoleOperation *operation =
         [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
-    operation.container = self;
 
     operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -566,7 +561,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         }
     };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 - (void)defineCreationAccessWithRecordType:(NSString *)recordType
@@ -575,7 +570,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     SKYDefineCreationAccessOperation *operation =
         [SKYDefineCreationAccessOperation operationWithRecordType:recordType roles:roles];
-    operation.container = self;
     operation.defineCreationAccessCompletionBlock =
         ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
             if (completionBlock) {
@@ -585,7 +579,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             }
         };
 
-    [_operationQueue addOperation:operation];
+    [self addOperation:operation];
 }
 
 #pragma mark - SKYRemoteNotification
