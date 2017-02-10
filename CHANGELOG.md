@@ -1,3 +1,9 @@
+## 0.22.0 (2017-02-10)
+
+### Features
+
+- Support for container request timeout (SkygearIO/skygear-server#271)
+
 ## 0.21.0 (2017-01-11)
 
 ### Features
