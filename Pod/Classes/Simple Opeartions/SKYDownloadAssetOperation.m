@@ -102,8 +102,9 @@
             NSURLSessionDownloadTask *task = object;
 
             if (task.countOfBytesExpectedToReceive != NSURLSessionTransferSizeUnknown) {
-                self.downloadAssetProgressBlock(self.asset, task.countOfBytesReceived * 1.0 /
-                                                                task.countOfBytesExpectedToReceive);
+                self.downloadAssetProgressBlock(self.asset,
+                                                task.countOfBytesReceived * 1.0 /
+                                                    task.countOfBytesExpectedToReceive);
             }
         }
     }

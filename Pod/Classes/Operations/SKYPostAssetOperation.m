@@ -239,8 +239,8 @@
             // task.countOfBytesExpectedToSend sometimes returns zero for unknown reason
             // since we are saving asset data in file anyway, we access the value from asset
             // instead.
-            self.postAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 /
-                                                        self.asset.fileSize.integerValue);
+            self.postAssetProgressBlock(
+                self.asset, task.countOfBytesSent * 1.0 / self.asset.fileSize.integerValue);
         }
     }
 }
