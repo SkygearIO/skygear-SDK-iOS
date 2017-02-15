@@ -393,6 +393,18 @@ describe(@"SKYAccessControlDeserializer", ^{
         expect(serializedAccessControl(accessControl)).to.equal(undeserialized);
     });
 
+    it(@"deserialize abnormal access control settings", ^{
+        NSArray *undeserialized = @[
+            @{ @"level" : @"read",
+               @"user_id" : @"userid0" }, // missing "relation": "$direct"
+        ];
+        SKYAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
+        expect(accessControl.entries).to.haveCountOf(1);
+        expect([accessControl.entries objectAtIndex:0].userID).to.equal(@"userid0");
+        expect([accessControl.entries objectAtIndex:0].accessLevel)
+            .to.equal(SKYAccessControlEntryLevelRead);
+    });
+
 });
 
 SpecEnd

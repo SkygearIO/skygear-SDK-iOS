@@ -61,15 +61,15 @@
 
     NSString *rawRelation = dictionary[@"relation"];
     NSString *roleName = dictionary[@"role"];
+    NSString *userID = dictionary[@"user_id"];
     BOOL isPublic = [dictionary[@"public"] boolValue];
     if (isPublic) {
         return [[SKYAccessControlEntry alloc] initWithPublicAccessLevel:level];
-    } else if (rawRelation == nil && roleName != nil) {
+    } else if (roleName != nil) {
         SKYRole *role = [SKYRole roleWithName:roleName];
         return [[SKYAccessControlEntry alloc] initWithAccessLevel:level role:role];
-    } else if ([rawRelation isEqualToString:@"$direct"]) {
-        NSString *rawUserID = dictionary[@"user_id"];
-        return [[SKYAccessControlEntry alloc] initWithAccessLevel:level userID:rawUserID];
+    } else if (userID != nil) {
+        return [[SKYAccessControlEntry alloc] initWithAccessLevel:level userID:userID];
     } else {
         SKYRelation *relation;
         if ([rawRelation isEqualToString:@"follow"]) {
