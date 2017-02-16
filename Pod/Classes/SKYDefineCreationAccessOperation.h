@@ -21,13 +21,18 @@
 
 @class SKYRole;
 
+/// Undocumented
 @interface SKYDefineCreationAccessOperation : SKYOperation
 
+/// Undocumented
 @property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
+/// Undocumented
 @property (nonatomic, readonly, strong) NSString *recordType;
+/// Undocumented
 @property (nonatomic, copy) void (^defineCreationAccessCompletionBlock)
     (NSString *recordType, NSArray<SKYRole *> *roles, NSError *error);
 
+/// Undocumented
 + (instancetype)operationWithRecordType:(NSString *)recordType roles:(NSArray<SKYRole *> *)roles;
 
 @end

@@ -22,15 +22,22 @@
 #import "SKYQuery.h"
 #import "SKYQueryCursor.h"
 
+/// Undocumented
 @interface SKYQueryOperation : SKYDatabaseOperation
 
+/// Undocumented
 - (instancetype)initWithQuery:(SKYQuery *)query;
+/// Undocumented
 - (instancetype)initWithCursor:(SKYQueryCursor *)cursor;
 
+/// Undocumented
 + (instancetype)operationWithQuery:(SKYQuery *)query;
+/// Undocumented
 + (instancetype)operationWithCursor:(SKYQueryCursor *)cursor;
 
+/// Undocumented
 @property (nonatomic, copy) SKYQuery *query;
+/// Undocumented
 @property (nonatomic, copy) NSArray *results __deprecated;
 
 /**
@@ -38,7 +45,9 @@
  */
 @property (nonatomic, readonly) NSUInteger overallCount;
 
+/// Undocumented
 @property (nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record);
+/// Undocumented
 @property (nonatomic, copy) void (^queryRecordsCompletionBlock)
     (NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError);
 

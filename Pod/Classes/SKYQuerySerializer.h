@@ -20,12 +20,18 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYQuerySerializer : NSObject
 
+/// Undocumented
 + (instancetype)serializer;
+/// Undocumented
 - (id)serializeWithQuery:(SKYQuery *)query;
+/// Undocumented
 - (id)serializeWithExpression:(NSExpression *)expression;
+/// Undocumented
 - (id)serializeWithPredicate:(NSPredicate *)predicate;
+/// Undocumented
 - (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors;
 
 @end

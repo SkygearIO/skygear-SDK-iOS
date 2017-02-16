@@ -23,9 +23,12 @@
 #import "SKYRequest.h"
 #import "SKYResponse.h"
 
+/// Undocumented
 @interface SKYOperation : NSOperation
 
+/// Undocumented
 @property (nonatomic, strong) SKYContainer *container;
+/// Undocumented
 @property (nonatomic, strong) SKYRequest *request;
 
 /**
@@ -33,6 +36,7 @@
  */
 @property (nonatomic, readwrite) NSTimeInterval timeoutInterval;
 
+/// Undocumented
 - (instancetype)initWithRequest:(SKYRequest *)request;
 
 /**
@@ -107,12 +111,15 @@
  */
 - (NSURLRequest *)makeURLRequest;
 
+/// Undocumented
 - (void)handleRequestCompletionWithData:(NSData *)data
                                response:(NSURLResponse *)response
                                   error:(NSError *)requestError;
 
+/// Undocumented
 - (void)operationWillStart;
 
+/// Undocumented
 + (Class)responseClass;
 
 @end

@@ -22,14 +22,19 @@
 #import "SKYAsset.h"
 #import "SKYOperation.h"
 
+/// Undocumented
 @interface SKYGetAssetPostRequestOperation : SKYOperation
 NS_ASSUME_NONNULL_BEGIN
 
+/// Undocumented
 - (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
+/// Undocumented
 + (instancetype)operationWithAsset:(SKYAsset *)asset;
 
+/// Undocumented
 @property (nonatomic, readwrite) SKYAsset *asset;
 
+/// Undocumented
 @property (nonatomic, copy) void (^_Nullable getAssetPostRequestCompletionBlock)
     (SKYAsset *_Nullable asset, NSURL *_Nullable postURL,
      NSDictionary<NSString *, NSObject *> *_Nullable extraFields, NSError *_Nullable operationError)

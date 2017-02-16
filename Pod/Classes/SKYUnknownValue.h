@@ -27,11 +27,15 @@
  */
 @interface SKYUnknownValue : NSObject <NSCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithUnderlyingType:(NSString *)underlyingType NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 + (instancetype)unknownValueWithUnderlyingType:(NSString *)underlyingType;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *underlyingType;
 
 @end

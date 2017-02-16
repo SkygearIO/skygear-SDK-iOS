@@ -22,29 +22,41 @@
 #import "SKYNotificationInfo.h"
 #import "SKYQuery.h"
 
+/// Undocumented
 typedef enum : NSInteger {
     SKYSubscriptionTypeQuery = 1,
     SKYSubscriptionTypeRecordZone = 2,
 } SKYSubscriptionType;
 
+/// Undocumented
 @interface SKYSubscription : NSObject
 
+/// Undocumented
 - (instancetype)initWithQuery:(SKYQuery *)query;
+/// Undocumented
 - (instancetype)initWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
 
+/// Undocumented
 + (instancetype)subscriptionWithQuery:(SKYQuery *)query;
+/// Undocumented
 + (instancetype)subscriptionWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
 
+/// Undocumented
 @property (nonatomic, readonly, assign) SKYSubscriptionType subscriptionType;
 
+/// Undocumented
 @property (nonatomic, readonly) SKYQuery *query;
 
 // probably duplicated with query?
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSPredicate *predicate;
 
+/// Undocumented
 @property (nonatomic, copy) SKYNotificationInfo *notificationInfo;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *subscriptionID;
 
 @end

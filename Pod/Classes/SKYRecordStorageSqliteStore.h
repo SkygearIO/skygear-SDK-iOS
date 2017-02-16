@@ -20,9 +20,12 @@
 #import "SKYRecordStorageBackingStore.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRecordStorageSqliteStore : NSObject <SKYRecordStorageBackingStore>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 @end

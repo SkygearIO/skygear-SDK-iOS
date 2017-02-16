@@ -22,41 +22,55 @@
 
 @class SKYNotificationInfo;
 
+/// Undocumented
 typedef enum : NSUInteger {
     SKYPushTargetIsDevice,
     SKYPushTargetIsUser,
 } SKYPushTarget;
 
+/// Undocumented
 @interface SKYSendPushNotificationOperation : SKYOperation
 
+/// Undocumented
 - (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend;
 
+/// Undocumented
 - (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend
                                    topic:(NSString *)topic;
 
+/// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                                 userIDsToSend:(NSArray *)userIDsToSend;
 
+/// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                                 userIDsToSend:(NSArray *)userIDsToSend
                                         topic:(NSString *)topic;
 
+/// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               deviceIDsToSend:(NSArray *)deviceIDsToSend;
 
+/// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               deviceIDsToSend:(NSArray *)deviceIDsToSend
                                         topic:(NSString *)topic;
 
+/// Undocumented
 @property (nonatomic, readwrite, copy) SKYNotificationInfo *notificationInfo;
+/// Undocumented
 @property (nonatomic, readwrite) SKYPushTarget pushTarget;
+/// Undocumented
 @property (nonatomic, readwrite, copy) NSArray *IDsToSend;
+/// Undocumented
 @property (nonatomic, readwrite, copy) NSString *topic;
+/// Undocumented
 @property (nonatomic, copy) void (^perSendCompletionHandler)(NSString *userID, NSError *error);
+/// Undocumented
 @property (nonatomic, copy) void (^sendCompletionHandler)(NSArray *userIDs, NSError *error);
 
 @end

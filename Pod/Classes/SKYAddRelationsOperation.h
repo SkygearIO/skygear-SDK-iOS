@@ -19,6 +19,7 @@
 
 #import "SKYOperation.h"
 
+/// Undocumented
 @interface SKYAddRelationsOperation : SKYOperation
 
 /**

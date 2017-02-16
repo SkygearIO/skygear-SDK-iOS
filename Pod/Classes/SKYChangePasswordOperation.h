@@ -22,11 +22,15 @@
 @class SKYUser;
 @class SKYAccessToken;
 
+/// Undocumented
 @interface SKYChangePasswordOperation : SKYOperation
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *oldPassword;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *passwordToSet;
 
+/// Undocumented
 @property (nonatomic, copy) void (^changePasswordCompletionBlock)
     (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 

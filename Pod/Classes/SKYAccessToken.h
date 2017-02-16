@@ -19,10 +19,13 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYAccessToken : NSObject
 
+/// Undocumented
 @property (nonatomic, copy) NSString *tokenString;
 
+/// Undocumented
 - (instancetype)initWithTokenString:(NSString *)tokenString;
 
 @end

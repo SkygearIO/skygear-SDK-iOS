@@ -19,17 +19,23 @@
 
 #import "SKYDatabaseOperation.h"
 
+/// Undocumented
 @interface SKYDeleteSubscriptionsOperation : SKYDatabaseOperation
 
+/// Undocumented
 - (instancetype)initWithDeviceID:(NSString *)deviceID
          subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
+/// Undocumented
 + (instancetype)operationWithDeviceID:(NSString *)deviceID
               subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
+/// Undocumented
 @property (nonatomic, copy) NSString *deviceID;
+/// Undocumented
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionIDsToDelete;
 
+/// Undocumented
 @property (nonatomic, copy) void (^deleteSubscriptionsCompletionBlock)
     (NSArray *deletedSubscriptionIDs, NSError *operationError);
 

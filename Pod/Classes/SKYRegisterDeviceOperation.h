@@ -20,10 +20,13 @@
 #import "SKYOperation.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRegisterDeviceOperation : SKYOperation
 
+/// Undocumented
 - (instancetype)initWithDeviceToken:(NSData *)deviceToken
     __attribute__((deprecated("Use -initWithDeviceToken:topic: instead")));
+/// Undocumented
 - (instancetype)initWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic;
 
 /**
@@ -34,13 +37,19 @@
  instead of remote notification.
  */
 + (instancetype)operation;
+/// Undocumented
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
     __attribute__((deprecated("Use +operationWithDeviceToken:topic: instead")));
+/// Undocumented
 + (instancetype)operationWithDeviceToken:(NSData *)topic topic:(NSString *)topic;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSData *deviceToken;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *topic;
+/// Undocumented
 @property (nonatomic, readwrite, copy) NSString *deviceID;
+/// Undocumented
 @property (nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
 
 @end

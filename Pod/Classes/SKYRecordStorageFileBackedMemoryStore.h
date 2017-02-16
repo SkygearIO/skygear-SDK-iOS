@@ -20,9 +20,12 @@
 #import "SKYRecordStorageMemoryStore.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRecordStorageFileBackedMemoryStore : SKYRecordStorageMemoryStore
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 @end

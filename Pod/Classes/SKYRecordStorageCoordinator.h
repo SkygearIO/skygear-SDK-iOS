@@ -25,10 +25,15 @@
 @class SKYContainer;
 @class SKYNotification;
 
+/// Undocumented
 extern NSString *const SKYRecordStorageCoordinatorBackingStoreKey;
+/// Undocumented
 extern NSString *const SKYRecordStorageCoordinatorMemoryStore;
+/// Undocumented
 extern NSString *const SKYRecordStorageCoordinatorFileBackedMemoryStore;
+/// Undocumented
 extern NSString *const SKYRecordStorageCoordinatorSqliteStore;
+/// Undocumented
 extern NSString *const SKYRecordStorageCoordinatorFilePath;
 
 /**
@@ -40,6 +45,7 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
  */
 @interface SKYRecordStorageCoordinator : NSObject
 
+/// Undocumented
 @property (nonatomic, readonly) SKYContainer *container;
 
 /**
@@ -58,6 +64,7 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
  */
 + (instancetype)defaultCoordinator;
 
+/// Undocumented
 - (instancetype)initWithContainer:(SKYContainer *)container NS_DESIGNATED_INITIALIZER;
 
 /**
@@ -74,15 +81,19 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 - (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
                                           query:(SKYQuery *)query
                                         options:(NSDictionary *)options __deprecated;
+/// Undocumented
 - (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
                                           query:(SKYQuery *)query
                                         options:(NSDictionary *)options
                                           error:(NSError **)error;
+/// Undocumented
 - (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
                                         options:(NSDictionary *)options __deprecated;
+/// Undocumented
 - (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
                                         options:(NSDictionary *)options
                                           error:(NSError **)error;
+/// Undocumented
 - (SKYRecordStorage *)recordStorageForPrivateDatabase;
 
 /**

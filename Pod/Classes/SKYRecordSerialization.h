@@ -19,12 +19,21 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordIDKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordTypeKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordOwnerIDKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordCreatedAtKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordCreatorIDKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordUpdatedAtKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordUpdaterIDKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordAccessControlKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordTransientKey;

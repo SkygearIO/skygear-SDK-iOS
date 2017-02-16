@@ -21,29 +21,44 @@
 
 #import "SKYNotificationID.h"
 
+/// Undocumented
 typedef enum SKYNotificationType : NSInteger {
     SKYNotificationTypeQuery = 1,
     SKYNotificationTypeReadNotification = 3,
     SKYNotificationTypePushNotification = 4,
 } SKYNotificationType;
 
+/// Undocumented
 @interface SKYNotification : NSObject
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) SKYNotificationID *notificationID;
+/// Undocumented
 @property (nonatomic, readonly, assign) SKYNotificationType notificationType;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *containerIdentifier;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *subscriptionID;
 
+/// Undocumented
 @property (nonatomic, readonly, assign) BOOL isPruned;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *alertBody;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *alertLocalizationKey;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSArray *alertLocalizationArgs;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *alertActionLocalizationKey;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *alertLaunchImage;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *soundName;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSNumber *badge;
 
 @end

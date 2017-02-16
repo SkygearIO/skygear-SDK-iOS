@@ -22,6 +22,7 @@
 
 @class SKYRelation;
 
+/// Undocumented
 @interface SKYQueryOperation (QueryUser)
 
 /**

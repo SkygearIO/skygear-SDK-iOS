@@ -26,8 +26,10 @@
 #import "SKYPubsub.h"
 #import "SKYRole.h"
 
+/// Undocumented
 @protocol SKYContainerDelegate <NSObject>
 
+/// Undocumented
 - (void)container:(SKYContainer *)container didReceiveNotification:(SKYNotification *)notification;
 
 @end
@@ -48,28 +50,41 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @class SKYOperation;
 
 // keep it in sync with SKYUserOperationActionCompletion
+/// Undocumented
 typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
 
+/// Undocumented
 @interface SKYContainer : NSObject
 
 // seems we need a way to authenticate app
+/// Undocumented
 + (SKYContainer *)defaultContainer;
 
+/// Undocumented
 @property (nonatomic, weak) id<SKYContainerDelegate> delegate;
 
+/// Undocumented
 @property (nonatomic, nonatomic) NSURL *endPointAddress;
 
+/// Undocumented
 @property (nonatomic, readonly) SKYDatabase *publicCloudDatabase;
+/// Undocumented
 @property (nonatomic, readonly) SKYDatabase *privateCloudDatabase;
 
+/// Undocumented
 @property (nonatomic, readonly) NSString *containerIdentifier;
 
+/// Undocumented
 @property (nonatomic, readonly) NSString *currentUserRecordID;
+/// Undocumented
 @property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
+/// Undocumented
 @property (nonatomic, readonly) SKYUser *currentUser;
 
+/// Undocumented
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
 
+/// Undocumented
 @property (nonatomic, strong) SKYAccessControl *defaultAccessControl;
 
 /**
@@ -89,7 +104,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  */
 @property (nonatomic, readwrite) NSTimeInterval defaultTimeoutInterval;
 
-// Configuration on the container End-Point, API-Token
+/// Configuration on the container End-Point, API-Token
 - (void)configAddress:(NSString *)address;
 
 /**
@@ -104,6 +119,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
 
+/// Undocumented
 - (void)addOperation:(SKYOperation *)operation;
 
 /**
@@ -235,6 +251,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
                                                     NSError *error))completionHandler;
 
+/// Undocumented
 - (void)uploadAsset:(SKYAsset *)asset
     completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
 

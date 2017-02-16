@@ -19,19 +19,30 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYAPSNotificationInfo : NSObject <NSCopying>
 
+/// Undocumented
 + (instancetype)notificationInfo;
 
+/// Undocumented
 @property (nonatomic, copy) NSString *alertBody;
+/// Undocumented
 @property (nonatomic, copy) NSString *alertLocalizationKey;
+/// Undocumented
 @property (nonatomic, copy) NSArray *alertLocalizationArgs;
+/// Undocumented
 @property (nonatomic, copy) NSString *alertActionLocalizationKey;
+/// Undocumented
 @property (nonatomic, copy) NSString *alertLaunchImage;
+/// Undocumented
 @property (nonatomic, copy) NSString *soundName;
+/// Undocumented
 @property (nonatomic, assign) BOOL shouldBadge;
+/// Undocumented
 @property (nonatomic, assign) BOOL shouldSendContentAvailable;
 
+/// Undocumented
 - (BOOL)isEqualToNotificationInfo:(SKYAPSNotificationInfo *)notificationInfo;
 
 @end

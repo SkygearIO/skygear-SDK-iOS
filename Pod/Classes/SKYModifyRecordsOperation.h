@@ -19,6 +19,7 @@
 
 #import "SKYDatabaseOperation.h"
 
+/// Undocumented
 typedef enum : NSInteger {
     SKYRecordSaveIfServerRecordUnchanged = 0,
     SKYRecordSaveChangedKeys = 1,

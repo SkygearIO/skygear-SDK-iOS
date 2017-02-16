@@ -20,10 +20,13 @@
 #import "SKYDatabaseOperation.h"
 #import "SKYSubscription.h"
 
+/// Undocumented
 @interface SKYSubscriptionDeserializer : SKYDatabaseOperation
 
+/// Undocumented
 + (instancetype)deserializer;
 
+/// Undocumented
 - (SKYSubscription *)subscriptionWithDictionary:(NSDictionary *)dictionary;
 
 @end

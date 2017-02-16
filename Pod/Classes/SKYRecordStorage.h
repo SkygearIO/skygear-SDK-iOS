@@ -24,17 +24,27 @@
 #import "SKYRecordChange.h"
 #import "SKYRecordStorageBackingStore.h"
 
+/// Undocumented
 extern NSString *const SKYRecordStorageDidUpdateNotification;
+/// Undocumented
 extern NSString *const SKYRecordStorageWillSynchronizeChangesNotification;
+/// Undocumented
 extern NSString *const SKYRecordStorageDidSynchronizeChangesNotification;
+/// Undocumented
 extern NSString *const SKYRecordStorageUpdateAvailableNotification;
+/// Undocumented
 extern NSString *const SKYRecordStoragePendingChangesCountKey;
+/// Undocumented
 extern NSString *const SKYRecordStorageFailedChangesCountKey;
+/// Undocumented
 extern NSString *const SKYRecordStorageSavedRecordIDsKey;
+/// Undocumented
 extern NSString *const SKYRecordStorageDeletedRecordIDsKey;
 
+/// Undocumented
 @class SKYRecordSynchronizer;
 
+/// Undocumented
 typedef enum : NSInteger {
     /**
      Record is in the same state as the last known state on server.
@@ -104,6 +114,7 @@ typedef enum : NSInteger {
  */
 @property (nonatomic, readonly) BOOL hasUpdateAvailable;
 
+/// Undocumented
 - (instancetype)initWithBackingStore:(id<SKYRecordStorageBackingStore>)backingStore;
 
 #pragma mark - Changing all records
@@ -129,9 +140,11 @@ typedef enum : NSInteger {
  The completion handler is called when the change is synchronized to remote.
  */
 - (void)saveRecord:(SKYRecord *)record;
+/// Undocumented
 - (void)saveRecord:(SKYRecord *)record
          whenConflict:(SKYRecordResolveMethod)resolution
     completionHandler:(id)handler;
+/// Undocumented
 - (void)saveRecords:(NSArray *)records;
 
 /**
@@ -144,9 +157,11 @@ typedef enum : NSInteger {
  The completion handler is called when the change is synchronized to remote.
  */
 - (void)deleteRecord:(SKYRecord *)record;
+/// Undocumented
 - (void)deleteRecord:(SKYRecord *)record
          whenConflict:(SKYRecordResolveMethod)resolution
     completionHandler:(id)handler;
+/// Undocumented
 - (void)deleteRecords:(NSArray *)records;
 
 #pragma mark - Fetching and querying multiple records
@@ -214,9 +229,10 @@ typedef enum : NSInteger {
  */
 - (NSArray *)failedChanges;
 
+/// Undocumented
 - (SKYRecordChange *)changeWithRecord:(SKYRecord *)record;
 
-/*
+/**
  The record state of the given record.
  */
 - (SKYRecordState)recordStateWithRecord:(SKYRecord *)record;
@@ -241,7 +257,7 @@ typedef enum : NSInteger {
  */
 - (NSDictionary *)attributesToSaveWithRecord:(SKYRecord *)record;
 
-/*
+/**
  Handle failed changes.
 
  <SKYRecordStorage> will call the specified block for each failed record.
@@ -254,6 +270,7 @@ typedef enum : NSInteger {
  Notifies the storage that it will begin receiving record updates.
  */
 - (void)beginUpdating;
+/// Undocumented
 - (void)beginUpdatingForChanges:(BOOL)forChanges;
 
 /**

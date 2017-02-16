@@ -21,12 +21,16 @@
 
 @class SKYRole;
 
+/// Undocumented
 @interface SKYDefineAdminRolesOperation : SKYOperation
 
+/// Undocumented
 @property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
+/// Undocumented
 @property (nonatomic, copy) void (^defineAdminRolesCompletionBlock)
     (NSArray<SKYRole *> *roles, NSError *error);
 
+/// Undocumented
 + (instancetype)operationWithRoles:(NSArray<SKYRole *> *)roles;
 
 @end

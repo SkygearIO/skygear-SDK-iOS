@@ -20,11 +20,15 @@
 #import "SKYRecord.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRecordDeserializer : NSObject
 
+/// Undocumented
 + (instancetype)deserializer;
 
+/// Undocumented
 - (SKYRecord *)recordWithDictionary:(NSDictionary *)dictionary;
+/// Undocumented
 - (SKYRecord *)recordWithJSONData:(NSData *)data error:(NSError **)error;
 
 @end

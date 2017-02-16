@@ -23,26 +23,42 @@
 @class SKYQueryCursor;
 @class SKYQueryOperation;
 
+/// Undocumented
 @interface SKYUser : NSObject <NSCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithUserID:(NSString *)userID;
 
+/// Undocumented
 - (void)addRole:(SKYRole *)aRole;
+/// Undocumented
 - (void)removeRole:(SKYRole *)aRole;
+/// Undocumented
 - (BOOL)hasRole:(SKYRole *)aRole;
 
+/// Undocumented
 + (instancetype)userWithUserID:(NSString *)userID;
+/// Undocumented
 + (instancetype)userWithResponse:(NSDictionary *)userID __deprecated;
 
+/// Undocumented
 @property (nonatomic, copy) NSString *username;
+/// Undocumented
 @property (nonatomic, copy) NSString *email;
+/// Undocumented
 @property (nonatomic, copy) NSDate *lastLoginAt;
+/// Undocumented
 @property (nonatomic, copy) NSDate *lastSeenAt;
+/// Undocumented
 @property (nonatomic, copy) NSDictionary *authData;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSArray<SKYRole *> *roles;
+/// Undocumented
 @property (nonatomic, readonly, assign) BOOL isNew;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *userID;
 
 @end

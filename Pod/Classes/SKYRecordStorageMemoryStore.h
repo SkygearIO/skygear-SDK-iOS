@@ -23,6 +23,7 @@
 @class SKYRecord;
 @class SKYRecordID;
 
+/// Undocumented
 @interface SKYRecordStorageMemoryStore : NSObject <SKYRecordStorageBackingStore>
 
 @end

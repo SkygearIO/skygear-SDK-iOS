@@ -23,11 +23,13 @@
 #import "SKYRole.h"
 #import "SKYUser.h"
 
+/// Undocumented
 typedef enum : NSUInteger {
     SKYAccessControlEntryLevelRead = 0,
     SKYAccessControlEntryLevelWrite = 1,
 } SKYAccessControlEntryLevel;
 
+/// Undocumented
 typedef enum : NSUInteger {
     SKYAccessControlEntryTypeRelation = 0,
     SKYAccessControlEntryTypeDirect = 1,
@@ -38,35 +40,56 @@ typedef enum : NSUInteger {
 NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 
 // NOTE(limouren): this class is consider an implementation details of SKYAccessControl
+/// Undocumented
 @interface SKYAccessControlEntry : NSObject <NSCoding>
 
+/// Undocumented
 + (instancetype)readEntryForUser:(SKYUser *)user;
+/// Undocumented
 + (instancetype)readEntryForUserID:(NSString *)user;
+/// Undocumented
 + (instancetype)readEntryForRelation:(SKYRelation *)relation;
+/// Undocumented
 + (instancetype)readEntryForRole:(SKYRole *)role;
+/// Undocumented
 + (instancetype)readEntryForPublic;
 
+/// Undocumented
 + (instancetype)writeEntryForUser:(SKYUser *)user;
+/// Undocumented
 + (instancetype)writeEntryForUserID:(NSString *)user;
+/// Undocumented
 + (instancetype)writeEntryForRelation:(SKYRelation *)relation;
+/// Undocumented
 + (instancetype)writeEntryForRole:(SKYRole *)role;
+/// Undocumented
 + (instancetype)writeEntryForPublic;
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 // avoid the following initializers, it is here because of deserializer
+/// Undocumented
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
                              userID:(NSString *)userID NS_DESIGNATED_INITIALIZER;
+/// Undocumented
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
                            relation:(SKYRelation *)relation NS_DESIGNATED_INITIALIZER;
+/// Undocumented
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
                                role:(SKYRole *)role NS_DESIGNATED_INITIALIZER;
+/// Undocumented
 - (instancetype)initWithPublicAccessLevel:(SKYAccessControlEntryLevel)accessLevel
     NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 @property (nonatomic, readonly, assign) SKYAccessControlEntryType entryType;
+/// Undocumented
 @property (nonatomic, readonly, assign) SKYAccessControlEntryLevel accessLevel;
+/// Undocumented
 @property (nonatomic, readonly) SKYRelation *relation;
+/// Undocumented
 @property (nonatomic, readonly) SKYRole *role;
+/// Undocumented
 @property (nonatomic, copy, readonly) NSString *userID;
 
 @end

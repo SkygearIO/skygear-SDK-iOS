@@ -23,6 +23,7 @@
 @class SKYRecord;
 @class SKYRecordID;
 
+/// Undocumented
 @protocol SKYRecordStorageBackingStore <NSObject>
 
 /**

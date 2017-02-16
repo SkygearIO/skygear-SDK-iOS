@@ -21,8 +21,10 @@
 
 #import "SKYDatabase.h"
 
+/// Undocumented
 @interface SKYDatabaseOperation : SKYOperation
 
+/// Undocumented
 @property (strong, nonatomic) SKYDatabase *database;
 
 @end

@@ -19,10 +19,13 @@
 
 #import "SKYUser.h"
 
+/// Undocumented
 @interface SKYUserDeserializer : NSObject
 
+/// Undocumented
 + (instancetype)deserializer;
 
+/// Undocumented
 - (SKYUser *)userWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -19,9 +19,12 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYPubsub : NSObject
 
+/// Undocumented
 @property (nonatomic, copy) NSURL *endPointAddress;
+/// Undocumented
 @property (nonatomic, copy) NSString *APIKey;
 
 /**

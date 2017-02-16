@@ -20,19 +20,29 @@
 #import "SKYError.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYErrorCreator : NSObject
 
+/// Undocumented
 @property (nonatomic, readwrite, copy) NSString *errorDomain;
+/// Undocumented
 @property (nonatomic, readonly) NSDictionary *defaultUserInfo;
 
+/// Undocumented
 - (instancetype)initWithDefaultErrorDomain:(NSString *)errorDomain NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 - (void)setDefaultUserInfoObject:(id)obj forKey:(NSString *)key;
 
+/// Undocumented
 - (NSError *)errorWithCode:(SKYErrorCode)code;
+/// Undocumented
 - (NSError *)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
+/// Undocumented
 - (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *)userInfoToAdd;
+/// Undocumented
 - (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
+/// Undocumented
 - (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
 
 @end

@@ -22,29 +22,44 @@
 #import "SKYRecord.h"
 #import "SKYRecordID.h"
 
+/// Undocumented
 typedef enum SKYReferenceAction : NSInteger {
     SKYReferenceActionNone = 0,
     SKYReferenceActionDeleteSelf = 1,
 } SKYReferenceAction;
 
+/// Undocumented
 @interface SKYReference : NSObject <NSCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithRecord:(SKYRecord *)record;
+/// Undocumented
 - (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
+/// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID;
+/// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
+/// Undocumented
 + (instancetype)referenceWithRecord:(SKYRecord *)record;
+/// Undocumented
 + (instancetype)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
+/// Undocumented
 + (instancetype)referenceWithRecordID:(SKYRecordID *)recordID;
+/// Undocumented
 + (instancetype)referenceWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
+/// Undocumented
 - (BOOL)isEqualToReference:(SKYReference *)reference;
 
+/// Undocumented
 @property (nonatomic, readonly, assign) SKYReferenceAction referenceAction;
+/// Undocumented
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
 
+/// Undocumented
 @property (strong, nonatomic, readonly) SKYRecord *record;
 
 @end

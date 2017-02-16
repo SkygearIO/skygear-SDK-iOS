@@ -19,13 +19,18 @@
 
 #import "SKYOperation.h"
 
+/// Undocumented
 @class SKYUser;
 
+/// Undocumented
 @interface SKYUpdateUserOperation : SKYOperation
 
+/// Undocumented
 @property (nonatomic, readonly, strong) SKYUser *user;
+/// Undocumented
 @property (nonatomic, copy) void (^updateUserCompletionBlock)(SKYUser *user, NSError *error);
 
+/// Undocumented
 + (instancetype)operationWithUser:(SKYUser *)user;
 
 @end

@@ -19,21 +19,29 @@
 
 #import "SKYDatabaseOperation.h"
 
+/// Undocumented
 @interface SKYFetchSubscriptionsOperation : SKYDatabaseOperation
 
+/// Undocumented
 - (instancetype)initWithDeviceID:(NSString *)deviceID
                  subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 + (instancetype)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
+/// Undocumented
 + (instancetype)operationWithDeviceID:(NSString *)deviceID
                       subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
 
+/// Undocumented
 @property (nonatomic, copy) NSString *deviceID;
 
+/// Undocumented
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionIDs;
 
+/// Undocumented
 @property (nonatomic, copy) void (^perSubscriptionCompletionBlock)
     (SKYSubscription *subscription, NSString *subscriptionID, NSError *error);
+/// Undocumented
 @property (nonatomic, copy) void (^fetchSubscriptionsCompletionBlock)
     (NSDictionary *subscriptionsBySubscriptionID, NSError *operationError);
 

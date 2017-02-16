@@ -27,21 +27,31 @@
 @class SKYSubscription;
 @class SKYContainer;
 
+/// Undocumented
 typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 
+/// Undocumented
 @interface SKYDatabase : NSObject
 
+/// Undocumented
 @property (nonatomic, strong) NSString *databaseID;
+/// Undocumented
 @property (nonatomic, strong, readonly) SKYContainer *container;
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Undocumented
 - (void)addOperation:(SKYDatabaseOperation *)operation;
+/// Undocumented
 - (void)executeOperation:(SKYDatabaseOperation *)operation;
+/// Undocumented
 - (void)commit;
 
+/// Undocumented
 - (void)performQuery:(SKYQuery *)query
     completionHandler:(void (^)(NSArray *results, NSError *error))completionHandler;
+/// Undocumented
 - (void)performCachedQuery:(SKYQuery *)query
          completionHandler:
              (void (^)(NSArray *results, BOOL pending, NSError *error))completionHandler;
@@ -188,13 +198,17 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
                      completionHandler:
                          (void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler;
 
+/// Undocumented
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *subscriptions,
                                                              NSError *error))completionHandler;
+/// Undocumented
 - (void)fetchSubscriptionWithID:(NSString *)subscriptionID
               completionHandler:
                   (void (^)(SKYSubscription *subscription, NSError *error))completionHandler;
+/// Undocumented
 - (void)saveSubscription:(SKYSubscription *)subscription
        completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler;
+/// Undocumented
 - (void)deleteSubscriptionWithID:(NSString *)subscriptionID
                completionHandler:
                    (void (^)(NSString *subscriptionID, NSError *error))completionHandler;
@@ -203,12 +217,14 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 
 @interface SKYDatabase (SKYUser)
 
+/// Undocumented
 @property (nonatomic, readonly) SKYUser *currentUser;
 
 @end
 
 @interface SKYDatabase (SKYNewsfeed)
 
+/// Undocumented
 - (void)fetchUserNewsFeed:(NSString *)newsfeedID
         completionHandler:(void (^)(SKYRecord *results, NSError *error))completionHandler;
 

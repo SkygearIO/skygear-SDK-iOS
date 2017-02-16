@@ -22,6 +22,7 @@
 @class SKYRecord;
 @class SKYRecordID;
 
+/// Undocumented
 typedef enum : NSInteger {
     /**
      SKYRecordStorage does not automatically resolve conflict,
@@ -49,25 +50,35 @@ typedef enum : NSInteger {
     SKYRecordResolveByUpdatingDeltaIfNotModified,
 } SKYRecordResolveMethod;
 
+/// Undocumented
 typedef enum : NSInteger {
     SKYRecordChangeSave,
     SKYRecordChangeDelete,
 } SKYRecordChangeAction;
 
+/// Undocumented
 @interface SKYRecordChange : NSObject <NSCoding>
 
+/// Undocumented
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *attributesToSave;
+/// Undocumented
 @property (nonatomic, readonly) SKYRecordChangeAction action;
+/// Undocumented
 @property (nonatomic, readonly, getter=isFinished) BOOL finished;
+/// Undocumented
 @property (nonatomic, readonly) SKYRecordResolveMethod resolveMethod;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSError *error;
 
+/// Undocumented
 - (instancetype)initWithRecord:(SKYRecord *)record
                         action:(SKYRecordChangeAction)action
                  resolveMethod:(SKYRecordResolveMethod)resolveMethod
               attributesToSave:(NSDictionary *)attributesToSave;
 
+/// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID
                           action:(SKYRecordChangeAction)action
                    resolveMethod:(SKYRecordResolveMethod)resolveMethod

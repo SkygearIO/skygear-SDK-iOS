@@ -21,10 +21,13 @@
 
 #import "SKYAccessControl.h"
 
+/// Undocumented
 @interface SKYAccessControlDeserializer : NSObject
 
+/// Undocumented
 + (instancetype)deserializer;
 
+/// Undocumented
 - (SKYAccessControl *)accessControlWithArray:(NSArray *)array;
 
 @end

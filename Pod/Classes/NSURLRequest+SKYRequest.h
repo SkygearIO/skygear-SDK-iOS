@@ -20,12 +20,17 @@
 #import "SKYRequest.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 extern NSString *const SKYRequestHeaderAPIKey;
+/// Undocumented
 extern NSString *const SKYRequestHeaderAccessTokenKey;
 
+/// Undocumented
 @interface NSURLRequest (SKYRequest)
 
+/// Undocumented
 + (NSMutableURLRequest *)mutableRequestWithSKYRequest:(SKYRequest *)request;
+/// Undocumented
 + (NSURLRequest *)requestWithSKYRequest:(SKYRequest *)request;
 
 @end

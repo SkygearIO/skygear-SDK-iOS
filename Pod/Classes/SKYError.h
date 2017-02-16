@@ -17,13 +17,20 @@
 //  limitations under the License.
 //
 
+/// Undocumented
 extern NSString *const SKYErrorMessageKey;
+/// Undocumented
 extern NSString *const SKYErrorNameKey;
+/// Undocumented
 extern NSString *const SKYPartialErrorsByItemIDKey;
+/// Undocumented
 extern NSString *const SKYPartialEmailsNotFoundKey;
+/// Undocumented
 extern NSString *const SKYOperationErrorDomain;
+/// Undocumented
 extern NSString *const SKYOperationErrorHTTPStatusCodeKey;
 
+/// Undocumented
 typedef enum : NSInteger {
     SKYErrorUnknownError = 1,
     SKYErrorPartialFailure = 116,

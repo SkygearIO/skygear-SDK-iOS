@@ -19,7 +19,9 @@
 
 #import "SKYOperation.h"
 
+/// Undocumented
 @class SKYUser;
+/// Undocumented
 @class SKYAccessToken;
 
 /**

@@ -22,15 +22,21 @@
 #import "SKYAPSNotificationInfo.h"
 #import "SKYGCMNotificationInfo.h"
 
+/// Undocumented
 @interface SKYNotificationInfo : NSObject <NSCopying>
 
+/// Undocumented
 + (instancetype)notificationInfo;
 
+/// Undocumented
 @property (nonatomic, copy) SKYAPSNotificationInfo *apsNotificationInfo;
+/// Undocumented
 @property (nonatomic, copy) SKYGCMNotificationInfo *gcmNotificationInfo;
 
+/// Undocumented
 @property (nonatomic, copy) NSArray *desiredKeys;
 
+/// Undocumented
 - (BOOL)isEqualToNotificationInfo:(SKYNotificationInfo *)notificationInfo;
 
 @end

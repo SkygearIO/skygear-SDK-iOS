@@ -19,36 +19,58 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYGCMInnerNotificationInfo : NSObject <NSCopying>
 
+/// Undocumented
 @property (nonatomic, copy) NSString *title;
+/// Undocumented
 @property (nonatomic, copy) NSString *body;
+/// Undocumented
 @property (nonatomic, copy) NSString *icon;
+/// Undocumented
 @property (nonatomic, copy) NSString *sound;
+/// Undocumented
 @property (nonatomic, copy) NSString *tag;
+/// Undocumented
 @property (nonatomic, copy) NSString *clickAction;
+/// Undocumented
 @property (nonatomic, copy) NSString *bodyLocKey;
+/// Undocumented
 @property (nonatomic, copy) NSArray *bodyLocArgs;
+/// Undocumented
 @property (nonatomic, copy) NSString *titleLocKey;
+/// Undocumented
 @property (nonatomic, copy) NSArray *titleLocArgs;
 
+/// Undocumented
 - (BOOL)isEqualToNotificationInfo:(SKYGCMInnerNotificationInfo *)notificationInfo;
 
 @end
 
+/// Undocumented
 @interface SKYGCMNotificationInfo : NSObject <NSCopying>
 
+/// Undocumented
 + (instancetype)notificationInfo;
 
+/// Undocumented
 @property (nonatomic, copy) NSString *collapseKey;
+/// Undocumented
 @property (nonatomic, assign) NSUInteger priority;
+/// Undocumented
 @property (nonatomic, assign) BOOL contentAvailable;
+/// Undocumented
 @property (nonatomic, assign) BOOL delayWhileIdle;
+/// Undocumented
 @property (nonatomic, assign) NSUInteger timeToLive;
+/// Undocumented
 @property (nonatomic, copy) NSString *restrictedPackageName;
 
+/// Undocumented
 @property (nonatomic, copy) SKYGCMInnerNotificationInfo *notification;
 
+/// Undocumented
 - (BOOL)isEqualToNotificationInfo:(SKYGCMNotificationInfo *)notificationInfo;
 
 @end

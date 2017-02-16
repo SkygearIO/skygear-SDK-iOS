@@ -21,14 +21,21 @@
 
 #import "SKYAccessToken.h"
 
+/// Undocumented
 @interface SKYLoginUserOperation : SKYOperation
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *username;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *email;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *password;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *provider;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *authenticationData;
 
+/// Undocumented
 @property (nonatomic, copy) void (^loginCompletionBlock)
     (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 

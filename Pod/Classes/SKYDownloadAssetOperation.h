@@ -21,12 +21,17 @@
 
 #import "SKYAsset.h"
 
+/// Undocumented
 @interface SKYDownloadAssetOperation : SKYOperation
 
+/// Undocumented
 - (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
+/// Undocumented
 + (instancetype)operationWithAsset:(SKYAsset *)asset;
 
+/// Undocumented
 @property (nonatomic, copy) void (^downloadAssetProgressBlock)(SKYAsset *asset, double progress);
+/// Undocumented
 @property (nonatomic, copy) void (^downloadAssetCompletionBlock)
     (SKYAsset *asset, NSData *data, NSError *operationError);
 

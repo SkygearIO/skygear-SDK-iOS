@@ -19,16 +19,23 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYQuery : NSObject <NSSecureCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                          predicate:(NSPredicate *)predicate NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 + (instancetype)queryWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSPredicate *predicate;
+/// Undocumented
 @property (nonatomic, copy) NSArray *sortDescriptors;
 
 /**
