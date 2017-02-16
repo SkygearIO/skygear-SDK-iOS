@@ -18,6 +18,7 @@
 //
 
 #import "SKYQueryOperation+QueryUser.h"
+#import "SKYRelationPredicate.h"
 #import "SKYUserDiscoverPredicate.h"
 
 @implementation SKYQueryOperation (QueryUser)

@@ -17,7 +17,10 @@
 //  limitations under the License.
 //
 
-#import <SKYKit/SKYKit.h>
+#import "SKYOperation.h"
+#import "SKYQueryOperation.h"
+
+@class SKYRelation;
 
 @interface SKYQueryOperation (QueryUser)
 

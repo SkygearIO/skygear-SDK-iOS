@@ -19,6 +19,7 @@
 
 #import "SKYUpdateUserOperation.h"
 #import "SKYOperationSubclass.h"
+#import "SKYUserDeserializer.h"
 
 @interface SKYUpdateUserOperation ()
 

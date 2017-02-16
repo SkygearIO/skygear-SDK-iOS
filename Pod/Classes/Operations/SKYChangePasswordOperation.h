@@ -17,7 +17,10 @@
 //  limitations under the License.
 //
 
-#import <SKYKit/SKYKit.h>
+#import "SKYOperation.h"
+
+@class SKYUser;
+@class SKYAccessToken;
 
 @interface SKYChangePasswordOperation : SKYOperation
 
