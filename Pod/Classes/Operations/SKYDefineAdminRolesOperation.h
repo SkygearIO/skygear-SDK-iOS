@@ -17,7 +17,9 @@
 //  limitations under the License.
 //
 
-#import <SKYKit/SKYKit.h>
+#import "SKYOperation.h"
+
+@class SKYRole;
 
 @interface SKYDefineAdminRolesOperation : SKYOperation
 
