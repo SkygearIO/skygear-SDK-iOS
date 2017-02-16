@@ -1,3 +1,9 @@
+## 0.22.1 (2017-02-16)
+
+### Bug Fixes
+
+- Fix parsing User ID ACL without `relation: $direct`
+
 ## 0.22.0 (2017-02-10)
 
 ### Features
