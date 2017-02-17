@@ -26,6 +26,7 @@
 #import "SKYRecordStorageMemoryStore.h"
 #import "SKYRecordStorageSqliteStore.h"
 #import "SKYRecordSynchronizer.h"
+#import "SKYRecord_Private.h"
 
 @interface SKYRecordStorageBackingStoreSpecTempFileProvider : NSObject
 
