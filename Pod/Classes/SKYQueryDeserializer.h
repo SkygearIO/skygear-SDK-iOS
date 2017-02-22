@@ -20,13 +20,19 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYQueryDeserializer : NSObject
 
+/// Undocumented
 + (instancetype)deserializer;
 
+/// Undocumented
 - (SKYQuery *)queryWithDictionary:(NSDictionary *)dictionary;
+/// Undocumented
 - (NSExpression *)expressionWithObject:(id)obj;
+/// Undocumented
 - (NSPredicate *)predicateWithArray:(NSArray *)array;
+/// Undocumented
 - (NSArray *)sortDescriptorsWithArray:(NSArray *)array;
 
 @end

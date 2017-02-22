@@ -21,10 +21,13 @@
 
 #import "SKYSubscription.h"
 
+/// Undocumented
 @interface SKYSubscriptionSerializer : NSObject
 
+/// Undocumented
 + (instancetype)serializer;
 
+/// Undocumented
 - (NSDictionary *)dictionaryWithSubscription:(SKYSubscription *)subscription;
 
 @end

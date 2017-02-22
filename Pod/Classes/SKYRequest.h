@@ -20,19 +20,26 @@
 #import "SKYAccessToken.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRequest : NSObject
 
+/// Undocumented
 @property (nonatomic, copy) NSString *action;
+/// Undocumented
 @property (nonatomic, copy) NSDictionary *payload;
+/// Undocumented
 @property (nonatomic, strong) SKYAccessToken *accessToken;
 
 /**
  Sets or returns the API key to be associated with the request.
  */
 @property (nonatomic, strong) NSString *APIKey;
+/// Undocumented
 @property (nonatomic, strong) NSURL *baseURL;
+/// Undocumented
 @property (nonatomic, readonly) NSString *requestPath;
 
+/// Undocumented
 - (instancetype)initWithAction:(NSString *)action payload:(NSDictionary *)payload;
 
 @end

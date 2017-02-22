@@ -19,11 +19,16 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface NSError (SKYError)
 
+/// Undocumented
 - (NSString *)SKYErrorMessage __deprecated;
+/// Undocumented
 - (NSString *)SKYErrorType __deprecated;
+/// Undocumented
 - (NSInteger)SKYErrorCode __deprecated;
+/// Undocumented
 - (NSDictionary *)SKYErrorInfo __deprecated;
 
 @end

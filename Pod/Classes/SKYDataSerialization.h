@@ -21,22 +21,35 @@
 
 #import "SKYAsset.h"
 
+/// Undocumented
 extern NSString *const SKYDataSerializationCustomTypeKey;
+/// Undocumented
 extern NSString *const SKYDataSerializationReferenceType;
+/// Undocumented
 extern NSString *const SKYDataSerializationDateType;
+/// Undocumented
 extern NSString *const SKYDataSerializationRelationType;
+/// Undocumented
 extern NSString *const SKYDataSerializationSequenceType;
 
+/// Undocumented
 NSString *remoteFunctionName(NSString *localFunctionName);
+/// Undocumented
 NSString *localFunctionName(NSString *remoteFunctionName);
 
+/// Undocumented
 @interface SKYDataSerialization : NSObject
 
+/// Undocumented
 + (NSDate *)dateFromString:(NSString *)dateStr;
+/// Undocumented
 + (NSString *)stringFromDate:(NSDate *)date;
+/// Undocumented
 + (id)deserializeObjectWithValue:(id)value;
+/// Undocumented
 + (SKYAsset *)deserializeAssetWithDictionary:(NSDictionary *)data;
 
+/// Undocumented
 + (id)serializeObject:(id)obj;
 
 @end

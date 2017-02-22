@@ -19,19 +19,26 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @class CLLocation;
 
+/// Undocumented
 @interface SKYLocationSortDescriptor : NSSortDescriptor <NSSecureCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithKey:(NSString *)key
            relativeLocation:(CLLocation *)relativeLocation
                   ascending:(BOOL)ascending NS_DESIGNATED_INITIALIZER;
+/// Undocumented
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+/// Undocumented
 + (instancetype)locationSortDescriptorWithKey:(NSString *)key
                              relativeLocation:(CLLocation *)relativeLocation
                                     ascending:(BOOL)ascending;
 
+/// Undocumented
 @property (nonatomic, copy, readonly) CLLocation *relativeLocation;
 
 @end

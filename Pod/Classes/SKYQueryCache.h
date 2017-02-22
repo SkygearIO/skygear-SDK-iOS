@@ -21,8 +21,10 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYQueryCache : NSObject
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
@@ -31,6 +33,7 @@
  */
 - (instancetype)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 @property (nonatomic, readonly) SKYDatabase *database;
 
 /**

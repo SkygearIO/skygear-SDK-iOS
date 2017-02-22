@@ -24,43 +24,70 @@
 @class SKYUser;
 @class SKYRole;
 
+/// Undocumented
 @interface SKYAccessControl : NSObject <NSCoding, NSCopying>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - set no access
+/// Undocumented
 - (void)setNoAccessForUser:(SKYUser *)user;
+/// Undocumented
 - (void)setNoAccessForUserID:(NSString *)userID;
+/// Undocumented
 - (void)setNoAccessForRelation:(SKYRelation *)relation;
+/// Undocumented
 - (void)setNoAccessForRole:(SKYRole *)role;
+/// Undocumented
 - (void)setNoAccessForPublic;
 
 #pragma mark - set read only
+/// Undocumented
 - (void)setReadOnlyForUser:(SKYUser *)user;
+/// Undocumented
 - (void)setReadOnlyForUserID:(NSString *)userID;
+/// Undocumented
 - (void)setReadOnlyForRelation:(SKYRelation *)relation;
+/// Undocumented
 - (void)setReadOnlyForRole:(SKYRole *)role;
+/// Undocumented
 - (void)setReadOnlyForPublic;
 
 #pragma mark - set read write access
+/// Undocumented
 - (void)setReadWriteAccessForUser:(SKYUser *)user;
+/// Undocumented
 - (void)setReadWriteAccessForUserID:(NSString *)userID;
+/// Undocumented
 - (void)setReadWriteAccessForRelation:(SKYRelation *)relation;
+/// Undocumented
 - (void)setReadWriteAccessForRole:(SKYRole *)role;
+/// Undocumented
 - (void)setReadWriteAccessForPublic;
 
 #pragma mark - has read access checking
+/// Undocumented
 - (BOOL)hasReadAccessForUser:(SKYUser *)user;
+/// Undocumented
 - (BOOL)hasReadAccessForUserID:(NSString *)userID;
+/// Undocumented
 - (BOOL)hasReadAccessForRelation:(SKYRelation *)relation;
+/// Undocumented
 - (BOOL)hasReadAccessForRole:(SKYRole *)role;
+/// Undocumented
 - (BOOL)hasReadAccessForPublic;
 
 #pragma mark - has write access checking
+/// Undocumented
 - (BOOL)hasWriteAccessForUser:(SKYUser *)user;
+/// Undocumented
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID;
+/// Undocumented
 - (BOOL)hasWriteAccessForRelation:(SKYRelation *)relation;
+/// Undocumented
 - (BOOL)hasWriteAccessForRole:(SKYRole *)role;
+/// Undocumented
 - (BOOL)hasWriteAccessForPublic;
 
 @end

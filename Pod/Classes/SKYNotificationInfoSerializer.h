@@ -21,10 +21,13 @@
 
 #import "SKYNotificationInfo.h"
 
+/// Undocumented
 @interface SKYNotificationInfoSerializer : NSObject
 
+/// Undocumented
 + (instancetype)serializer;
 
+/// Undocumented
 - (NSDictionary *)dictionaryWithNotificationInfo:(SKYNotificationInfo *)notificationInfo;
 
 @end

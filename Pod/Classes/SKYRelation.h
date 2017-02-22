@@ -19,25 +19,35 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 typedef enum : NSInteger {
     SKYRelationDirectionOutward,
     SKYRelationDirectionInward,
     SKYRelationDirectionMutual
 } SKYRelationDirection;
 
+/// Undocumented
 @interface SKYRelation : NSObject <NSCoding>
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
+/// Undocumented
 + (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction;
 
+/// Undocumented
 + (instancetype)friendRelation;
+/// Undocumented
 + (instancetype)followingRelation;
+/// Undocumented
 + (instancetype)followedRelation;
 
+/// Undocumented
 - (BOOL)isEqualToRelation:(SKYRelation *)relation;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *name;
+/// Undocumented
 @property (nonatomic, readonly) SKYRelationDirection direction;
 
 @end

@@ -19,14 +19,21 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYAsset : NSObject
 
+/// Undocumented
 + (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;
+/// Undocumented
 + (instancetype)assetWithName:(NSString *)name data:(NSData *)data;
+/// Undocumented
 + (instancetype)assetWithFileURL:(NSURL *)fileURL;
+/// Undocumented
 + (instancetype)assetWithData:(NSData *)data;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *name;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSURL *url;
 
 /**
@@ -37,6 +44,7 @@
  */
 @property (nonatomic, readwrite, copy) NSString *mimeType;
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

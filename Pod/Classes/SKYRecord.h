@@ -22,15 +22,21 @@
 #import "SKYAccessControl.h"
 #import "SKYRecordID.h"
 
+/// Undocumented
 extern NSString *const SKYRecordTypeUserRecord;
 
+/// Undocumented
 @interface SKYRecord : NSObject <NSCopying>
 
+/// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType;
+/// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName;
+/// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType
                                 name:(NSString *)recordName
                                 data:(NSDictionary *)data;
+/// Undocumented
 + (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data;
 
 /**
@@ -41,36 +47,57 @@ extern NSString *const SKYRecordTypeUserRecord;
  @return An instance of SKYRecord.
  */
 - (instancetype)init NS_UNAVAILABLE;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                           recordID:(SKYRecordID *)recordId __deprecated;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                           recordID:(SKYRecordID *)recordId
                               data:(NSDictionary *)data __deprecated;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                               name:(NSString *)recordName
                               data:(NSDictionary *)data;
+/// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId
                             data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 - (id)objectForKey:(id)key;
+/// Undocumented
 - (id)objectForKeyedSubscript:(id)key;
 
+/// Undocumented
 - (void)setObject:(id)object forKey:(id<NSCopying>)key;
+/// Undocumented
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
 
+/// Undocumented
 - (SKYRecord *)referencedRecordForKey:(id)key;
 
+/// Undocumented
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *ownerUserRecordID;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSDate *creationDate;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *creatorUserRecordID;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSDate *modificationDate;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *lastModifiedUserRecordID;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordChangeTag;
+/// Undocumented
 @property (strong, nonatomic, readonly) SKYAccessControl *accessControl;
+/// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 
 /**

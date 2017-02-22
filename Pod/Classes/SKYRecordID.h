@@ -19,27 +19,39 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRecordID : NSObject <NSCopying, NSSecureCoding>
 
 /**
  Instantiates an instance of SKYRecordID with a random record name.
  */
 - (instancetype)init __deprecated;
+/// Undocumented
 - (instancetype)initWithRecordName:(NSString *)recordName __deprecated;
 
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)type;
+/// Undocumented
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
+/// Undocumented
 - (instancetype)initWithRecordType:(NSString *)type
                               name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
 
+/// Undocumented
 + (instancetype)recordIDWithRecordType:(NSString *)type;
+/// Undocumented
 + (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
+/// Undocumented
 + (instancetype)recordIDWithRecordType:(NSString *)type name:(NSString *)recordName;
 
+/// Undocumented
 - (BOOL)isEqualToRecordID:(SKYRecordID *)recordID;
 
+/// Undocumented
 @property (nonatomic, readonly, strong) NSString *recordType;
+/// Undocumented
 @property (nonatomic, readonly, strong) NSString *recordName;
+/// Undocumented
 @property (nonatomic, readonly, strong) NSString *canonicalString;
 
 @end

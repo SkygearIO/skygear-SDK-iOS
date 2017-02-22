@@ -75,6 +75,7 @@
           saveChanges:(NSArray *)changes
     completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
 
+/// Undocumented
 - (BOOL)isProcessingChange:(SKYRecordChange *)change storage:(SKYRecordStorage *)storage;
 
 @end

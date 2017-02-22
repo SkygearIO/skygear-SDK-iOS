@@ -19,6 +19,7 @@
 
 #import "SKYQuery.h"
 
+/// Undocumented
 @interface SKYQuery (Caching)
 
 /**

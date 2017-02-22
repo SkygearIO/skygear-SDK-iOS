@@ -25,12 +25,12 @@ PODS:
   - OHHTTPStubs/NSURLSession (4.6.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (4.6.0)
-  - SKYKit (0.21.0):
-    - SKYKit/Core (= 0.21.0)
-  - SKYKit/Core (0.21.0):
+  - SKYKit (0.22.1):
+    - SKYKit/Core (= 0.22.1)
+  - SKYKit/Core (0.22.1):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
-  - SKYKit/Facebook (0.21.0):
+  - SKYKit/Facebook (0.22.1):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
   - SocketRocket (0.5.1)
@@ -55,7 +55,7 @@ SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 189ca397d45c08d9559d744c2ac0640a13b41072
+  SKYKit: 8bc0f984c4e99f03dc9f0881bd431c14f4aeeafe
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 

@@ -19,7 +19,11 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionIDKey;
+/// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionTypeKey;
+/// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionTypeQuery;
+/// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionTypeError;

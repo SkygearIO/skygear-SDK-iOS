@@ -19,12 +19,16 @@
 
 #import <Foundation/Foundation.h>
 
+/// Undocumented
 @interface SKYRole : NSObject <NSCoding>
 
+/// Undocumented
 @property (strong, nonatomic, readonly) NSString *name;
 
+/// Undocumented
 + (instancetype)roleWithName:(NSString *)name;
 
+/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
