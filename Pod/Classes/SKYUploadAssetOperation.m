@@ -137,6 +137,8 @@
     NSString *name = rawAsset[@"$name"];
     if (name.length) {
         _asset.name = name;
+        _asset.mimeType = rawAsset[@"$content_type"];
+        _asset.url = rawAsset[@"$url"];
     } else {
         error = [self.errorCreator
             errorWithCode:SKYErrorInvalidData

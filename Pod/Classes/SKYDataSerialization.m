@@ -198,6 +198,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 {
     NSString *name = data[@"$name"];
     NSString *rawURL = data[@"$url"];
+    NSString *mimeType = data[@"$content_type"];
 
     NSURL *url = nil;
     if (name.length && rawURL.length) {
@@ -206,7 +207,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         return nil;
     }
 
-    return [SKYAsset assetWithName:name url:url];
+    SKYAsset *asset = [SKYAsset assetWithName:name url:url];
+    asset.mimeType = mimeType;
+    return asset;
 }
 
 + (CLLocation *)deserializeLocationWithDictionary:(NSDictionary *)data
