@@ -263,18 +263,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
             @"$id" : [(SKYReference *)obj recordID].canonicalString,
         };
     } else if ([obj isKindOfClass:[SKYAsset class]]) {
-        data = @{
-            SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType,
-            @"$name" : [obj name]
-        };
-
-        NSURL *assetURL = [obj url];
-        if (assetURL != nil) {
-            NSMutableDictionary *mutableData = [data mutableCopy];
-            [mutableData setObject:[assetURL absoluteString] forKey:@"$url"];
-
-            data = [mutableData copy];
-        }
+        data = [SKYDataSerialization serializeAsset:obj];
     } else if ([obj isKindOfClass:[CLLocation class]]) {
         CLLocationCoordinate2D coordinate = [obj coordinate];
         data = @{
@@ -283,36 +272,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
             @"$lat" : @(coordinate.latitude),
         };
     } else if ([obj isKindOfClass:[SKYRelation class]]) {
-        SKYRelation *relation = (SKYRelation *)obj;
-        NSString *name = relation.name;
-        if ([name isEqualToString:@"follow"]) {
-            name = @"_follow";
-        } else if ([name isEqualToString:@"friend"]) {
-            name = @"_friend";
-        }
-
-        NSString *direction;
-        switch (relation.direction) {
-            case SKYRelationDirectionInward:
-                direction = @"inward";
-                break;
-            case SKYRelationDirectionOutward:
-                direction = @"outward";
-                break;
-            case SKYRelationDirectionMutual:
-                direction = @"mutual";
-                break;
-            default:
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                               reason:@"Unexpected relation direction."
-                                             userInfo:nil];
-        }
-
-        data = @{
-            SKYDataSerializationCustomTypeKey : SKYDataSerializationRelationType,
-            @"$name" : name,
-            @"$direction" : direction,
-        };
+        data = [SKYDataSerialization serializeRelation:obj];
     } else if ([obj isKindOfClass:[SKYSequence class]]) {
         data = @{ @"$type" : @"seq" };
     } else if ([obj isKindOfClass:[SKYUnknownValue class]]) {
@@ -351,6 +311,65 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else {
         return [self serializeSimpleObject:obj];
     }
+}
+
+#pragma mark - Serialise simple object
+
++ (NSDictionary *)serializeAsset:(SKYAsset *)obj
+{
+    NSDictionary *data = @{
+        SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType,
+        @"$name" : [obj name]
+    };
+
+    NSURL *assetURL = [obj url];
+    if (assetURL != nil) {
+        NSMutableDictionary *mutableData = [data mutableCopy];
+        [mutableData setObject:[assetURL absoluteString] forKey:@"$url"];
+
+        data = [mutableData copy];
+    }
+    NSString *mimeType = [(SKYAsset *)obj mimeType];
+    if (mimeType != nil) {
+        NSMutableDictionary *dict = [data mutableCopy];
+        [dict setObject:mimeType forKey:@"$content_type"];
+        data = [dict copy];
+    }
+    return data;
+}
+
++ (NSDictionary *)serializeRelation:(SKYRelation *)relation
+{
+    NSString *name = relation.name;
+    if ([name isEqualToString:@"follow"]) {
+        name = @"_follow";
+    } else if ([name isEqualToString:@"friend"]) {
+        name = @"_friend";
+    }
+
+    NSString *direction;
+    switch (relation.direction) {
+        case SKYRelationDirectionInward:
+            direction = @"inward";
+            break;
+        case SKYRelationDirectionOutward:
+            direction = @"outward";
+            break;
+        case SKYRelationDirectionMutual:
+            direction = @"mutual";
+            break;
+        default:
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Unexpected relation direction."
+                                         userInfo:nil];
+    }
+
+    NSDictionary *data = @{
+        SKYDataSerializationCustomTypeKey : SKYDataSerializationRelationType,
+        @"$name" : name,
+        @"$direction" : direction,
+    };
+    return data;
 }
 
 @end
