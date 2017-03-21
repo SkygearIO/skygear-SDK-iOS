@@ -122,10 +122,12 @@ SpecBegin(SKYRecordDeserializer)
                 @"$type" : @"asset",
                 @"$name" : @"some-asset",
                 @"$url" : @"http://cit.test/files/some-asset",
+                @"$content_type" : @"image/png",
             };
             SKYRecord *record = [deserializer recordWithDictionary:data];
             SKYAsset *asset = record[@"asset"];
             expect(asset.name).to.equal(@"some-asset");
+            expect(asset.mimeType).to.equal(@"image/png");
             expect(asset.url).to.equal([NSURL URLWithString:@"http://cit.test/files/some-asset"]);
         });
 

@@ -77,7 +77,8 @@ SpecBegin(SKYGetAssetPostRequestOperation)
                             @"$name" : @"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt",
                             @"$type" : @"asset",
                             @"$url" : @"http://skygear.dev/files/"
-                                      @"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt"
+                                      @"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt",
+                            @"$content_type" : @"text/plain"
                         },
                         @"post-request" : @{
                             @"action" : @"http://asset.skygear.dev/dev/"

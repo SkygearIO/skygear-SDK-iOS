@@ -68,6 +68,8 @@
     NSDictionary *result = response.responseDictionary[@"result"];
 
     [self.asset setName:result[@"asset"][@"$name"]];
+    [self.asset setUrl:result[@"asset"][@"$url"]];
+    [self.asset setMimeType:result[@"asset"][@"$content_type"]];
 
     NSDictionary *rawPostRequest = result[@"post-request"];
     NSDictionary *extraFields = rawPostRequest[@"extra-fields"];
