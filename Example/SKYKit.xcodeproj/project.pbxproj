@@ -98,6 +98,7 @@
 		CD98A8A41A9F28030056420F /* SKYRecordDeserializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A31A9F28030056420F /* SKYRecordDeserializerTests.m */; };
 		CD98A8A61A9F34390056420F /* SKYFetchRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD98A8A51A9F34390056420F /* SKYFetchRecordsOperationTests.m */; };
 		CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */; };
+		CF234C631E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF234C621E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m */; };
 		DF862921DB633F3364419993 /* Pods_Swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA35E28666BD02136512A2B5 /* Pods_Swift_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -208,6 +209,7 @@
 		CD98A8A31A9F28030056420F /* SKYRecordDeserializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordDeserializerTests.m; sourceTree = "<group>"; };
 		CD98A8A51A9F34390056420F /* SKYFetchRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYFetchRecordsOperationTests.m; sourceTree = "<group>"; };
 		CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYQuerySerializerTests.m; sourceTree = "<group>"; };
+		CF234C621E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineDefaultAccessOperationTests.m; sourceTree = "<group>"; };
 		DA35E28666BD02136512A2B5 /* Pods_Swift_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swift_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E14141B974E77B52FC7F22EF /* Pods-SKYKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SKYKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit.release.xcconfig"; sourceTree = "<group>"; };
 		E61967EA35930CACEBEC4FC6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */,
 				604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */,
 				60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */,
+				CF234C621E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m */,
 				CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */,
 				374575591B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m */,
 				37CDD6061B4C040F007B9FE1 /* SKYDownloadAssetOperationTests.m */,
@@ -949,6 +952,7 @@
 				3785584A1AE63FEC00685319 /* SKYSubscriptionSerializerTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* SKYModifyRecordsOperationTests.m in Sources */,
 				38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */,
+				CF234C631E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* SKYSignupUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* SKYRecordIDTests.m in Sources */,
 				372FD24E1AF79F59008128EC /* SKYHexer.m in Sources */,
