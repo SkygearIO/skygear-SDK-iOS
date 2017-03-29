@@ -84,9 +84,6 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 /// Undocumented
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
 
-/// Undocumented
-@property (nonatomic, strong) SKYAccessControl *defaultAccessControl;
-
 /**
  Returns the currently registered device ID.
  */

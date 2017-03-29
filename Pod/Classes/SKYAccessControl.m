@@ -36,44 +36,6 @@
     return [[self alloc] initWithEntries:entries];
 }
 
-+ (instancetype)defaultAccessControl
-{
-    static SKYAccessControlDeserializer *deserializer;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        deserializer = [SKYAccessControlDeserializer deserializer];
-    });
-
-    NSArray *aclData =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYAccessControlDefault"];
-
-    if (aclData) {
-        return [deserializer accessControlWithArray:aclData];
-    } else {
-        return [SKYAccessControl publicReadableAccessControl];
-    }
-}
-
-+ (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl
-{
-    static SKYAccessControlSerializer *serializer;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        serializer = [SKYAccessControlSerializer serializer];
-    });
-
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-
-    if (!defaultAccessControl) {
-        [userDefault removeObjectForKey:@"SKYAccessControlDefault"];
-    } else {
-        NSArray *aclData = [serializer arrayWithAccessControl:defaultAccessControl];
-        [userDefault setObject:aclData forKey:@"SKYAccessControlDefault"];
-    }
-
-    [userDefault synchronize];
-}
-
 - (instancetype)initWithPublicReadableAccessControl
 {
     return [self initWithEntries:@[ [SKYAccessControlEntry readEntryForPublic] ]];
