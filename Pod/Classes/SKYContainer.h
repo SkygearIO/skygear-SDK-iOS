@@ -309,4 +309,16 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)defineCreationAccessWithRecordType:(NSString *)recordType
                                      roles:(NSArray<SKYRole *> *)roles
                                 completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Set default access of a record type
+ *
+ *  @param recordType      Record type to set creation access
+ *  @param roles           Roles can create the record
+ *  @param completionBlock Completion Block
+ */
+- (void)defineDefaultAccessWithRecordType:(NSString *)recordType
+                                   access:(SKYAccessControl *)accessControl
+                               completion:(void (^)(NSError *error))completionBlock;
+
 @end
