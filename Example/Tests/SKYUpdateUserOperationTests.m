@@ -145,7 +145,8 @@ SpecBegin(SKYUpdateUserOperation)
 
             expect(^{
                 [operation prepareForRequest];
-            }).to.raise(NSInvalidArgumentException);
+            })
+                .to.raise(NSInvalidArgumentException);
         });
 
         afterEach(^{

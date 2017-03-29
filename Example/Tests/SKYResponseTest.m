@@ -28,7 +28,8 @@ SpecBegin(SKYResponse)
             expect(^{
                 SKYResponse *response = [[SKYResponse alloc] initWithDictionary:nil];
                 NSLog(@"%@", response);
-            }).to.raise(NSInvalidArgumentException);
+            })
+                .to.raise(NSInvalidArgumentException);
         });
 
         it(@"with dictionary", ^{
@@ -60,7 +61,8 @@ describe(@"set error", ^{
         [response foundResponseError:[error copy]];
         expect(^{
             [response foundResponseError:[error copy]];
-        }).to.raise(NSGenericException);
+        })
+            .to.raise(NSGenericException);
     });
 });
 
