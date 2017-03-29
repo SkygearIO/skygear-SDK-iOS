@@ -28,9 +28,9 @@ protocol RecordViewControllerDelegate {
 class RecordViewController: UITableViewController, RecordTypeViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     enum TableSection {
-        case RecordType
-        case Metadata
-        case Data
+        case recordType
+        case metadata
+        case data
     }
 
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -97,15 +97,15 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         get {
             var sections: [TableSection] = []
             if self.creatingNewRecord {
-                sections.append(.RecordType)
+                sections.append(.recordType)
             }
 
             if let record = self.record {
                 if record.dictionary.count > 0 || self.canAddRecordAttribute() {
-                    sections.append(.Data)
+                    sections.append(.data)
                 }
 
-                sections.append(.Metadata)
+                sections.append(.metadata)
             }
             return sections
         }
@@ -113,19 +113,19 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
 
     var recordTypeSectionIndex: Int? {
         get {
-            return self.sections.indexOf(.RecordType)
+            return self.sections.indexOf(.recordType)
         }
     }
 
     var dataSectionIndex: Int? {
         get {
-            return self.sections.indexOf(.Data)
+            return self.sections.indexOf(.data)
         }
     }
 
     var metadataSectionIndex: Int? {
         get {
-            return self.sections.indexOf(.Metadata)
+            return self.sections.indexOf(.metadata)
         }
     }
 
