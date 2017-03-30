@@ -83,8 +83,8 @@ SpecBegin(SKYOperation)
                         [NSError errorWithDomain:NSURLErrorDomain
                                             code:-1001
                                         userInfo:@{
-                                            NSLocalizedDescriptionKey :
-                                                @"The operation couldn’t be completed.",
+                                            NSLocalizedDescriptionKey : NSLocalizedString(
+                                                @"The operation couldn’t be completed.", nil),
                                             NSURLErrorFailingURLStringErrorKey : request.URL
                                         }];
                     return [[OHHTTPStubsResponse alloc] initWithError:networkError];

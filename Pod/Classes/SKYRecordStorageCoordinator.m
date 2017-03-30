@@ -212,9 +212,10 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
             *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
                                          code:0
                                      userInfo:@{
-                                         NSLocalizedDescriptionKey :
+                                         NSLocalizedDescriptionKey : NSLocalizedString(
                                              @"Unable to create record storage as the database is "
-                                             @"not associated with a current user."
+                                             @"not associated with a current user.",
+                                             nil)
                                      }];
         }
         return nil;
