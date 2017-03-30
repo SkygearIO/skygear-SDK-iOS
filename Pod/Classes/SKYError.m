@@ -88,51 +88,57 @@ NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode)
 {
     switch (errorCode) {
         case SKYErrorUnknownError:
-            return @"An unknown error has occurred.";
+            return NSLocalizedString(@"An unknown error has occurred.", nil);
         case SKYErrorNetworkUnavailable:
-            return @"Network is unavailable.";
+            return NSLocalizedString(@"Network is unavailable.", nil);
         case SKYErrorNetworkFailure:
-            return @"There was a network failure while processing the request.";
+            return NSLocalizedString(@"There was a network failure while processing the request.",
+                                     nil);
         case SKYErrorServiceUnavailable:
-            return @"Service is unavailable at the moment.";
+            return NSLocalizedString(@"Service is unavailable at the moment.", nil);
         case SKYErrorBadResponse:
-            return @"The response sent by the server cannot be processed.";
+            return NSLocalizedString(@"The response sent by the server cannot be processed.", nil);
         case SKYErrorInvalidData:
-            return @"The data sent by the server cannot be processed.";
+            return NSLocalizedString(@"The data sent by the server cannot be processed.", nil);
         case SKYErrorRequestPayloadTooLarge:
-            return @"The data trying to be sent to the server is too large.";
+            return NSLocalizedString(@"The data trying to be sent to the server is too large.",
+                                     nil);
         case SKYErrorNotAuthenticated:
-            return @"You have to be authenticated to perform this operation.";
+            return NSLocalizedString(@"You have to be authenticated to perform this operation.",
+                                     nil);
         case SKYErrorPermissionDenied:
         case SKYErrorAccessKeyNotAccepted:
         case SKYErrorAccessTokenNotAccepted:
-            return @"You are not allowed to perform this operation.";
+            return NSLocalizedString(@"You are not allowed to perform this operation.", nil);
         case SKYErrorInvalidCredentials:
-            return @"You are not allowed to log in because the credentials you provided are not "
-                   @"valid.";
+            return NSLocalizedString(
+                @"You are not allowed to log in because the credentials you provided are not "
+                @"valid.",
+                nil);
         case SKYErrorInvalidSignature:
         case SKYErrorBadRequest:
-            return @"The server is unable to process the request.";
+            return NSLocalizedString(@"The server is unable to process the request.", nil);
         case SKYErrorInvalidArgument:
-            return @"The server is unable to process the data.";
+            return NSLocalizedString(@"The server is unable to process the data.", nil);
         case SKYErrorDuplicated:
-            return @"This request contains duplicate of an existing resource on the server.";
+            return NSLocalizedString(
+                @"This request contains duplicate of an existing resource on the server.", nil);
         case SKYErrorResourceNotFound:
-            return @"The requested resource is not found.";
+            return NSLocalizedString(@"The requested resource is not found.", nil);
         case SKYErrorNotSupported:
-            return @"This operation is not supported.";
+            return NSLocalizedString(@"This operation is not supported.", nil);
         case SKYErrorNotImplemented:
-            return @"This operation is not implemented.";
+            return NSLocalizedString(@"This operation is not implemented.", nil);
         case SKYErrorConstraintViolated:
         case SKYErrorIncompatibleSchema:
         case SKYErrorAtomicOperationFailure:
         case SKYErrorPartialOperationFailure:
-            return @"A problem occurred while processing this request.";
+            return NSLocalizedString(@"A problem occurred while processing this request.", nil);
         case SKYErrorUndefinedOperation:
-            return @"The requested operation is not available.";
+            return NSLocalizedString(@"The requested operation is not available.", nil);
         case SKYErrorUnexpectedError:
-            return @"An unexpected error has occurred.";
+            return NSLocalizedString(@"An unexpected error has occurred.", nil);
         default:
-            return @"An unexpected error has occurred.";
+            return NSLocalizedString(@"An unexpected error has occurred.", nil);
     }
 }

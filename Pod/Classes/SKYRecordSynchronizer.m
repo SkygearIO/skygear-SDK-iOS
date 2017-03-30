@@ -76,11 +76,12 @@
 
     if (_updating) {
         if (completionHandler) {
-            NSError *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
-                                                 code:0
-                                             userInfo:@{
-                                                 NSLocalizedDescriptionKey : @"Already updating."
-                                             }];
+            NSError *error = [NSError
+                errorWithDomain:@"SKYRecordStorageErrorDomain"
+                           code:0
+                       userInfo:@{
+                           NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)
+                       }];
             completionHandler(NO, error);
         }
         return;
@@ -131,10 +132,12 @@
 {
     if (_updating) {
         if (completionHandler) {
-            NSError *error =
-                [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
-                                    code:0
-                                userInfo:@{NSLocalizedDescriptionKey : @"Already updating."}];
+            NSError *error = [NSError
+                errorWithDomain:@"SKYRecordStorageErrorDomain"
+                           code:0
+                       userInfo:@{
+                           NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)
+                       }];
             completionHandler(NO, error);
         }
         return;
