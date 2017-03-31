@@ -1,3 +1,16 @@
+## 0.22.2 (2017-03-31)
+
+### Features
+- Read `content_type` for asset serialization (#79)
+- Read content type in asset serialisation SkygearIO/skygear-SDK-JS#164
+
+### Bug Fixes
+- Wrap error messages with NSLocalizedString (#85)
+
+### Other Notes
+- Generate documentation using Jazzy
+
+
 ## 0.22.1 (2017-02-16)
 
 ### Bug Fixes
