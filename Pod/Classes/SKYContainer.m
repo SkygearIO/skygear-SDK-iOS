@@ -608,6 +608,12 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
                             completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
+    [self registerDeviceWithDeviceToken:deviceToken completionHandler:completionHandler];
+}
+
+- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
+                    completionHandler:(void (^)(NSString *, NSError *))completionHandler
+{
     NSString *existingDeviceID = [self registeredDeviceID];
     [self registerRemoteNotificationDeviceToken:deviceToken
                                existingDeviceID:existingDeviceID

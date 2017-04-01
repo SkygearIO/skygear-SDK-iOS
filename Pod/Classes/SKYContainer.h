@@ -226,10 +226,20 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  Registers a device token for push notification.
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
-                            completionHandler:(void (^)(NSString *, NSError *))completionHandler;
+                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
+    __deprecated;
 
 /**
- Registers a device without device token.
+ Registers a device token for push notification.
+ When the user is no longer associated to the device, you should call
+ -[unregisterDeviceCompletionHandler].
+ */
+- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
+                    completionHandler:(void (^)(NSString *, NSError *))completionHandler;
+
+/**
+ Registers a device without device token. This method should be called when the user denied
+ push notification permission.
 
  This method should be called to register the current device on remote server at the time when
  the application launches. It is okay to call this on subsequent launches, even if a device
@@ -239,11 +249,13 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 /**
  * Unregister the current user from the current device.
+ * This should be called when the user logouts.
  */
-- (void)unregisterDevice;
+- (void)unregisterDevice __deprecated;
 
 /**
- * Unregister the current user from the current device.
+ * Unregister the current user from the current device, this is preferred to -[unregisterDevice].
+ * This should be called when the user logouts.
  *
  * @param completionHandler the completion handler
  *
