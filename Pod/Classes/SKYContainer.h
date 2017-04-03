@@ -232,7 +232,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 /**
  Registers a device token for push notification.
  When the user is no longer associated to the device, you should call
- -[unregisterDeviceCompletionHandler].
+ -[SKYContainer unregisterDeviceCompletionHandler:].
  */
 - (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
                     completionHandler:(void (^)(NSString *, NSError *))completionHandler;
