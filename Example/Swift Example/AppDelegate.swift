@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
 
-        skygear.registerRemoteNotificationDeviceToken(deviceToken) { (deviceID, error) in
+        skygear.registerDeviceWithDeviceToken(deviceToken) { (deviceID, error) in
             guard error == nil else {
                 print("Failed to register device: \(error.localizedDescription)")
                 return

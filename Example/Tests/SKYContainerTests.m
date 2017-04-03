@@ -352,15 +352,13 @@ describe(@"register device", ^{
 
         waitUntil(^(DoneCallback done) {
             [container
-                registerRemoteNotificationDeviceToken:[SKYHexer
-                                                          dataWithHexString:@"abcdef1234567890"]
-                                    completionHandler:^(NSString *deviceID, NSError *error) {
-                                        expect(deviceID).to.equal(@"DEVICE_ID");
-                                        expect([container registeredDeviceID])
-                                            .to.equal(@"DEVICE_ID");
-                                        expect(notificationPosted).to.beTruthy();
-                                        done();
-                                    }];
+                registerDeviceWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                            completionHandler:^(NSString *deviceID, NSError *error) {
+                                expect(deviceID).to.equal(@"DEVICE_ID");
+                                expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                                expect(notificationPosted).to.beTruthy();
+                                done();
+                            }];
         });
     });
 
