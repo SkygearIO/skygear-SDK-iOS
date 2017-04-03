@@ -573,9 +573,9 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 }
 
 #pragma mark - SKYRemoteNotification
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
-                             existingDeviceID:(NSString *)existingDeviceID
-                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
+- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
+                     existingDeviceID:(NSString *)existingDeviceID
+                    completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
     NSString *topic = [[NSBundle mainBundle] bundleIdentifier];
     SKYRegisterDeviceOperation *op =
@@ -589,9 +589,9 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
             // Presumably the server will generate a new device ID.
             BOOL isNotFound = YES; // FIXME
             if (isNotFound && existingDeviceID) {
-                [self registerRemoteNotificationDeviceToken:deviceToken
-                                           existingDeviceID:nil
-                                          completionHandler:completionHandler];
+                [self registerDeviceWithDeviceToken:deviceToken
+                                   existingDeviceID:nil
+                                  completionHandler:completionHandler];
                 willRetry = YES;
             }
         }
@@ -608,34 +608,40 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
                             completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
-    NSString *existingDeviceID = [self registeredDeviceID];
-    [self registerRemoteNotificationDeviceToken:deviceToken
-                               existingDeviceID:existingDeviceID
-                              completionHandler:^(NSString *deviceID, NSError *error) {
-                                  if (!error) {
-                                      [self setRegisteredDeviceID:deviceID];
-                                  }
+    [self registerDeviceWithDeviceToken:deviceToken completionHandler:completionHandler];
+}
 
-                                  if (completionHandler) {
-                                      completionHandler(deviceID, error);
-                                  }
-                              }];
+- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
+                    completionHandler:(void (^)(NSString *, NSError *))completionHandler
+{
+    NSString *existingDeviceID = [self registeredDeviceID];
+    [self registerDeviceWithDeviceToken:deviceToken
+                       existingDeviceID:existingDeviceID
+                      completionHandler:^(NSString *deviceID, NSError *error) {
+                          if (!error) {
+                              [self setRegisteredDeviceID:deviceID];
+                          }
+
+                          if (completionHandler) {
+                              completionHandler(deviceID, error);
+                          }
+                      }];
 }
 
 - (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
     NSString *existingDeviceID = [self registeredDeviceID];
-    [self registerRemoteNotificationDeviceToken:nil
-                               existingDeviceID:existingDeviceID
-                              completionHandler:^(NSString *deviceID, NSError *error) {
-                                  if (!error) {
-                                      [self setRegisteredDeviceID:deviceID];
-                                  }
+    [self registerDeviceWithDeviceToken:nil
+                       existingDeviceID:existingDeviceID
+                      completionHandler:^(NSString *deviceID, NSError *error) {
+                          if (!error) {
+                              [self setRegisteredDeviceID:deviceID];
+                          }
 
-                                  if (completionHandler) {
-                                      completionHandler(deviceID, error);
-                                  }
-                              }];
+                          if (completionHandler) {
+                              completionHandler(deviceID, error);
+                          }
+                      }];
 }
 
 - (void)unregisterDevice
