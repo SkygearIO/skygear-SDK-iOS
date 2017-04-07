@@ -60,7 +60,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
-        _defaultAccessControl = [SKYAccessControl defaultAccessControl];
         _APIKey = nil;
         _pubsubClient =
             [[SKYPubsub alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
@@ -224,16 +223,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (SKYAccessToken *)currentAccessToken
 {
     return _accessToken;
-}
-
-- (void)setDefaultAccessControl:(SKYAccessControl *)defaultAccessControl
-{
-    _defaultAccessControl = defaultAccessControl;
-    if (!_defaultAccessControl) {
-        _defaultAccessControl = [SKYAccessControl publicReadableAccessControl];
-    }
-
-    [SKYAccessControl setDefaultAccessControl:_defaultAccessControl];
 }
 
 - (void)loadCurrentUserAndAccessToken
@@ -562,6 +551,26 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         [SKYDefineCreationAccessOperation operationWithRecordType:recordType roles:roles];
     operation.defineCreationAccessCompletionBlock =
         ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
+            if (completionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(error);
+                });
+            }
+        };
+
+    [self addOperation:operation];
+}
+
+- (void)defineDefaultAccessWithRecordType:(NSString *)recordType
+                                   access:(SKYAccessControl *)accessControl
+                               completion:(void (^)(NSError *error))completionBlock
+{
+    SKYDefineDefaultAccessOperation *operation =
+        [SKYDefineDefaultAccessOperation operationWithRecordType:recordType
+                                                   accessControl:accessControl];
+
+    operation.defineDefaultAccessCompletionBlock =
+        ^(NSString *recordType, SKYAccessControl *accessControl, NSError *error) {
             if (completionBlock) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     completionBlock(error);

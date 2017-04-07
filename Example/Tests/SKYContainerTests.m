@@ -23,6 +23,7 @@
 
 #import "SKYHexer.h"
 
+#import "SKYAccessControl_Private.h"
 #import "SKYContainer_Private.h"
 #import "SKYNotification_Private.h"
 
@@ -961,6 +962,63 @@ describe(@"record creation access", ^{
                                                    expect(error).to.beNil();
                                                    done();
                                                }];
+        });
+    });
+
+    afterEach(^{
+        [OHHTTPStubs removeAllStubs];
+    });
+});
+
+describe(@"record default access", ^{
+    NSString *apiKey = @"CORRECT_KEY";
+    NSString *currentUserId = @"CORRECT_USER_ID";
+    NSString *token = @"CORRECT_TOKEN";
+
+    NSString *painterRoleName = @"Painter";
+    NSString *paintingRecordType = @"Painting";
+
+    SKYRole *painterRole = [SKYRole roleWithName:painterRoleName];
+
+    __block SKYContainer *container = nil;
+
+    beforeEach(^{
+        container = [[SKYContainer alloc] init];
+        [container configureWithAPIKey:apiKey];
+        [container updateWithUserRecordID:currentUserId
+                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+    });
+
+    it(@"can define default access of record", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *response = @{
+                    @"result" : @{
+                        @"type" : paintingRecordType,
+                        @"default_access" : @[
+                            @{@"public" : @1, @"level" : @"read"},
+                            @{@"role" : @"Painter", @"level" : @"write"}
+                        ]
+                    }
+                };
+                return [OHHTTPStubsResponse responseWithJSONObject:response
+                                                        statusCode:200
+                                                           headers:nil];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            SKYAccessControl *acl = [SKYAccessControl accessControlWithEntries:@[
+                [SKYAccessControlEntry readEntryForRole:painterRole],
+                [SKYAccessControlEntry readEntryForPublic]
+            ]];
+            [container defineDefaultAccessWithRecordType:paintingRecordType
+                                                  access:acl
+                                              completion:^(NSError *error) {
+                                                  expect(error).to.beNil();
+                                                  done();
+                                              }];
         });
     });
 
