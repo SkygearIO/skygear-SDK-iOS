@@ -16,7 +16,7 @@ The SKYKit (Skygear iOS SDK) library that gives you access to the Skygear Server
 
 ## Getting Started
 
-To get started, you need to have the [Skygear Server](https://github.com/skygearIO/skygear-server) running and iOS SDK installed into your app. You can see detailed procedure at the getting started guide at [https://docs.skygear.io/ios/guide](https://docs.skygear.io/ios/guide).
+To get started, you need to have the [Skygear Server](https://github.com/skygearIO/skygear-server) running and iOS SDK installed into your app. You can see detailed procedure at the getting started guide at [https://docs.skygear.io/guides/intro/quickstart/ios/](https://docs.skygear.io/guides/intro/quickstart/ios/).
 
 You can sign up the Skygear Hosting at the Skygear Developer Portal at [https://portal.skygear.io](https://portal.skygear.io)
 
