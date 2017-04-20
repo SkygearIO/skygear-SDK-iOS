@@ -1,3 +1,13 @@
+## 0.23.0 (2017-04-20)
+
+### Features
+
+- Use server-based default ACL (SkygearIO/skygear-server#309)
+
+### Other Notes
+
+- Rename device registration methods (#76)
+
 ## 0.22.2 (2017-03-31)
 
 ### Features
