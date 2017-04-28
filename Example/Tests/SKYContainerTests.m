@@ -95,7 +95,8 @@ describe(@"user login and signup", ^{
         container.defaultTimeoutInterval = 1.0;
         [container configureWithAPIKey:@"API_KEY"];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
+            NSString *path = [[request URL] path];
+            return [path isEqualToString:@"/auth/login"] || [path isEqualToString:@"/auth/signup"];
         }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 expect(request.timeoutInterval).to.equal(1.0);
@@ -110,6 +111,27 @@ describe(@"user login and signup", ^{
                 }
                                                                   options:0
                                                                     error:nil];
+
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+        SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return [[[request URL] path] isEqualToString:@"/record/save"];
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSDictionary *parameters = @{
+                    @"request_id" : @"REQUEST_ID",
+                    @"database_id" : database.databaseID,
+                    @"result" : @[
+                        @{
+                           @"_id" : @"user/UUID",
+                           @"_type" : @"record",
+                           @"foo" : @"bar",
+                        },
+                    ]
+                };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
@@ -134,6 +156,34 @@ describe(@"user login and signup", ^{
                             assertLoggedIn(user.userID, error);
                             done();
                         }];
+        });
+    });
+
+    it(@"signup user email, password and profile", ^{
+        waitUntil(^(DoneCallback done) {
+            [container signupWithEmail:@"test@invalid"
+                password:@"secret"
+                profileDictionary:@{
+                    @"foo" : @"bar"
+                }
+                completionHandler:^(SKYRecord *record, NSError *error) {
+                    assertLoggedIn(record.recordID.recordName, error);
+                    done();
+                }];
+        });
+    });
+
+    it(@"signup username, password and profile", ^{
+        waitUntil(^(DoneCallback done) {
+            [container signupWithUsername:@"test"
+                password:@"secret"
+                profileDictionary:@{
+                    @"foo" : @"bar"
+                }
+                completionHandler:^(SKYRecord *record, NSError *error) {
+                    assertLoggedIn(record.recordID.recordName, error);
+                    done();
+                }];
         });
     });
 

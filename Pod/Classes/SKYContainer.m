@@ -373,12 +373,62 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
+/**
+ Creates a user account with the specified username, password and profile.
+ */
+- (void)signupWithUsername:(NSString *)username
+                  password:(NSString *)password
+         profileDictionary:(NSDictionary *)profile
+         completionHandler:(SKYRecordSaveCompletion)completionHandler
+{
+    SKYSignupUserOperation *operation =
+        [SKYSignupUserOperation operationWithUsername:username password:password];
+    [self performUserAuthOperation:operation
+                 completionHandler:^(SKYUser *user, NSError *error) {
+                     if (error) {
+                         completionHandler(nil, error);
+                         return;
+                     }
+                     [self createProfile:profile withUser:user completion:completionHandler];
+                 }];
+}
+
+/**
+ Creates a user account with the specified email, password and profile.
+ */
+- (void)signupWithEmail:(NSString *)email
+               password:(NSString *)password
+      profileDictionary:(NSDictionary *)profile
+      completionHandler:(SKYRecordSaveCompletion)completionHandler
+{
+    SKYSignupUserOperation *operation =
+        [SKYSignupUserOperation operationWithEmail:email password:password];
+    [self performUserAuthOperation:operation
+                 completionHandler:^(SKYUser *user, NSError *error) {
+                     if (error) {
+                         completionHandler(nil, error);
+                         return;
+                     }
+                     [self createProfile:profile withUser:user completion:completionHandler];
+                 }];
+}
+
 - (void)signupAnonymouslyWithCompletionHandler:
     (SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
+}
+
+- (void)createProfile:(NSDictionary *)profile
+             withUser:(SKYUser *)user
+           completion:(SKYRecordSaveCompletion)completion
+{
+    SKYRecord *userRecord =
+        [SKYRecord recordWithRecordID:[SKYRecordID recordIDWithRecordType:@"user" name:user.userID]
+                                 data:profile];
+    [self.publicCloudDatabase saveRecord:userRecord completion:completion];
 }
 
 - (void)loginWithUsername:(NSString *)username
