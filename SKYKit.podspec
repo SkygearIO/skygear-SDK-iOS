@@ -12,8 +12,6 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '7.0'
 
-  s.default_subspec = 'Core'
-
   s.subspec 'Core' do |core|
     core.requires_arc = true
 
