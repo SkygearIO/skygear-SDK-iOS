@@ -34,4 +34,11 @@ Pod::Spec.new do |s|
     facebook.dependency 'SKYKit/Core'
     facebook.dependency 'FBSDKCoreKit', '~> 4.0'
   end
+
+  s.subspec 'ForgotPassword' do |forgotPassword|
+    forgotPassword.source_files = 'Pod/Extensions/Forgot Password/**/*.{h,m}'
+    forgotPassword.requires_arc = true
+
+    forgotPassword.dependency 'SKYKit/Core'
+  end
 end
