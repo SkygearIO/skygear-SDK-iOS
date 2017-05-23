@@ -1,3 +1,13 @@
+## 0.24.0 (2017-05-23)
+
+### Features
+
+- Add API for adding user profile after signing up
+
+### Other Notes
+
+- Fix broken link at README
+
 ## 0.23.0 (2017-04-20)
 
 ### Features
