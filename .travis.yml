@@ -10,7 +10,9 @@ cache:
 - pip
 before_install:
 - gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
+- brew update
 - brew install clang-format
+- clang-format --version
 - brew install swiftlint
 - sudo pip install lizard
 - pod install --project-directory=Example
