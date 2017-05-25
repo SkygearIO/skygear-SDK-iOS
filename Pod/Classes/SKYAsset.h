@@ -20,7 +20,7 @@
 #import <Foundation/Foundation.h>
 
 /// Undocumented
-@interface SKYAsset : NSObject
+@interface SKYAsset : NSObject <NSCopying>
 
 /// Undocumented
 + (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;
@@ -43,8 +43,5 @@
  content type.
  */
 @property (nonatomic, readwrite, copy) NSString *mimeType;
-
-/// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
 
 @end

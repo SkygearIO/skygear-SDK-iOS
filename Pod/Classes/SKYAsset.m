@@ -22,11 +22,8 @@
 
 @interface SKYAsset ()
 
-- (instancetype)initWithName:(NSString *)name url:(NSURL *)url NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithName:(NSString *)name fileURL:(NSURL *)fileURL;
-- (instancetype)initWithName:(NSString *)name data:(NSData *)data;
-- (instancetype)initWithFileURL:(NSURL *)fileURL;
-- (instancetype)initWithData:(NSData *)data;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name url:(NSURL *)url;
 
 @property (nonatomic, readwrite, copy) NSString *name;
 @property (nonatomic, readwrite, copy) NSURL *url;
@@ -36,68 +33,28 @@
 
 @implementation SKYAsset
 
-- (instancetype)initWithName:(NSString *)name url:(NSURL *)url
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        _name = [name copy];
-        _url = [url copy];
-
-        // derive fileSize used in SKYGetAssetPostRequestOperation
-        if (_url.isFileURL) {
-            NSNumber *fileSize;
-            NSError *error;
-            [_url getResourceValue:&fileSize forKey:NSURLFileSizeKey error:&error];
-            if (error) {
-                NSLog(@"Failed obtain file size in %@: %@", _url, error);
-            }
-            _fileSize = fileSize;
-        }
-
-        // derive mimeType used in SKYGetAssetPostRequestOperation
-        CFStringRef extension = (__bridge CFStringRef)_url.pathExtension;
-        CFStringRef UTI =
-            UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
-        if (UTI) {
-            NSString *mimetype =
-                CFBridgingRelease(UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType));
-            if (mimetype) {
-                _mimeType = mimetype;
-            } else {
-                NSLog(@"Cannot derive mimeType");
-            }
-
-            CFRelease(UTI);
-        } else {
-            NSLog(@"Cannot derive mimeType since UTI == NULL");
-        }
     }
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name fileURL:(NSURL *)fileURL
+- (instancetype)initWithName:(NSString *)name url:(NSURL *)url
 {
-    return [self initWithName:name url:fileURL];
-}
+    self = [self init];
+    if (self) {
+        _name = [name copy];
+        _url = [url copy];
 
-- (instancetype)initWithName:(NSString *)name data:(NSData *)data
-{
-    NSString *fileName = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSURL *fileURL =
-        [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
-    [data writeToURL:fileURL atomically:NO];
+        if (url.isFileURL) {
+            _fileSize = [self deriveFileSize];
+        }
 
-    return [self initWithName:name fileURL:fileURL];
-}
-
-- (instancetype)initWithFileURL:(NSURL *)fileURL
-{
-    return [self initWithName:fileURL.lastPathComponent fileURL:fileURL];
-}
-
-- (instancetype)initWithData:(NSData *)data
-{
-    return [self initWithName:[[NSProcessInfo processInfo] globallyUniqueString] data:data];
+        _mimeType = [self deriveMimeType];
+    }
+    return self;
 }
 
 + (instancetype)assetWithName:(NSString *)name url:(NSURL *)url
@@ -107,22 +64,80 @@
 
 + (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL
 {
-    return [[self alloc] initWithName:name fileURL:fileURL];
+    return [[self alloc] initWithName:name url:fileURL];
 }
 
 + (instancetype)assetWithName:(NSString *)name data:(NSData *)data
 {
-    return [[self alloc] initWithName:name data:data];
+    NSString *fileName = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSURL *fileURL =
+        [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+    [data writeToURL:fileURL atomically:NO];
+
+    return [[self alloc] initWithName:name url:fileURL];
 }
 
 + (instancetype)assetWithFileURL:(NSURL *)fileURL
 {
-    return [[self alloc] initWithFileURL:fileURL];
+    return [[self alloc] initWithName:fileURL.lastPathComponent url:fileURL];
 }
 
 + (instancetype)assetWithData:(NSData *)data
 {
-    return [[self alloc] initWithData:data];
+    return
+        [[self class] assetWithName:[[NSProcessInfo processInfo] globallyUniqueString] data:data];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    SKYAsset *asset = [[SKYAsset alloc] init];
+    if (asset) {
+        asset->_name = [self.name copyWithZone:zone];
+        asset->_url = [self.url copyWithZone:zone];
+        asset->_fileSize = [self.fileSize copyWithZone:zone];
+        asset->_mimeType = [self.mimeType copyWithZone:zone];
+    }
+    return asset;
+}
+
+// derive fileSize used in SKYGetAssetPostRequestOperation
+- (NSNumber *)deriveFileSize
+{
+    NSNumber *fileSize;
+
+    if (!_url.isFileURL) {
+        NSLog(@"Failed obtain file size in %@: not a file in local filesystem", _url);
+    }
+
+    NSError *error;
+    [_url getResourceValue:&fileSize forKey:NSURLFileSizeKey error:&error];
+    if (error) {
+        NSLog(@"Failed obtain file size in %@: %@", _url, error);
+        fileSize = [NSNumber numberWithInteger:0];
+    }
+
+    return fileSize;
+}
+
+// derive mimeType used in SKYGetAssetPostRequestOperation
+- (NSString *)deriveMimeType
+{
+    CFStringRef extension = (__bridge CFStringRef)_url.pathExtension;
+    CFStringRef UTI =
+        UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
+    if (!UTI) {
+        NSLog(@"Cannot derive mimeType since UTI == NULL");
+        return nil;
+    }
+
+    NSString *mimetype =
+        CFBridgingRelease(UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType));
+    if (!mimetype) {
+        NSLog(@"Cannot derive mimeType");
+    }
+
+    CFRelease(UTI);
+    return mimetype;
 }
 
 @end
