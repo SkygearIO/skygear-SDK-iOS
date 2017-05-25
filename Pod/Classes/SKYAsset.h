@@ -35,6 +35,8 @@
 @property (nonatomic, readonly, copy) NSString *name;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSURL *url;
+/// Undocumented
+@property (nonatomic, readonly, copy) NSNumber *fileSize;
 
 /**
  The MIME type of the asset when the MIME type is known.

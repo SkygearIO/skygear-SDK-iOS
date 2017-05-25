@@ -27,6 +27,5 @@
 
 @property (nonatomic, readwrite, copy) NSString *name;
 @property (nonatomic, readwrite, copy) NSURL *url;
-@property (nonatomic, readonly, copy) NSNumber *fileSize;
 
 @end
