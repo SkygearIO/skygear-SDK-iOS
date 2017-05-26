@@ -1,6 +1,6 @@
 ![Skygear Logo](.github/skygear-logo.png)
 
-# Skygear SDK for iOS 
+# Skygear SDK for iOS
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/SKYKit.svg)](http://cocoadocs.org/docsets/SKYKit)
 [![CocoaPods](https://img.shields.io/cocoapods/dt/SKYKit.svg)](https://cocoapods.org/pods/SKYKit)
@@ -39,14 +39,21 @@ pod 'SKYKit'
 
 #### Subspec
 
-Podspec 'SKYKit' include the core that you are required to interact with Skygear,
-for optional funcationility, like Facebook login. You need to include the 
-respective subspce.
+Podspec 'SKYKit' include everything you are required to interact with Skygear,
+that includes functionalities, like Facebook login and Forgot password.
+If you want to make the dependency slimmer, you can use the `SKYKit/Core` subspec.
 
-For example, if you need facebook login, include the following
 
 ```
-pod 'SKYKit/Facebook'
+# Install everything
+pod `SKYKit`
+
+# Only install the core functionality
+pod `SKYKit/Core`
+
+# You can pick which options do you want
+pod `SKYKit/Facebook`
+pod `SKYKit/ForgotPassword`
 ```
 
 Then, run the following command:
@@ -83,9 +90,9 @@ If you have any fixes or suggestions, simply send us a pull request!
 Copyright (c) 2015-present, Oursky Ltd.
 All rights reserved.
 
-This source code is licensed under the Apache License version 2.0 
-found in the LICENSE file in the root directory of this source tree. 
-An additional grant of patent rights can be found in the PATENTS 
+This source code is licensed under the Apache License version 2.0
+found in the LICENSE file in the root directory of this source tree.
+An additional grant of patent rights can be found in the PATENTS
 file in the same directory.
 
 ```
