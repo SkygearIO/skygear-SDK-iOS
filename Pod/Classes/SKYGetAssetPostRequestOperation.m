@@ -67,9 +67,13 @@
 {
     NSDictionary *result = response.responseDictionary[@"result"];
 
-    [self.asset setName:result[@"asset"][@"$name"]];
-    [self.asset setUrl:result[@"asset"][@"$url"]];
-    [self.asset setMimeType:result[@"asset"][@"$content_type"]];
+    // Update the asset name with the generated name obtained from the server.
+    // Note: Do not update the URL of the asset here because the file is not
+    // uploaded to the server yet.
+    NSString *assetName = result[@"asset"][@"$name"];
+    if ([assetName isKindOfClass:[NSString class]] || assetName == nil) {
+        self.asset.name = assetName;
+    }
 
     NSDictionary *rawPostRequest = result[@"post-request"];
     NSDictionary *extraFields = rawPostRequest[@"extra-fields"];

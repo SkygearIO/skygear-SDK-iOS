@@ -737,6 +737,20 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 {
     __weak typeof(self) wself = self;
 
+    if ([asset.fileSize integerValue] == 0) {
+        if (completionHandler) {
+            completionHandler(
+                nil, [NSError errorWithDomain:SKYOperationErrorDomain
+                                         code:SKYErrorInvalidArgument
+                                     userInfo:@{
+                                         SKYErrorMessageKey : @"File size is invalid (filesize=0).",
+                                         NSLocalizedDescriptionKey : NSLocalizedString(
+                                             @"Unable to open file or file is not found.", nil)
+                                     }]);
+        }
+        return;
+    }
+
     SKYGetAssetPostRequestOperation *operation =
         [SKYGetAssetPostRequestOperation operationWithAsset:asset];
     operation.getAssetPostRequestCompletionBlock = ^(
