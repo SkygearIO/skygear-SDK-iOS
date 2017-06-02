@@ -20,19 +20,19 @@
 import UIKit
 
 protocol PredicateViewControllerDelegate {
-    func predicate(controller: PredicateViewController, didFinish predicate: NSComparisonPredicate)
-    func predicateDidDelete(controller: PredicateViewController)
+    func predicate(_ controller: PredicateViewController, didFinish predicate: NSComparisonPredicate)
+    func predicateDidDelete(_ controller: PredicateViewController)
 }
 
 class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
-    var delegate: PredicateViewControllerDelegate? = nil
-    var attributeNameCell: TextFieldTableViewCell? = nil
-    var attributeValueCell: TextFieldTableViewCell? = nil
-    var comparisonPickerCell: PickerTableViewCell? = nil
-    var attributeName: String? = nil
+    var delegate: PredicateViewControllerDelegate?
+    var attributeNameCell: TextFieldTableViewCell?
+    var attributeValueCell: TextFieldTableViewCell?
+    var comparisonPickerCell: PickerTableViewCell?
+    var attributeName: String?
     var predicateOperator: Int = 0
-    var attributeValue: AnyObject? = nil
+    var attributeValue: AnyObject?
     var deletable: Bool = true
     var isDeleting: Bool = false
 
@@ -56,21 +56,21 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if let attributeNameCell = self.attributeNameCell {
             attributeNameCell.textField.becomeFirstResponder()
         }
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if let cell = self.attributeNameCell {
             attributeName = cell.textField.text
         }
         if let cell = self.attributeValueCell {
-            attributeValue = cell.textField.text
+            attributeValue = cell.textField.text as AnyObject
         }
         if let cell = self.comparisonPickerCell {
-            predicateOperator = cell.picker.selectedRowInComponent(0)
+            predicateOperator = cell.picker.selectedRow(inComponent: 0)
         }
 
         if self.predicate != nil && !isDeleting {
@@ -86,7 +86,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
 
     // MARK: - Actions
 
-    func updateUIWithPredicate(optionalPredicate: NSComparisonPredicate?) {
+    func updateUIWithPredicate(_ optionalPredicate: NSComparisonPredicate?) {
         guard let predicate = optionalPredicate else {
             attributeName = nil
             predicateOperator = 0
@@ -95,17 +95,17 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
 
         attributeName = predicate.leftExpression.keyPath
-        attributeValue = predicate.rightExpression.constantValue
+        attributeValue = predicate.rightExpression.constantValue as AnyObject
 
         switch predicate.predicateOperatorType {
-        case .EqualToPredicateOperatorType:
+        case .equalTo:
             predicateOperator = 0
             break
-        case .NotEqualToPredicateOperatorType:
+        case .notEqualTo:
             predicateOperator = 1
             break
-        case .LikePredicateOperatorType:
-            if predicate.options == .CaseInsensitivePredicateOption {
+        case .like:
+            if predicate.options == .caseInsensitive {
                 predicateOperator = 3
             } else {
                 predicateOperator = 2
@@ -137,30 +137,30 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         case 0:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
-                                              modifier: .DirectPredicateModifier,
-                                              type: .EqualToPredicateOperatorType,
-                                              options: .NormalizedPredicateOption)
+                                              modifier: .direct,
+                                              type: .equalTo,
+                                              options: .normalized)
             break
         case 1:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
-                                              modifier: .DirectPredicateModifier,
-                                              type: .NotEqualToPredicateOperatorType,
-                                              options: .NormalizedPredicateOption)
+                                              modifier: .direct,
+                                              type: .notEqualTo,
+                                              options: .normalized)
             break
         case 2:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
-                                              modifier: .DirectPredicateModifier,
-                                              type: .LikePredicateOperatorType,
-                                              options: .NormalizedPredicateOption)
+                                              modifier: .direct,
+                                              type: .like,
+                                              options: .normalized)
             break
         case 3:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
-                                              modifier: .DirectPredicateModifier,
-                                              type: .LikePredicateOperatorType,
-                                              options: .CaseInsensitivePredicateOption)
+                                              modifier: .direct,
+                                              type: .like,
+                                              options: .caseInsensitive)
             break
         default:
             break
@@ -168,21 +168,21 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         return predicate
     }
 
-    @IBAction func triggerDelete(sender: AnyObject) {
+    @IBAction func triggerDelete(_ sender: AnyObject) {
         isDeleting = true
         if let delegate = self.delegate {
             delegate.predicateDidDelete(self)
         }
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 1
@@ -195,7 +195,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "Attribute Name"
@@ -208,13 +208,13 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 if let attributeNameCell = self.attributeNameCell {
                     return attributeNameCell
                 }
-                let cell = self.tableView.dequeueReusableCellWithIdentifier("textfield", forIndexPath: indexPath) as! TextFieldTableViewCell
+                let cell = self.tableView.dequeueReusableCell(withIdentifier: "textfield", for: indexPath) as! TextFieldTableViewCell
                 attributeNameCell = cell
                 attributeNameCell?.textField.text = attributeName
                 return cell
@@ -224,7 +224,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 if let comparisonPickerCell = self.comparisonPickerCell {
                     return comparisonPickerCell
                 }
-                let cell = self.tableView.dequeueReusableCellWithIdentifier("picker", forIndexPath: indexPath) as! PickerTableViewCell
+                let cell = self.tableView.dequeueReusableCell(withIdentifier: "picker", for: indexPath) as! PickerTableViewCell
                 comparisonPickerCell = cell
                 comparisonPickerCell?.picker.selectRow(predicateOperator, inComponent: 0, animated: true)
                 return cell
@@ -234,7 +234,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 if let attributeValueCell = self.attributeValueCell {
                     return attributeValueCell
                 }
-                let cell = self.tableView.dequeueReusableCellWithIdentifier("textfield", forIndexPath: indexPath) as! TextFieldTableViewCell
+                let cell = self.tableView.dequeueReusableCell(withIdentifier: "textfield", for: indexPath) as! TextFieldTableViewCell
                 attributeValueCell = cell
                 attributeValueCell?.textField.text = attributeValue as? String
                 return cell
@@ -244,8 +244,8 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         return UITableViewCell()
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.isEqual(NSIndexPath(forRow: 0, inSection: 1)) {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath == IndexPath(row: 0, section: 1) {
             return 150
         } else {
             return tableView.rowHeight
@@ -254,15 +254,15 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
 
     // MARK: - UIPickerViewDelegate
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 4
     }
 
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch row {
         case 0:
             return "equals"
@@ -279,7 +279,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
 
     // MARK: - UITextFieldDelegate
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == attributeNameCell?.textField {
             textField.resignFirstResponder()
             return true

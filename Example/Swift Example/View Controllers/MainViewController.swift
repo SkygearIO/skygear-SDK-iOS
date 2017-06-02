@@ -23,11 +23,11 @@ class MainViewController: UITableViewController {
 
     var hasPromptedForConfiguration: Bool {
         get {
-            return NSUserDefaults.standardUserDefaults().boolForKey("HasPromptedForConfiguration")
+            return UserDefaults.standard.bool(forKey: "HasPromptedForConfiguration")
         }
         set {
-            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "HasPromptedForConfiguration")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "HasPromptedForConfiguration")
+            UserDefaults.standard.synchronize()
         }
     }
 
@@ -39,16 +39,16 @@ class MainViewController: UITableViewController {
         if !self.hasPromptedForConfiguration {
             let alert = UIAlertController(title: "Configuration Required",
                                           message: "The app does not know how to connect to your Skygear Server. Configure the app now?",
-                                          preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "Ignore", style: .Cancel, handler: { (action) in
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ignore", style: .cancel, handler: { (_) in
                 self.hasPromptedForConfiguration = true
             }))
-            alert.addAction(UIAlertAction(title: "Configure", style: .Default, handler: { (action) in
+            alert.addAction(UIAlertAction(title: "Configure", style: .default, handler: { (_) in
                 self.hasPromptedForConfiguration = true
-                self.performSegueWithIdentifier("server_configuration", sender: self)
+                self.performSegue(withIdentifier: "server_configuration", sender: self)
             }))
             alert.preferredAction = alert.actions.last
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
 
     }
@@ -60,9 +60,9 @@ class MainViewController: UITableViewController {
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "create_record" {
-            let controller = segue.destinationViewController as! RecordViewController
+            let controller = segue.destination as! RecordViewController
             controller.creatingNewRecord = true
         }
     }

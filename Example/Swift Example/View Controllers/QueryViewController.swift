@@ -23,7 +23,7 @@ import SKYKit
 class QueryViewController: UITableViewController, PredicateViewControllerDelegate, RecordTypeViewControllerDelegate {
 
     var records = [SKYRecord]()
-    var recordType: String? = nil
+    var recordType: String?
     var predicates = [NSPredicate]()
 
     var recordTypeSectionIndex = 0
@@ -31,11 +31,11 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
     var lastQueryRecordType: String? {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("LastQueryRecordType")
+            return UserDefaults.standard.string(forKey: "LastQueryRecordType")
         }
         set(value) {
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "LastQueryRecordType")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(value, forKey: "LastQueryRecordType")
+            UserDefaults.standard.synchronize()
         }
     }
 
@@ -53,16 +53,16 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
     // MARK: - Actions
 
-    @IBAction func triggerSubmit(sender: AnyObject) {
+    @IBAction func triggerSubmit(_ sender: AnyObject) {
         if recordType == nil || recordType!.isEmpty {
-            let alert = UIAlertController(title: "Required", message: "You must choose a record type", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Required", message: "You must choose a record type", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
         let query = SKYQuery(recordType: recordType, predicate: self.predicateFromUI())
-        performQuery(query, handler: {
-            self.lastQueryRecordType = query.recordType
-            self.performSegueWithIdentifier("submit", sender: nil)
+        performQuery(query!, handler: {
+            self.lastQueryRecordType = query?.recordType
+            self.performSegue(withIdentifier: "submit", sender: nil)
         })
     }
 
@@ -77,17 +77,17 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
         }
     }
 
-    func performQuery(query: SKYQuery, handler: (() -> Void)?) {
-        SKYContainer.defaultContainer().publicCloudDatabase.performQuery(query) { (objs, error) in
+    func performQuery(_ query: SKYQuery, handler: (() -> Void)?) {
+        SKYContainer.default().publicCloudDatabase.perform(query) { (objs, error) in
             if error != nil {
-                let alert = UIAlertController(title: "Unable to query", message: error.localizedDescription, preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Unable to query", message: error?.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 return
             }
 
             guard let records = objs as? [SKYRecord] else {
-                NSException.raise(NSInternalInconsistencyException, format: "Unable to cast to Records array", arguments: getVaList([]))
+                NSException.raise(NSExceptionName.internalInconsistencyException, format: "Unable to cast to Records array", arguments: getVaList([]))
                 return
             }
 
@@ -101,11 +101,11 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == recordTypeSectionIndex {
             return 1
         } else if section == predicateSectionIndex {
@@ -115,25 +115,25 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == recordTypeSectionIndex {
-            let cell = tableView.dequeueReusableCellWithIdentifier("record_type", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "record_type", for: indexPath)
             cell.detailTextLabel?.text = self.recordType ?? "Not Selected"
             return cell
         } else if indexPath.section == predicateSectionIndex {
             if indexPath.row == self.predicates.count {
-                let cell = tableView.dequeueReusableCellWithIdentifier("new_predicate", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "new_predicate", for: indexPath)
                 return cell
             }
 
-            let cell = tableView.dequeueReusableCellWithIdentifier("predicate", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "predicate", for: indexPath)
             cell.textLabel?.text = self.predicates[indexPath.row].predicateFormat
             return cell
         }
 
         return UITableViewCell()
     }
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case predicateSectionIndex:
             return "Predicates"
@@ -145,28 +145,28 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "submit" {
-            guard let resultUI = segue.destinationViewController as? RecordResultViewController else {
+            guard let resultUI = segue.destination as? RecordResultViewController else {
                 return
             }
 
             resultUI.records = records
         } else if segue.identifier == "new_predicate" {
-            guard let controller = segue.destinationViewController as? PredicateViewController else {
+            guard let controller = segue.destination as? PredicateViewController else {
                 return
             }
             controller.delegate = self
             controller.deletable = false
         } else if segue.identifier == "record_type" {
-            guard let controller = segue.destinationViewController as? RecordTypeViewController else {
+            guard let controller = segue.destination as? RecordTypeViewController else {
                 return
             }
             controller.selectedRecordType = recordType
             controller.delegate = self
         } else {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                guard let controller = segue.destinationViewController as? PredicateViewController else {
+                guard let controller = segue.destination as? PredicateViewController else {
                     return
                 }
 
@@ -180,34 +180,34 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
     // MARK: - RecordTypeViewControllerDelegate
 
-    func recordTypeViewController(controller: RecordTypeViewController, didSelectRecordType recordType: String) {
+    func recordTypeViewController(_ controller: RecordTypeViewController, didSelectRecordType recordType: String) {
         self.recordType = recordType
-        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection:0)], withRowAnimation: .None)
+        self.tableView.reloadRows(at: [IndexPath(row: 0, section:0)], with: .none)
     }
 
     // MARK: - PredicateViewControllerDelegate
 
-    func predicate(controller: PredicateViewController, didFinish predicate: NSComparisonPredicate) {
+    func predicate(_ controller: PredicateViewController, didFinish predicate: NSComparisonPredicate) {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             if indexPath.row < self.predicates.count {
                 predicates[indexPath.row] = predicate
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             } else {
                 predicates.append(predicate)
-                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         } else {
-            let indexPath = NSIndexPath(forRow: predicates.count-1, inSection: predicateSectionIndex)
+            let indexPath = IndexPath(row: predicates.count-1, section: predicateSectionIndex)
             predicates.append(predicate)
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
         }
     }
 
-    func predicateDidDelete(controller: PredicateViewController) {
+    func predicateDidDelete(_ controller: PredicateViewController) {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             if indexPath.row < self.predicates.count {
-                predicates.removeAtIndex(indexPath.row)
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                predicates.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
         }
     }

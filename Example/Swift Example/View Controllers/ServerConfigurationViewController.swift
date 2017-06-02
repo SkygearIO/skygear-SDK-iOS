@@ -33,60 +33,60 @@ class ServerConfigurationViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("plainTableViewCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "plainTableViewCell", for: indexPath)
 
         if indexPath.row == 0 {
             cell.textLabel?.text = "Endpoint"
-            cell.detailTextLabel?.text = NSUserDefaults.standardUserDefaults().stringForKey("SkygearEndpoint")
+            cell.detailTextLabel?.text = UserDefaults.standard.string(forKey: "SkygearEndpoint")
         } else if indexPath.row == 1 {
             cell.textLabel?.text = "API Key"
-            cell.detailTextLabel?.text = NSUserDefaults.standardUserDefaults().stringForKey("SkygearApiKey")
+            cell.detailTextLabel?.text = UserDefaults.standard.string(forKey: "SkygearApiKey")
         }
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let alert = UIAlertController(title: "Endpoint", message: "Enter the Skygear Endpoint (you can obtained this from portal)", preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler { (textField) in
+            let alert = UIAlertController(title: "Endpoint", message: "Enter the Skygear Endpoint (you can obtained this from portal)", preferredStyle: .alert)
+            alert.addTextField { (textField) in
                 textField.placeholder = "https://myapp.skygeario.com/"
-                textField.text = NSUserDefaults.standardUserDefaults().stringForKey("SkygearEndpoint")
+                textField.text = UserDefaults.standard.string(forKey: "SkygearEndpoint")
             }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler:nil))
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) in
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 let textField = alert.textFields?.first
-                NSUserDefaults.standardUserDefaults().setObject(textField?.text, forKey: "SkygearEndpoint")
-                NSUserDefaults.standardUserDefaults().synchronize()
-                SKYContainer.defaultContainer().configAddress(textField?.text)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                UserDefaults.standard.set(textField?.text, forKey: "SkygearEndpoint")
+                UserDefaults.standard.synchronize()
+                SKYContainer.default().configAddress(textField?.text)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }))
             alert.preferredAction = alert.actions.last
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else if indexPath.row == 1 {
-            let alert = UIAlertController(title: "API Key", message: "Enter the Skygear API Key (you can obtained this from portal)", preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler { (textField) in
+            let alert = UIAlertController(title: "API Key", message: "Enter the Skygear API Key (you can obtained this from portal)", preferredStyle: .alert)
+            alert.addTextField { (textField) in
                 textField.placeholder = "dc0903fa85924776baa77df813901efc"
-                textField.text = NSUserDefaults.standardUserDefaults().stringForKey("SkygearApiKey")
+                textField.text = UserDefaults.standard.string(forKey: "SkygearApiKey")
             }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler:nil))
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) in
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 let textField = alert.textFields?.first
-                NSUserDefaults.standardUserDefaults().setObject(textField?.text, forKey: "SkygearApiKey")
-                NSUserDefaults.standardUserDefaults().synchronize()
-                SKYContainer.defaultContainer().configureWithAPIKey(textField?.text)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                UserDefaults.standard.set(textField?.text, forKey: "SkygearApiKey")
+                UserDefaults.standard.synchronize()
+                SKYContainer.default().configure(withAPIKey: textField?.text)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }))
             alert.preferredAction = alert.actions.last
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }

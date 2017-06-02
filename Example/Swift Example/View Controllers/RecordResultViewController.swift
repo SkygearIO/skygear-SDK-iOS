@@ -36,9 +36,9 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
 
     // MARK: - Navigation
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "view_record" {
-            guard let recordUI = segue.destinationViewController as? RecordViewController else {
+            guard let recordUI = segue.destination as? RecordViewController else {
                 return
             }
 
@@ -51,8 +51,8 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
 
     // MARK: - Misc
 
-    func indexOfRecord(recordID: SKYRecordID) -> Int? {
-        for (index, element) in self.records.enumerate() {
+    func indexOfRecord(_ recordID: SKYRecordID) -> Int? {
+        for (index, element) in self.records.enumerated() {
             if element.recordID.isEqual(recordID) {
                 return index
             }
@@ -62,7 +62,7 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
 
     // MARK: - RecordViewControllerDelegate
 
-    func recordViewController(controller: RecordViewController, didSaveRecord record: SKYRecord) {
+    func recordViewController(_ controller: RecordViewController, didSaveRecord record: SKYRecord) {
         guard let index = self.indexOfRecord(record.recordID) else {
             return
         }
@@ -72,10 +72,10 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
         }
 
         records[index] = record
-        self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Automatic)
+        self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
-    func recordViewController(controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID) {
+    func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID) {
         guard let index = self.indexOfRecord(recordID) else {
             return
         }
@@ -84,22 +84,22 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
             return
         }
 
-        records.removeAtIndex(index)
-        self.tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .Automatic)
+        records.remove(at: index)
+        self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.records.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("record", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "record", for: indexPath)
         cell.textLabel?.text = self.records[indexPath.row].recordID.recordName
         return cell
     }

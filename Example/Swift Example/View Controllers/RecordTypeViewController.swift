@@ -20,25 +20,25 @@
 import UIKit
 
 protocol RecordTypeViewControllerDelegate {
-    func recordTypeViewController(controller: RecordTypeViewController, didSelectRecordType recordType: String)
+    func recordTypeViewController(_ controller: RecordTypeViewController, didSelectRecordType recordType: String)
 }
 
 class RecordTypeViewController: UITableViewController {
 
     var knownRecordTypes: [String] {
         get {
-            if let value = NSUserDefaults.standardUserDefaults().arrayForKey("KnownRecordTypes") as? [String] {
+            if let value = UserDefaults.standard.array(forKey: "KnownRecordTypes") as? [String] {
                 return value
             }
             return []
         }
         set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "KnownRecordTypes")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(newValue, forKey: "KnownRecordTypes")
+            UserDefaults.standard.synchronize()
         }
     }
 
-    var selectedRecordTypeIndex: Int? = nil
+    var selectedRecordTypeIndex: Int?
 
     var selectedRecordType: String? {
         get {
@@ -69,11 +69,11 @@ class RecordTypeViewController: UITableViewController {
                 return
             }
 
-            self.selectedRecordTypeIndex = knownRecordTypes.indexOf(val)
+            self.selectedRecordTypeIndex = knownRecordTypes.index(of: val)
         }
     }
 
-    var delegate: RecordTypeViewControllerDelegate? = nil
+    var delegate: RecordTypeViewControllerDelegate?
 
     let listSectionIndex = 0
     let addNewSectionIndex = 1
@@ -90,7 +90,7 @@ class RecordTypeViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         if let delegate = self.delegate {
             if let recordType = self.selectedRecordType {
                 delegate.recordTypeViewController(self, didSelectRecordType: recordType)
@@ -105,11 +105,11 @@ class RecordTypeViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case listSectionIndex:
             return knownRecordTypes.count
@@ -120,17 +120,17 @@ class RecordTypeViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("default", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "default", for: indexPath)
         switch indexPath.section {
         case listSectionIndex:
             if self.knownRecordTypes.count > indexPath.row {
                 let recordType = self.knownRecordTypes[indexPath.row]
                 cell.textLabel?.text = recordType
-                cell.accessoryType = self.selectedRecordTypeIndex == indexPath.row ? .Checkmark : .None
+                cell.accessoryType = self.selectedRecordTypeIndex == indexPath.row ? .checkmark : .none
             } else {
                 cell.textLabel?.text = ""
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
             break
         case addNewSectionIndex:
@@ -142,7 +142,7 @@ class RecordTypeViewController: UITableViewController {
         return cell
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case listSectionIndex:
             return "Record Types"
@@ -151,7 +151,7 @@ class RecordTypeViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case listSectionIndex:
             guard indexPath.row < self.knownRecordTypes.count else {
@@ -160,20 +160,20 @@ class RecordTypeViewController: UITableViewController {
 
             var indexPathsToUpdate = [indexPath]
             if let selectedRecordTypeIndex = self.selectedRecordTypeIndex {
-                indexPathsToUpdate.append(NSIndexPath(forRow: selectedRecordTypeIndex, inSection: listSectionIndex))
+                indexPathsToUpdate.append(IndexPath(row: selectedRecordTypeIndex, section: listSectionIndex))
             }
 
             self.selectedRecordTypeIndex = indexPath.row
 
-            self.tableView.reloadRowsAtIndexPaths(indexPathsToUpdate, withRowAnimation: .None)
+            self.tableView.reloadRows(at: indexPathsToUpdate, with: .none)
             break
         case addNewSectionIndex:
-            let alert = UIAlertController(title: "Add New", message: "Enter name of new record type", preferredStyle: .Alert)
-            alert.addTextFieldWithConfigurationHandler({ (textField) in
+            let alert = UIAlertController(title: "Add New", message: "Enter name of new record type", preferredStyle: .alert)
+            alert.addTextField(configurationHandler: { (textField) in
                 textField.placeholder = "Record Type"
             })
-            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Add", style: .Default, handler: { (action) in
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (_) in
                 guard let recordTypeToAdd = alert.textFields?.first?.text else {
                     return
                 }
@@ -182,25 +182,25 @@ class RecordTypeViewController: UITableViewController {
                     return
                 }
 
-                var indexPathsToUpdate: [NSIndexPath] = []
+                var indexPathsToUpdate: [IndexPath] = []
                 if let selectedRecordTypeIndex = self.selectedRecordTypeIndex {
-                    indexPathsToUpdate.append(NSIndexPath(forRow: selectedRecordTypeIndex, inSection: self.listSectionIndex))
+                    indexPathsToUpdate.append(IndexPath(row: selectedRecordTypeIndex, section: self.listSectionIndex))
                 }
 
                 self.knownRecordTypes.append(recordTypeToAdd)
                 self.selectedRecordTypeIndex = self.knownRecordTypes.count - 1
 
                 self.tableView.beginUpdates()
-                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.knownRecordTypes.count - 1, inSection: self.listSectionIndex)],
-                    withRowAnimation: .Automatic)
+                self.tableView.insertRows(at: [IndexPath(row: self.knownRecordTypes.count - 1, section: self.listSectionIndex)],
+                    with: .automatic)
                 if indexPathsToUpdate.count > 0 {
-                    self.tableView.reloadRowsAtIndexPaths(indexPathsToUpdate, withRowAnimation: .None)
+                    self.tableView.reloadRows(at: indexPathsToUpdate, with: .none)
                 }
                 self.tableView.endUpdates()
             }))
             alert.preferredAction = alert.actions.last
-            self.presentViewController(alert, animated: true, completion: {
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.present(alert, animated: true, completion: {
+                self.tableView.deselectRow(at: indexPath, animated: true)
             })
             break
         default:

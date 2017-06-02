@@ -25,27 +25,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let endpoint = NSUserDefaults.standardUserDefaults().stringForKey("SkygearEndpoint")
+        let endpoint = UserDefaults.standard.string(forKey: "SkygearEndpoint")
         if let endpointValue = endpoint {
-            SKYContainer.defaultContainer().configAddress(endpointValue)
+            SKYContainer.default().configAddress(endpointValue)
         }
 
-        let apiKey = NSUserDefaults.standardUserDefaults().stringForKey("SkygearApiKey")
+        let apiKey = UserDefaults.standard.string(forKey: "SkygearApiKey")
         if let apiKeyValue = apiKey {
-            SKYContainer.defaultContainer().configureWithAPIKey(apiKeyValue)
+            SKYContainer.default().configure(withAPIKey: apiKeyValue)
         }
 
         application.registerUserNotificationSettings(UIUserNotificationSettings(
-            forTypes: [.Alert, .Badge, .Sound],
+            types: [.alert, .badge, .sound],
             categories: nil
         ))
 
         return true
     }
 
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         guard !notificationSettings.types.isEmpty else {
             print("User does not allow notification")
             return
@@ -54,18 +54,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
     }
 
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("Successfully registered remote notification")
 
-        let skygear = SKYContainer.defaultContainer()
+        let skygear = SKYContainer.default()
         guard skygear.currentUser != nil else {
             print("User not yet login, abort registering device")
             return
         }
 
-        skygear.registerDeviceWithDeviceToken(deviceToken) { (deviceID, error) in
+        skygear.registerDevice(withDeviceToken: deviceToken) { (deviceID, error) in
             guard error == nil else {
-                print("Failed to register device: \(error.localizedDescription)")
+                print("Failed to register device: \(error?.localizedDescription)")
                 return
             }
 
@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register remote notification: \(error.localizedDescription)")
     }
 }
