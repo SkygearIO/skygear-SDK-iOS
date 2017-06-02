@@ -9,3 +9,10 @@ clean-docs:
 .PHONY: format
 format:
 	./clang-check.sh fix
+	swiftlint autocorrect
+
+.PHONY: lint
+lint:
+	./clang-check.sh
+	swiftlint lint
+
