@@ -58,7 +58,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 // seems we need a way to authenticate app
 /// Undocumented
-+ (SKYContainer *)defaultContainer;
++ (nonnull SKYContainer *)defaultContainer;
 
 /// Undocumented
 @property (nonatomic, weak) id<SKYContainerDelegate> delegate;
