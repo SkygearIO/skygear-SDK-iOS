@@ -25,21 +25,21 @@ class UserAuthenticationViewController: UITableViewController {
     let actionSectionIndex = 0
     let statusSectionIndex = 1
 
-    let dateFormatter = NSDateFormatter()
+    let dateFormatter = DateFormatter()
 
     var lastUsername: String? {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("LastUsername")
+            return UserDefaults.standard.string(forKey: "LastUsername")
         }
         set(value) {
-            NSUserDefaults.standardUserDefaults().setObject(value, forKey: "LastUsername")
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(value, forKey: "LastUsername")
+            UserDefaults.standard.synchronize()
         }
     }
 
     internal var isLoggedIn: Bool {
         get {
-            return SKYContainer.defaultContainer().currentUserRecordID != nil
+            return SKYContainer.default().currentUserRecordID != nil
         }
     }
 
@@ -48,15 +48,15 @@ class UserAuthenticationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserverForName(SKYContainerDidChangeCurrentUserNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (note) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser, object: nil, queue: OperationQueue.main) { (_) in
 
             self.loginStatusDidChange()
         }
 
-        self.dateFormatter.locale = NSLocale.currentLocale()
+        self.dateFormatter.locale = Locale.current
         self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        self.dateFormatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        if SKYContainer.defaultContainer().currentUserRecordID != nil {
+        self.dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        if SKYContainer.default().currentUserRecordID != nil {
             self.whoami()
         }
     }
@@ -67,20 +67,20 @@ class UserAuthenticationViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func showAuthenticationError(user: SKYUser?, error: NSError?, completion: (() -> Void)?) {
-        let alert = UIAlertController(title: "Unable to Authenticate", message: error?.localizedDescription, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) in
+    func showAuthenticationError(_ user: SKYUser?, error: NSError?, completion: (() -> Void)?) {
+        let alert = UIAlertController(title: "Unable to Authenticate", message: error?.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let c = completion {
                 c()
             }
         }))
-        self.presentViewController(alert, animated: true, completion: completion)
+        self.present(alert, animated: true, completion: completion)
     }
 
     func whoami() {
-        SKYContainer.defaultContainer().getWhoAmIWithCompletionHandler { (user, error) in
+        SKYContainer.default().getWhoAmI { (user, error) in
             if error != nil {
-                self.showAuthenticationError(user, error: error, completion: {
+                self.showAuthenticationError(user, error: error as! NSError, completion: {
                     self.login(nil)
                 })
                 return
@@ -89,25 +89,25 @@ class UserAuthenticationViewController: UITableViewController {
     }
 
     func loginStatusDidChange() {
-        if let user = SKYContainer.defaultContainer().currentUser {
+        if let user = SKYContainer.default().currentUser {
             self.lastUsername = user.username
         }
 
         self.tableView.reloadData()
     }
 
-    func login(username: String?) {
-        let alert = UIAlertController(title: "Login", message: "Please enter your username and password.", preferredStyle: .Alert)
-        alert.addTextFieldWithConfigurationHandler { (textField) in
+    func login(_ username: String?) {
+        let alert = UIAlertController(title: "Login", message: "Please enter your username and password.", preferredStyle: .alert)
+        alert.addTextField { (textField) in
             textField.placeholder = "Username"
             textField.text = username
         }
-        alert.addTextFieldWithConfigurationHandler { (textField) in
+        alert.addTextField { (textField) in
             textField.placeholder = "Password"
-            textField.secureTextEntry = true
+            textField.isSecureTextEntry = true
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Login", style: .Default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { (_) in
             let username = alert.textFields?.first?.text
             let password = alert.textFields?.last?.text
 
@@ -115,9 +115,9 @@ class UserAuthenticationViewController: UITableViewController {
                 return
             }
 
-            SKYContainer.defaultContainer().loginWithUsername(username, password: password, completionHandler: { (user, error) in
+            SKYContainer.default().login(withUsername: username, password: password, completionHandler: { (user, error) in
                 guard error == nil else {
-                    self.showAuthenticationError(user, error: error, completion: {
+                    self.showAuthenticationError(user, error: error as! NSError, completion: {
                         self.login(username)
                     })
                     return
@@ -125,20 +125,20 @@ class UserAuthenticationViewController: UITableViewController {
             })
         }))
         alert.preferredAction = alert.actions.last
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
-    func signup(username: String?) {
-        let alert = UIAlertController(title: "Signup", message: "Please enter your username and password.", preferredStyle: .Alert)
-        alert.addTextFieldWithConfigurationHandler { (textField) in
+    func signup(_ username: String?) {
+        let alert = UIAlertController(title: "Signup", message: "Please enter your username and password.", preferredStyle: .alert)
+        alert.addTextField { (textField) in
             textField.placeholder = "Username"
         }
-        alert.addTextFieldWithConfigurationHandler { (textField) in
+        alert.addTextField { (textField) in
             textField.placeholder = "Password"
-            textField.secureTextEntry = true
+            textField.isSecureTextEntry = true
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-        alert.addAction(UIAlertAction(title: "Signup", style: .Default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Signup", style: .default, handler: { (_) in
             let username = alert.textFields?.first?.text
             let password = alert.textFields?.last?.text
 
@@ -146,9 +146,9 @@ class UserAuthenticationViewController: UITableViewController {
                 return
             }
 
-            SKYContainer.defaultContainer().signupWithUsername(username, password: password, completionHandler: { (user, error) in
+            SKYContainer.default().signup(withUsername: username, password: password, completionHandler: { (user, error) in
                 if error != nil {
-                    self.showAuthenticationError(user, error: error, completion: {
+                    self.showAuthenticationError(user, error: error as! NSError, completion: {
                         self.signup(username)
                     })
                     return
@@ -156,7 +156,7 @@ class UserAuthenticationViewController: UITableViewController {
             })
         }))
         alert.preferredAction = alert.actions.last
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 
     func logout() {
@@ -164,21 +164,21 @@ class UserAuthenticationViewController: UITableViewController {
             return
         }
 
-        SKYContainer.defaultContainer().logoutWithCompletionHandler { (user, error) in
+        SKYContainer.default().logout { (user, error) in
             if error != nil {
-                self.showAuthenticationError(user, error: error, completion: nil)
+                self.showAuthenticationError(user, error: error as! NSError, completion: nil)
                 return
             }
 
-            let alert = UIAlertController(title: "Logged out", message: "You have successfully logged out.", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController(title: "Logged out", message: "You have successfully logged out.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         if self.isLoggedIn {
             return 2
         } else {
@@ -186,7 +186,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case self.actionSectionIndex:
             return self.isLoggedIn ? 3 : 2
@@ -197,7 +197,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case self.actionSectionIndex:
             return "Actions"
@@ -208,10 +208,10 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case self.actionSectionIndex:
-            let cell = tableView.dequeueReusableCellWithIdentifier("action", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "action", for: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Login"
             } else if indexPath.row == 1 {
@@ -221,25 +221,25 @@ class UserAuthenticationViewController: UITableViewController {
             }
             return cell
         case self.statusSectionIndex:
-            let cell = tableView.dequeueReusableCellWithIdentifier("plain", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "plain", for: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
-                if let user = SKYContainer.defaultContainer().currentUser {
+                if let user = SKYContainer.default().currentUser {
                     cell.detailTextLabel?.text = user.username
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
                 }
             } else if indexPath.row == 1 {
                 cell.textLabel?.text = "User Record ID"
-                cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentUserRecordID
+                cell.detailTextLabel?.text = SKYContainer.default().currentUserRecordID
             } else if indexPath.row == 2 {
                 cell.textLabel?.text = "Access Token"
-                cell.detailTextLabel?.text = SKYContainer.defaultContainer().currentAccessToken.tokenString
+                cell.detailTextLabel?.text = SKYContainer.default().currentAccessToken.tokenString
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
-                if let user = SKYContainer.defaultContainer().currentUser {
+                if let user = SKYContainer.default().currentUser {
                     if let lastLoginAt = user.lastLoginAt {
-                        let f = self.dateFormatter.stringFromDate(lastLoginAt)
+                        let f = self.dateFormatter.string(from: lastLoginAt)
                         cell.detailTextLabel?.text = f
                     } else {
                         cell.detailTextLabel?.text = "Querying..."
@@ -249,9 +249,9 @@ class UserAuthenticationViewController: UITableViewController {
                 }
             } else if indexPath.row == 4 {
                 cell.textLabel?.text = "Last Seen At"
-                if let user = SKYContainer.defaultContainer().currentUser {
+                if let user = SKYContainer.default().currentUser {
                     if let lastSeenAt = user.lastSeenAt {
-                        let f = self.dateFormatter.stringFromDate(lastSeenAt)
+                        let f = self.dateFormatter.string(from: lastSeenAt)
                         cell.detailTextLabel?.text = f
                     } else {
                         cell.detailTextLabel?.text = "Querying..."
@@ -266,7 +266,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case self.actionSectionIndex:
             if indexPath.row == 0 {
@@ -279,6 +279,6 @@ class UserAuthenticationViewController: UITableViewController {
         default:
             break
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.tableView.deselectRow(at: indexPath, animated: true)
     }
 }
