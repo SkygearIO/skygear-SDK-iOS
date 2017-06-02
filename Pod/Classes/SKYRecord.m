@@ -144,6 +144,19 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return self.recordID.recordType;
 }
 
+- (void)setAccessControl:(SKYAccessControl *)accessControl
+{
+    _accessControl = accessControl;
+}
+
+- (SKYAccessControl *)getAccessControl
+{
+    if (_accessControl == nil) {
+        _accessControl = [SKYAccessControl emptyAccessControl];
+    }
+    return _accessControl;
+}
+
 #pragma mark - Dictionary-like methods
 
 - (id)objectForKey:(id)key

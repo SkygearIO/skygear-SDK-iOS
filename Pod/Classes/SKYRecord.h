@@ -95,8 +95,10 @@ extern NSString *const SKYRecordTypeUserRecord;
 @property (nonatomic, readonly, copy) NSString *lastModifiedUserRecordID;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordChangeTag;
-/// Undocumented
-@property (strong, nonatomic, readonly) SKYAccessControl *accessControl;
+/**
+ Gets or sets the access control settings for this record.
+ */
+@property (nonatomic, readwrite, strong, nonnull) SKYAccessControl *accessControl;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 

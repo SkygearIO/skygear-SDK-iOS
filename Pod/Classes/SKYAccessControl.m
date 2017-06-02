@@ -26,6 +26,12 @@
 
 @implementation SKYAccessControl
 
++ (instancetype)emptyAccessControl
+{
+    // TODO: ref #96
+    return [SKYAccessControl publicReadableAccessControl];
+}
+
 + (instancetype)publicReadableAccessControl
 {
     return [[self alloc] initWithPublicReadableAccessControl];
