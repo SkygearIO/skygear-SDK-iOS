@@ -4,7 +4,7 @@
 
 language: objective-c
 os: osx
-osx_image: xcode8.1
+osx_image: xcode8.3
 cache:
 - cocoapods
 - pip
@@ -13,7 +13,7 @@ before_install:
 - brew update
 - brew install clang-format
 - clang-format --version
-- brew install swiftlint
+- brew install swiftlint || brew upgrade swiftlint
 - sudo pip install lizard
 - pod install --project-directory=Example
 script:
