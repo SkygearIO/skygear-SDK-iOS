@@ -27,6 +27,5 @@
 @property (nonatomic, readwrite, copy) NSString *creatorUserRecordID;
 @property (nonatomic, readwrite, copy) NSDate *modificationDate;
 @property (nonatomic, readwrite, copy) NSString *lastModifiedUserRecordID;
-@property (strong, nonatomic, readwrite) SKYAccessControl *accessControl;
 
 @end

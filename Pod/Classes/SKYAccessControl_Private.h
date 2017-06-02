@@ -22,6 +22,7 @@
 
 @interface SKYAccessControl ()
 
++ (instancetype)emptyAccessControl;
 + (instancetype)publicReadableAccessControl;
 + (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries;
 
