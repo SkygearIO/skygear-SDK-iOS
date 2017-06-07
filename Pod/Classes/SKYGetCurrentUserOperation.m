@@ -42,7 +42,7 @@
 - (void)prepareForRequest
 {
     self.request = [[SKYRequest alloc] initWithAction:@"me" payload:nil];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)handleResponse:(SKYResponse *)response

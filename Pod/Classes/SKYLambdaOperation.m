@@ -60,7 +60,7 @@
     // Lambda request may not be user-authenticated. Therefore an API key
     // is also supplied.
     self.request.APIKey = self.container.APIKey;
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)handleRequestError:(NSError *)error

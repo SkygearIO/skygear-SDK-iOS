@@ -120,7 +120,7 @@
     if (apiKey.length) {
         [request setValue:self.container.APIKey forHTTPHeaderField:SKYRequestHeaderAPIKey];
     }
-    NSString *accessTokenString = self.container.currentAccessToken.tokenString;
+    NSString *accessTokenString = self.container.auth.currentAccessToken.tokenString;
     if (accessTokenString) {
         [request setValue:accessTokenString forHTTPHeaderField:SKYRequestHeaderAccessTokenKey];
     }

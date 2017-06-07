@@ -39,7 +39,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     internal var isLoggedIn: Bool {
         get {
-            return SKYContainer.default().currentUserRecordID != nil
+            return SKYContainer.default().auth.currentUserRecordID != nil
         }
     }
 
@@ -56,7 +56,7 @@ class UserAuthenticationViewController: UITableViewController {
         self.dateFormatter.locale = Locale.current
         self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         self.dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        if SKYContainer.default().currentUserRecordID != nil {
+        if SKYContainer.default().auth.currentUserRecordID != nil {
             self.whoami()
         }
     }
@@ -78,7 +78,7 @@ class UserAuthenticationViewController: UITableViewController {
     }
 
     func whoami() {
-        SKYContainer.default().getWhoAmI { (user, error) in
+        SKYContainer.default().auth.getWhoAmI { (user, error) in
             if error != nil {
                 self.showAuthenticationError(user, error: error as! NSError, completion: {
                     self.login(nil)
@@ -89,7 +89,7 @@ class UserAuthenticationViewController: UITableViewController {
     }
 
     func loginStatusDidChange() {
-        if let user = SKYContainer.default().currentUser {
+        if let user = SKYContainer.default().auth.currentUser {
             self.lastUsername = user.username
         }
 
@@ -115,7 +115,7 @@ class UserAuthenticationViewController: UITableViewController {
                 return
             }
 
-            SKYContainer.default().login(withUsername: username, password: password, completionHandler: { (user, error) in
+            SKYContainer.default().auth.login(withUsername: username, password: password, completionHandler: { (user, error) in
                 guard error == nil else {
                     self.showAuthenticationError(user, error: error as! NSError, completion: {
                         self.login(username)
@@ -146,7 +146,7 @@ class UserAuthenticationViewController: UITableViewController {
                 return
             }
 
-            SKYContainer.default().signup(withUsername: username, password: password, completionHandler: { (user, error) in
+            SKYContainer.default().auth.signup(withUsername: username, password: password, completionHandler: { (user, error) in
                 if error != nil {
                     self.showAuthenticationError(user, error: error as! NSError, completion: {
                         self.signup(username)
@@ -164,7 +164,7 @@ class UserAuthenticationViewController: UITableViewController {
             return
         }
 
-        SKYContainer.default().logout { (user, error) in
+        SKYContainer.default().auth.logout { (user, error) in
             if error != nil {
                 self.showAuthenticationError(user, error: error as! NSError, completion: nil)
                 return
@@ -224,20 +224,20 @@ class UserAuthenticationViewController: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "plain", for: indexPath)
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
-                if let user = SKYContainer.default().currentUser {
+                if let user = SKYContainer.default().auth.currentUser {
                     cell.detailTextLabel?.text = user.username
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
                 }
             } else if indexPath.row == 1 {
                 cell.textLabel?.text = "User Record ID"
-                cell.detailTextLabel?.text = SKYContainer.default().currentUserRecordID
+                cell.detailTextLabel?.text = SKYContainer.default().auth.currentUserRecordID
             } else if indexPath.row == 2 {
                 cell.textLabel?.text = "Access Token"
-                cell.detailTextLabel?.text = SKYContainer.default().currentAccessToken.tokenString
+                cell.detailTextLabel?.text = SKYContainer.default().auth.currentAccessToken.tokenString
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
-                if let user = SKYContainer.default().currentUser {
+                if let user = SKYContainer.default().auth.currentUser {
                     if let lastLoginAt = user.lastLoginAt {
                         let f = self.dateFormatter.string(from: lastLoginAt)
                         cell.detailTextLabel?.text = f
@@ -249,7 +249,7 @@ class UserAuthenticationViewController: UITableViewController {
                 }
             } else if indexPath.row == 4 {
                 cell.textLabel?.text = "Last Seen At"
-                if let user = SKYContainer.default().currentUser {
+                if let user = SKYContainer.default().auth.currentUser {
                     if let lastSeenAt = user.lastSeenAt {
                         let f = self.dateFormatter.string(from: lastSeenAt)
                         cell.detailTextLabel?.text = f

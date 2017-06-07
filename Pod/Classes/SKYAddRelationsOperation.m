@@ -58,7 +58,7 @@
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:add" payload:payload];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)handleRequestError:(NSError *)error

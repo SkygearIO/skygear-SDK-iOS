@@ -158,7 +158,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
                 NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
             NSString *dbName = [NSString
                 stringWithFormat:@"%@.db", storageFileBaseName(
-                                               database.container.currentUserRecordID, query)];
+                                               database.container.auth.currentUserRecordID, query)];
             path = [cachePath stringByAppendingPathComponent:dbName];
         }
         backingStore = [[SKYRecordStorageSqliteStore alloc] initWithFile:path];
@@ -238,7 +238,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 
 - (void)createSubscriptionWithRecordStorage:(SKYRecordStorage *)storage
 {
-    if (!self.container.currentUserRecordID) {
+    if (!self.container.auth.currentUserRecordID) {
         NSLog(@"Unable to create subscription because current user ID is nil.");
         return;
     }

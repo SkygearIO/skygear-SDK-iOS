@@ -30,9 +30,9 @@ SpecBegin(SKYFetchRecordsOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
@@ -47,7 +47,7 @@ SpecBegin(SKYFetchRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:fetch");
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"ids"]).to.equal(@[ recordID.canonicalString ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
             expect(request.payload).toNot.contain(@"desired_keys");
@@ -65,7 +65,7 @@ SpecBegin(SKYFetchRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:fetch");
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"ids"]).to.equal(@[
                 recordID1.canonicalString, recordID2.canonicalString
             ]);

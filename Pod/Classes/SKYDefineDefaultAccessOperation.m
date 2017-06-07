@@ -60,14 +60,14 @@
                                                   @"default_access" : serialized
                                               }];
     self.request.APIKey = self.container.APIKey;
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 // override
 - (void)operationWillStart
 {
     [super operationWillStart];
-    if (!self.container.currentAccessToken) {
+    if (!self.container.auth.currentAccessToken) {
         @throw [NSException exceptionWithName:NSInvalidArgumentException
                                        reason:@"SKYContainer has no currently logged-in user"
                                      userInfo:nil];

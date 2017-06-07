@@ -48,7 +48,7 @@
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:delete" payload:payload];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (NSArray *)processResultArray:(NSArray *)result operationError:(NSError **)operationError

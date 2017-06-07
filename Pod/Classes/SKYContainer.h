@@ -26,6 +26,8 @@
 #import "SKYPubsub.h"
 #import "SKYRole.h"
 
+#import "SKYAuthContainer.h"
+
 /// Undocumented
 @protocol SKYContainerDelegate <NSObject>
 
@@ -49,16 +51,15 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @class NSString;
 @class SKYOperation;
 
-// keep it in sync with SKYUserOperationActionCompletion
-/// Undocumented
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
-
 /// Undocumented
 @interface SKYContainer : NSObject
 
 // seems we need a way to authenticate app
 /// Undocumented
 + (nonnull SKYContainer *)defaultContainer;
+
+/// Undocumented
+@property (nonatomic, readonly) SKYAuthContainer *auth;
 
 /// Undocumented
 @property (nonatomic, weak) id<SKYContainerDelegate> delegate;
@@ -73,13 +74,6 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 /// Undocumented
 @property (nonatomic, readonly) NSString *containerIdentifier;
-
-/// Undocumented
-@property (nonatomic, readonly) NSString *currentUserRecordID;
-/// Undocumented
-@property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
-/// Undocumented
-@property (nonatomic, readonly) SKYUser *currentUser;
 
 /// Undocumented
 @property (nonatomic, strong) SKYPubsub *pubsubClient;
@@ -118,122 +112,6 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 
 /// Undocumented
 - (void)addOperation:(SKYOperation *)operation;
-
-/**
- Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
- stored in persistent
- storage.
-
- This method is called when operation sign up, log in and log out is performed using the container's
- convenient
- method and when the operation is completed successfully.
- */
-- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
-
-/**
- Updates the <currentUser> and <currentAccessToken>. The updated access credentials are also
- stored in persistent storage.
-
- This method is called when operation sign up, log in and log out is performed using the container's
- convenient
- method and when the operation is completed successfully.
- */
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken;
-
-/**
- Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
- remote server.
-
- Such circumstance might arise on a container when either:
-
- 1. There are no logged-in users for an opertion that requires users login.
- 2. Access token is invalid or has been expired.
-
- In either cases, developer should prompt for re-authentication of user and login using
- <SKYLoginUserOperation>.
-
- NOTE: Any attempt to invoke user logout related operation within the set handler will created an
- feedback loop as logouting an invalid access token is also a kind of authentication error.
- */
-- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
-                                                NSError *error))authErrorHandler;
-
-/**
- Creates an anonymous user account and log in as the created user.
-
- Use this to create a user that is not associated with an email address. This is a convenient method
- for
- <SKYSignupUserOperation>.
- */
-- (void)signupAnonymouslyWithCompletionHandler:
-    (SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified username and password.
- */
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified email and password.
- */
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified username, password and profile.
- */
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYRecordSaveCompletion)completionHandler;
-
-/**
- Creates a user account with the specified email, password and profile.
- */
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYRecordSaveCompletion)completionHandler;
-
-/**
- Logs in to an existing user account with the specified username and password.
- */
-- (void)loginWithUsername:(NSString *)username
-                 password:(NSString *)password
-        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Logs in to an existing user account with the specified email and password.
- */
-- (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Logs out the current user of this container.
-
- This is a convenient method for <SKYLogoutUserOperation>.
- */
-- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Changes the password of the current user of this container.
-
- This is a convenient method for <SKYChangePasswordOperation>.
- */
-- (void)setNewPassword:(NSString *)newPassword
-           oldPassword:(NSString *)oldPassword
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- *  Asks "Who am I" to server.
- *
- *  @param completionHandler the completion handler
- */
-- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Registers a device token for push notification.
@@ -292,24 +170,6 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)callLambda:(NSString *)action
             arguments:(NSArray *)arguments
     completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
-
-/**
- *  Query user objects by emails
- */
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Query user objects by usernames
- */
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Update user information
- */
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 @end
 

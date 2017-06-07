@@ -20,7 +20,7 @@
 #import "SKYOperation.h"
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
-#import "SKYContainer_Private.h"
+#import "SKYAuthContainer_Private.h"
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
 #import "SKYOperationSubclass.h"
@@ -279,8 +279,8 @@
     _error = error;
     [self handleRequestError:error];
 
-    if ([self isAuthFailureError:error] && _container.authErrorHandler) {
-        _container.authErrorHandler(_container, _container.currentAccessToken, error);
+    if ([self isAuthFailureError:error] && _container.auth.authErrorHandler) {
+        _container.auth.authErrorHandler(_container, _container.auth.currentAccessToken, error);
     }
 }
 

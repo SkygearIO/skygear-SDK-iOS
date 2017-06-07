@@ -25,7 +25,7 @@
 - (void)prepareForRequest
 {
     self.request = [[SKYRequest alloc] initWithAction:@"auth:logout" payload:nil];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)setLogoutCompletionBlock:(void (^)(NSError *))logoutCompletionBlock

@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Successfully registered remote notification")
 
         let skygear = SKYContainer.default()
-        guard skygear.currentUser != nil else {
+        guard skygear.auth.currentUser != nil else {
             print("User not yet login, abort registering device")
             return
         }

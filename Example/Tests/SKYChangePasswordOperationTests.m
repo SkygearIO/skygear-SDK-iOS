@@ -28,9 +28,9 @@ SpecBegin(SKYChangePasswordOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make SKYRequest with old password and new password", ^{

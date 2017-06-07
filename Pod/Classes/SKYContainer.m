@@ -20,6 +20,7 @@
 #import <SKYKit/SKYKit.h>
 
 #import "SKYAccessControl_Private.h"
+#import "SKYAuthContainer_Private.h"
 #import "SKYContainer_Private.h"
 #import "SKYDatabase_Private.h"
 #import "SKYNotification_Private.h"
@@ -41,11 +42,10 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 @end
 
 @implementation SKYContainer {
-    SKYAccessToken *_accessToken;
-    NSString *_userRecordID;
-    SKYUser *_currentUser;
     SKYDatabase *_publicCloudDatabase;
     NSString *_APIKey;
+
+    SKYAuthContainer *_auth;
 }
 
 - (instancetype)init
@@ -56,6 +56,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"SKYContainerOperationQueue";
         _subscriptionSeqNumDict = [NSMutableDictionary dictionary];
+        _auth = [[SKYAuthContainer alloc] initWithContainer:self];
         _publicCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
@@ -69,7 +70,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                       APIKey:nil];
         _defaultTimeoutInterval = 60.0;
 
-        [self loadCurrentUserAndAccessToken];
+        [self.auth loadCurrentUserAndAccessToken];
     }
     return self;
 }
@@ -87,11 +88,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (SKYDatabase *)publicCloudDatabase
 {
     return _publicCloudDatabase;
-}
-
-- (NSString *)currentUserRecordID
-{
-    return _userRecordID;
 }
 
 - (NSString *)registeredDeviceID
@@ -218,344 +214,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     operation.container = self;
     operation.timeoutInterval = self.defaultTimeoutInterval;
     [self.operationQueue addOperation:operation];
-}
-
-- (SKYAccessToken *)currentAccessToken
-{
-    return _accessToken;
-}
-
-- (void)loadCurrentUserAndAccessToken
-{
-    NSString *userRecordID =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
-    NSString *accessToken =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
-    SKYUser *user = nil;
-    NSData *encodedUser =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUser"];
-    if ([encodedUser isKindOfClass:[NSData class]]) {
-        user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
-    }
-
-    if (accessToken && (userRecordID || user)) {
-        _currentUser = user;
-        if (user) {
-            _userRecordID = user.userID;
-        } else {
-            _userRecordID = userRecordID;
-        }
-        _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
-    } else {
-        _currentUser = nil;
-        _userRecordID = nil;
-        _accessToken = nil;
-    }
-}
-
-- (void)saveCurrentUserAndAccessToken
-{
-    if (_accessToken && (_userRecordID || _currentUser)) {
-        if (_userRecordID) {
-            [[NSUserDefaults standardUserDefaults] setObject:_userRecordID
-                                                      forKey:@"SKYContainerCurrentUserRecordID"];
-        }
-        if (_currentUser) {
-            [[NSUserDefaults standardUserDefaults]
-                setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
-                   forKey:@"SKYContainerCurrentUser"];
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString
-                                                  forKey:@"SKYContainerAccessToken"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    } else {
-        [[NSUserDefaults standardUserDefaults]
-            removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUser"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken
-{
-    if (userRecordID && accessToken) {
-        _userRecordID = userRecordID;
-        _accessToken = accessToken;
-        _currentUser = nil;
-    } else {
-        _userRecordID = nil;
-        _accessToken = nil;
-        _currentUser = nil;
-    }
-
-    [self saveCurrentUserAndAccessToken];
-
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                      object:self
-                    userInfo:nil];
-}
-
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken
-{
-    if (user && accessToken) {
-        _userRecordID = user.userID;
-        _accessToken = accessToken;
-        _currentUser = user;
-    } else {
-        _userRecordID = nil;
-        _accessToken = nil;
-        _currentUser = nil;
-    }
-
-    [self saveCurrentUserAndAccessToken];
-
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                      object:self
-                    userInfo:nil];
-}
-
-- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
-                                                NSError *error))authErrorHandler
-{
-    _authErrorHandler = authErrorHandler;
-}
-
-#pragma mark - User Auth
-
-- (void)performUserAuthOperation:(SKYOperation *)operation
-               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    __weak typeof(self) weakSelf = self;
-    void (^completionBock)(SKYUser *, SKYAccessToken *, NSError *) =
-        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
-            if (!error) {
-                [weakSelf updateWithUser:user accessToken:accessToken];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        };
-
-    if ([operation isKindOfClass:[SKYLoginUserOperation class]]) {
-        [(SKYLoginUserOperation *)operation setLoginCompletionBlock:completionBock];
-    } else if ([operation isKindOfClass:[SKYSignupUserOperation class]]) {
-        [(SKYSignupUserOperation *)operation setSignupCompletionBlock:completionBock];
-    } else if ([operation isKindOfClass:[SKYGetCurrentUserOperation class]]) {
-        [(SKYGetCurrentUserOperation *)operation setGetCurrentUserCompletionBlock:completionBock];
-    } else {
-        @throw [NSException
-            exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:@"Unexpected operation: %@",
-                                                         NSStringFromClass(operation.class)]
-                     userInfo:nil];
-    }
-    [self addOperation:operation];
-}
-
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithUsername:username password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithEmail:email password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-/**
- Creates a user account with the specified username, password and profile.
- */
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYRecordSaveCompletion)completionHandler
-{
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithUsername:username password:password];
-    [self performUserAuthOperation:operation
-                 completionHandler:^(SKYUser *user, NSError *error) {
-                     if (error) {
-                         completionHandler(nil, error);
-                         return;
-                     }
-                     [self createProfile:profile withUser:user completion:completionHandler];
-                 }];
-}
-
-/**
- Creates a user account with the specified email, password and profile.
- */
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYRecordSaveCompletion)completionHandler
-{
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithEmail:email password:password];
-    [self performUserAuthOperation:operation
-                 completionHandler:^(SKYUser *user, NSError *error) {
-                     if (error) {
-                         completionHandler(nil, error);
-                         return;
-                     }
-                     [self createProfile:profile withUser:user completion:completionHandler];
-                 }];
-}
-
-- (void)signupAnonymouslyWithCompletionHandler:
-    (SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"CHANGEME"];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)createProfile:(NSDictionary *)profile
-             withUser:(SKYUser *)user
-           completion:(SKYRecordSaveCompletion)completion
-{
-    SKYRecord *userRecord =
-        [SKYRecord recordWithRecordID:[SKYRecordID recordIDWithRecordType:@"user" name:user.userID]
-                                 data:profile];
-    [self.publicCloudDatabase saveRecord:userRecord completion:completion];
-}
-
-- (void)loginWithUsername:(NSString *)username
-                 password:(NSString *)password
-        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithUsername:username password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithEmail:email password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYLogoutUserOperation *logoutOperation = [[SKYLogoutUserOperation alloc] init];
-
-    __weak typeof(self) weakSelf = self;
-    logoutOperation.logoutCompletionBlock = ^(NSError *error) {
-        if (error) {
-            // Any of the following error code will be treated as successful logout
-            switch (error.code) {
-                case SKYErrorNotAuthenticated:
-                case SKYErrorAccessKeyNotAccepted:
-                case SKYErrorAccessTokenNotAccepted:
-                    error = nil;
-            }
-        }
-        if (!error) {
-            [weakSelf updateWithUser:nil accessToken:nil];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nil, error);
-        });
-    };
-
-    NSString *deviceID = self.registeredDeviceID;
-    if (deviceID != nil) {
-        [self unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-            if (error != nil) {
-                NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
-            }
-
-            [weakSelf addOperation:logoutOperation];
-        }];
-    } else {
-        [self addOperation:logoutOperation];
-    }
-}
-
-- (void)setNewPassword:(NSString *)newPassword
-           oldPassword:(NSString *)oldPassword
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYChangePasswordOperation *operation =
-        [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
-
-    operation.changePasswordCompletionBlock =
-        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        };
-
-    [self addOperation:operation];
-}
-
-- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYUserDiscoverPredicate *predicate = [SKYUserDiscoverPredicate predicateWithEmails:emails];
-    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
-}
-
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYUserDiscoverPredicate *predicate =
-        [SKYUserDiscoverPredicate predicateWithUsernames:usernames];
-    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
-}
-
-- (void)queryUsersByPredicate:(SKYUserDiscoverPredicate *)predicate
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYQuery *query = [SKYQuery queryWithRecordType:@"user" predicate:predicate];
-    SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
-    operation.database = self.publicCloudDatabase;
-    operation.queryRecordsCompletionBlock =
-        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(fetchedRecords, operationError);
-                });
-            }
-        };
-
-    [self addOperation:operation];
-}
-
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYUpdateUserOperation *operation = [SKYUpdateUserOperation operationWithUser:user];
-
-    operation.updateUserCompletionBlock = ^(SKYUser *user, NSError *error) {
-        if (completionHandler) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        }
-    };
-
-    [self addOperation:operation];
 }
 
 #pragma mark - SKYRole

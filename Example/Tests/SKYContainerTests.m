@@ -82,12 +82,12 @@ describe(@"user login and signup", ^{
     __block SKYContainer *container = nil;
     __block void (^assertLoggedIn)(NSString *, NSError *) =
         ^(NSString *userRecordID, NSError *error) {
-            expect(container.currentUserRecordID).to.equal(userRecordID);
-            expect(container.currentUser.username).to.equal(@"john.doe");
-            expect(container.currentUser.email).to.equal(@"john.doe@example.com");
+            expect(container.auth.currentUserRecordID).to.equal(userRecordID);
+            expect(container.auth.currentUser.username).to.equal(@"john.doe");
+            expect(container.auth.currentUser.email).to.equal(@"john.doe@example.com");
             expect(error).to.beNil();
             expect(userRecordID).to.equal(@"UUID");
-            expect(container.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+            expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
         };
 
     beforeEach(^{
@@ -139,29 +139,29 @@ describe(@"user login and signup", ^{
 
     it(@"signup user email and password", ^{
         waitUntil(^(DoneCallback done) {
-            [container signupWithEmail:@"test@invalid"
-                              password:@"secret"
-                     completionHandler:^(SKYUser *user, NSError *error) {
-                         assertLoggedIn(user.userID, error);
-                         done();
-                     }];
+            [container.auth signupWithEmail:@"test@invalid"
+                                   password:@"secret"
+                          completionHandler:^(SKYUser *user, NSError *error) {
+                              assertLoggedIn(user.userID, error);
+                              done();
+                          }];
         });
     });
 
     it(@"signup username and password", ^{
         waitUntil(^(DoneCallback done) {
-            [container signupWithUsername:@"test"
-                                 password:@"secret"
-                        completionHandler:^(SKYUser *user, NSError *error) {
-                            assertLoggedIn(user.userID, error);
-                            done();
-                        }];
+            [container.auth signupWithUsername:@"test"
+                                      password:@"secret"
+                             completionHandler:^(SKYUser *user, NSError *error) {
+                                 assertLoggedIn(user.userID, error);
+                                 done();
+                             }];
         });
     });
 
     it(@"signup user email, password and profile", ^{
         waitUntil(^(DoneCallback done) {
-            [container signupWithEmail:@"test@invalid"
+            [container.auth signupWithEmail:@"test@invalid"
                 password:@"secret"
                 profileDictionary:@{
                     @"foo" : @"bar"
@@ -175,7 +175,7 @@ describe(@"user login and signup", ^{
 
     it(@"signup username, password and profile", ^{
         waitUntil(^(DoneCallback done) {
-            [container signupWithUsername:@"test"
+            [container.auth signupWithUsername:@"test"
                 password:@"secret"
                 profileDictionary:@{
                     @"foo" : @"bar"
@@ -189,23 +189,23 @@ describe(@"user login and signup", ^{
 
     it(@"login user email and password", ^{
         waitUntil(^(DoneCallback done) {
-            [container loginWithEmail:@"test@invalid"
-                             password:@"secret"
-                    completionHandler:^(SKYUser *user, NSError *error) {
-                        assertLoggedIn(user.userID, error);
-                        done();
-                    }];
+            [container.auth loginWithEmail:@"test@invalid"
+                                  password:@"secret"
+                         completionHandler:^(SKYUser *user, NSError *error) {
+                             assertLoggedIn(user.userID, error);
+                             done();
+                         }];
         });
     });
 
     it(@"login username and password", ^{
         waitUntil(^(DoneCallback done) {
-            [container loginWithUsername:@"test"
-                                password:@"secret"
-                       completionHandler:^(SKYUser *user, NSError *error) {
-                           assertLoggedIn(user.userID, error);
-                           done();
-                       }];
+            [container.auth loginWithUsername:@"test"
+                                     password:@"secret"
+                            completionHandler:^(SKYUser *user, NSError *error) {
+                                assertLoggedIn(user.userID, error);
+                                done();
+                            }];
         });
     });
 
@@ -245,7 +245,7 @@ describe(@"get current user from server", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
                 expect(error).to.beNil();
 
                 expect(user).notTo.beNil();
@@ -279,7 +279,7 @@ describe(@"get current user from server", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
                 expect(user).to.beNil();
                 expect(error).notTo.beNil();
 
@@ -312,7 +312,7 @@ describe(@"save current user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container logoutWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth logoutWithCompletionHandler:^(SKYUser *user, NSError *error) {
                 done();
             }];
         });
@@ -320,46 +320,47 @@ describe(@"save current user", ^{
 
     it(@"fetch user with ID", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container
+        [container.auth
             updateWithUserRecordID:@"user1"
                        accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [[SKYContainer alloc] init];
-        expect(container.currentUserRecordID).to.equal(@"user1");
-        expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
+        expect(container.auth.currentUserRecordID).to.equal(@"user1");
+        expect(container.auth.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
 
     it(@"fetch user with User", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
         SKYUser *user = [SKYUser userWithUserID:@"user1"];
         user.username = @"username1";
-        [container updateWithUser:user
-                      accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
+        [container.auth
+            updateWithUser:user
+               accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [[SKYContainer alloc] init];
-        expect(container.currentUserRecordID).to.equal(@"user1");
-        expect(container.currentUser.username).to.equal(@"username1");
-        expect(container.currentAccessToken.tokenString).to.equal(@"accesstoken1");
+        expect(container.auth.currentUserRecordID).to.equal(@"user1");
+        expect(container.auth.currentUser.username).to.equal(@"username1");
+        expect(container.auth.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
 
     it(@"update with nil ID", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container updateWithUserRecordID:nil accessToken:nil];
+        [container.auth updateWithUserRecordID:nil accessToken:nil];
 
         container = [[SKYContainer alloc] init];
-        expect(container.currentUserRecordID).to.beNil();
-        expect(container.currentUser).to.beNil();
-        expect(container.currentAccessToken).to.beNil();
+        expect(container.auth.currentUserRecordID).to.beNil();
+        expect(container.auth.currentUser).to.beNil();
+        expect(container.auth.currentAccessToken).to.beNil();
     });
 
     it(@"update with nil User", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        [container updateWithUser:nil accessToken:nil];
+        [container.auth updateWithUser:nil accessToken:nil];
 
         container = [[SKYContainer alloc] init];
-        expect(container.currentUserRecordID).to.beNil();
-        expect(container.currentUser).to.beNil();
-        expect(container.currentAccessToken).to.beNil();
+        expect(container.auth.currentUserRecordID).to.beNil();
+        expect(container.auth.currentUser).to.beNil();
+        expect(container.auth.currentAccessToken).to.beNil();
     });
 
     afterEach(^{
@@ -468,7 +469,7 @@ describe(@"unregister device", ^{
 
     beforeEach(^{
         container = [[SKYContainer alloc] init];
-        [container
+        [container.auth
             updateWithUserRecordID:@"user_id_001"
                        accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];
     });
@@ -551,8 +552,8 @@ describe(@"AuthenticationError callback", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container setAuthenticationErrorHandler:^(SKYContainer *container,
-                                                       SKYAccessToken *token, NSError *error) {
+            [container.auth setAuthenticationErrorHandler:^(SKYContainer *container,
+                                                            SKYAccessToken *token, NSError *error) {
                 done();
             }];
             [container addOperation:[[MockOperation alloc] init]];
@@ -601,8 +602,8 @@ describe(@"AuthenticationError callback", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container setAuthenticationErrorHandler:^(SKYContainer *container,
-                                                       SKYAccessToken *token, NSError *error) {
+            [container.auth setAuthenticationErrorHandler:^(SKYContainer *container,
+                                                            SKYAccessToken *token, NSError *error) {
                 @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                                reason:@"Thou shalt not call"
                                              userInfo:nil];
@@ -808,8 +809,8 @@ describe(@"manage roles", ^{
     beforeEach(^{
         container = [[SKYContainer alloc] init];
         [container configureWithAPIKey:apiKey];
-        [container updateWithUserRecordID:currentUserId
-                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+        [container.auth updateWithUserRecordID:currentUserId
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
 
     it(@"should handle define admin roles correctly", ^{
@@ -877,8 +878,8 @@ describe(@"manage user", ^{
     beforeEach(^{
         container = [[SKYContainer alloc] init];
         [container configureWithAPIKey:apiKey];
-        [container updateWithUserRecordID:currentUserId
-                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+        [container.auth updateWithUserRecordID:currentUserId
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
 
     it(@"should be able to query by emails", ^{
@@ -908,23 +909,23 @@ describe(@"manage user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
-                        completionHandler:^(NSArray<SKYRecord *> *users, NSError *error) {
-                            expect([NSThread isMainThread]).to.beTruthy();
+            [container.auth queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
+                             completionHandler:^(NSArray<SKYRecord *> *users, NSError *error) {
+                                 expect([NSThread isMainThread]).to.beTruthy();
 
-                            expect(error).to.beNil();
-                            expect(users).to.haveACountOf(2);
+                                 expect(error).to.beNil();
+                                 expect(users).to.haveACountOf(2);
 
-                            expect(users[0].recordID.recordName).to.equal(@"user0");
-                            expect([users[0].transient objectForKey:@"_email"])
-                                .to.equal(@"john.doe@example.com");
+                                 expect(users[0].recordID.recordName).to.equal(@"user0");
+                                 expect([users[0].transient objectForKey:@"_email"])
+                                     .to.equal(@"john.doe@example.com");
 
-                            expect(users[1].recordID.recordName).to.equal(@"user1");
-                            expect([users[1].transient objectForKey:@"_email"])
-                                .to.equal(@"jane.doe@example.com");
+                                 expect(users[1].recordID.recordName).to.equal(@"user1");
+                                 expect([users[1].transient objectForKey:@"_email"])
+                                     .to.equal(@"jane.doe@example.com");
 
-                            done();
-                        }];
+                                 done();
+                             }];
         });
 
     });
@@ -954,17 +955,17 @@ describe(@"manage user", ^{
         [user addRole:developerRole];
 
         waitUntil(^(DoneCallback done) {
-            [container saveUser:user
-                     completion:^(SKYUser *user, NSError *error) {
-                         expect(error).to.beNil();
-                         expect(user).notTo.beNil();
-                         expect(user.userID).to.equal(@"user_id");
-                         expect(user.username).to.equal(@"user");
-                         expect(user.email).to.equal(@"user@skygear.io");
-                         expect([user hasRole:developerRole]).to.equal(YES);
+            [container.auth saveUser:user
+                          completion:^(SKYUser *user, NSError *error) {
+                              expect(error).to.beNil();
+                              expect(user).notTo.beNil();
+                              expect(user.userID).to.equal(@"user_id");
+                              expect(user.username).to.equal(@"user");
+                              expect(user.email).to.equal(@"user@skygear.io");
+                              expect([user hasRole:developerRole]).to.equal(YES);
 
-                         done();
-                     }];
+                              done();
+                          }];
         });
     });
 
@@ -988,8 +989,8 @@ describe(@"record creation access", ^{
     beforeEach(^{
         container = [[SKYContainer alloc] init];
         [container configureWithAPIKey:apiKey];
-        [container updateWithUserRecordID:currentUserId
-                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+        [container.auth updateWithUserRecordID:currentUserId
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
 
     it(@"can define creation access of record", ^{
@@ -1035,8 +1036,8 @@ describe(@"record default access", ^{
     beforeEach(^{
         container = [[SKYContainer alloc] init];
         [container configureWithAPIKey:apiKey];
-        [container updateWithUserRecordID:currentUserId
-                              accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+        [container.auth updateWithUserRecordID:currentUserId
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
 
     it(@"can define default access of record", ^{

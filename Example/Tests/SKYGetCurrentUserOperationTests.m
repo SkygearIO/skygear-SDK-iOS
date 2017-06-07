@@ -28,7 +28,7 @@ SpecBegin(SKYGetCurrentUserOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container
+            [container.auth
                 updateWithUserRecordID:@"user-1"
                            accessToken:[[SKYAccessToken alloc] initWithTokenString:@"token-1"]];
         });
@@ -45,7 +45,7 @@ SpecBegin(SKYGetCurrentUserOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"me");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
         });
 
         it(@"should get correct user", ^{

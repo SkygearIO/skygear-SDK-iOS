@@ -29,9 +29,9 @@ SpecBegin(SKYLambdaOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"calls lambda with array args", ^{
@@ -44,7 +44,7 @@ SpecBegin(SKYLambdaOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"hello:world");
             expect(request.APIKey).to.equal(container.APIKey);
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"args"]).to.equal(args);
         });
 
@@ -58,7 +58,7 @@ SpecBegin(SKYLambdaOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"hello:world");
             expect(request.APIKey).to.equal(container.APIKey);
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"args"]).to.equal(args);
         });
 

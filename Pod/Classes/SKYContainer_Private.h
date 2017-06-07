@@ -21,22 +21,6 @@
 
 @interface SKYContainer ()
 
-/**
- Loads <NSString> and <SKYAccessToken> from persistent storage. Use this method to resume
- user's access credentials
- after application launch.
-
- This method is called when <SKYContainer> is `-init` is called. You should not call this method
- manually.
- */
-- (void)loadCurrentUserAndAccessToken;
-
-- (void)performUserAuthOperation:(SKYOperation *)operation
-               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
 @property (nonatomic, strong) SKYPubsub *internalPubsubClient;
-
-@property (nonatomic, copy, setter=setAuthenticationErrorHandler:) void (^authErrorHandler)
-    (SKYContainer *container, SKYAccessToken *token, NSError *error);
 
 @end

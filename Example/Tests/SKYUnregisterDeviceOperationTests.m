@@ -28,9 +28,9 @@ SpecBegin(SKYUnregisterDeviceOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:@"user_id"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"access_token"]];
+            [container.auth updateWithUserRecordID:@"user_id"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"access_token"]];
         });
 
         afterEach(^{

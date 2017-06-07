@@ -38,8 +38,9 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:apiKey];
-            [container updateWithUserRecordID:currentUserID
-                                  accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth
+                updateWithUserRecordID:currentUserID
+                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{

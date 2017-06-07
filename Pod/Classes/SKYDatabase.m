@@ -75,7 +75,7 @@
 
 - (SKYUser *)currentUser
 {
-    NSString *currentUserRecordID = [self.container currentUserRecordID];
+    NSString *currentUserRecordID = [self.container.auth currentUserRecordID];
     return currentUserRecordID ? [[SKYUser alloc] initWithUserID:currentUserRecordID] : nil;
 }
 

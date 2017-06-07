@@ -64,7 +64,7 @@
     }
 
     self.request = [[SKYRequest alloc] initWithAction:@"record:save" payload:payload];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)handleRequestError:(NSError *)error
