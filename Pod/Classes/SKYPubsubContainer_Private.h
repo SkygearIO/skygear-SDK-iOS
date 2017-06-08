@@ -25,9 +25,9 @@
 
 @property (nonatomic, weak) SKYContainer *container;
 
-@property (nonatomic, strong) SKYPubsub *pubsubClient;
+@property (nonatomic, strong) SKYPubsubClient *pubsubClient;
 
-@property (nonatomic, strong) SKYPubsub *internalPubsubClient;
+@property (nonatomic, strong) SKYPubsubClient *internalPubsubClient;
 
 - (instancetype)initWithContainer:(SKYContainer *)container;
 

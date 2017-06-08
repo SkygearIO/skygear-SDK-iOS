@@ -686,7 +686,7 @@ describe(@"maintains a private pubsub", ^{
     beforeEach(^{
         container = [[SKYContainer alloc] init];
 
-        pubsub = OCMClassMock([SKYPubsub class]);
+        pubsub = OCMClassMock([SKYPubsubClient class]);
         container.pubsub.internalPubsubClient = pubsub;
     });
 

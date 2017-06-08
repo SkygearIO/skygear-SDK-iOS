@@ -1,5 +1,5 @@
 //
-//  SKYPubsub.h
+//  SKYPubsubClient.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -20,7 +20,7 @@
 #import <Foundation/Foundation.h>
 
 /// Undocumented
-@interface SKYPubsub : NSObject
+@interface SKYPubsubClient : NSObject
 
 /// Undocumented
 @property (nonatomic, copy) NSURL *endPointAddress;

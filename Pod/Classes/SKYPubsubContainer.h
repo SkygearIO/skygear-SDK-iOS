@@ -19,7 +19,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKYPubsub.h"
+#import "SKYPubsubClient.h"
 
 @interface SKYPubsubContainer : NSObject
 

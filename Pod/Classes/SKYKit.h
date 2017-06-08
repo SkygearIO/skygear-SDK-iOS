@@ -53,7 +53,7 @@
 #import "SKYNotificationInfoSerializer.h"
 #import "SKYOperation.h"
 #import "SKYPostAssetOperation.h"
-#import "SKYPubsub.h"
+#import "SKYPubsubClient.h"
 #import "SKYQuery.h"
 #import "SKYQueryCursor.h"
 #import "SKYQueryDeserializer.h"
