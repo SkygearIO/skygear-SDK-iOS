@@ -25,8 +25,10 @@
 #import "SKYError.h"
 #import "SKYFetchRecordsOperation.h"
 #import "SKYFetchSubscriptionsOperation.h"
+#import "SKYGetAssetPostRequestOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYModifySubscriptionsOperation.h"
+#import "SKYPostAssetOperation.h"
 #import "SKYQueryCache.h"
 #import "SKYQueryOperation.h"
 #import "SKYRecordID.h"
@@ -454,6 +456,56 @@
                 }
             }
         }];
+}
+
+- (void)uploadAsset:(SKYAsset *)asset
+    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
+{
+    __weak typeof(self) wself = self;
+
+    if ([asset.fileSize integerValue] == 0) {
+        if (completionHandler) {
+            completionHandler(
+                nil, [NSError errorWithDomain:SKYOperationErrorDomain
+                                         code:SKYErrorInvalidArgument
+                                     userInfo:@{
+                                         SKYErrorMessageKey : @"File size is invalid (filesize=0).",
+                                         NSLocalizedDescriptionKey : NSLocalizedString(
+                                             @"Unable to open file or file is not found.", nil)
+                                     }]);
+        }
+        return;
+    }
+
+    SKYGetAssetPostRequestOperation *operation =
+        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+    operation.getAssetPostRequestCompletionBlock = ^(
+        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+        NSError *operationError) {
+        if (operationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, operationError);
+                });
+            }
+
+            return;
+        }
+
+        SKYPostAssetOperation *postOperation =
+            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
+        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, postOperationError);
+                });
+            }
+        };
+
+        [wself addOperation:postOperation];
+    };
+
+    [self.container addOperation:operation];
 }
 
 @end

@@ -827,14 +827,14 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container defineAdminRoles:@[
+            [container.publicCloudDatabase defineAdminRoles:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                             completion:^(NSError *error) {
-                                 expect(error).to.beNil();
-                                 done();
-                             }];
+                                                 completion:^(NSError *error) {
+                                                     expect(error).to.beNil();
+                                                     done();
+                                                 }];
         });
     });
 
@@ -852,14 +852,14 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container setUserDefaultRole:@[
+            [container.publicCloudDatabase setUserDefaultRole:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                               completion:^(NSError *error) {
-                                   expect(error).to.beNil();
-                                   done();
-                               }];
+                                                   completion:^(NSError *error) {
+                                                       expect(error).to.beNil();
+                                                       done();
+                                                   }];
         });
     });
 
@@ -1007,12 +1007,12 @@ describe(@"record creation access", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container defineCreationAccessWithRecordType:paintingRecordType
-                                                    roles:@[ painterRole ]
-                                               completion:^(NSError *error) {
-                                                   expect(error).to.beNil();
-                                                   done();
-                                               }];
+            [container.publicCloudDatabase defineCreationAccessWithRecordType:paintingRecordType
+                                                                        roles:@[ painterRole ]
+                                                                   completion:^(NSError *error) {
+                                                                       expect(error).to.beNil();
+                                                                       done();
+                                                                   }];
         });
     });
 
@@ -1064,12 +1064,12 @@ describe(@"record default access", ^{
                 [SKYAccessControlEntry readEntryForRole:painterRole],
                 [SKYAccessControlEntry readEntryForPublic]
             ]];
-            [container defineDefaultAccessWithRecordType:paintingRecordType
-                                                  access:acl
-                                              completion:^(NSError *error) {
-                                                  expect(error).to.beNil();
-                                                  done();
-                                              }];
+            [container.publicCloudDatabase defineDefaultAccessWithRecordType:paintingRecordType
+                                                                      access:acl
+                                                                  completion:^(NSError *error) {
+                                                                      expect(error).to.beNil();
+                                                                      done();
+                                                                  }];
         });
     });
 

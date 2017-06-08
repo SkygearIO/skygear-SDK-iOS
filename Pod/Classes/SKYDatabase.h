@@ -19,6 +19,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SKYAsset.h"
 #import "SKYRecord.h"
 #import "SKYUser.h"
 
@@ -212,6 +213,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 - (void)deleteSubscriptionWithID:(NSString *)subscriptionID
                completionHandler:
                    (void (^)(NSString *subscriptionID, NSError *error))completionHandler;
+
+/// Undocumented
+- (void)uploadAsset:(SKYAsset *)asset
+    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
 
 @end
 

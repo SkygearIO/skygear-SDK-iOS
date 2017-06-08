@@ -42,7 +42,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 @end
 
 @implementation SKYContainer {
-    SKYDatabase *_publicCloudDatabase;
+    SKYPublicDatabase *_publicCloudDatabase;
     NSString *_APIKey;
 
     SKYAuthContainer *_auth;
@@ -57,7 +57,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         _operationQueue.name = @"SKYContainerOperationQueue";
         _subscriptionSeqNumDict = [NSMutableDictionary dictionary];
         _auth = [[SKYAuthContainer alloc] initWithContainer:self];
-        _publicCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
+        _publicCloudDatabase = [[SKYPublicDatabase alloc] initWithContainer:self];
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
@@ -85,7 +85,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     return SKYContainerDefaultInstance;
 }
 
-- (SKYDatabase *)publicCloudDatabase
+- (SKYPublicDatabase *)publicCloudDatabase
 {
     return _publicCloudDatabase;
 }
@@ -216,79 +216,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [self.operationQueue addOperation:operation];
 }
 
-#pragma mark - SKYRole
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock
-{
-    SKYDefineAdminRolesOperation *operation =
-        [SKYDefineAdminRolesOperation operationWithRoles:roles];
-
-    operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }
-    };
-
-    [self addOperation:operation];
-}
-
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock
-{
-    SKYSetUserDefaultRoleOperation *operation =
-        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
-
-    operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }
-    };
-
-    [self addOperation:operation];
-}
-
-- (void)defineCreationAccessWithRecordType:(NSString *)recordType
-                                     roles:(NSArray<SKYRole *> *)roles
-                                completion:(void (^)(NSError *error))completionBlock
-{
-    SKYDefineCreationAccessOperation *operation =
-        [SKYDefineCreationAccessOperation operationWithRecordType:recordType roles:roles];
-    operation.defineCreationAccessCompletionBlock =
-        ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
-            if (completionBlock) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(error);
-                });
-            }
-        };
-
-    [self addOperation:operation];
-}
-
-- (void)defineDefaultAccessWithRecordType:(NSString *)recordType
-                                   access:(SKYAccessControl *)accessControl
-                               completion:(void (^)(NSError *error))completionBlock
-{
-    SKYDefineDefaultAccessOperation *operation =
-        [SKYDefineDefaultAccessOperation operationWithRecordType:recordType
-                                                   accessControl:accessControl];
-
-    operation.defineDefaultAccessCompletionBlock =
-        ^(NSString *recordType, SKYAccessControl *accessControl, NSError *error) {
-            if (completionBlock) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(error);
-                });
-            }
-        };
-
-    [self addOperation:operation];
-}
-
 #pragma mark - SKYRemoteNotification
 - (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
                      existingDeviceID:(NSString *)existingDeviceID
@@ -388,56 +315,6 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 
         [self addOperation:operation];
     }
-}
-
-- (void)uploadAsset:(SKYAsset *)asset
-    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
-{
-    __weak typeof(self) wself = self;
-
-    if ([asset.fileSize integerValue] == 0) {
-        if (completionHandler) {
-            completionHandler(
-                nil, [NSError errorWithDomain:SKYOperationErrorDomain
-                                         code:SKYErrorInvalidArgument
-                                     userInfo:@{
-                                         SKYErrorMessageKey : @"File size is invalid (filesize=0).",
-                                         NSLocalizedDescriptionKey : NSLocalizedString(
-                                             @"Unable to open file or file is not found.", nil)
-                                     }]);
-        }
-        return;
-    }
-
-    SKYGetAssetPostRequestOperation *operation =
-        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
-    operation.getAssetPostRequestCompletionBlock = ^(
-        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
-        NSError *operationError) {
-        if (operationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(asset, operationError);
-                });
-            }
-
-            return;
-        }
-
-        SKYPostAssetOperation *postOperation =
-            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
-        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(asset, postOperationError);
-                });
-            }
-        };
-
-        [wself addOperation:postOperation];
-    };
-
-    [self addOperation:operation];
 }
 
 - (NSString *)APIKey

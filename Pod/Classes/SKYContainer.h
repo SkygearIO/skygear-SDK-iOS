@@ -20,9 +20,8 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYAccessToken.h"
-#import "SKYAsset.h"
-#import "SKYDatabase.h"
 #import "SKYNotification.h"
+#import "SKYPublicDatabase.h"
 #import "SKYPubsub.h"
 #import "SKYRole.h"
 
@@ -68,7 +67,7 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @property (nonatomic, nonatomic) NSURL *endPointAddress;
 
 /// Undocumented
-@property (nonatomic, readonly) SKYDatabase *publicCloudDatabase;
+@property (nonatomic, readonly) SKYPublicDatabase *publicCloudDatabase;
 /// Undocumented
 @property (nonatomic, readonly) SKYDatabase *privateCloudDatabase;
 
@@ -154,10 +153,6 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 - (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
                                                     NSError *error))completionHandler;
 
-/// Undocumented
-- (void)uploadAsset:(SKYAsset *)asset
-    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
-
 /**
  Calls a registered lambda function without arguments.
  */
@@ -170,43 +165,5 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 - (void)callLambda:(NSString *)action
             arguments:(NSArray *)arguments
     completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
-
-@end
-
-@interface SKYContainer (SKYRole)
-
-/**
- *  Defines roles to have special powers
- */
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Sets default roles for new registered users
- */
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Limit creation access of a record type to some roles
- *
- *  @param recordType      Record type to set creation access
- *  @param roles           Roles can create the record
- *  @param completionBlock Completion Block
- */
-- (void)defineCreationAccessWithRecordType:(NSString *)recordType
-                                     roles:(NSArray<SKYRole *> *)roles
-                                completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Set default access of a record type
- *
- *  @param recordType      Record type to set creation access
- *  @param roles           Roles can create the record
- *  @param completionBlock Completion Block
- */
-- (void)defineDefaultAccessWithRecordType:(NSString *)recordType
-                                   access:(SKYAccessControl *)accessControl
-                               completion:(void (^)(NSError *error))completionBlock;
 
 @end
