@@ -1,5 +1,5 @@
 //
-//  SKYContainer_Private.h
+//  SKYPushContainer_Private.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,10 +17,16 @@
 //  limitations under the License.
 //
 
+#import "SKYPushContainer.h"
+
 #import "SKYContainer.h"
 
-@interface SKYContainer ()
+@interface SKYPushContainer ()
 
-@property (nonatomic, readonly) NSOperationQueue *operationQueue;
+@property (nonatomic, weak) SKYContainer *container;
+
+- (instancetype)initWithContainer:(SKYContainer *)container;
+
+- (void)handleSubscriptionNoticeWithData:(NSDictionary *)data;
 
 @end

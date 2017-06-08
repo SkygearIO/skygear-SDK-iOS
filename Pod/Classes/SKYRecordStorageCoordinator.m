@@ -243,7 +243,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
         return;
     }
 
-    if (!self.container.registeredDeviceID) {
+    if (!self.container.push.registeredDeviceID) {
         NSLog(@"Unable to create subscription because registered device ID is nil.");
         return;
     }

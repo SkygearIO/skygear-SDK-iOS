@@ -22,10 +22,11 @@
 #import "SKYAccessToken.h"
 #import "SKYNotification.h"
 #import "SKYPublicDatabase.h"
-#import "SKYPubsub.h"
 #import "SKYRole.h"
 
 #import "SKYAuthContainer.h"
+#import "SKYPubsubContainer.h"
+#import "SKYPushContainer.h"
 
 /// Undocumented
 @protocol SKYContainerDelegate <NSObject>
@@ -61,6 +62,12 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @property (nonatomic, readonly) SKYAuthContainer *auth;
 
 /// Undocumented
+@property (nonatomic, readonly) SKYPubsubContainer *pubsub;
+
+/// Undocumented
+@property (nonatomic, readonly) SKYPushContainer *push;
+
+/// Undocumented
 @property (nonatomic, weak) id<SKYContainerDelegate> delegate;
 
 /// Undocumented
@@ -73,14 +80,6 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 
 /// Undocumented
 @property (nonatomic, readonly) NSString *containerIdentifier;
-
-/// Undocumented
-@property (nonatomic, strong) SKYPubsub *pubsubClient;
-
-/**
- Returns the currently registered device ID.
- */
-@property (nonatomic, readonly) NSString *registeredDeviceID;
 
 /**
  Returns the API key of the container.
@@ -102,56 +101,8 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
  */
 - (void)configureWithAPIKey:(NSString *)APIKey;
 
-/**
- Acknowledge the container that a remote notification is received. If the notification is sent by
- Ourd, container
- would invoke container:didReceiveNotification: on its delegate.
- */
-- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
-
 /// Undocumented
 - (void)addOperation:(SKYOperation *)operation;
-
-/**
- Registers a device token for push notification.
- */
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
-                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
-    __deprecated;
-
-/**
- Registers a device token for push notification.
- When the user is no longer associated to the device, you should call
- -[SKYContainer unregisterDeviceCompletionHandler:].
- */
-- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
-                    completionHandler:(void (^)(NSString *, NSError *))completionHandler;
-
-/**
- Registers a device without device token. This method should be called when the user denied
- push notification permission.
-
- This method should be called to register the current device on remote server at the time when
- the application launches. It is okay to call this on subsequent launches, even if a device
- token is already associated with this device.
- */
-- (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
-
-/**
- * Unregister the current user from the current device.
- * This should be called when the user logouts.
- */
-- (void)unregisterDevice __deprecated;
-
-/**
- * Unregister the current user from the current device, this is preferred to -[unregisterDevice].
- * This should be called when the user logouts.
- *
- * @param completionHandler the completion handler
- *
- */
-- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
-                                                    NSError *error))completionHandler;
 
 /**
  Calls a registered lambda function without arguments.

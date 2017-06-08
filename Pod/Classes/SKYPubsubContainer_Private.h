@@ -1,5 +1,5 @@
 //
-//  SKYContainer_Private.h
+//  SKYPubsubContainer_Private.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,10 +17,20 @@
 //  limitations under the License.
 //
 
+#import "SKYPubsubContainer.h"
+
 #import "SKYContainer.h"
 
-@interface SKYContainer ()
+@interface SKYPubsubContainer ()
 
-@property (nonatomic, readonly) NSOperationQueue *operationQueue;
+@property (nonatomic, weak) SKYContainer *container;
+
+@property (nonatomic, strong) SKYPubsub *pubsubClient;
+
+@property (nonatomic, strong) SKYPubsub *internalPubsubClient;
+
+- (instancetype)initWithContainer:(SKYContainer *)container;
+
+- (void)configInternalPubsubClient;
 
 @end

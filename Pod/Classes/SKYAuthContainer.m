@@ -311,15 +311,16 @@
         });
     };
 
-    NSString *deviceID = self.container.registeredDeviceID;
+    NSString *deviceID = self.container.push.registeredDeviceID;
     if (deviceID != nil) {
-        [self.container unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-            if (error != nil) {
-                NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
-            }
+        [self.container.push
+            unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                if (error != nil) {
+                    NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
+                }
 
-            [weakSelf.container addOperation:logoutOperation];
-        }];
+                [weakSelf.container addOperation:logoutOperation];
+            }];
     } else {
         [self.container addOperation:logoutOperation];
     }

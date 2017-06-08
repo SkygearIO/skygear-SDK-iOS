@@ -26,6 +26,7 @@
 #import "SKYAccessControl_Private.h"
 #import "SKYContainer_Private.h"
 #import "SKYNotification_Private.h"
+#import "SKYPubsubContainer_Private.h"
 
 // an empty SKYOperation subclass that does nothing but call its completion handler
 @interface MockOperation : SKYOperation
@@ -65,7 +66,7 @@ SpecBegin(SKYContainer)
             [container configAddress:@"http://newpoint.com:4321/"];
             NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
             expect(container.endPointAddress).to.equal(expectEndPoint);
-            expect(container.pubsubClient.endPointAddress)
+            expect(container.pubsub.endPointAddress)
                 .to.equal([NSURL URLWithString:@"ws://newpoint.com:4321/pubsub"]);
         });
     });
@@ -403,11 +404,11 @@ describe(@"register device", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container
+            [container.push
                 registerDeviceWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
                             completionHandler:^(NSString *deviceID, NSError *error) {
                                 expect(deviceID).to.equal(@"DEVICE_ID");
-                                expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                                expect([container.push registeredDeviceID]).to.equal(@"DEVICE_ID");
                                 expect(notificationPosted).to.beTruthy();
                                 done();
                             }];
@@ -430,9 +431,9 @@ describe(@"register device", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+            [container.push registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
                 expect(deviceID).to.equal(@"DEVICE_ID");
-                expect([container registeredDeviceID]).to.equal(@"DEVICE_ID");
+                expect([container.push registeredDeviceID]).to.equal(@"DEVICE_ID");
                 expect(notificationPosted).to.beTruthy();
                 done();
             }];
@@ -492,11 +493,12 @@ describe(@"unregister device", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                expect(deviceID).to.equal(@"device_id_001");
-                expect(error).to.beNil();
-                done();
-            }];
+            [container.push
+                unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                    expect(deviceID).to.equal(@"device_id_001");
+                    expect(error).to.beNil();
+                    done();
+                }];
         });
     });
 
@@ -519,11 +521,12 @@ describe(@"unregister device", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                expect(deviceID).to.beNil();
-                expect(error).notTo.beNil();
-                done();
-            }];
+            [container.push
+                unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                    expect(deviceID).to.beNil();
+                    expect(error).notTo.beNil();
+                    done();
+                }];
         });
     });
 });
@@ -684,11 +687,11 @@ describe(@"maintains a private pubsub", ^{
         container = [[SKYContainer alloc] init];
 
         pubsub = OCMClassMock([SKYPubsub class]);
-        container.internalPubsubClient = pubsub;
+        container.pubsub.internalPubsubClient = pubsub;
     });
 
     afterEach(^{
-        container.internalPubsubClient = nil;
+        container.pubsub.internalPubsubClient = nil;
         pubsub = nil;
     });
 
