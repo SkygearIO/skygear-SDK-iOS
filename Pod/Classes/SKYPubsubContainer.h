@@ -19,8 +19,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SKYPubsubClient.h"
-
 @interface SKYPubsubContainer : NSObject
 
 @property (nonatomic, readonly) NSURL *endPointAddress;

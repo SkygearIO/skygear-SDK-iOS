@@ -20,6 +20,7 @@
 #import "SKYPubsubContainer.h"
 
 #import "SKYContainer.h"
+#import "SKYPubsubClient.h"
 
 @interface SKYPubsubContainer ()
 
