@@ -504,7 +504,7 @@
             }
         };
 
-        [wself addOperation:postOperation];
+        [wself.container addOperation:postOperation];
     };
 
     [self.container addOperation:operation];
