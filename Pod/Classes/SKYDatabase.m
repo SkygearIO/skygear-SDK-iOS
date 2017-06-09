@@ -42,15 +42,17 @@
 
 @end
 
-@implementation SKYDatabase
+@implementation SKYDatabase {
+    NSString *_databaseID;
+}
 
-- (instancetype)initWithContainer:(SKYContainer *)container
+- (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID
 {
     self = [super init];
     if (self) {
         _container = container;
         _pendingOperations = [NSMutableArray array];
-        _databaseID = @"_public";
+        _databaseID = databaseID;
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"SKYDatabaseQueue";
     }

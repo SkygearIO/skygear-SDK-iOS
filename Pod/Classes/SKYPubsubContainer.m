@@ -34,9 +34,9 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     if (self) {
         self.container = container;
 
-        _pubsubClient =
-            [[SKYPubsubClient alloc] initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
-                                         APIKey:nil];
+        _pubsubClient = [[SKYPubsubClient alloc]
+            initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
+                      APIKey:nil];
         _internalPubsubClient = [[SKYPubsubClient alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];

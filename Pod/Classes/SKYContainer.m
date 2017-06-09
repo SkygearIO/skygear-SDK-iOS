@@ -53,10 +53,9 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
         _operationQueue.name = @"SKYContainerOperationQueue";
 
         _auth = [[SKYAuthContainer alloc] initWithContainer:self];
-        _publicCloudDatabase = [[SKYPublicDatabase alloc] initWithContainer:self];
-        _publicCloudDatabase.databaseID = @"_public";
-        _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
-        _privateCloudDatabase.databaseID = @"_private";
+        _publicCloudDatabase =
+            [[SKYPublicDatabase alloc] initWithContainer:self databaseID:@"_public"];
+        _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self databaseID:@"_private"];
         _pubsub = [[SKYPubsubContainer alloc] initWithContainer:self];
         _push = [[SKYPushContainer alloc] initWithContainer:self];
 

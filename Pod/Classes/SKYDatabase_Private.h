@@ -22,6 +22,6 @@
 @interface SKYDatabase ()
 
 // TODO: look for a better way to override NS_UNAVAILABLE on init
-- (instancetype)initWithContainer:(SKYContainer *)container;
+- (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID;
 
 @end

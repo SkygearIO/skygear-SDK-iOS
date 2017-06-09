@@ -35,7 +35,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 @interface SKYDatabase : NSObject
 
 /// Undocumented
-@property (nonatomic, strong) NSString *databaseID;
+@property (nonatomic, strong, readonly) NSString *databaseID;
 /// Undocumented
 @property (nonatomic, strong, readonly) SKYContainer *container;
 
