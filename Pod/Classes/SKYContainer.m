@@ -38,6 +38,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
     SKYAuthContainer *_auth;
     SKYPubsubContainer *_pubsub;
+    SKYPushContainer *_push;
 }
 
 - (instancetype)init
@@ -45,15 +46,17 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     self = [super init];
     if (self) {
         _endPointAddress = [NSURL URLWithString:SKYContainerRequestBaseURL];
+        _APIKey = nil;
+        _defaultTimeoutInterval = 60.0;
+
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"SKYContainerOperationQueue";
+
         _auth = [[SKYAuthContainer alloc] initWithContainer:self];
         _publicCloudDatabase = [[SKYPublicDatabase alloc] initWithContainer:self];
         _publicCloudDatabase.databaseID = @"_public";
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self];
         _privateCloudDatabase.databaseID = @"_private";
-        _APIKey = nil;
-        _defaultTimeoutInterval = 60.0;
         _pubsub = [[SKYPubsubContainer alloc] initWithContainer:self];
         _push = [[SKYPushContainer alloc] initWithContainer:self];
 
@@ -70,6 +73,21 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
         SKYContainerDefaultInstance = [[SKYContainer alloc] init];
     });
     return SKYContainerDefaultInstance;
+}
+
+- (SKYAuthContainer *)auth
+{
+    return _auth;
+}
+
+- (SKYPubsubContainer *)pubsub
+{
+    return _pubsub;
+}
+
+- (SKYPushContainer *)push
+{
+    return _push;
 }
 
 - (SKYPublicDatabase *)publicCloudDatabase
