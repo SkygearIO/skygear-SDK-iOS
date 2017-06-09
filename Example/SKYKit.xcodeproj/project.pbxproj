@@ -82,6 +82,9 @@
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */; };
 		A3146DAC57A1BAB2F2B7C597 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8C71207B2B56D001272DBE /* libPods-Tests.a */; };
+		A9E9311C1EEA4D18004AF717 /* SKYAuthContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */; };
+		A9E9311E1EEA4E2E004AF717 /* SKYPushContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */; };
+		A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */; };
 		CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */; };
 		CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */; };
 		CD42FE101AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */; };
@@ -194,6 +197,9 @@
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		9136F714FAE006ED8E98CCCA /* Pods-Test Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test Runner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		989370CEBB946BC3C9C9FD0A /* libPods-Test Runner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Test Runner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerTests.m; sourceTree = "<group>"; };
+		A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPushContainerTests.m; sourceTree = "<group>"; };
+		A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPubsubContainerTests.m; sourceTree = "<group>"; };
 		CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDatabaseTest.m; sourceTree = "<group>"; };
 		CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDeleteRecordsOperationTests.m; sourceTree = "<group>"; };
 		CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLogoutUserOperationTests.m; sourceTree = "<group>"; };
@@ -414,6 +420,9 @@
 				6031B9751C7D71C700132DED /* SKYUserTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 				F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */,
+				A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */,
+				A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */,
+				A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -938,6 +947,7 @@
 				CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */,
 				38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */,
 				38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */,
+				A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */,
 				38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
 				604CBFD01E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m in Sources */,
@@ -950,6 +960,7 @@
 				383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */,
 				607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */,
 				60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */,
+				A9E9311C1EEA4D18004AF717 /* SKYAuthContainerTests.m in Sources */,
 				CD7FE2691A9D9F31002C076E /* SKYOperationTests.m in Sources */,
 				376CB11B1AE8F8E100FA0324 /* SKYSubscriptionDeserializerTests.m in Sources */,
 				376CB11D1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m in Sources */,
@@ -971,6 +982,7 @@
 				38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */,
 				3745755A1B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m in Sources */,
 				5F9F71431B0B349700F7ADDD /* SKYRemoveRelationsOperationTests.m in Sources */,
+				A9E9311E1EEA4E2E004AF717 /* SKYPushContainerTests.m in Sources */,
 				CD42FE101AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m in Sources */,
 				38D3E2281B7ED41E00CCD28D /* SKYResponseTest.m in Sources */,
 				6031B9761C7D71C700132DED /* SKYUserTests.m in Sources */,
