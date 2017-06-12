@@ -29,9 +29,9 @@ SpecBegin(SKYRegisterDeviceOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"new device request", ^{
@@ -44,7 +44,7 @@ SpecBegin(SKYRegisterDeviceOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"device:register");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
             expect(request.payload[@"id"]).to.beNil();
@@ -60,7 +60,7 @@ SpecBegin(SKYRegisterDeviceOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"device:register");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.beNil();
             expect(request.payload[@"id"]).to.beNil();
@@ -78,7 +78,7 @@ SpecBegin(SKYRegisterDeviceOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"device:register");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"type"]).to.equal(@"ios");
             expect(request.payload[@"device_token"]).to.equal(@"abcdef1234567890");
             expect(request.payload[@"id"]).to.equal(@"DEVICE_ID");

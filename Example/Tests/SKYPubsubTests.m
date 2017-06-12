@@ -22,20 +22,20 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface SKYPubsub () <SRWebSocketDelegate>
+@interface SKYPubsubClient () <SRWebSocketDelegate>
 - (SRWebSocket *)makeWebSocket;
 @end
 
 SpecBegin(SKYPubsub)
 
     describe(@"Pubsub connection", ^{
-        __block SKYPubsub *pubsubClient = nil;
+        __block SKYPubsubClient *pubsubClient = nil;
         __block id mockPubsub = nil;
         __block id mockWS = nil;
 
         beforeEach(^{
             NSURL *endPoint = [NSURL URLWithString:@"ws://localhost:3000/pubsub"];
-            pubsubClient = [[SKYPubsub alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
+            pubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
             mockPubsub = [OCMockObject partialMockForObject:pubsubClient];
             mockWS = [OCMockObject mockForClass:[SRWebSocket class]];
             OCMStub([mockWS setDelegate:[OCMArg isNotNil]]);
@@ -104,13 +104,13 @@ SpecBegin(SKYPubsub)
     });
 
 describe(@"Pubsub message", ^{
-    __block SKYPubsub *pubsubClient = nil;
+    __block SKYPubsubClient *pubsubClient = nil;
     __block id mockPubsub = nil;
     __block id mockWS = nil;
 
     beforeEach(^{
         NSURL *endPoint = [NSURL URLWithString:@"ws://localhost:3000/pubsub"];
-        pubsubClient = [[SKYPubsub alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
+        pubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:endPoint APIKey:@"APIKEY"];
         mockPubsub = [OCMockObject partialMockForObject:pubsubClient];
         mockWS = [OCMockObject mockForClass:[SRWebSocket class]];
         OCMStub([mockWS setDelegate:[OCMArg isNotNil]]);

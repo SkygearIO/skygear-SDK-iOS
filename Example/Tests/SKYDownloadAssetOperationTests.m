@@ -47,9 +47,9 @@ SpecBegin(SKYDownloadAssetOperation)
             container = [[SKYContainer alloc] init];
             [container configAddress:@"http://skygear.test/"];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
 
             asset = [SKYAsset
                 assetWithName:@"prefixed-boy.txt"

@@ -33,9 +33,9 @@ SpecBegin(SKYGetAssetPostRequestOperation)
             container = [[SKYContainer alloc] init];
             [container configAddress:@"http://skygear.dev/"];
             [container configureWithAPIKey:@"API-KEY"];
-            [container updateWithUserRecordID:@"Test-User-ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"Test-Access-Token"]];
+            [container.auth updateWithUserRecordID:@"Test-User-ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"Test-Access-Token"]];
 
             asset = [SKYAsset
                 assetWithName:@"boy.txt"

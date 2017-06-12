@@ -29,9 +29,9 @@ SpecBegin(SKYDeleteRecordsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
@@ -45,7 +45,7 @@ SpecBegin(SKYDeleteRecordsOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"ids"]).to.equal(@[ recordID.canonicalString ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         });
@@ -61,7 +61,7 @@ SpecBegin(SKYDeleteRecordsOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload[@"ids"]).to.equal(@[
                 recordID1.canonicalString, recordID2.canonicalString
             ]);

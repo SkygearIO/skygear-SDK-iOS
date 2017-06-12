@@ -46,13 +46,13 @@
         @"password" : self.passwordToSet,
     };
     self.request = [[SKYRequest alloc] initWithAction:@"auth:password" payload:payload];
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)operationWillStart
 {
     [super operationWillStart];
-    if (!self.container.currentAccessToken) {
+    if (!self.container.auth.currentAccessToken) {
         @throw [NSException exceptionWithName:NSInvalidArgumentException
                                        reason:@"SKYContainer has no currently logged-in user"
                                      userInfo:nil];

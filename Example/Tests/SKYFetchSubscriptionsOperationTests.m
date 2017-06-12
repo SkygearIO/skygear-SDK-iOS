@@ -30,9 +30,9 @@ SpecBegin(SKYFetchSubscriptionsOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
@@ -48,7 +48,7 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.action).to.equal(@"subscription:fetch");
             expect(request.payload).to.equal(@{
                 @"database_id" : database.databaseID,
@@ -70,7 +70,7 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.action).to.equal(@"subscription:fetch");
             expect(request.payload).to.equal(@{
                 @"database_id" : database.databaseID,

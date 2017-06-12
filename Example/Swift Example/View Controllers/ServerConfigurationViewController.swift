@@ -66,7 +66,7 @@ class ServerConfigurationViewController: UITableViewController {
                 let textField = alert.textFields?.first
                 UserDefaults.standard.set(textField?.text, forKey: "SkygearEndpoint")
                 UserDefaults.standard.synchronize()
-                SKYContainer.default().configAddress(textField?.text)
+                SKYContainer.default().configAddress((textField?.text)!)
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }))
             alert.preferredAction = alert.actions.last

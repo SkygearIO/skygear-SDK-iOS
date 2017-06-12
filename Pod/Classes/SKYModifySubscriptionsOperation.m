@@ -70,7 +70,7 @@
 
     self.request = [[SKYRequest alloc] initWithAction:@"subscription:save" payload:payload];
     self.request.APIKey = self.container.APIKey;
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (NSArray *)processResultArray:(NSArray *)result error:(NSError **)operationError

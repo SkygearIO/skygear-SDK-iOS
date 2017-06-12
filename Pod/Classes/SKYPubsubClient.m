@@ -1,5 +1,5 @@
 //
-//  SKYPubsub.m
+//  SKYPubsubClient.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-#import "SKYPubsub.h"
+#import "SKYPubsubClient.h"
 
 #import "NSURLRequest+SKYRequest.h"
 #import "SRWebSocket.h"
@@ -25,11 +25,11 @@
 double const SKYPubsubPingInterval = 10.0;
 double const SKYPubsubReconnectWait = 1.0;
 
-@interface SKYPubsub () <SRWebSocketDelegate>
+@interface SKYPubsubClient () <SRWebSocketDelegate>
 
 @end
 
-@implementation SKYPubsub {
+@implementation SKYPubsubClient {
     SRWebSocket *_webSocket;
     NSMutableDictionary *_channelHandlers;
     NSMutableArray *_pendingPublish;

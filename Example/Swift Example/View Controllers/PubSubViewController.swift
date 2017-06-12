@@ -30,9 +30,9 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     var subscribedChannel: String?
     var messageDictionaries: [NSDictionary] = []
 
-    var pubsubClient: SKYPubsub {
+    var pubsub: SKYPubsubContainer {
         get {
-            return SKYContainer.default().pubsubClient
+            return SKYContainer.default().pubsub
         }
     }
 
@@ -167,7 +167,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     // MARK: - Publish/Subscribe
 
     func sendMessage(_ message: String, channel: String) {
-        self.pubsubClient.publishMessage(["message": message], toChannel: channel)
+        self.pubsub.publishMessage(["message": message], toChannel: channel)
         self.messageTextField.text = ""
     }
 
@@ -182,7 +182,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     }
 
     func subscribe(_ channel: String) {
-        self.pubsubClient.subscribe(to: channel) { (obj) in
+        self.pubsub.subscribe(to: channel) { (obj) in
             guard let info: NSDictionary = obj as! NSDictionary else {
                 return
             }
@@ -191,7 +191,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     }
 
     func unsubscribe(_ channel: String) {
-        self.pubsubClient.unsubscribe(channel)
+        self.pubsub.unsubscribe(channel)
     }
 
     // MARK: - UITextFieldDelegate

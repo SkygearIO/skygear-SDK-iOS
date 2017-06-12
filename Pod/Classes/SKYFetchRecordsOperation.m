@@ -58,7 +58,7 @@
     }
     self.request = [[SKYRequest alloc] initWithAction:@"record:fetch" payload:payload];
     self.request.APIKey = self.container.APIKey;
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (NSDictionary *)processResultArray:(NSArray *)result error:(NSError **)operationError

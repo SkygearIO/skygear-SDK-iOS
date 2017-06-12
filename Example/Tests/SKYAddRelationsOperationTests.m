@@ -31,9 +31,9 @@ SpecBegin(SKYAddRelationsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID1 = @"user1001";
             follower1 = [[SKYUser alloc] initWithUserID:userRecordID1];
             NSString *userRecordID2 = @"user1002";
@@ -53,7 +53,7 @@ SpecBegin(SKYAddRelationsOperation)
             expect(request.action).to.equal(@"relation:add");
             expect(request.payload[@"name"]).to.equal(@"follow");
             expect(request.payload[@"targets"]).to.haveCountOf(2);
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
 
             expect(request.payload[@"targets"][0]).to.equal(@"user1001");
             expect(request.payload[@"targets"][1]).to.equal(@"user1002");

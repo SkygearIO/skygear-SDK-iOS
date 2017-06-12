@@ -1,5 +1,5 @@
 //
-//  SKYDatabase_Private.h
+//  SKYPushContainer_Private.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,11 +17,16 @@
 //  limitations under the License.
 //
 
-#import "SKYDatabase.h"
+#import "SKYPushContainer.h"
 
-@interface SKYDatabase ()
+#import "SKYContainer.h"
 
-// TODO: look for a better way to override NS_UNAVAILABLE on init
-- (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID;
+@interface SKYPushContainer ()
+
+@property (nonatomic, weak) SKYContainer *container;
+
+- (instancetype)initWithContainer:(SKYContainer *)container;
+
+- (void)handleSubscriptionNoticeWithData:(NSDictionary *)data;
 
 @end

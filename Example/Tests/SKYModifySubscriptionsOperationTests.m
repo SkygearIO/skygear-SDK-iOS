@@ -32,9 +32,9 @@ SpecBegin(SKYModifySubscriptionsOperation)
         beforeEach(^{
             container = [[SKYContainer alloc] init];
             [container configureWithAPIKey:@"API_KEY"];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
             subscription1 = [[SKYSubscription alloc] initWithQuery:nil subscriptionID:@"sub1"];
             subscription2 = [[SKYSubscription alloc] initWithQuery:nil subscriptionID:@"sub2"];
@@ -51,7 +51,7 @@ SpecBegin(SKYModifySubscriptionsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"subscription:save");
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
             expect(request.payload).to.equal(@{
                 @"database_id" : database.databaseID,
                 @"subscriptions" : @[

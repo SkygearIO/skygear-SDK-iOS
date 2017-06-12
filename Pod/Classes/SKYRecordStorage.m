@@ -174,7 +174,8 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
     // Simulate changes to record metadata that will happen on the server-side.
     [record setModificationDate:[NSDate date]];
-    [record setLastModifiedUserRecordID:[[SKYContainer defaultContainer] currentUserRecordID]];
+    [record
+        setLastModifiedUserRecordID:[[[SKYContainer defaultContainer] auth] currentUserRecordID]];
     if ([record creationDate] == nil) {
         [record setCreationDate:record.modificationDate];
     }

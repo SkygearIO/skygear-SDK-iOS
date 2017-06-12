@@ -58,12 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Successfully registered remote notification")
 
         let skygear = SKYContainer.default()
-        guard skygear.currentUser != nil else {
+        guard skygear.auth.currentUser != nil else {
             print("User not yet login, abort registering device")
             return
         }
 
-        skygear.registerDevice(withDeviceToken: deviceToken) { (deviceID, error) in
+        skygear.push.registerDevice(withDeviceToken: deviceToken) { (deviceID, error) in
             guard error == nil else {
                 print("Failed to register device: \(error?.localizedDescription)")
                 return

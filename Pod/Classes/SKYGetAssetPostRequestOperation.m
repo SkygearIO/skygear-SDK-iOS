@@ -53,7 +53,7 @@
     [self setRequest:[[SKYRequest alloc] initWithAction:@"asset:put" payload:payload]];
 
     [self.request setAPIKey:self.container.APIKey];
-    [self.request setAccessToken:self.container.currentAccessToken];
+    [self.request setAccessToken:self.container.auth.currentAccessToken];
 }
 
 - (void)handleRequestError:(NSError *)error

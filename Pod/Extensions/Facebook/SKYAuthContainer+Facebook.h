@@ -1,5 +1,5 @@
 //
-//  SKYContainer+Facebook.m
+//  SKYContainer+Facebook.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -16,21 +16,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#import "SKYContainer+Facebook.h"
-#import "SKYContainer_Private.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "SKYKit.h"
 
-@implementation SKYContainer (Facebook)
+@class FBSDKAccessToken;
 
+@interface SKYAuthContainer (Facebook)
+
+/**
+ Login a facebook user.
+ */
 - (void)loginWithFacebookAccessToken:(FBSDKAccessToken *)accessToken
-                   completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithProvider:@"com.facebook"
-                                  authenticationData:@{
-                                      @"access_token" : accessToken.tokenString
-                                  }];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
+                   completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 @end

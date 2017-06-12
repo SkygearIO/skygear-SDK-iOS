@@ -20,17 +20,20 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYAccessToken.h"
-#import "SKYAsset.h"
-#import "SKYDatabase.h"
 #import "SKYNotification.h"
-#import "SKYPubsub.h"
+#import "SKYPublicDatabase.h"
 #import "SKYRole.h"
+
+#import "SKYAuthContainer.h"
+#import "SKYPubsubContainer.h"
+#import "SKYPushContainer.h"
 
 /// Undocumented
 @protocol SKYContainerDelegate <NSObject>
 
 /// Undocumented
-- (void)container:(SKYContainer *)container didReceiveNotification:(SKYNotification *)notification;
+- (void)container:(SKYContainer *_Nonnull)container
+    didReceiveNotification:(SKYNotification *_Nonnull)notification;
 
 @end
 
@@ -38,20 +41,16 @@
  Notification posted by <SKYContainer> when the current user
  has been updated.
  */
-extern NSString *const SKYContainerDidChangeCurrentUserNotification;
+extern NSString *_Nonnull const SKYContainerDidChangeCurrentUserNotification;
 
 /**
  Notification posted by <SKYContainer> when the current device
  has been registered with skygear.
  */
-extern NSString *const SKYContainerDidRegisterDeviceNotification;
+extern NSString *_Nonnull const SKYContainerDidRegisterDeviceNotification;
 
 @class NSString;
 @class SKYOperation;
-
-// keep it in sync with SKYUserOperationActionCompletion
-/// Undocumented
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
 
 /// Undocumented
 @interface SKYContainer : NSObject
@@ -61,38 +60,32 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 + (nonnull SKYContainer *)defaultContainer;
 
 /// Undocumented
-@property (nonatomic, weak) id<SKYContainerDelegate> delegate;
+@property (nonatomic, readonly, nonnull) SKYAuthContainer *auth;
 
 /// Undocumented
-@property (nonatomic, nonatomic) NSURL *endPointAddress;
+@property (nonatomic, readonly, nonnull) SKYPubsubContainer *pubsub;
 
 /// Undocumented
-@property (nonatomic, readonly) SKYDatabase *publicCloudDatabase;
-/// Undocumented
-@property (nonatomic, readonly) SKYDatabase *privateCloudDatabase;
+@property (nonatomic, readonly, nonnull) SKYPushContainer *push;
 
 /// Undocumented
-@property (nonatomic, readonly) NSString *containerIdentifier;
+@property (nonatomic, weak, nullable) id<SKYContainerDelegate> delegate;
 
 /// Undocumented
-@property (nonatomic, readonly) NSString *currentUserRecordID;
-/// Undocumented
-@property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
-/// Undocumented
-@property (nonatomic, readonly) SKYUser *currentUser;
+@property (nonatomic, nonatomic, nonnull) NSURL *endPointAddress;
 
 /// Undocumented
-@property (nonatomic, strong) SKYPubsub *pubsubClient;
+@property (nonatomic, readonly, nonnull) SKYPublicDatabase *publicCloudDatabase;
+/// Undocumented
+@property (nonatomic, readonly, nonnull) SKYDatabase *privateCloudDatabase;
 
-/**
- Returns the currently registered device ID.
- */
-@property (nonatomic, readonly) NSString *registeredDeviceID;
+/// Undocumented
+@property (nonatomic, readonly, nullable) NSString *containerIdentifier;
 
 /**
  Returns the API key of the container.
  */
-@property (nonatomic, readonly) NSString *APIKey;
+@property (nonatomic, readonly, nullable) NSString *APIKey;
 
 /**
  The maximum amount of time to wait before the request is considered timed out.
@@ -102,251 +95,29 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 @property (nonatomic, readwrite) NSTimeInterval defaultTimeoutInterval;
 
 /// Configuration on the container End-Point, API-Token
-- (void)configAddress:(NSString *)address;
+- (void)configAddress:(nonnull NSString *)address;
 
 /**
  Set a new API key to the container.
  */
-- (void)configureWithAPIKey:(NSString *)APIKey;
-
-/**
- Acknowledge the container that a remote notification is received. If the notification is sent by
- Ourd, container
- would invoke container:didReceiveNotification: on its delegate.
- */
-- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
+- (void)configureWithAPIKey:(nullable NSString *)APIKey;
 
 /// Undocumented
-- (void)addOperation:(SKYOperation *)operation;
-
-/**
- Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
- stored in persistent
- storage.
-
- This method is called when operation sign up, log in and log out is performed using the container's
- convenient
- method and when the operation is completed successfully.
- */
-- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
-
-/**
- Updates the <currentUser> and <currentAccessToken>. The updated access credentials are also
- stored in persistent storage.
-
- This method is called when operation sign up, log in and log out is performed using the container's
- convenient
- method and when the operation is completed successfully.
- */
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken;
-
-/**
- Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
- remote server.
-
- Such circumstance might arise on a container when either:
-
- 1. There are no logged-in users for an opertion that requires users login.
- 2. Access token is invalid or has been expired.
-
- In either cases, developer should prompt for re-authentication of user and login using
- <SKYLoginUserOperation>.
-
- NOTE: Any attempt to invoke user logout related operation within the set handler will created an
- feedback loop as logouting an invalid access token is also a kind of authentication error.
- */
-- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
-                                                NSError *error))authErrorHandler;
-
-/**
- Creates an anonymous user account and log in as the created user.
-
- Use this to create a user that is not associated with an email address. This is a convenient method
- for
- <SKYSignupUserOperation>.
- */
-- (void)signupAnonymouslyWithCompletionHandler:
-    (SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified username and password.
- */
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified email and password.
- */
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Creates a user account with the specified username, password and profile.
- */
-- (void)signupWithUsername:(NSString *)username
-                  password:(NSString *)password
-         profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYRecordSaveCompletion)completionHandler;
-
-/**
- Creates a user account with the specified email, password and profile.
- */
-- (void)signupWithEmail:(NSString *)email
-               password:(NSString *)password
-      profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYRecordSaveCompletion)completionHandler;
-
-/**
- Logs in to an existing user account with the specified username and password.
- */
-- (void)loginWithUsername:(NSString *)username
-                 password:(NSString *)password
-        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Logs in to an existing user account with the specified email and password.
- */
-- (void)loginWithEmail:(NSString *)email
-              password:(NSString *)password
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Logs out the current user of this container.
-
- This is a convenient method for <SKYLogoutUserOperation>.
- */
-- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Changes the password of the current user of this container.
-
- This is a convenient method for <SKYChangePasswordOperation>.
- */
-- (void)setNewPassword:(NSString *)newPassword
-           oldPassword:(NSString *)oldPassword
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- *  Asks "Who am I" to server.
- *
- *  @param completionHandler the completion handler
- */
-- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- Registers a device token for push notification.
- */
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
-                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
-    __deprecated;
-
-/**
- Registers a device token for push notification.
- When the user is no longer associated to the device, you should call
- -[SKYContainer unregisterDeviceCompletionHandler:].
- */
-- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
-                    completionHandler:(void (^)(NSString *, NSError *))completionHandler;
-
-/**
- Registers a device without device token. This method should be called when the user denied
- push notification permission.
-
- This method should be called to register the current device on remote server at the time when
- the application launches. It is okay to call this on subsequent launches, even if a device
- token is already associated with this device.
- */
-- (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
-
-/**
- * Unregister the current user from the current device.
- * This should be called when the user logouts.
- */
-- (void)unregisterDevice __deprecated;
-
-/**
- * Unregister the current user from the current device, this is preferred to -[unregisterDevice].
- * This should be called when the user logouts.
- *
- * @param completionHandler the completion handler
- *
- */
-- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
-                                                    NSError *error))completionHandler;
-
-/// Undocumented
-- (void)uploadAsset:(SKYAsset *)asset
-    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
+- (void)addOperation:(nonnull SKYOperation *)operation;
 
 /**
  Calls a registered lambda function without arguments.
  */
-- (void)callLambda:(NSString *)action
-    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+- (void)callLambda:(nonnull NSString *)action
+    completionHandler:
+        (void (^_Nullable)(NSDictionary *_Nonnull, NSError *_Nullable))completionHandler;
 
 /**
  Calls a registered lambda function with arguments.
  */
-- (void)callLambda:(NSString *)action
-            arguments:(NSArray *)arguments
-    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
-
-/**
- *  Query user objects by emails
- */
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Query user objects by usernames
- */
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Update user information
- */
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-@end
-
-@interface SKYContainer (SKYRole)
-
-/**
- *  Defines roles to have special powers
- */
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Sets default roles for new registered users
- */
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Limit creation access of a record type to some roles
- *
- *  @param recordType      Record type to set creation access
- *  @param roles           Roles can create the record
- *  @param completionBlock Completion Block
- */
-- (void)defineCreationAccessWithRecordType:(NSString *)recordType
-                                     roles:(NSArray<SKYRole *> *)roles
-                                completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Set default access of a record type
- *
- *  @param recordType      Record type to set creation access
- *  @param roles           Roles can create the record
- *  @param completionBlock Completion Block
- */
-- (void)defineDefaultAccessWithRecordType:(NSString *)recordType
-                                   access:(SKYAccessControl *)accessControl
-                               completion:(void (^)(NSError *error))completionBlock;
+- (void)callLambda:(nonnull NSString *)action
+            arguments:(nullable NSArray *)arguments
+    completionHandler:
+        (void (^_Nullable)(NSDictionary *_Nonnull, NSError *_Nullable))completionHandler;
 
 @end

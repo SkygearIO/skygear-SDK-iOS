@@ -103,7 +103,7 @@
 
     self.request = [[SKYRequest alloc] initWithAction:@"device:register" payload:payload];
     self.request.APIKey = self.container.APIKey;
-    self.request.accessToken = self.container.currentAccessToken;
+    self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
 - (void)setRegisterCompletionBlock:(void (^)(NSString *, NSError *))registerCompletionBlock

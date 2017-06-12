@@ -1,5 +1,5 @@
 //
-//  SKYDatabase_Private.h
+//  SKYPubsubContainer_Private.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,11 +17,21 @@
 //  limitations under the License.
 //
 
-#import "SKYDatabase.h"
+#import "SKYPubsubContainer.h"
 
-@interface SKYDatabase ()
+#import "SKYContainer.h"
+#import "SKYPubsubClient.h"
 
-// TODO: look for a better way to override NS_UNAVAILABLE on init
-- (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID;
+@interface SKYPubsubContainer ()
+
+@property (nonatomic, weak) SKYContainer *container;
+
+@property (nonatomic, strong) SKYPubsubClient *pubsubClient;
+
+@property (nonatomic, strong) SKYPubsubClient *internalPubsubClient;
+
+- (instancetype)initWithContainer:(SKYContainer *)container;
+
+- (void)configInternalPubsubClient;
 
 @end

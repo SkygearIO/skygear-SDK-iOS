@@ -31,9 +31,9 @@ SpecBegin(SKYModifyRecordsOperation)
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
-            [container updateWithUserRecordID:@"USER_ID"
-                                  accessToken:[[SKYAccessToken alloc]
-                                                  initWithTokenString:@"ACCESS_TOKEN"]];
+            [container.auth updateWithUserRecordID:@"USER_ID"
+                                       accessToken:[[SKYAccessToken alloc]
+                                                       initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
             record1 = [[SKYRecord alloc]
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
@@ -53,7 +53,7 @@ SpecBegin(SKYModifyRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:save");
             expect(request.payload[@"records"]).to.haveCountOf(2);
-            expect(request.accessToken).to.equal(container.currentAccessToken);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
 
             NSDictionary *recordPayload = request.payload[@"records"][0];
             expect(recordPayload[SKYRecordSerializationRecordIDKey]).to.equal(@"book/book1");

@@ -25,8 +25,10 @@
 #import "SKYError.h"
 #import "SKYFetchRecordsOperation.h"
 #import "SKYFetchSubscriptionsOperation.h"
+#import "SKYGetAssetPostRequestOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYModifySubscriptionsOperation.h"
+#import "SKYPostAssetOperation.h"
 #import "SKYQueryCache.h"
 #import "SKYQueryOperation.h"
 #import "SKYRecordID.h"
@@ -40,15 +42,17 @@
 
 @end
 
-@implementation SKYDatabase
+@implementation SKYDatabase {
+    NSString *_databaseID;
+}
 
-- (instancetype)initWithContainer:(SKYContainer *)container
+- (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID
 {
     self = [super init];
     if (self) {
         _container = container;
         _pendingOperations = [NSMutableArray array];
-        _databaseID = @"_public";
+        _databaseID = databaseID;
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.name = @"SKYDatabaseQueue";
     }
@@ -75,7 +79,7 @@
 
 - (SKYUser *)currentUser
 {
-    NSString *currentUserRecordID = [self.container currentUserRecordID];
+    NSString *currentUserRecordID = [self.container.auth currentUserRecordID];
     return currentUserRecordID ? [[SKYUser alloc] initWithUserID:currentUserRecordID] : nil;
 }
 
@@ -84,7 +88,7 @@
 - (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *, NSError *))completionHandler
 {
     SKYFetchSubscriptionsOperation *operation = [SKYFetchSubscriptionsOperation
-        fetchAllSubscriptionsOperationWithDeviceID:self.container.registeredDeviceID];
+        fetchAllSubscriptionsOperationWithDeviceID:self.container.push.registeredDeviceID];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
             ^(NSDictionary *subscriptionsBySubscriptionID, NSError *operationError) {
@@ -101,7 +105,7 @@
               completionHandler:(void (^)(SKYSubscription *, NSError *))completionHandler
 {
     SKYFetchSubscriptionsOperation *operation =
-        [SKYFetchSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
+        [SKYFetchSubscriptionsOperation operationWithDeviceID:self.container.push.registeredDeviceID
                                               subscriptionIDs:@[ subscriptionID ]];
     if (completionHandler) {
         operation.fetchSubscriptionsCompletionBlock =
@@ -123,9 +127,9 @@
 - (void)saveSubscription:(SKYSubscription *)subscription
        completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler
 {
-    SKYModifySubscriptionsOperation *operation =
-        [SKYModifySubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
-                                           subscriptionsToSave:@[ subscription ]];
+    SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
+        operationWithDeviceID:self.container.push.registeredDeviceID
+          subscriptionsToSave:@[ subscription ]];
     if (completionHandler) {
         operation.modifySubscriptionsCompletionBlock =
             ^(NSArray *savedSubscriptions, NSError *operationError) {
@@ -147,9 +151,9 @@
                completionHandler:
                    (void (^)(NSString *subscriptionID, NSError *error))completionHandler
 {
-    SKYDeleteSubscriptionsOperation *operation =
-        [SKYDeleteSubscriptionsOperation operationWithDeviceID:self.container.registeredDeviceID
-                                       subscriptionIDsToDelete:@[ subscriptionID ]];
+    SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
+          operationWithDeviceID:self.container.push.registeredDeviceID
+        subscriptionIDsToDelete:@[ subscriptionID ]];
     if (completionHandler) {
         operation.deleteSubscriptionsCompletionBlock =
             ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {
@@ -454,6 +458,56 @@
                 }
             }
         }];
+}
+
+- (void)uploadAsset:(SKYAsset *)asset
+    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
+{
+    __weak typeof(self) wself = self;
+
+    if ([asset.fileSize integerValue] == 0) {
+        if (completionHandler) {
+            completionHandler(
+                nil, [NSError errorWithDomain:SKYOperationErrorDomain
+                                         code:SKYErrorInvalidArgument
+                                     userInfo:@{
+                                         SKYErrorMessageKey : @"File size is invalid (filesize=0).",
+                                         NSLocalizedDescriptionKey : NSLocalizedString(
+                                             @"Unable to open file or file is not found.", nil)
+                                     }]);
+        }
+        return;
+    }
+
+    SKYGetAssetPostRequestOperation *operation =
+        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+    operation.getAssetPostRequestCompletionBlock = ^(
+        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+        NSError *operationError) {
+        if (operationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, operationError);
+                });
+            }
+
+            return;
+        }
+
+        SKYPostAssetOperation *postOperation =
+            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
+        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(asset, postOperationError);
+                });
+            }
+        };
+
+        [wself.container addOperation:postOperation];
+    };
+
+    [self.container addOperation:operation];
 }
 
 @end
