@@ -1,5 +1,5 @@
 //
-//  SKYContainer+ForgotPassword.m
+//  SKYAuthContainer+ForgotPassword.h
 //  SKYKit
 //
 //  Copyright 2017 Oursky Ltd.
@@ -16,27 +16,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#import "SKYContainer+ForgotPassword.h"
+#import "SKYKit.h"
 
-@implementation SKYContainer (ForgotPassword)
+@interface SKYAuthContainer (ForgotPassword)
 
 - (void)forgotPasswordWithEmail:(NSString *)emailAddress
-              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
-{
-    [self callLambda:@"user:forgot-password"
-                arguments:@[ emailAddress ]
-        completionHandler:completionHandler];
-}
+              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 - (void)resetPasswordWithUserID:(NSString *)userID
                            code:(NSString *)code
-                       expireAt:(NSDate *)expireAt
                        password:(NSString *)password
-              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
-{
-    [self callLambda:@"user:reset-password"
-                arguments:@[ userID, code, expireAt, password ]
-        completionHandler:completionHandler];
-}
+              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
 
 @end
