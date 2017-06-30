@@ -27,11 +27,14 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (4.6.0)
   - SKYKit (0.24.0):
     - SKYKit/Core (= 0.24.0)
+    - SKYKit/ForgotPassword (= 0.24.0)
   - SKYKit/Core (0.24.0):
     - FMDB (~> 2.5)
     - SocketRocket (~> 0.4)
   - SKYKit/Facebook (0.24.0):
     - FBSDKCoreKit (~> 4.0)
+    - SKYKit/Core
+  - SKYKit/ForgotPassword (0.24.0):
     - SKYKit/Core
   - SocketRocket (0.5.1)
   - Specta (1.0.5)
@@ -46,7 +49,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   SKYKit:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -55,7 +58,7 @@ SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 7232e3c0cb269ae035f4bd2b6cea899e964cea6a
+  SKYKit: e495d9063bc4d543ba38d16b661009fd0ecfa5ba
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
