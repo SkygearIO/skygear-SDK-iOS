@@ -1,3 +1,23 @@
+## 1.0.0 (2017-06-30)
+
+### Incompatible Changes
+
+- Update container API grouping (#104, SkygearIO/features#70)
+
+### Bug Fixes
+
+- Make accessControl property on SKYRecord readwrite
+    
+    The existing implementation does not work for newly create record
+    because the access control property is initially null.
+
+- Fix unable to upload asset (#100)
+
+### Other Notes
+
+- Update Swift Example to Swift 3.0 (#51)
+- Make SKYAsset conforms with NSCopying (#103)
+
 ## 0.24.0 (2017-05-23)
 
 ### Features
