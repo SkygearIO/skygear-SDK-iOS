@@ -25,34 +25,27 @@
 @interface SKYLoginUserOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *username;
-/// Undocumented
-@property (nonatomic, readonly, copy) NSString *email;
+@property (nonatomic, readonly, copy) NSDictionary *authData;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *password;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *provider;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *authenticationData;
+@property (nonatomic, readonly, copy) NSDictionary *providerAuthData;
 
 /// Undocumented
 @property (nonatomic, copy) void (^loginCompletionBlock)
     (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
- Creates and returns an instance of operation for logging in a user with username and password.
+ Creates and returns an instance of operation for logging in a user with auth data and password.
  */
-+ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password;
++ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password;
 
 /**
- Creates and returns an instance of operation for logging in a user with email and password.
- */
-+ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password;
-
-/**
- Creates and returns an instance of operation for logging in a user with provider and auth data.
+ Creates and returns an instance of operation for logging in a user with provider and its auth data.
  */
 + (instancetype)operationWithProvider:(NSString *)provider
-                   authenticationData:(NSDictionary *)authData;
+                     providerAuthData:(NSDictionary *)providerAuthData;
 
 @end

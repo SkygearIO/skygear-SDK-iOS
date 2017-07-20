@@ -274,12 +274,22 @@
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
-- (void)loginWithUsername:(NSString *)username
+- (void)loginWithAuthData:(NSDictionary *)authData
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithUsername:username password:password];
+        [SKYLoginUserOperation operationWithAuthData:authData password:password];
+    [self performUserAuthOperation:operation completionHandler:completionHandler];
+}
+
+- (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
+        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    NSDictionary *authData = @{ @"username" : username };
+    SKYLoginUserOperation *operation =
+        [SKYLoginUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 
@@ -287,8 +297,9 @@
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    NSDictionary *authData = @{ @"email" : email };
     SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithEmail:email password:password];
+        [SKYLoginUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 

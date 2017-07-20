@@ -141,6 +141,13 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 @interface SKYAuthContainer (Login)
 
 /**
+ Logs in to an existing user account with the specified auth data and password.
+ */
+- (void)loginWithAuthData:(NSDictionary *)authData
+                 password:(NSString *)password
+        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
  Logs in to an existing user account with the specified username and password.
  */
 - (void)loginWithUsername:(NSString *)username

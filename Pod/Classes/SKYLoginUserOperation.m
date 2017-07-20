@@ -27,9 +27,9 @@
     NSDictionary *_authPayload;
 }
 
-- (NSString *)username
+- (NSDictionary *)authData
 {
-    return _authPayload[@"username"];
+    return _authPayload[@"auth_data"];
 }
 
 - (NSString *)password
@@ -37,19 +37,14 @@
     return _authPayload[@"password"];
 }
 
-- (NSString *)email
-{
-    return _authPayload[@"email"];
-}
-
 - (NSString *)provider
 {
     return _authPayload[@"provider"];
 }
 
-- (NSString *)authenticationData
+- (NSDictionary *)providerAuthData
 {
-    return _authPayload[@"auth_data"];
+    return _authPayload[@"provider_auth_data"];
 }
 
 - (instancetype)initWithAuthenticationPayload:(NSDictionary *)authPayload
@@ -60,28 +55,20 @@
     return self;
 }
 
-+ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
++ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password
 {
     return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
-        @"username" : username,
-        @"password" : password,
-    }];
-}
-
-+ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
-{
-    return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
-        @"email" : email,
+        @"auth_data" : authData,
         @"password" : password,
     }];
 }
 
 + (instancetype)operationWithProvider:(NSString *)provider
-                   authenticationData:(NSDictionary *)authData
+                     providerAuthData:(NSDictionary *)providerAuthData
 {
     return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
         @"provider" : provider,
-        @"auth_data" : authData,
+        @"provider_auth_data" : providerAuthData,
     }];
 }
 
