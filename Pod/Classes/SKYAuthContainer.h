@@ -92,6 +92,21 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
     (SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
+ Creates a user account with the specified auth data and password.
+ */
+- (void)signupWithAuthData:(NSDictionary *)authData
+                  password:(NSString *)password
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Creates a user account with the specified auth data, password and profile.
+ */
+- (void)signupWithAuthData:(NSDictionary *)authData
+                  password:(NSString *)password
+         profileDictionary:(NSDictionary *)profile
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
  Creates a user account with the specified username and password.
  */
 - (void)signupWithUsername:(NSString *)username
@@ -111,7 +126,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
          profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYRecordSaveCompletion)completionHandler;
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Creates a user account with the specified email, password and profile.
@@ -119,7 +134,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
       profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYRecordSaveCompletion)completionHandler;
+      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 @end
 

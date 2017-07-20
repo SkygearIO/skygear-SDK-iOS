@@ -24,40 +24,42 @@
 
 @implementation SKYSignupUserOperation
 
-+ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
++ (instancetype)operationWithAuthData:(NSDictionary *)authData
+                             password:(NSString *)password
+                              profile:(NSDictionary *)profile
 {
-    return [[self alloc] initWithEmail:nil username:username password:password];
+    return [[self alloc] initWithAuthData:authData password:password profile:profile];
 }
 
-+ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
++ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password
 {
-    return [[self alloc] initWithEmail:email username:nil password:password];
+    return [[self alloc] initWithAuthData:authData password:password profile:nil];
 }
 
-+ (instancetype)operationWithAnonymousUserAndPassword:(NSString *)password
++ (instancetype)operationWithAnonymousUser
 {
-    return [[self alloc] initWithAnonymousUserAndPassword:password];
+    return [[self alloc] initWithAnonymousUser];
 }
 
-- (instancetype)initWithEmail:(NSString *)email
-                     username:(NSString *)username
-                     password:(NSString *)password
+- (instancetype)initWithAuthData:(NSDictionary *)authData
+                        password:(NSString *)password
+                         profile:(NSDictionary *)profile
 {
     if ((self = [super init])) {
-        self.username = username;
-        self.email = email;
+        self.authData = authData;
         self.password = password;
+        self.profile = profile;
         self.anonymousUser = NO;
     }
     return self;
 }
 
-- (instancetype)initWithAnonymousUserAndPassword:(NSString *)password
+- (instancetype)initWithAnonymousUser
 {
     if ((self = [super init])) {
-        self.username = nil;
-        self.email = nil;
+        self.authData = nil;
         self.password = nil;
+        self.profile = nil;
         self.anonymousUser = YES;
     }
     return self;
@@ -67,27 +69,35 @@
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     if (!self.anonymousUser) {
-        if (self.username == nil && self.email == nil) {
-            @throw [NSException
-                exceptionWithName:NSInvalidArgumentException
-                           reason:@"Username and email cannot be both nil for anonymous user."
-                         userInfo:nil];
+        if (self.authData == nil) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Auth data cannot be nil."
+                                         userInfo:nil];
         }
+
+        if (self.authData.allKeys.count == 0) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Auth data cannot be empty."
+                                         userInfo:nil];
+        }
+
         if (self.password == nil) {
             @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"Password cannot be nil for anonymous user."
+                                           reason:@"Password cannot be nil."
                                          userInfo:nil];
         }
     }
-    if (self.username) {
-        payload[@"username"] = self.username;
-    }
-    if (self.email) {
-        payload[@"email"] = self.email;
+
+    if (self.authData) {
+        payload[@"auth_data"] = self.authData;
     }
     if (self.password) {
         payload[@"password"] = self.password;
     }
+    if (self.profile) {
+        payload[@"profile"] = self.profile;
+    }
+
     self.request = [[SKYRequest alloc] initWithAction:@"auth:signup" payload:payload];
     self.request.APIKey = self.container.APIKey;
 }
