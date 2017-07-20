@@ -21,13 +21,12 @@
 
 #import "SKYAccessToken.h"
 #import "SKYDatabase.h"
-#import "SKYUser.h"
 
 @class SKYContainer;
 
 // keep it in sync with SKYUserOperationActionCompletion
 /// Undocumented
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSError *error);
 
 @interface SKYAuthContainer : NSObject
 
@@ -36,7 +35,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 /// Undocumented
 @property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
 /// Undocumented
-@property (nonatomic, readonly) SKYUser *currentUser;
+@property (nonatomic, readonly) SKYRecord *currentUser;
 
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
@@ -57,7 +56,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  convenient
  method and when the operation is completed successfully.
  */
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
@@ -191,27 +190,5 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  *  @param completionHandler the completion handler
  */
 - (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
-/**
- *  Query user objects by emails
- */
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Query user objects by usernames
- */
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-@end
-
-@interface SKYAuthContainer (UpdateUser)
-
-/**
- *  Update user information
- */
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 @end

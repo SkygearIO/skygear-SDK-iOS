@@ -25,7 +25,6 @@
 #import "SKYRecordID.h"
 #import "SKYRecordSerialization.h"
 #import "SKYReference.h"
-#import "SKYUser.h"
 
 @implementation SKYRecordSerializer
 

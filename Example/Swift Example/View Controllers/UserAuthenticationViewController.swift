@@ -67,7 +67,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func showAuthenticationError(_ user: SKYUser?, error: NSError?, completion: (() -> Void)?) {
+    func showAuthenticationError(_ user: SKYRecord?, error: NSError?, completion: (() -> Void)?) {
         let alert = UIAlertController(title: "Unable to Authenticate", message: error?.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let c = completion {
@@ -90,7 +90,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     func loginStatusDidChange() {
         if let user = SKYContainer.default().auth.currentUser {
-            self.lastUsername = user.username
+            self.lastUsername = user["username"] as! String!
         }
 
         self.tableView.reloadData()
@@ -191,7 +191,7 @@ class UserAuthenticationViewController: UITableViewController {
         case self.actionSectionIndex:
             return self.isLoggedIn ? 3 : 2
         case self.statusSectionIndex:
-            return 5
+            return 4
         default:
             return 0
         }
@@ -225,7 +225,7 @@ class UserAuthenticationViewController: UITableViewController {
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
                 if let user = SKYContainer.default().auth.currentUser {
-                    cell.detailTextLabel?.text = user.username
+                    cell.detailTextLabel?.text = user["username"] as! String!
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
                 }
@@ -238,20 +238,8 @@ class UserAuthenticationViewController: UITableViewController {
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
                 if let user = SKYContainer.default().auth.currentUser {
-                    if let lastLoginAt = user.lastLoginAt {
+                    if let lastLoginAt = user["lastLoginAt"] as! Date! {
                         let f = self.dateFormatter.string(from: lastLoginAt)
-                        cell.detailTextLabel?.text = f
-                    } else {
-                        cell.detailTextLabel?.text = "Querying..."
-                    }
-                } else {
-                    cell.detailTextLabel?.text = "(Unavailable)"
-                }
-            } else if indexPath.row == 4 {
-                cell.textLabel?.text = "Last Seen At"
-                if let user = SKYContainer.default().auth.currentUser {
-                    if let lastSeenAt = user.lastSeenAt {
-                        let f = self.dateFormatter.string(from: lastSeenAt)
                         cell.detailTextLabel?.text = f
                     } else {
                         cell.detailTextLabel?.text = "Querying..."

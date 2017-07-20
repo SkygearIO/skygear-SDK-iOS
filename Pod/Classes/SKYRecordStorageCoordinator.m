@@ -207,7 +207,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
                                         options:(NSDictionary *)options
                                           error:(NSError **)error
 {
-    if (![database currentUser]) {
+    if (![database currentUserRecordID]) {
         if (error) {
             *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
                                          code:0

@@ -43,8 +43,14 @@
 {
     NSMutableDictionary *payload = [@{@"name" : self.relationType} mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
-    for (SKYUser *user in self.usersToRemove) {
-        [targets addObject:user.userID];
+    for (SKYRecord *user in self.usersToRemove) {
+        if (![user.recordType isEqualToString:@"user"]) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"usersToRelate must be user records."
+                                         userInfo:nil];
+        }
+
+        [targets addObject:user.recordID.recordName];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:delete" payload:payload];

@@ -24,8 +24,6 @@
 #import "SKYContainer.h"
 #import "SKYError.h"
 #import "SKYQuery.h"
-#import "SKYUser.h"
-#import "SKYUserDiscoverPredicate.h"
 
 #import "SKYChangePasswordOperation.h"
 #import "SKYGetCurrentUserOperation.h"
@@ -33,12 +31,11 @@
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYSignupUserOperation.h"
-#import "SKYUpdateUserOperation.h"
 
 @implementation SKYAuthContainer {
     SKYAccessToken *_accessToken;
     NSString *_userRecordID;
-    SKYUser *_currentUser;
+    SKYRecord *_currentUser;
 }
 
 #pragma mark - private
@@ -58,9 +55,9 @@
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
     NSString *accessToken =
         [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
-    SKYUser *user = nil;
+    SKYRecord *user = nil;
     NSData *encodedUser =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUser"];
+        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecord"];
     if ([encodedUser isKindOfClass:[NSData class]]) {
         user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
     }
@@ -68,7 +65,7 @@
     if (accessToken && (userRecordID || user)) {
         _currentUser = user;
         if (user) {
-            _userRecordID = user.userID;
+            _userRecordID = user.recordID.recordName;
         } else {
             _userRecordID = userRecordID;
         }
@@ -84,8 +81,8 @@
                completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     __weak typeof(self) weakSelf = self;
-    void (^completionBock)(SKYUser *, SKYAccessToken *, NSError *) =
-        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+    void (^completionBock)(SKYRecord *, SKYAccessToken *, NSError *) =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
                 [weakSelf updateWithUser:user accessToken:accessToken];
             }
@@ -132,7 +129,7 @@
         if (_currentUser) {
             [[NSUserDefaults standardUserDefaults]
                 setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
-                   forKey:@"SKYContainerCurrentUser"];
+                   forKey:@"SKYContainerCurrentUserRecord"];
         }
         [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString
                                                   forKey:@"SKYContainerAccessToken"];
@@ -141,7 +138,7 @@
         [[NSUserDefaults standardUserDefaults]
             removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUser"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUserRecord"];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -166,10 +163,10 @@
                     userInfo:nil];
 }
 
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken
+- (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken
 {
     if (user && accessToken) {
-        _userRecordID = user.userID;
+        _userRecordID = user.recordID.recordName;
         _accessToken = accessToken;
         _currentUser = user;
     } else {
@@ -349,7 +346,7 @@
         [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
 
     operation.changePasswordCompletionBlock =
-        ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);
             });
@@ -362,55 +359,6 @@
 {
     SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
-}
-
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYUserDiscoverPredicate *predicate = [SKYUserDiscoverPredicate predicateWithEmails:emails];
-    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
-}
-
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYUserDiscoverPredicate *predicate =
-        [SKYUserDiscoverPredicate predicateWithUsernames:usernames];
-    [self queryUsersByPredicate:predicate completionHandler:completionHandler];
-}
-
-- (void)queryUsersByPredicate:(SKYUserDiscoverPredicate *)predicate
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
-{
-    SKYQuery *query = [SKYQuery queryWithRecordType:@"user" predicate:predicate];
-    SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
-    operation.database = self.container.publicCloudDatabase;
-    operation.queryRecordsCompletionBlock =
-        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(fetchedRecords, operationError);
-                });
-            }
-        };
-
-    [self.container addOperation:operation];
-}
-
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler
-{
-    SKYUpdateUserOperation *operation = [SKYUpdateUserOperation operationWithUser:user];
-
-    operation.updateUserCompletionBlock = ^(SKYUser *user, NSError *error) {
-        if (completionHandler) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        }
-    };
-
-    [self.container addOperation:operation];
 }
 
 @end

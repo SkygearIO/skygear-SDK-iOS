@@ -138,9 +138,9 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return self;
 }
 
-+ (instancetype)readEntryForUser:(SKYUser *)user
++ (instancetype)readEntryForUser:(SKYRecord *)user
 {
-    return [self readEntryForUserID:user.userID];
+    return [self readEntryForUserID:user.recordID.recordName];
 }
 
 + (instancetype)readEntryForUserID:(NSString *)userID
@@ -163,9 +163,9 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return [[self alloc] initWithPublicAccessLevel:SKYAccessControlEntryLevelRead];
 }
 
-+ (instancetype)writeEntryForUser:(SKYUser *)user
++ (instancetype)writeEntryForUser:(SKYRecord *)user
 {
-    return [self writeEntryForUserID:user.userID];
+    return [self writeEntryForUserID:user.recordID.recordName];
 }
 
 + (instancetype)writeEntryForUserID:(NSString *)userID

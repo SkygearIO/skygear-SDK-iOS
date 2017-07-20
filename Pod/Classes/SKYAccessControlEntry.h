@@ -19,9 +19,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SKYRecord.h"
 #import "SKYRelation.h"
 #import "SKYRole.h"
-#import "SKYUser.h"
 
 /// Undocumented
 typedef enum : NSUInteger {
@@ -44,8 +44,6 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 @interface SKYAccessControlEntry : NSObject <NSCoding>
 
 /// Undocumented
-+ (instancetype)readEntryForUser:(SKYUser *)user;
-/// Undocumented
 + (instancetype)readEntryForUserID:(NSString *)user;
 /// Undocumented
 + (instancetype)readEntryForRelation:(SKYRelation *)relation;
@@ -54,8 +52,6 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 /// Undocumented
 + (instancetype)readEntryForPublic;
 
-/// Undocumented
-+ (instancetype)writeEntryForUser:(SKYUser *)user;
 /// Undocumented
 + (instancetype)writeEntryForUserID:(NSString *)user;
 /// Undocumented
@@ -91,5 +87,14 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 @property (nonatomic, readonly) SKYRole *role;
 /// Undocumented
 @property (nonatomic, copy, readonly) NSString *userID;
+
+@end
+
+@interface SKYAccessControlEntry (UserRecord)
+
+/// Undocumented
++ (instancetype)readEntryForUser:(SKYRecord *)user;
+/// Undocumented
++ (instancetype)writeEntryForUser:(SKYRecord *)user;
 
 @end

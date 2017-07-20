@@ -19,7 +19,6 @@
 
 #import "SKYOperation.h"
 
-@class SKYUser;
 @class SKYAccessToken;
 
 /// Undocumented
@@ -32,7 +31,7 @@
 
 /// Undocumented
 @property (nonatomic, copy) void (^changePasswordCompletionBlock)
-    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
+    (SKYRecord *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Creates and returns an instance of operation for changing the existing user password

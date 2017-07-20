@@ -20,8 +20,8 @@
 #import "SKYLoginUserOperation.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
+#import "SKYRecordDeserializer.h"
 #import "SKYRequest.h"
-#import "SKYUserDeserializer.h"
 
 @implementation SKYLoginUserOperation {
     NSDictionary *_authPayload;
@@ -98,13 +98,15 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYUser *user = nil;
+    SKYRecord *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
-    if (response[@"user_id"] && response[@"access_token"]) {
-        user = [[SKYUserDeserializer deserializer] userWithDictionary:response];
+    NSDictionary *profile = response[@"profile"];
+    NSString *recordID = profile[@"_id"];
+    if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
+        user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
@@ -112,7 +114,7 @@
     }
 
     if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", user.userID);
+        NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
     }
 
     if (self.loginCompletionBlock) {

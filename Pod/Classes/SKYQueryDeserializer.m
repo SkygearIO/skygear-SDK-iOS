@@ -21,7 +21,6 @@
 #import "SKYDataSerialization.h"
 #import "SKYLocationSortDescriptor.h"
 #import "SKYRelationPredicate.h"
-#import "SKYUserDiscoverPredicate.h"
 
 @implementation SKYQueryDeserializer
 
@@ -292,13 +291,6 @@
         NSExpression *keyPathExpr = [self expressionWithObject:array[2]];
         SKYRelation *relation = [SKYDataSerialization deserializeObjectWithValue:array[3]];
         return [SKYRelationPredicate predicateWithRelation:relation keyPath:[keyPathExpr keyPath]];
-    } else if ([array[1] isEqualToString:@"userDiscover"]) {
-        NSDictionary *userData = array[2];
-        if (![userData isKindOfClass:[NSDictionary class]]) {
-            userData = [NSDictionary dictionary];
-        }
-        return [SKYUserDiscoverPredicate predicateWithEmails:userData[@"emails"]
-                                                   usernames:userData[@"usernames"]];
     } else {
         NSLog(@"Unexpected functional predicate %@.", array[1]);
         return [NSPredicate predicateWithValue:YES];

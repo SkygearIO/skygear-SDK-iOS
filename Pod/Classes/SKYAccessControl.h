@@ -21,7 +21,7 @@
 
 #import "SKYRelation.h"
 
-@class SKYUser;
+@class SKYRecord;
 @class SKYRole;
 
 /// Undocumented
@@ -32,7 +32,7 @@
 
 #pragma mark - set no access
 /// Undocumented
-- (void)setNoAccessForUser:(SKYUser *)user;
+- (void)setNoAccessForUser:(SKYRecord *)user;
 /// Undocumented
 - (void)setNoAccessForUserID:(NSString *)userID;
 /// Undocumented
@@ -44,7 +44,7 @@
 
 #pragma mark - set read only
 /// Undocumented
-- (void)setReadOnlyForUser:(SKYUser *)user;
+- (void)setReadOnlyForUser:(SKYRecord *)user;
 /// Undocumented
 - (void)setReadOnlyForUserID:(NSString *)userID;
 /// Undocumented
@@ -56,7 +56,7 @@
 
 #pragma mark - set read write access
 /// Undocumented
-- (void)setReadWriteAccessForUser:(SKYUser *)user;
+- (void)setReadWriteAccessForUser:(SKYRecord *)user;
 /// Undocumented
 - (void)setReadWriteAccessForUserID:(NSString *)userID;
 /// Undocumented
@@ -68,7 +68,7 @@
 
 #pragma mark - has read access checking
 /// Undocumented
-- (BOOL)hasReadAccessForUser:(SKYUser *)user;
+- (BOOL)hasReadAccessForUser:(SKYRecord *)user;
 /// Undocumented
 - (BOOL)hasReadAccessForUserID:(NSString *)userID;
 /// Undocumented
@@ -80,7 +80,7 @@
 
 #pragma mark - has write access checking
 /// Undocumented
-- (BOOL)hasWriteAccessForUser:(SKYUser *)user;
+- (BOOL)hasWriteAccessForUser:(SKYRecord *)user;
 /// Undocumented
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID;
 /// Undocumented

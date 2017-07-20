@@ -69,7 +69,7 @@
  - *error*: If an error occurred, this object describes the error.
  */
 @property (nonatomic, copy) void (^signupCompletionBlock)
-    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
+    (SKYRecord *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Initializes and returns and operation configured to create a user account

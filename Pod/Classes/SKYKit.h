@@ -85,12 +85,7 @@
 #import "SKYSubscriptionSerializer.h"
 #import "SKYUnknownValue.h"
 #import "SKYUnregisterDeviceOperation.h"
-#import "SKYUpdateUserOperation.h"
 #import "SKYUploadAssetOperation.h"
-#import "SKYUser.h"
-#import "SKYUserDeserializer.h"
-#import "SKYUserDiscoverPredicate.h"
 
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
-#import "SKYQueryOperation+QueryUser.h"

@@ -23,7 +23,6 @@
 #import "SKYRecordSerialization.h"
 #import "SKYReference.h"
 #import "SKYRelationPredicate.h"
-#import "SKYUserDiscoverPredicate.h"
 
 @implementation SKYQuerySerializer
 
@@ -233,20 +232,6 @@
             @"userRelation",
             [self serializeWithExpression:[NSExpression expressionForKeyPath:relPredicate.keyPath]],
             [SKYDataSerialization serializeObject:relPredicate.relation],
-        ];
-    } else if ([predicate isKindOfClass:[SKYUserDiscoverPredicate class]]) {
-        SKYUserDiscoverPredicate *userPredicate = (SKYUserDiscoverPredicate *)predicate;
-        NSMutableDictionary *args = [NSMutableDictionary dictionary];
-        if (userPredicate.usernames.count > 0) {
-            args[@"usernames"] = [userPredicate.usernames copy];
-        }
-        if (userPredicate.emails.count > 0) {
-            args[@"emails"] = [userPredicate.emails copy];
-        }
-        return @[
-            @"func",
-            @"userDiscover",
-            args,
         ];
     } else if (!predicate) {
         return [NSArray array];

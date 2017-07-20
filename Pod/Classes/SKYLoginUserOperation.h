@@ -35,7 +35,7 @@
 
 /// Undocumented
 @property (nonatomic, copy) void (^loginCompletionBlock)
-    (SKYUser *user, SKYAccessToken *accessToken, NSError *error);
+    (SKYRecord *user, SKYAccessToken *accessToken, NSError *error);
 
 /**
  Creates and returns an instance of operation for logging in a user with auth data and password.

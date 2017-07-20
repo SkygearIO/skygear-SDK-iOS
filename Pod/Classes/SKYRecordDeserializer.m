@@ -22,7 +22,6 @@
 #import "SKYRecord_Private.h"
 
 #import "SKYRecordID.h"
-#import "SKYUser.h"
 
 #import "SKYDataSerialization.h"
 #import "SKYRecordSerialization.h"

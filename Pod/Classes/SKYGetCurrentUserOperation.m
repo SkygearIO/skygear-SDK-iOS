@@ -19,11 +19,11 @@
 
 #import "SKYGetCurrentUserOperation.h"
 #import "SKYOperationSubclass.h"
-#import "SKYUserDeserializer.h"
+#import "SKYRecordDeserializer.h"
 
 @interface SKYGetCurrentUserOperation ()
 
-@property (strong, nonatomic) SKYUserDeserializer *userDeserializer;
+@property (strong, nonatomic) SKYRecordDeserializer *recordDeserializer;
 
 @end
 
@@ -33,7 +33,7 @@
 {
     self = [super init];
     if (self) {
-        self.userDeserializer = [SKYUserDeserializer deserializer];
+        self.recordDeserializer = [SKYRecordDeserializer deserializer];
     }
 
     return self;
@@ -48,20 +48,22 @@
 - (void)handleResponse:(SKYResponse *)response
 {
     NSDictionary *responseDictionary = response.responseDictionary;
-    SKYUser *user = nil;
+    SKYRecord *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     if ([responseDictionary[@"result"] isKindOfClass:[NSDictionary class]]) {
         NSDictionary *resultDictionary = responseDictionary[@"result"];
-        if (resultDictionary[@"user_id"] && resultDictionary[@"access_token"]) {
+        NSDictionary *profile = resultDictionary[@"profile"];
+        NSString *recordID = profile[@"_id"];
+        if ([recordID hasPrefix:@"user/"] && resultDictionary[@"access_token"]) {
             accessToken =
                 [[SKYAccessToken alloc] initWithTokenString:resultDictionary[@"access_token"]];
 
-            user = [[SKYUserDeserializer deserializer] userWithDictionary:resultDictionary];
+            user = [self.recordDeserializer recordWithDictionary:profile];
         } else {
             error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                             message:@"Get a non-user object is received."];
+                                             message:@"A non-user record is received."];
         }
     }
 
