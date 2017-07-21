@@ -62,8 +62,9 @@ SpecBegin(SKYAuthContainer)
         __block void (^assertLoggedIn)(NSString *, NSError *) =
             ^(NSString *userRecordID, NSError *error) {
                 expect(container.auth.currentUserRecordID).to.equal(userRecordID);
-                expect(container.auth.currentUser.username).to.equal(@"john.doe");
-                expect(container.auth.currentUser.email).to.equal(@"john.doe@example.com");
+                expect(container.auth.currentUser.dictionary[@"username"]).to.equal(@"john.doe");
+                expect(container.auth.currentUser.dictionary[@"email"])
+                    .to.equal(@"john.doe@example.com");
                 expect(error).to.beNil();
                 expect(userRecordID).to.equal(@"UUID");
                 expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
@@ -82,9 +83,13 @@ SpecBegin(SKYAuthContainer)
                     expect(request.timeoutInterval).to.equal(1.0);
                     NSDictionary *parameters = @{
                         @"user_id" : @"UUID",
-                        @"username" : @"john.doe",
-                        @"email" : @"john.doe@example.com",
                         @"access_token" : @"ACCESS_TOKEN",
+                        @"profile" : @{
+                            @"_id" : @"user/UUID",
+                            @"_access" : [NSNull null],
+                            @"username" : @"john.doe",
+                            @"email" : @"john.doe@example.com",
+                        },
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
@@ -94,6 +99,7 @@ SpecBegin(SKYAuthContainer)
                     return
                         [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
+
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return [[[request URL] path] isEqualToString:@"/record/save"];
@@ -122,8 +128,8 @@ SpecBegin(SKYAuthContainer)
             waitUntil(^(DoneCallback done) {
                 [container.auth signupWithEmail:@"test@invalid"
                                        password:@"secret"
-                              completionHandler:^(SKYUser *user, NSError *error) {
-                                  assertLoggedIn(user.userID, error);
+                              completionHandler:^(SKYRecord *user, NSError *error) {
+                                  assertLoggedIn(user.recordID.recordName, error);
                                   done();
                               }];
             });
@@ -133,8 +139,8 @@ SpecBegin(SKYAuthContainer)
             waitUntil(^(DoneCallback done) {
                 [container.auth signupWithUsername:@"test"
                                           password:@"secret"
-                                 completionHandler:^(SKYUser *user, NSError *error) {
-                                     assertLoggedIn(user.userID, error);
+                                 completionHandler:^(SKYRecord *user, NSError *error) {
+                                     assertLoggedIn(user.recordID.recordName, error);
                                      done();
                                  }];
             });
@@ -168,8 +174,8 @@ SpecBegin(SKYAuthContainer)
             waitUntil(^(DoneCallback done) {
                 [container.auth loginWithEmail:@"test@invalid"
                                       password:@"secret"
-                             completionHandler:^(SKYUser *user, NSError *error) {
-                                 assertLoggedIn(user.userID, error);
+                             completionHandler:^(SKYRecord *user, NSError *error) {
+                                 assertLoggedIn(user.recordID.recordName, error);
                                  done();
                              }];
             });
@@ -179,8 +185,8 @@ SpecBegin(SKYAuthContainer)
             waitUntil(^(DoneCallback done) {
                 [container.auth loginWithUsername:@"test"
                                          password:@"secret"
-                                completionHandler:^(SKYUser *user, NSError *error) {
-                                    assertLoggedIn(user.userID, error);
+                                completionHandler:^(SKYRecord *user, NSError *error) {
+                                    assertLoggedIn(user.recordID.recordName, error);
                                     done();
                                 }];
             });
@@ -210,10 +216,14 @@ describe(@"get current user from server", ^{
                 NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                     @"result" : @{
                         @"user_id" : @"user-1",
-                        @"username" : @"user1",
-                        @"email" : @"user1@skygear.dev",
                         @"roles" : @[ @"Developer", @"Designer" ],
-                        @"access_token" : @"token-1"
+                        @"access_token" : @"token-1",
+                        @"profile" : @{
+                            @"_id" : @"user/user-1",
+                            @"_access" : [NSNull null],
+                            @"username" : @"user1",
+                            @"email" : @"user1@skygear.dev",
+                        },
                     }
                 }
                                                                options:0
@@ -222,16 +232,13 @@ describe(@"get current user from server", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.auth getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth getWhoAmIWithCompletionHandler:^(SKYRecord *user, NSError *error) {
                 expect(error).to.beNil();
 
                 expect(user).notTo.beNil();
-                expect(user.userID).to.equal(@"user-1");
-                expect(user.username).to.equal(@"user1");
-                expect(user.email).to.equal(@"user1@skygear.dev");
-                expect(user.roles).to.haveLengthOf(2);
-                expect(user.roles).to.contain([SKYRole roleWithName:@"Developer"]);
-                expect(user.roles).to.contain([SKYRole roleWithName:@"Designer"]);
+                expect(user.recordID.recordName).to.equal(@"user-1");
+                expect(user[@"username"]).to.equal(@"user1");
+                expect(user[@"email"]).to.equal(@"user1@skygear.dev");
 
                 done();
             }];
@@ -256,7 +263,7 @@ describe(@"get current user from server", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.auth getWhoAmIWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth getWhoAmIWithCompletionHandler:^(SKYRecord *user, NSError *error) {
                 expect(user).to.beNil();
                 expect(error).notTo.beNil();
 
@@ -289,7 +296,7 @@ describe(@"save current user", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.auth logoutWithCompletionHandler:^(SKYUser *user, NSError *error) {
+            [container.auth logoutWithCompletionHandler:^(SKYRecord *user, NSError *error) {
                 done();
             }];
         });
@@ -308,15 +315,15 @@ describe(@"save current user", ^{
 
     it(@"fetch user with User", ^{
         SKYContainer *container = [[SKYContainer alloc] init];
-        SKYUser *user = [SKYUser userWithUserID:@"user1"];
-        user.username = @"username1";
+        SKYRecord *user = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
+        user[@"username"] = @"username1";
         [container.auth
             updateWithUser:user
                accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [[SKYContainer alloc] init];
         expect(container.auth.currentUserRecordID).to.equal(@"user1");
-        expect(container.auth.currentUser.username).to.equal(@"username1");
+        expect(container.auth.currentUser[@"username"]).to.equal(@"username1");
         expect(container.auth.currentAccessToken.tokenString).to.equal(@"accesstoken1");
     });
 
@@ -433,112 +440,6 @@ describe(@"AuthenticationError callback", ^{
                 done();
             };
             [container addOperation:op];
-        });
-    });
-
-    afterEach(^{
-        [OHHTTPStubs removeAllStubs];
-    });
-});
-
-describe(@"manage user", ^{
-    NSString *apiKey = @"CORRECT_KEY";
-    NSString *currentUserId = @"CORRECT_USER_ID";
-    NSString *token = @"CORRECT_TOKEN";
-
-    __block SKYContainer *container = nil;
-
-    beforeEach(^{
-        container = [[SKYContainer alloc] init];
-        [container configureWithAPIKey:apiKey];
-        [container.auth updateWithUserRecordID:currentUserId
-                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
-    });
-
-    it(@"should be able to query by emails", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
-            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *parameters = @{
-                    @"result" : @[
-                        @{
-                            @"_id" : @"user/user0",
-                            @"_type" : @"record",
-                            @"_transient" : @{@"_email" : @"john.doe@example.com"},
-                        },
-                        @{
-                            @"_id" : @"user/user1",
-                            @"_type" : @"record",
-                            @"_transient" : @{@"_email" : @"jane.doe@example.com"},
-                        },
-                    ],
-                    @"info" : @{@"count" : @2}
-                };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-
-                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
-            }];
-
-        waitUntil(^(DoneCallback done) {
-            [container.auth queryUsersByEmails:@[ @"john.doe@example.com", @"jane.doe@example.com" ]
-                             completionHandler:^(NSArray<SKYRecord *> *users, NSError *error) {
-                                 expect([NSThread isMainThread]).to.beTruthy();
-
-                                 expect(error).to.beNil();
-                                 expect(users).to.haveACountOf(2);
-
-                                 expect(users[0].recordID.recordName).to.equal(@"user0");
-                                 expect([users[0].transient objectForKey:@"_email"])
-                                     .to.equal(@"john.doe@example.com");
-
-                                 expect(users[1].recordID.recordName).to.equal(@"user1");
-                                 expect([users[1].transient objectForKey:@"_email"])
-                                     .to.equal(@"jane.doe@example.com");
-
-                                 done();
-                             }];
-        });
-
-    });
-
-    it(@"should be able to update user", ^{
-        SKYRole *developerRole = [SKYRole roleWithName:@"Developer"];
-
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
-            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *payload = @{
-                    @"result" : @{
-                        @"_id" : @"user_id",
-                        @"username" : @"user",
-                        @"email" : @"user@skygear.io",
-                        @"roles" : @[ developerRole.name ]
-                    }
-                };
-                return
-                    [OHHTTPStubsResponse responseWithJSONObject:payload statusCode:200 headers:nil];
-            }];
-
-        SKYUser *user = [SKYUser userWithUserID:@"user_id"];
-        [user setUsername:@"user"];
-        [user setEmail:@"user@skygear.io"];
-        [user addRole:developerRole];
-
-        waitUntil(^(DoneCallback done) {
-            [container.auth saveUser:user
-                          completion:^(SKYUser *user, NSError *error) {
-                              expect(error).to.beNil();
-                              expect(user).notTo.beNil();
-                              expect(user.userID).to.equal(@"user_id");
-                              expect(user.username).to.equal(@"user");
-                              expect(user.email).to.equal(@"user@skygear.io");
-                              expect([user hasRole:developerRole]).to.equal(YES);
-
-                              done();
-                          }];
         });
     });
 

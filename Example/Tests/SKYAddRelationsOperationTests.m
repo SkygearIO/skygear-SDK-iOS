@@ -24,9 +24,9 @@
 SpecBegin(SKYAddRelationsOperation)
 
     describe(@"relation add", ^{
-        __block SKYUser *follower1 = nil;
-        __block SKYUser *follower2 = nil;
-        __block SKYUser *follower3 = nil;
+        __block SKYRecord *follower1 = nil;
+        __block SKYRecord *follower2 = nil;
+        __block SKYRecord *follower3 = nil;
         __block SKYContainer *container = nil;
 
         beforeEach(^{
@@ -35,11 +35,11 @@ SpecBegin(SKYAddRelationsOperation)
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID1 = @"user1001";
-            follower1 = [[SKYUser alloc] initWithUserID:userRecordID1];
+            follower1 = [SKYRecord recordWithRecordType:@"user" name:userRecordID1];
             NSString *userRecordID2 = @"user1002";
-            follower2 = [[SKYUser alloc] initWithUserID:userRecordID2];
+            follower2 = [SKYRecord recordWithRecordType:@"user" name:userRecordID2];
             NSString *userRecordID3 = @"user1003";
-            follower3 = [[SKYUser alloc] initWithUserID:userRecordID3];
+            follower3 = [SKYRecord recordWithRecordType:@"user" name:userRecordID3];
         });
 
         it(@"multiple relations", ^{

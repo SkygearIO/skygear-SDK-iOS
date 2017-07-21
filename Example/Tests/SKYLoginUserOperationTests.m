@@ -36,7 +36,10 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"make SKYRequest with username login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithUsername:@"username" password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{
+                    @"username" : @"username"
+                }
+                                                    password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -44,13 +47,16 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.action).to.equal(@"auth:login");
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.payload[@"username"]).to.equal(@"username");
+            expect(request.payload[@"auth_data"][@"username"]).to.equal(@"username");
             expect(request.payload[@"password"]).to.equal(@"password");
         });
 
         it(@"make SKYRequest with email login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{
+                    @"email" : @"user@example.com"
+                }
+                                                    password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -58,16 +64,16 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.action).to.equal(@"auth:login");
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.payload[@"email"]).to.equal(@"user@example.com");
+            expect(request.payload[@"auth_data"][@"email"]).to.equal(@"user@example.com");
             expect(request.payload[@"password"]).to.equal(@"password");
         });
 
         it(@"make SKYRequest with provider", ^{
             SKYLoginUserOperation *operation =
                 [SKYLoginUserOperation operationWithProvider:@"com.example"
-                                          authenticationData:@{
-                                              @"access_token" : @"hello_world",
-                                          }];
+                                            providerAuthData:@{
+                                                @"access_token" : @"hello_world",
+                                            }];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -76,12 +82,15 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.payload[@"provider"]).to.equal(@"com.example");
-            expect(request.payload[@"auth_data"]).to.equal(@{@"access_token" : @"hello_world"});
+            expect(request.payload[@"provider_auth_data"]).to.equal(@{@"access_token" : @"hello_world"});
         });
 
         it(@"make request", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{
+                    @"email" : @"user@example.com"
+                }
+                                                    password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -90,6 +99,10 @@ SpecBegin(SKYLoginUserOperation)
                     NSDictionary *parameters = @{
                         @"user_id" : @"UUID",
                         @"access_token" : @"ACCESS_TOKEN",
+                        @"profile" : @{
+                            @"_id" : @"user/UUID",
+                            @"_access" : [NSNull null],
+                        },
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
@@ -102,9 +115,10 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.userID).to.equal(@"UUID");
+                            expect(user.recordID.recordType).to.equal(@"user");
+                            expect(user.recordID.recordName).to.equal(@"UUID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -117,7 +131,10 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"pass error", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithEmail:@"user@example.com" password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{
+                    @"email" : @"user@example.com"
+                }
+                                                    password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -130,7 +147,7 @@ SpecBegin(SKYLoginUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.loginCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             done();
