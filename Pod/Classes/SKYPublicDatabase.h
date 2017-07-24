@@ -55,4 +55,26 @@
                                    access:(SKYAccessControl *)accessControl
                                completion:(void (^)(NSError *error))completionBlock;
 
+/**
+ *  Assign roles to users
+ *
+ *  @param roles           Roles to be assigned
+ *  @param users           Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)assignRoles:(NSArray<SKYRole *> *)roles
+            toUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Revoke roles from users
+ *
+ *  @param roles           Roles to be revoked
+ *  @param users           Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)revokeRoles:(NSArray<SKYRole *> *)roles
+          fromUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock;
+
 @end

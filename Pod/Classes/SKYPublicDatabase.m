@@ -19,9 +19,11 @@
 
 #import "SKYPublicDatabase.h"
 
+#import "SKYAssignUserRoleOperation.h"
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYDefineCreationAccessOperation.h"
 #import "SKYDefineDefaultAccessOperation.h"
+#import "SKYRevokeUserRoleOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
 
 @implementation SKYPublicDatabase
@@ -94,6 +96,42 @@
                 });
             }
         };
+
+    [self.container addOperation:operation];
+}
+
+- (void)assignRoles:(NSArray<SKYRole *> *)roles
+            toUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock
+{
+    SKYAssignUserRoleOperation *operation =
+        [SKYAssignUserRoleOperation operationWithUsers:users roles:roles];
+
+    operation.assignUserRoleCompletionBlock = ^(NSArray<SKYRecord *> *users, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
+
+    [self.container addOperation:operation];
+}
+
+- (void)revokeRoles:(NSArray<SKYRole *> *)roles
+          fromUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock
+{
+    SKYRevokeUserRoleOperation *operation =
+        [SKYRevokeUserRoleOperation operationWithUsers:users roles:roles];
+
+    operation.revokeUserRoleCompletionBlock = ^(NSArray<NSString *> *userIDs, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
 
     [self.container addOperation:operation];
 }
