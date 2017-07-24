@@ -56,6 +56,16 @@
                                completion:(void (^)(NSError *error))completionBlock;
 
 /**
+ *  Get roles of users
+ *
+ *  @param users           Target users
+ *  @param completionBlock Completion Block, with a user-to-roles dictionary
+ */
+- (void)getUserRoles:(NSArray<SKYRecord *> *)users
+          completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
+                               NSError *error))completionBlock;
+
+/**
  *  Assign roles to users
  *
  *  @param roles           Roles to be assigned

@@ -41,6 +41,7 @@
 #import "SKYGCMNotificationInfo.h"
 #import "SKYGetAssetPostRequestOperation.h"
 #import "SKYGetCurrentUserOperation.h"
+#import "SKYGetUserRoleOperation.h"
 #import "SKYLambdaOperation.h"
 #import "SKYLocationSortDescriptor.h"
 #import "SKYLoginUserOperation.h"

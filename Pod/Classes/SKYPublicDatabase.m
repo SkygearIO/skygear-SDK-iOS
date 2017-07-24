@@ -23,6 +23,7 @@
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYDefineCreationAccessOperation.h"
 #import "SKYDefineDefaultAccessOperation.h"
+#import "SKYGetUserRoleOperation.h"
 #import "SKYRevokeUserRoleOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
 
@@ -93,6 +94,23 @@
             if (completionBlock) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     completionBlock(error);
+                });
+            }
+        };
+
+    [self.container addOperation:operation];
+}
+
+- (void)getUserRoles:(NSArray<SKYRecord *> *)users
+          completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
+                               NSError *error))completionBlock
+{
+    SKYGetUserRoleOperation *operation = [SKYGetUserRoleOperation operationWithUsers:users];
+    operation.getUserRoleCompletionBlock =
+        ^(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles, NSError *error) {
+            if (completionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(userRoles, error);
                 });
             }
         };
