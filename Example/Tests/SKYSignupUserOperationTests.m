@@ -36,9 +36,7 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"normal user request", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                      password:@"password"];
 
             operation.container = container;
@@ -66,9 +64,7 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"make normal user request", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                      password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -152,9 +148,7 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"pass error", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                      password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

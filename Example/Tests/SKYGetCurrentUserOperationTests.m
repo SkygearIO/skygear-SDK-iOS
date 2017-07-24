@@ -61,12 +61,12 @@ SpecBegin(SKYGetCurrentUserOperation)
                             @"user_id" : @"user-1",
                             @"roles" : @[ @"Developer", @"Designer" ],
                             @"access_token" : @"token-1",
-                            @"profile": @{
-                                    @"_id": @"user/user-1",
-                                    @"_access": [NSNull null],
-                                    @"username" : @"user1",
-                                    @"email" : @"user1@skygear.dev",
-                                    },
+                            @"profile" : @{
+                                @"_id" : @"user/user-1",
+                                @"_access" : [NSNull null],
+                                @"username" : @"user1",
+                                @"email" : @"user1@skygear.dev",
+                            },
                         }
                     }
                                                                    options:0

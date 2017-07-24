@@ -25,17 +25,17 @@
 #import "SKYError.h"
 #import "SKYQuery.h"
 
+#import "SKYAssignUserRoleOperation.h"
 #import "SKYChangePasswordOperation.h"
+#import "SKYDefineAdminRolesOperation.h"
+#import "SKYFetchUserRoleOperation.h"
 #import "SKYGetCurrentUserOperation.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
-#import "SKYSignupUserOperation.h"
-#import "SKYAssignUserRoleOperation.h"
-#import "SKYDefineAdminRolesOperation.h"
-#import "SKYFetchUserRoleOperation.h"
 #import "SKYRevokeUserRoleOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
+#import "SKYSignupUserOperation.h"
 
 @implementation SKYAuthContainer {
     SKYAccessToken *_accessToken;
@@ -225,7 +225,7 @@
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"username" : username };
+    NSDictionary *authData = @{@"username" : username};
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -235,7 +235,7 @@
                password:(NSString *)password
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"email" : email };
+    NSDictionary *authData = @{@"email" : email};
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -249,7 +249,7 @@
          profileDictionary:(NSDictionary *)profile
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"username" : username };
+    NSDictionary *authData = @{@"username" : username};
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -263,7 +263,7 @@
       profileDictionary:(NSDictionary *)profile
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"email" : email };
+    NSDictionary *authData = @{@"email" : email};
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -289,7 +289,7 @@
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"username" : username };
+    NSDictionary *authData = @{@"username" : username};
     SKYLoginUserOperation *operation =
         [SKYLoginUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -299,7 +299,7 @@
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{ @"email" : email };
+    NSDictionary *authData = @{@"email" : email};
     SKYLoginUserOperation *operation =
         [SKYLoginUserOperation operationWithAuthData:authData password:password];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
@@ -372,7 +372,7 @@
               completion:(void (^)(NSError *error))completionBlock
 {
     SKYDefineAdminRolesOperation *operation =
-    [SKYDefineAdminRolesOperation operationWithRoles:roles];
+        [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
     operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -389,7 +389,7 @@
                 completion:(void (^)(NSError *error))completionBlock
 {
     SKYSetUserDefaultRoleOperation *operation =
-    [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
     operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -416,7 +416,7 @@
                                     }
 
                                     NSMutableDictionary<NSString *, NSArray<SKYRole *> *>
-                                    *parsedUserRoles = [NSMutableDictionary dictionary];
+                                        *parsedUserRoles = [NSMutableDictionary dictionary];
                                     for (NSString *userID in userRoles) {
                                         NSMutableArray *roles = [NSMutableArray array];
                                         for (NSString *role in userRoles[userID]) {
@@ -436,13 +436,13 @@
 {
     SKYFetchUserRoleOperation *operation = [SKYFetchUserRoleOperation operationWithUserIDs:userIDs];
     operation.fetchUserRoleCompletionBlock =
-    ^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error) {
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(userRoles, error);
-            });
-        }
-    };
+        ^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error) {
+            if (completionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(userRoles, error);
+                });
+            }
+        };
 
     [self.container addOperation:operation];
 }
@@ -461,7 +461,7 @@
                   completion:(void (^)(NSError *error))completionBlock
 {
     SKYAssignUserRoleOperation *operation =
-    [SKYAssignUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
+        [SKYAssignUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
 
     operation.assignUserRoleCompletionBlock = ^(NSArray<SKYRecord *> *users, NSError *error) {
         if (completionBlock) {
@@ -488,7 +488,7 @@
                   completion:(void (^)(NSError *error))completionBlock
 {
     SKYRevokeUserRoleOperation *operation =
-    [SKYRevokeUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
+        [SKYRevokeUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
 
     operation.revokeUserRoleCompletionBlock = ^(NSArray<NSString *> *userIDs, NSError *error) {
         if (completionBlock) {
@@ -523,7 +523,7 @@
     for (SKYRole *role in roles) {
         [roleNames addObject:role.name];
     }
-    
+
     return roleNames;
 }
 

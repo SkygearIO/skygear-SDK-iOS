@@ -36,9 +36,7 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"make SKYRequest with username login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{
-                    @"username" : @"username"
-                }
+                [SKYLoginUserOperation operationWithAuthData:@{@"username" : @"username"}
                                                     password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
@@ -53,9 +51,7 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"make SKYRequest with email login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                     password:@"password"];
             operation.container = container;
             [operation prepareForRequest];
@@ -82,14 +78,14 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.payload[@"provider"]).to.equal(@"com.example");
-            expect(request.payload[@"provider_auth_data"]).to.equal(@{@"access_token" : @"hello_world"});
+            expect(request.payload[@"provider_auth_data"]).to.equal(@{
+                @"access_token" : @"hello_world"
+            });
         });
 
         it(@"make request", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                     password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -131,9 +127,7 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"pass error", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{
-                    @"email" : @"user@example.com"
-                }
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                     password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;

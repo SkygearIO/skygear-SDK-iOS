@@ -225,8 +225,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
                           completion:
-(void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-          NSError *error))completionBlock;
+                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                        NSError *error))completionBlock;
 
 /**
  *  Assign roles to users

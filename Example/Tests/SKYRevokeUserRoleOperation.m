@@ -65,7 +65,7 @@ SpecBegin(SKYRevokeUserRoleOperation)
                 return YES;
             }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *response = @{ @"result" : @"OK" };
+                    NSDictionary *response = @{@"result" : @"OK"};
                     return [OHHTTPStubsResponse responseWithJSONObject:response
                                                             statusCode:200
                                                                headers:nil];

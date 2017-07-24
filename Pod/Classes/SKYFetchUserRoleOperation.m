@@ -44,9 +44,7 @@
 - (void)prepareForRequest
 {
     self.request =
-        [[SKYRequest alloc] initWithAction:@"role:get" payload:@{
-            @"users" : self.userIDs
-        }];
+        [[SKYRequest alloc] initWithAction:@"role:get" payload:@{@"users" : self.userIDs}];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.auth.currentAccessToken;
 }

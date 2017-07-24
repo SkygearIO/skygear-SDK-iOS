@@ -140,10 +140,10 @@ describe(@"manage roles", ^{
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                                                 completion:^(NSError *error) {
-                                                     expect(error).to.beNil();
-                                                     done();
-                                                 }];
+                                  completion:^(NSError *error) {
+                                      expect(error).to.beNil();
+                                      done();
+                                  }];
         });
     });
 
@@ -165,10 +165,10 @@ describe(@"manage roles", ^{
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                                                   completion:^(NSError *error) {
-                                                       expect(error).to.beNil();
-                                                       done();
-                                                   }];
+                                    completion:^(NSError *error) {
+                                        expect(error).to.beNil();
+                                        done();
+                                    }];
         });
     });
 
