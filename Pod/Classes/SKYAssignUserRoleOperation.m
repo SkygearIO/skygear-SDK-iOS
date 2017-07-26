@@ -21,48 +21,24 @@
 
 @implementation SKYAssignUserRoleOperation
 
-+ (instancetype)operationWithUsers:(NSArray<SKYRecord *> *)users roles:(NSArray<SKYRole *> *)roles
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                           roleNames:(NSArray<NSString *> *)roleNames
 {
-    return [[self alloc] initWithUsers:users roles:roles completionBlock:nil];
+    return [[self alloc] initWithUserIDs:userIDs roleNames:roleNames completionBlock:nil];
 }
 
-- (instancetype)initWithUsers:(NSArray<SKYRecord *> *)users
-                        roles:(NSArray<SKYRole *> *)roles
-              completionBlock:(void (^)(NSArray<SKYRecord *> *users, NSError *error))completionBlock
+- (instancetype)initWithUserIDs:(NSArray<NSString *> *)userIDs
+                      roleNames:(NSArray<NSString *> *)roleNames
+                completionBlock:
+                    (void (^)(NSArray<NSString *> *users, NSError *error))completionBlock
 {
     self = [super init];
     if (self) {
-        self.users = users;
-        self.roles = roles;
+        self.userIDs = userIDs;
+        self.roleNames = roleNames;
         self.assignUserRoleCompletionBlock = completionBlock;
     }
     return self;
-}
-
-- (NSArray<NSString *> *)userIDs
-{
-    NSMutableArray<NSString *> *userIDs = [NSMutableArray arrayWithCapacity:self.users.count];
-    for (SKYRecord *user in self.users) {
-        if (![user.recordID.recordType isEqualToString:@"user"]) {
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"Record type should be user"
-                                         userInfo:nil];
-        }
-
-        [userIDs addObject:user.recordID.recordName];
-    }
-
-    return userIDs;
-}
-
-- (NSArray<NSString *> *)roleNames
-{
-    NSMutableArray<NSString *> *roleNames = [NSMutableArray arrayWithCapacity:self.roles.count];
-    for (SKYRole *role in self.roles) {
-        [roleNames addObject:role.name];
-    }
-
-    return roleNames;
 }
 
 // override
@@ -100,7 +76,7 @@
 - (void)handleResponse:(SKYResponse *)aResponse
 {
     if (self.assignUserRoleCompletionBlock) {
-        self.assignUserRoleCompletionBlock(self.users, nil);
+        self.assignUserRoleCompletionBlock(self.userIDs, nil);
     }
 }
 

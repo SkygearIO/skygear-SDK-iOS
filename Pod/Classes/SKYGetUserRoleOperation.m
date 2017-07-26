@@ -23,37 +23,21 @@
 
 @implementation SKYGetUserRoleOperation
 
-+ (instancetype)operationWithUsers:(NSArray<SKYRecord *> *)users
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
 {
-    return [[self alloc] initWithUsers:users completionBlock:nil];
+    return [[self alloc] initWithUserIDs:userIDs completionBlock:nil];
 }
 
-- (instancetype)initWithUsers:(NSArray<SKYRecord *> *)users
-              completionBlock:(void (^)(NSDictionary<NSString *, SKYRole *> *userRoles,
-                                        NSError *error))completionBlock
+- (instancetype)initWithUserIDs:(NSArray<NSString *> *)userIDs
+                completionBlock:(void (^)(NSDictionary<NSString *, NSString *> *userRoles,
+                                          NSError *error))completionBlock
 {
     self = [super init];
     if (self) {
-        self.users = users;
+        self.userIDs = userIDs;
         self.getUserRoleCompletionBlock = completionBlock;
     }
     return self;
-}
-
-- (NSArray<NSString *> *)userIDs
-{
-    NSMutableArray<NSString *> *userIDs = [NSMutableArray arrayWithCapacity:self.users.count];
-    for (SKYRecord *user in self.users) {
-        if (![user.recordID.recordType isEqualToString:@"user"]) {
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"Record type should be user"
-                                         userInfo:nil];
-        }
-
-        [userIDs addObject:user.recordID.recordName];
-    }
-
-    return userIDs;
 }
 
 // override
@@ -89,7 +73,7 @@
 // override
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    NSMutableDictionary<NSString *, NSArray<SKYRole *> *> *userRoles =
+    NSMutableDictionary<NSString *, NSArray<NSString *> *> *userRoles =
         [NSMutableDictionary dictionary];
     NSError *error;
 
@@ -102,12 +86,7 @@
             break;
         }
 
-        NSMutableArray<SKYRole *> *roles = [NSMutableArray arrayWithCapacity:[roleNames count]];
-        for (NSString *roleName in roleNames) {
-            [roles addObject:[SKYRole roleWithName:roleName]];
-        }
-
-        [userRoles setObject:roles forKey:userID];
+        [userRoles setObject:roleNames forKey:userID];
     }
 
     if (self.getUserRoleCompletionBlock) {

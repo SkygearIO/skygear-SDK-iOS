@@ -25,13 +25,13 @@
 @interface SKYGetUserRoleOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, copy, nonnull) NSArray<SKYRecord *> *users;
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
 /// Undocumented
 @property (nonatomic, copy) void (^getUserRoleCompletionBlock)
-    (NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles, NSError *error);
+    (NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error);
 
 /// Undocumented
-+ (instancetype)operationWithUsers:(NSArray<SKYRecord *> *)users;
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs;
 
 @end

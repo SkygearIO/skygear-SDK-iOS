@@ -105,9 +105,38 @@
           completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
                                NSError *error))completionBlock
 {
-    SKYGetUserRoleOperation *operation = [SKYGetUserRoleOperation operationWithUsers:users];
+    [self getUserRolesWithUserIDs:[self getUserIDs:users]
+                       completion:^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                    NSError *error) {
+                           if (completionBlock) {
+                               if (error) {
+                                   completionBlock(nil, error);
+                                   return;
+                               }
+
+                               NSMutableDictionary<NSString *, NSArray<SKYRole *> *>
+                                   *parsedUserRoles = [NSMutableDictionary dictionary];
+                               for (NSString *userID in userRoles) {
+                                   NSMutableArray *roles = [NSMutableArray array];
+                                   for (NSString *role in userRoles[userID]) {
+                                       [roles addObject:[SKYRole roleWithName:role]];
+                                   }
+                                   [parsedUserRoles setObject:roles forKey:userID];
+                               }
+
+                               completionBlock(parsedUserRoles, nil);
+                           }
+                       }];
+}
+
+- (void)getUserRolesWithUserIDs:(NSArray<NSString *> *)userIDs
+                     completion:
+                         (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                   NSError *error))completionBlock
+{
+    SKYGetUserRoleOperation *operation = [SKYGetUserRoleOperation operationWithUserIDs:userIDs];
     operation.getUserRoleCompletionBlock =
-        ^(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles, NSError *error) {
+        ^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error) {
             if (completionBlock) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     completionBlock(userRoles, error);
@@ -122,8 +151,17 @@
             toUsers:(NSArray<SKYRecord *> *)users
          completion:(void (^)(NSError *error))completionBlock
 {
+    [self assignRolesWithNames:[self getRoleNames:roles]
+                toUsersWithIDs:[self getUserIDs:users]
+                    completion:completionBlock];
+}
+
+- (void)assignRolesWithNames:(NSArray<NSString *> *)roleNames
+              toUsersWithIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock
+{
     SKYAssignUserRoleOperation *operation =
-        [SKYAssignUserRoleOperation operationWithUsers:users roles:roles];
+        [SKYAssignUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
 
     operation.assignUserRoleCompletionBlock = ^(NSArray<SKYRecord *> *users, NSError *error) {
         if (completionBlock) {
@@ -140,8 +178,17 @@
           fromUsers:(NSArray<SKYRecord *> *)users
          completion:(void (^)(NSError *error))completionBlock
 {
+    [self revokeRolesWithNames:[self getRoleNames:roles]
+              fromUsersWihtIDs:[self getUserIDs:users]
+                    completion:completionBlock];
+}
+
+- (void)revokeRolesWithNames:(NSArray<NSString *> *)roleNames
+            fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock
+{
     SKYRevokeUserRoleOperation *operation =
-        [SKYRevokeUserRoleOperation operationWithUsers:users roles:roles];
+        [SKYRevokeUserRoleOperation operationWithUserIDs:userIDs roleNames:roleNames];
 
     operation.revokeUserRoleCompletionBlock = ^(NSArray<NSString *> *userIDs, NSError *error) {
         if (completionBlock) {
@@ -152,6 +199,32 @@
     };
 
     [self.container addOperation:operation];
+}
+
+- (NSArray<NSString *> *)getUserIDs:(NSArray<SKYRecord *> *)users
+{
+    NSMutableArray<NSString *> *userIDs = [NSMutableArray arrayWithCapacity:users.count];
+    for (SKYRecord *user in users) {
+        if (![user.recordID.recordType isEqualToString:@"user"]) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Record type should be user"
+                                         userInfo:nil];
+        }
+
+        [userIDs addObject:user.recordID.recordName];
+    }
+
+    return userIDs;
+}
+
+- (NSArray<NSString *> *)getRoleNames:(NSArray<SKYRole *> *)roles
+{
+    NSMutableArray<NSString *> *roleNames = [NSMutableArray arrayWithCapacity:roles.count];
+    for (SKYRole *role in roles) {
+        [roleNames addObject:role.name];
+    }
+
+    return roleNames;
 }
 
 @end

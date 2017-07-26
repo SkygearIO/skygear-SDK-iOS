@@ -30,12 +30,9 @@ SpecBegin(SKYAssignUserRoleOperation)
         NSString *developerRoleName = @"Developer";
         NSString *testerRoleName = @"Tester";
 
-        SKYRole *developerRole = [SKYRole roleWithName:developerRoleName];
-        SKYRole *testerRole = [SKYRole roleWithName:testerRoleName];
-
-        SKYRecord *user1 = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
-        SKYRecord *user2 = [SKYRecord recordWithRecordType:@"user" name:@"user2"];
-        SKYRecord *user3 = [SKYRecord recordWithRecordType:@"user" name:@"user3"];
+        NSString *user1 = @"user1";
+        NSString *user2 = @"user2";
+        NSString *user3 = @"user3";
 
         __block SKYContainer *container;
 
@@ -48,9 +45,9 @@ SpecBegin(SKYAssignUserRoleOperation)
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYAssignUserRoleOperation *operation =
-                [SKYAssignUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]
-                                                         roles:@[ developerRole, testerRole ]];
+            SKYAssignUserRoleOperation *operation = [SKYAssignUserRoleOperation
+                operationWithUserIDs:@[ user1, user2, user3 ]
+                           roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
             [operation prepareForRequest];
@@ -74,15 +71,15 @@ SpecBegin(SKYAssignUserRoleOperation)
                                                                headers:nil];
                 }];
 
-            SKYAssignUserRoleOperation *operation =
-                [SKYAssignUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]
-                                                         roles:@[ developerRole, testerRole ]];
+            SKYAssignUserRoleOperation *operation = [SKYAssignUserRoleOperation
+                operationWithUserIDs:@[ user1, user2, user3 ]
+                           roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
                 operation.assignUserRoleCompletionBlock =
-                    ^(NSArray<SKYRecord *> *users, NSError *error) {
+                    ^(NSArray<NSString *> *users, NSError *error) {
                         expect(error).to.beNil();
                         expect(users).to.haveCountOf(3);
                         expect(users).to.contain(user1);

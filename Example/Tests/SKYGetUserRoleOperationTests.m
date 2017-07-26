@@ -27,9 +27,9 @@ SpecBegin(SKYGetUserRoleOperation)
         NSString *currentUserID = @"CORRECT_USER_ID";
         NSString *token = @"CORRECT_TOKEN";
 
-        SKYRecord *user1 = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
-        SKYRecord *user2 = [SKYRecord recordWithRecordType:@"user" name:@"user2"];
-        SKYRecord *user3 = [SKYRecord recordWithRecordType:@"user" name:@"user3"];
+        NSString *user1 = @"user1";
+        NSString *user2 = @"user2";
+        NSString *user3 = @"user3";
 
         __block SKYContainer *container;
 
@@ -43,7 +43,7 @@ SpecBegin(SKYGetUserRoleOperation)
 
         it(@"should create SKYRequest correctly", ^{
             SKYGetUserRoleOperation *operation =
-                [SKYGetUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]];
+                [SKYGetUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
 
             [operation setContainer:container];
             [operation prepareForRequest];
@@ -73,19 +73,19 @@ SpecBegin(SKYGetUserRoleOperation)
                 }];
 
             SKYGetUserRoleOperation *operation =
-                [SKYGetUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]];
+                [SKYGetUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
                 operation.getUserRoleCompletionBlock =
-                    ^(NSDictionary<NSString *, SKYRole *> *userRoles, NSError *error) {
+                    ^(NSDictionary<NSString *, NSString *> *userRoles, NSError *error) {
                         expect(error).to.beNil();
                         expect(userRoles[@"user1"]).to.haveCountOf(1);
-                        expect(userRoles[@"user1"]).to.contain([SKYRole roleWithName:@"Developer"]);
+                        expect(userRoles[@"user1"]).to.contain(@"Developer");
                         expect(userRoles[@"user2"]).to.haveCountOf(2);
-                        expect(userRoles[@"user2"]).to.contain([SKYRole roleWithName:@"Admin"]);
-                        expect(userRoles[@"user2"]).to.contain([SKYRole roleWithName:@"Tester"]);
+                        expect(userRoles[@"user2"]).to.contain(@"Admin");
+                        expect(userRoles[@"user2"]).to.contain(@"Tester");
                         expect(userRoles[@"user3"]).to.haveCountOf(0);
                         done();
                     };

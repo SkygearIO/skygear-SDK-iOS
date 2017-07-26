@@ -66,6 +66,17 @@
                                NSError *error))completionBlock;
 
 /**
+ *  Get roles of users
+ *
+ *  @param userIDs         Target user
+ *  @param completionBlock Completion Block, with a user-to-roles dictionary
+ */
+- (void)getUserRolesWithUserIDs:(NSArray<NSString *> *)userIDs
+                     completion:
+                         (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                   NSError *error))completionBlock;
+
+/**
  *  Assign roles to users
  *
  *  @param roles           Roles to be assigned
@@ -77,6 +88,17 @@
          completion:(void (^)(NSError *error))completionBlock;
 
 /**
+ *  Assign roles to users
+ *
+ *  @param roleNames       Roles to be assigned
+ *  @param userIDs         Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)assignRolesWithNames:(NSArray<NSString *> *)roleNames
+              toUsersWithIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock;
+
+/**
  *  Revoke roles from users
  *
  *  @param roles           Roles to be revoked
@@ -86,5 +108,16 @@
 - (void)revokeRoles:(NSArray<SKYRole *> *)roles
           fromUsers:(NSArray<SKYRecord *> *)users
          completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Revoke roles from users
+ *
+ *  @param roleNames       Roles to be revoked
+ *  @param userIDs         Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)revokeRolesWithNames:(NSArray<NSString *> *)roleNames
+            fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock;
 
 @end

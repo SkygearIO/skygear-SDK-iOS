@@ -30,12 +30,9 @@ SpecBegin(SKYRevokeUserRoleOperation)
         NSString *developerRoleName = @"Developer";
         NSString *testerRoleName = @"Tester";
 
-        SKYRole *developerRole = [SKYRole roleWithName:developerRoleName];
-        SKYRole *testerRole = [SKYRole roleWithName:testerRoleName];
-
-        SKYRecord *user1 = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
-        SKYRecord *user2 = [SKYRecord recordWithRecordType:@"user" name:@"user2"];
-        SKYRecord *user3 = [SKYRecord recordWithRecordType:@"user" name:@"user3"];
+        NSString *user1 = @"user1";
+        NSString *user2 = @"user2";
+        NSString *user3 = @"user3";
 
         __block SKYContainer *container;
 
@@ -48,9 +45,9 @@ SpecBegin(SKYRevokeUserRoleOperation)
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYRevokeUserRoleOperation *operation =
-                [SKYRevokeUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]
-                                                         roles:@[ developerRole, testerRole ]];
+            SKYRevokeUserRoleOperation *operation = [SKYRevokeUserRoleOperation
+                operationWithUserIDs:@[ user1, user2, user3 ]
+                           roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
             [operation prepareForRequest];
@@ -74,9 +71,9 @@ SpecBegin(SKYRevokeUserRoleOperation)
                                                                headers:nil];
                 }];
 
-            SKYRevokeUserRoleOperation *operation =
-                [SKYRevokeUserRoleOperation operationWithUsers:@[ user1, user2, user3 ]
-                                                         roles:@[ developerRole, testerRole ]];
+            SKYRevokeUserRoleOperation *operation = [SKYRevokeUserRoleOperation
+                operationWithUserIDs:@[ user1, user2, user3 ]
+                           roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
 

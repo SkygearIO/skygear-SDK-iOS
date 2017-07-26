@@ -25,16 +25,17 @@
 @interface SKYAssignUserRoleOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, copy, nonnull) NSArray<SKYRecord *> *users;
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
 /// Undocumented
-@property (nonatomic, copy, nonnull) NSArray<SKYRole *> *roles;
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *roleNames;
 
 /// Undocumented
 @property (nonatomic, copy) void (^assignUserRoleCompletionBlock)
-    (NSArray<SKYRecord *> *users, NSError *error);
+    (NSArray<NSString *> *userIDs, NSError *error);
 
 /// Undocumented
-+ (instancetype)operationWithUsers:(NSArray<SKYRecord *> *)users roles:(NSArray<SKYRole *> *)roles;
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                           roleNames:(NSArray<NSString *> *)roleNames;
 
 @end
