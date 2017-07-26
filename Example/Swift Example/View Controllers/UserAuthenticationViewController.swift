@@ -103,19 +103,32 @@ class UserAuthenticationViewController: UITableViewController {
             textField.text = username
         }
         alert.addTextField { (textField) in
+            textField.placeholder = "Email"
+        }
+        alert.addTextField { (textField) in
             textField.placeholder = "Password"
             textField.isSecureTextEntry = true
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { (_) in
-            let username = alert.textFields?.first?.text
-            let password = alert.textFields?.last?.text
+            let username = alert.textFields?.first?.text ?? ""
+            let email = alert.textFields?[1].text ?? ""
+            let password = alert.textFields?.last?.text ?? ""
 
-            if (username ?? "").isEmpty || (password ?? "").isEmpty {
+            if (username.isEmpty && email.isEmpty) || password.isEmpty {
                 return
             }
 
-            SKYContainer.default().auth.login(withUsername: username, password: password, completionHandler: { (user, error) in
+            var authData: [String: Any] = [:]
+            if !username.isEmpty {
+                authData["username"] = username
+            }
+
+            if !email.isEmpty {
+                authData["email"] = email
+            }
+
+            SKYContainer.default().auth.login(withAuthData: authData, password: password, completionHandler: { (user, error) in
                 guard error == nil else {
                     self.showAuthenticationError(user, error: error as! NSError, completion: {
                         self.login(username)
@@ -128,10 +141,13 @@ class UserAuthenticationViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    func signup(_ username: String?) {
+    func signup() {
         let alert = UIAlertController(title: "Signup", message: "Please enter your username and password.", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = "Username"
+        }
+        alert.addTextField { (textField) in
+            textField.placeholder = "Email"
         }
         alert.addTextField { (textField) in
             textField.placeholder = "Password"
@@ -139,17 +155,27 @@ class UserAuthenticationViewController: UITableViewController {
         }
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Signup", style: .default, handler: { (_) in
-            let username = alert.textFields?.first?.text
-            let password = alert.textFields?.last?.text
+            let username = alert.textFields?.first?.text ?? ""
+            let email = alert.textFields?[1].text ?? ""
+            let password = alert.textFields?.last?.text ?? ""
 
-            if (username ?? "").isEmpty || (password ?? "").isEmpty {
+            if (username.isEmpty && email.isEmpty) || password.isEmpty {
                 return
             }
 
-            SKYContainer.default().auth.signup(withUsername: username, password: password, completionHandler: { (user, error) in
+            var authData: [String: Any] = [:]
+            if !username.isEmpty {
+                authData["username"] = username
+            }
+
+            if !email.isEmpty {
+                authData["email"] = email
+            }
+
+            SKYContainer.default().auth.signup(withAuthData: authData, password: password, completionHandler: { (user, error) in
                 if error != nil {
                     self.showAuthenticationError(user, error: error as! NSError, completion: {
-                        self.signup(username)
+                        self.signup()
                     })
                     return
                 }
@@ -238,7 +264,7 @@ class UserAuthenticationViewController: UITableViewController {
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
                 if let user = SKYContainer.default().auth.currentUser {
-                    if let lastLoginAt = user["lastLoginAt"] as! Date! {
+                    if let lastLoginAt = user["last_login_at"] as! Date! {
                         let f = self.dateFormatter.string(from: lastLoginAt)
                         cell.detailTextLabel?.text = f
                     } else {
@@ -260,7 +286,7 @@ class UserAuthenticationViewController: UITableViewController {
             if indexPath.row == 0 {
                 self.login(self.lastUsername)
             } else if indexPath.row == 1 {
-                self.signup(nil)
+                self.signup()
             } else if indexPath.row == 2 {
                 self.logout()
             }
