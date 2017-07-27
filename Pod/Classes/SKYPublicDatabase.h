@@ -22,18 +22,6 @@
 @interface SKYPublicDatabase : SKYDatabase
 
 /**
- *  Defines roles to have special powers
- */
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Sets default roles for new registered users
- */
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock;
-
-/**
  *  Limit creation access of a record type to some roles
  *
  *  @param recordType      Record type to set creation access
@@ -54,70 +42,5 @@
 - (void)defineDefaultAccessWithRecordType:(NSString *)recordType
                                    access:(SKYAccessControl *)accessControl
                                completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Get roles of users
- *
- *  @param users           Target users
- *  @param completionBlock Completion Block, with a user-to-roles dictionary
- */
-- (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
-               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
-                                    NSError *error))completionBlock;
-
-/**
- *  Get roles of users
- *
- *  @param userIDs         Target user
- *  @param completionBlock Completion Block, with a user-to-roles dictionary
- */
-- (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
-                          completion:
-                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                        NSError *error))completionBlock;
-
-/**
- *  Assign roles to users
- *
- *  @param roles           Roles to be assigned
- *  @param users           Target users
- *  @param completionBlock Completion Block
- */
-- (void)assignRoles:(NSArray<SKYRole *> *)roles
-            toUsers:(NSArray<SKYRecord *> *)users
-         completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Assign roles to users
- *
- *  @param roleNames       Roles to be assigned
- *  @param userIDs         Target users
- *  @param completionBlock Completion Block
- */
-- (void)assignRolesWithNames:(NSArray<NSString *> *)roleNames
-              toUsersWithIDs:(NSArray<NSString *> *)userIDs
-                  completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Revoke roles from users
- *
- *  @param roles           Roles to be revoked
- *  @param users           Target users
- *  @param completionBlock Completion Block
- */
-- (void)revokeRoles:(NSArray<SKYRole *> *)roles
-          fromUsers:(NSArray<SKYRecord *> *)users
-         completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Revoke roles from users
- *
- *  @param roleNames       Roles to be revoked
- *  @param userIDs         Target users
- *  @param completionBlock Completion Block
- */
-- (void)revokeRolesWithNames:(NSArray<NSString *> *)roleNames
-            fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
-                  completion:(void (^)(NSError *error))completionBlock;
 
 @end

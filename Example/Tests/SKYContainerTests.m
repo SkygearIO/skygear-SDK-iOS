@@ -136,7 +136,7 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.publicCloudDatabase defineAdminRoles:@[
+            [container.auth defineAdminRoles:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
@@ -161,7 +161,7 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.publicCloudDatabase setUserDefaultRole:@[
+            [container.auth setUserDefaultRole:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
