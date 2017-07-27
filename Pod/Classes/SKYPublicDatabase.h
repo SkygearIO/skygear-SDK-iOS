@@ -61,9 +61,9 @@
  *  @param users           Target users
  *  @param completionBlock Completion Block, with a user-to-roles dictionary
  */
-- (void)getUserRoles:(NSArray<SKYRecord *> *)users
-          completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
-                               NSError *error))completionBlock;
+- (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
+               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
+                                    NSError *error))completionBlock;
 
 /**
  *  Get roles of users
@@ -71,10 +71,10 @@
  *  @param userIDs         Target user
  *  @param completionBlock Completion Block, with a user-to-roles dictionary
  */
-- (void)getUserRolesWithUserIDs:(NSArray<NSString *> *)userIDs
-                     completion:
-                         (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                   NSError *error))completionBlock;
+- (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
+                          completion:
+                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                        NSError *error))completionBlock;
 
 /**
  *  Assign roles to users

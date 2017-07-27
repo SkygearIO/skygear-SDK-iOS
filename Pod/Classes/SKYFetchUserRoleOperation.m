@@ -1,5 +1,5 @@
 //
-//  SKYGetUserRoleOperation.m
+//  SKYFetchUserRoleOperation.m
 //  SKYKit
 //
 //  Copyright 2017 Oursky Ltd.
@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "SKYGetUserRoleOperation.h"
+#import "SKYFetchUserRoleOperation.h"
 
 #import "SKYOperationSubclass.h"
 
-@implementation SKYGetUserRoleOperation
+@implementation SKYFetchUserRoleOperation
 
 + (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
 {
@@ -35,7 +35,7 @@
     self = [super init];
     if (self) {
         self.userIDs = userIDs;
-        self.getUserRoleCompletionBlock = completionBlock;
+        self.fetchUserRoleCompletionBlock = completionBlock;
     }
     return self;
 }
@@ -65,8 +65,8 @@
 // override
 - (void)handleRequestError:(NSError *)error
 {
-    if (self.getUserRoleCompletionBlock) {
-        self.getUserRoleCompletionBlock(nil, error);
+    if (self.fetchUserRoleCompletionBlock) {
+        self.fetchUserRoleCompletionBlock(nil, error);
     }
 }
 
@@ -89,8 +89,8 @@
         [userRoles setObject:roleNames forKey:userID];
     }
 
-    if (self.getUserRoleCompletionBlock) {
-        self.getUserRoleCompletionBlock(userRoles, error);
+    if (self.fetchUserRoleCompletionBlock) {
+        self.fetchUserRoleCompletionBlock(userRoles, error);
     }
 }
 

@@ -20,9 +20,9 @@
 #import <Foundation/Foundation.h>
 #import <SKYKit/SKYKit.h>
 
-SpecBegin(SKYGetUserRoleOperation)
+SpecBegin(SKYFetchUserRoleOperation)
 
-    describe(@"Get User Role Operation", ^{
+    describe(@"Fetch User Role Operation", ^{
         NSString *apiKey = @"CORRECT_KEY";
         NSString *currentUserID = @"CORRECT_USER_ID";
         NSString *token = @"CORRECT_TOKEN";
@@ -42,8 +42,8 @@ SpecBegin(SKYGetUserRoleOperation)
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYGetUserRoleOperation *operation =
-                [SKYGetUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
+            SKYFetchUserRoleOperation *operation =
+                [SKYFetchUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
 
             [operation setContainer:container];
             [operation prepareForRequest];
@@ -72,13 +72,13 @@ SpecBegin(SKYGetUserRoleOperation)
                                                                headers:nil];
                 }];
 
-            SKYGetUserRoleOperation *operation =
-                [SKYGetUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
+            SKYFetchUserRoleOperation *operation =
+                [SKYFetchUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
-                operation.getUserRoleCompletionBlock =
+                operation.fetchUserRoleCompletionBlock =
                     ^(NSDictionary<NSString *, NSString *> *userRoles, NSError *error) {
                         expect(error).to.beNil();
                         expect(userRoles[@"user1"]).to.haveCountOf(1);

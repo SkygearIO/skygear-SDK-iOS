@@ -1,5 +1,5 @@
 //
-//  SKYGetUserRoleOperation.h
+//  SKYFetchUserRoleOperation.h
 //  SKYKit
 //
 //  Copyright 2017 Oursky Ltd.
@@ -22,13 +22,13 @@
 @class SKYRecord;
 
 /// Undocumented
-@interface SKYGetUserRoleOperation : SKYOperation
+@interface SKYFetchUserRoleOperation : SKYOperation
 
 /// Undocumented
 @property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
 /// Undocumented
-@property (nonatomic, copy) void (^getUserRoleCompletionBlock)
+@property (nonatomic, copy) void (^fetchUserRoleCompletionBlock)
     (NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error);
 
 /// Undocumented

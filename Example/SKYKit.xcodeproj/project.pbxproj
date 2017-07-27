@@ -81,7 +81,7 @@
 		A3146DAC57A1BAB2F2B7C597 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8C71207B2B56D001272DBE /* libPods-Tests.a */; };
 		A9CC0CAB1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */; };
 		A9CC0CAD1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */; };
-		A9CC0CB51F25E09600FE8B8D /* SKYGetUserRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CB41F25E09600FE8B8D /* SKYGetUserRoleOperationTests.m */; };
+		A9CC0CB51F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CB41F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m */; };
 		A9E9311C1EEA4D18004AF717 /* SKYAuthContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */; };
 		A9E9311E1EEA4E2E004AF717 /* SKYPushContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */; };
 		A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */; };
@@ -196,7 +196,7 @@
 		989370CEBB946BC3C9C9FD0A /* libPods-Test Runner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Test Runner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssignUserRoleOperationTests.m; sourceTree = "<group>"; };
 		A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRevokeUserRoleOperation.m; sourceTree = "<group>"; };
-		A9CC0CB41F25E09600FE8B8D /* SKYGetUserRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYGetUserRoleOperationTests.m; sourceTree = "<group>"; };
+		A9CC0CB41F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYFetchUserRoleOperationTests.m; sourceTree = "<group>"; };
 		A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerTests.m; sourceTree = "<group>"; };
 		A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPushContainerTests.m; sourceTree = "<group>"; };
 		A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPubsubContainerTests.m; sourceTree = "<group>"; };
@@ -383,7 +383,7 @@
 				376CB11C1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m */,
 				60209E5A1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m */,
 				6019C1E01D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m */,
-				A9CC0CB41F25E09600FE8B8D /* SKYGetUserRoleOperationTests.m */,
+				A9CC0CB41F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m */,
 				383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */,
 				38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */,
 				CD7FE26C1A9DBB9F002C076E /* SKYLoginUserOperationTests.m */,
@@ -1002,7 +1002,7 @@
 				6019C1E11D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m in Sources */,
 				CD98A8A61A9F34390056420F /* SKYFetchRecordsOperationTests.m in Sources */,
 				383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */,
-				A9CC0CB51F25E09600FE8B8D /* SKYGetUserRoleOperationTests.m in Sources */,
+				A9CC0CB51F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

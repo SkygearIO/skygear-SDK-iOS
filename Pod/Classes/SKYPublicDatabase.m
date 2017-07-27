@@ -23,7 +23,7 @@
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYDefineCreationAccessOperation.h"
 #import "SKYDefineDefaultAccessOperation.h"
-#import "SKYGetUserRoleOperation.h"
+#import "SKYFetchUserRoleOperation.h"
 #import "SKYRevokeUserRoleOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
 
@@ -101,41 +101,40 @@
     [self.container addOperation:operation];
 }
 
-- (void)getUserRoles:(NSArray<SKYRecord *> *)users
-          completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
-                               NSError *error))completionBlock
+- (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
+               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *,
+                                    NSError *))completionBlock
 {
-    [self getUserRolesWithUserIDs:[self getUserIDs:users]
-                       completion:^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                    NSError *error) {
-                           if (completionBlock) {
-                               if (error) {
-                                   completionBlock(nil, error);
-                                   return;
-                               }
+    [self fetchRolesOfUsersWithUserIDs:[self getUserIDs:users]
+                            completion:^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                         NSError *error) {
+                                if (completionBlock) {
+                                    if (error) {
+                                        completionBlock(nil, error);
+                                        return;
+                                    }
 
-                               NSMutableDictionary<NSString *, NSArray<SKYRole *> *>
-                                   *parsedUserRoles = [NSMutableDictionary dictionary];
-                               for (NSString *userID in userRoles) {
-                                   NSMutableArray *roles = [NSMutableArray array];
-                                   for (NSString *role in userRoles[userID]) {
-                                       [roles addObject:[SKYRole roleWithName:role]];
-                                   }
-                                   [parsedUserRoles setObject:roles forKey:userID];
-                               }
+                                    NSMutableDictionary<NSString *, NSArray<SKYRole *> *>
+                                        *parsedUserRoles = [NSMutableDictionary dictionary];
+                                    for (NSString *userID in userRoles) {
+                                        NSMutableArray *roles = [NSMutableArray array];
+                                        for (NSString *role in userRoles[userID]) {
+                                            [roles addObject:[SKYRole roleWithName:role]];
+                                        }
+                                        [parsedUserRoles setObject:roles forKey:userID];
+                                    }
 
-                               completionBlock(parsedUserRoles, nil);
-                           }
-                       }];
+                                    completionBlock(parsedUserRoles, nil);
+                                }
+                            }];
 }
 
-- (void)getUserRolesWithUserIDs:(NSArray<NSString *> *)userIDs
-                     completion:
-                         (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                   NSError *error))completionBlock
+- (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
+                          completion:(void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *,
+                                               NSError *))completionBlock
 {
-    SKYGetUserRoleOperation *operation = [SKYGetUserRoleOperation operationWithUserIDs:userIDs];
-    operation.getUserRoleCompletionBlock =
+    SKYFetchUserRoleOperation *operation = [SKYFetchUserRoleOperation operationWithUserIDs:userIDs];
+    operation.fetchUserRoleCompletionBlock =
         ^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error) {
             if (completionBlock) {
                 dispatch_async(dispatch_get_main_queue(), ^{
