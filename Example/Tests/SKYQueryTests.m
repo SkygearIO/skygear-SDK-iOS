@@ -39,7 +39,7 @@ SpecBegin(SKYQuery)
                 [SKYQuery queryWithRecordType:[recordType copy] predicate:[predicate copy]];
             query1.sortDescriptors =
                 @[ [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES] ];
-            query1.transientIncludes = @{ @"city" : [NSExpression expressionForKeyPath:@"city"] };
+            query1.transientIncludes = @{@"city" : [NSExpression expressionForKeyPath:@"city"]};
             SKYQuery *query2 =
                 [[SKYQuery alloc] initWithRecordType:[recordType copy] predicate:[predicate copy]];
             query2.sortDescriptors = [query1.sortDescriptors copy];

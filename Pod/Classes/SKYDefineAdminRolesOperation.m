@@ -46,9 +46,7 @@
     }];
 
     self.request =
-        [[SKYRequest alloc] initWithAction:@"role:admin" payload:@{
-            @"roles" : roleNames
-        }];
+        [[SKYRequest alloc] initWithAction:@"role:admin" payload:@{@"roles" : roleNames}];
     self.request.accessToken = self.container.auth.currentAccessToken;
 }
 

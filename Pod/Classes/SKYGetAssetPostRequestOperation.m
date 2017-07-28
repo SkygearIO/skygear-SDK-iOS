@@ -38,9 +38,8 @@
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [[NSMutableDictionary alloc] initWithDictionary:@{
-        @"filename" : self.asset.name
-    }];
+    NSMutableDictionary *payload =
+        [[NSMutableDictionary alloc] initWithDictionary:@{@"filename" : self.asset.name}];
 
     if (self.asset.mimeType.length > 0) {
         [payload setObject:self.asset.mimeType forKey:@"content-type"];

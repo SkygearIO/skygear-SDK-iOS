@@ -45,16 +45,14 @@ SpecBegin(SKYSubscriptionDeserializer)
         });
 
         it(@"deserialize dictionary without id to nil", ^{
-            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:@{
-                @"type" : @"query"
-            }];
+            SKYSubscription *subscription =
+                [deserializer subscriptionWithDictionary:@{@"type" : @"query"}];
             expect(subscription).to.equal(nil);
         });
 
         it(@"deserialize dictionary without type to nil", ^{
-            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:@{
-                @"id" : @"subscriptionID"
-            }];
+            SKYSubscription *subscription =
+                [deserializer subscriptionWithDictionary:@{@"id" : @"subscriptionID"}];
             expect(subscription).to.equal(nil);
         });
 

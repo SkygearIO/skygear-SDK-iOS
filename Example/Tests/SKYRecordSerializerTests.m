@@ -143,8 +143,7 @@ SpecBegin(SKYRecordSerializer)
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             expect(dictionary[@"_access"]).to.equal(@[
-                @{ @"relation" : @"follow",
-                   @"level" : @"write" }
+                @{@"relation" : @"follow", @"level" : @"write"}
             ]);
         });
 
@@ -192,7 +191,7 @@ SpecBegin(SKYRecordSerializer)
 
             serializer.serializeTransientDictionary = YES;
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"_transient"]).to.equal(@{ @"hello" : @"world" });
+            expect(dictionary[@"_transient"]).to.equal(@{@"hello" : @"world"});
         });
 
         it(@"serialize transient fields (disabled)", ^{

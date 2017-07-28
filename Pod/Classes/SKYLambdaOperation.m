@@ -54,7 +54,7 @@
 
 - (void)prepareForRequest
 {
-    NSDictionary *payload = @{ @"args" : _arrayArguments ? _arrayArguments : _dictionaryArguments };
+    NSDictionary *payload = @{@"args" : _arrayArguments ? _arrayArguments : _dictionaryArguments};
     self.request = [[SKYRequest alloc] initWithAction:self.action payload:payload];
 
     // Lambda request may not be user-authenticated. Therefore an API key

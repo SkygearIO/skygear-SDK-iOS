@@ -72,23 +72,23 @@ SpecBegin(SKYAddRelationsOperation)
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @[
                             @{
-                               @"id" : @"user1001",
-                               @"type" : @"user",
-                               @"data" : @{
-                                   @"_id" : @"user1001",
-                                   @"username" : @"user1001",
-                                   @"email" : @"user1001@skygear.io"
-                               },
+                                @"id" : @"user1001",
+                                @"type" : @"user",
+                                @"data" : @{
+                                    @"_id" : @"user1001",
+                                    @"username" : @"user1001",
+                                    @"email" : @"user1001@skygear.io"
+                                },
                             },
                             @{
-                               @"id" : @"user1002",
-                               @"type" : @"error",
-                               @"data" : @{
-                                   @"code" : @(SKYErrorResourceNotFound),
-                                   @"message" : @"cannot find user",
-                                   @"name" : @"ResourceNotFound",
-                                   @"info" : @{@"id" : @"user1002"},
-                               },
+                                @"id" : @"user1002",
+                                @"type" : @"error",
+                                @"data" : @{
+                                    @"code" : @(SKYErrorResourceNotFound),
+                                    @"message" : @"cannot find user",
+                                    @"name" : @"ResourceNotFound",
+                                    @"info" : @{@"id" : @"user1002"},
+                                },
                             },
                         ],
                     };

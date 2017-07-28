@@ -68,11 +68,8 @@ SpecBegin(SKYDefineDefaultAccessOperation)
 
             expect(recordTypePayload).to.equal(sourceCodeRecordType);
             expect(accessRolesPayload).to.haveACountOf(2);
-            expect(accessRolesPayload).to.contain((@{
-                @"role" : @"Developer",
-                @"level" : @"write"
-            }));
-            expect(accessRolesPayload).to.contain((@{ @"role" : @"Tester", @"level" : @"read" }));
+            expect(accessRolesPayload).to.contain((@{@"role" : @"Developer", @"level" : @"write"}));
+            expect(accessRolesPayload).to.contain((@{@"role" : @"Tester", @"level" : @"read"}));
         });
 
         it(@"should handle success response correctly", ^{

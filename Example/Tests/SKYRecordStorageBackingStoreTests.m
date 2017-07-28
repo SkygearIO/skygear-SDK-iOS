@@ -372,16 +372,12 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
 
         record = [[SKYRecord alloc]
             initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id1"]
-                        data:@{
-                            @"title" : @"My note!"
-                        }];
+                        data:@{@"title" : @"My note!"}];
         [backingStore saveRecord:record];
 
         record = [[SKYRecord alloc]
             initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id2"]
-                        data:@{
-                            @"title" : @"Your note!"
-                        }];
+                        data:@{@"title" : @"Your note!"}];
         [backingStore saveRecord:record];
         [backingStore deleteRecordLocally:record];
         [backingStore synchronize];
@@ -475,7 +471,7 @@ SharedExamplesEnd
                 return [[SKYRecordStorageMemoryStore alloc] init];
             };
 
-            NSDictionary *data = @{ @"backingStoreFactory" : factory };
+            NSDictionary *data = @{@"backingStoreFactory" : factory};
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Changes", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Records", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Query", data);
@@ -493,7 +489,7 @@ SpecEnd
                 return [[SKYRecordStorageFileBackedMemoryStore alloc] initWithFile:filePath];
             };
 
-            NSDictionary *data = @{ @"backingStoreFactory" : factory };
+            NSDictionary *data = @{@"backingStoreFactory" : factory};
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Changes", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Records", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Query", data);
@@ -510,7 +506,7 @@ SpecEnd
                     temporaryFileWithSuffix:@"SKYRecordStorageTest.db"];
                 return [[SKYRecordStorageSqliteStore alloc] initWithFile:filePath];
             };
-            NSDictionary *data = @{ @"backingStoreFactory" : factory };
+            NSDictionary *data = @{@"backingStoreFactory" : factory};
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Changes", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Records", data);
             itShouldBehaveLike(@"SKYRecordStorageBackingStore-Query", data);

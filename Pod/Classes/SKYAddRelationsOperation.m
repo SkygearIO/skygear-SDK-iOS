@@ -51,7 +51,7 @@
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [@{ @"name" : self.relationType } mutableCopy];
+    NSMutableDictionary *payload = [@{@"name" : self.relationType} mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
     for (SKYUser *user in self.usersToRelate) {
         [targets addObject:user.userID];

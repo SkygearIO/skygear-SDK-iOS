@@ -37,8 +37,8 @@ SpecBegin(SKYLocationSortDescriptor)
             recordWithRecordType:@"city"
                             name:@"newyork"
                             data:@{
-                                @"latlng" :
-                                    [[CLLocation alloc] initWithLatitude:40.7127 longitude:-74.0059]
+                                @"latlng" : [[CLLocation alloc] initWithLatitude:40.7127
+                                                                       longitude:-74.0059]
                             }];
         SKYRecord *city3 = [SKYRecord
             recordWithRecordType:@"city"
@@ -47,13 +47,13 @@ SpecBegin(SKYLocationSortDescriptor)
                                 @"latlng" : [[CLLocation alloc] initWithLatitude:51.507222
                                                                        longitude:-0.1275]
                             }];
-        SKYRecord *city4 = [SKYRecord
-            recordWithRecordType:@"city"
-                            name:@"paris"
-                            data:@{
-                                @"latlng" :
-                                    [[CLLocation alloc] initWithLatitude:48.8567 longitude:2.3508]
-                            }];
+        SKYRecord *city4 =
+            [SKYRecord recordWithRecordType:@"city"
+                                       name:@"paris"
+                                       data:@{
+                                           @"latlng" : [[CLLocation alloc] initWithLatitude:48.8567
+                                                                                  longitude:2.3508]
+                                       }];
         CLLocation *relativeLocation =
             [[CLLocation alloc] initWithLatitude:48.8567 longitude:2.3508];
 

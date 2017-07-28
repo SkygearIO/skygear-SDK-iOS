@@ -96,12 +96,12 @@ SpecBegin(SKYDeleteRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
                             },
                             @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"record",
+                                @"_id" : @"book/book2",
+                                @"_type" : @"record",
                             },
                         ],
                     };

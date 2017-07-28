@@ -88,14 +88,14 @@ SpecBegin(SKYModifyRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
-                               @"_revision" : @"revision1",
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
+                                @"_revision" : @"revision1",
                             },
                             @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"record",
-                               @"_revision" : @"revision2",
+                                @"_id" : @"book/book2",
+                                @"_type" : @"record",
+                                @"_revision" : @"revision2",
                             }
                         ]
                     };
@@ -160,17 +160,17 @@ SpecBegin(SKYModifyRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
-                               @"_revision" : @"revision1",
-                               @"title" : @"Title From Server",
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
+                                @"_revision" : @"revision1",
+                                @"title" : @"Title From Server",
                             },
                             @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"error",
-                               @"code" : @(SKYErrorResourceNotFound),
-                               @"message" : @"An error.",
-                               @"name" : @"ResourceNotFound",
+                                @"_id" : @"book/book2",
+                                @"_type" : @"error",
+                                @"code" : @(SKYErrorResourceNotFound),
+                                @"message" : @"An error.",
+                                @"name" : @"ResourceNotFound",
                             }
                         ]
                     };

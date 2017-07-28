@@ -76,7 +76,7 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.payload[@"provider"]).to.equal(@"com.example");
-            expect(request.payload[@"auth_data"]).to.equal(@{ @"access_token" : @"hello_world" });
+            expect(request.payload[@"auth_data"]).to.equal(@{@"access_token" : @"hello_world"});
         });
 
         it(@"make request", ^{
@@ -91,11 +91,10 @@ SpecBegin(SKYLoginUserOperation)
                         @"user_id" : @"UUID",
                         @"access_token" : @"ACCESS_TOKEN",
                     };
-                    NSData *payload = [NSJSONSerialization dataWithJSONObject:@{
-                        @"result" : parameters
-                    }
-                                                                      options:0
-                                                                        error:nil];
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
+                                                        options:0
+                                                          error:nil];
 
                     return
                         [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];

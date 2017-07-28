@@ -112,7 +112,7 @@ SpecBegin(SKYUpdateUserOperation)
                 return YES;
             }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *payload = @{ @"email" : @"user@skygear.io" };
+                    NSDictionary *payload = @{@"email" : @"user@skygear.io"};
                     return [OHHTTPStubsResponse responseWithJSONObject:payload
                                                             statusCode:200
                                                                headers:nil];

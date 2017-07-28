@@ -27,9 +27,7 @@
 {
     SKYLoginUserOperation *operation =
         [SKYLoginUserOperation operationWithProvider:@"com.facebook"
-                                  authenticationData:@{
-                                      @"access_token" : accessToken.tokenString
-                                  }];
+                                  authenticationData:@{@"access_token" : accessToken.tokenString}];
     [self performUserAuthOperation:operation completionHandler:completionHandler];
 }
 

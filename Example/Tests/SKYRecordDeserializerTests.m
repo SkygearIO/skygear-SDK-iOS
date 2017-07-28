@@ -94,8 +94,7 @@ SpecBegin(SKYRecordDeserializer)
         it(@"deserialize access control list", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"_access"] = @[
-                @{ @"relation" : @"friend",
-                   @"level" : @"read" },
+                @{@"relation" : @"friend", @"level" : @"read"},
             ];
 
             SKYRecord *record = [deserializer recordWithDictionary:data];
@@ -232,9 +231,9 @@ SpecBegin(SKYRecordDeserializer)
 
         it(@"deserialize transient fields", ^{
             NSMutableDictionary *data = [basicPayload mutableCopy];
-            data[@"_transient"] = @{ @"hello" : @"world" };
+            data[@"_transient"] = @{@"hello" : @"world"};
             SKYRecord *record = [deserializer recordWithDictionary:data];
-            expect(record.transient).to.equal(@{ @"hello" : @"world" });
+            expect(record.transient).to.equal(@{@"hello" : @"world"});
         });
     });
 

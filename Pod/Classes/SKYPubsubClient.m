@@ -116,19 +116,19 @@ double const SKYPubsubReconnectWait = 1.0;
     if (!_opened) {
         [self connect];
     } else {
-        [self send:@{ @"action" : @"sub", @"channel" : channel }];
+        [self send:@{@"action" : @"sub", @"channel" : channel}];
     }
 }
 
 - (void)unsubscribe:(NSString *)channel
 {
     [_channelHandlers removeObjectForKey:channel];
-    [self send:@{ @"action" : @"unsub", @"channel" : channel }];
+    [self send:@{@"action" : @"unsub", @"channel" : channel}];
 }
 
 - (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel
 {
-    [_pendingPublish addObject:@{ @"action" : @"pub", @"channel" : channel, @"data" : message }];
+    [_pendingPublish addObject:@{@"action" : @"pub", @"channel" : channel, @"data" : message}];
     if (!_opened) {
         [self connect];
     } else {
@@ -169,7 +169,7 @@ double const SKYPubsubReconnectWait = 1.0;
     _opened = true;
     _connecting = false;
     for (NSString *key in _channelHandlers) {
-        [self send:@{ @"action" : @"sub", @"channel" : key }];
+        [self send:@{@"action" : @"sub", @"channel" : key}];
     }
     [self publishPending];
 }

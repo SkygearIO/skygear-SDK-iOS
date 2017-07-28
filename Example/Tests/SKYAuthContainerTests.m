@@ -86,11 +86,10 @@ SpecBegin(SKYAuthContainer)
                         @"email" : @"john.doe@example.com",
                         @"access_token" : @"ACCESS_TOKEN",
                     };
-                    NSData *payload = [NSJSONSerialization dataWithJSONObject:@{
-                        @"result" : parameters
-                    }
-                                                                      options:0
-                                                                        error:nil];
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
+                                                        options:0
+                                                          error:nil];
 
                     return
                         [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
@@ -105,9 +104,9 @@ SpecBegin(SKYAuthContainer)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"user/UUID",
-                               @"_type" : @"record",
-                               @"foo" : @"bar",
+                                @"_id" : @"user/UUID",
+                                @"_type" : @"record",
+                                @"foo" : @"bar",
                             },
                         ]
                     };
@@ -144,28 +143,24 @@ SpecBegin(SKYAuthContainer)
         it(@"signup user email, password and profile", ^{
             waitUntil(^(DoneCallback done) {
                 [container.auth signupWithEmail:@"test@invalid"
-                    password:@"secret"
-                    profileDictionary:@{
-                        @"foo" : @"bar"
-                    }
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        assertLoggedIn(record.recordID.recordName, error);
-                        done();
-                    }];
+                                       password:@"secret"
+                              profileDictionary:@{@"foo" : @"bar"}
+                              completionHandler:^(SKYRecord *record, NSError *error) {
+                                  assertLoggedIn(record.recordID.recordName, error);
+                                  done();
+                              }];
             });
         });
 
         it(@"signup username, password and profile", ^{
             waitUntil(^(DoneCallback done) {
                 [container.auth signupWithUsername:@"test"
-                    password:@"secret"
-                    profileDictionary:@{
-                        @"foo" : @"bar"
-                    }
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        assertLoggedIn(record.recordID.recordName, error);
-                        done();
-                    }];
+                                          password:@"secret"
+                                 profileDictionary:@{@"foo" : @"bar"}
+                                 completionHandler:^(SKYRecord *record, NSError *error) {
+                                     assertLoggedIn(record.recordID.recordName, error);
+                                     done();
+                                 }];
             });
         });
 
@@ -468,14 +463,14 @@ describe(@"manage user", ^{
                 NSDictionary *parameters = @{
                     @"result" : @[
                         @{
-                           @"_id" : @"user/user0",
-                           @"_type" : @"record",
-                           @"_transient" : @{@"_email" : @"john.doe@example.com"},
+                            @"_id" : @"user/user0",
+                            @"_type" : @"record",
+                            @"_transient" : @{@"_email" : @"john.doe@example.com"},
                         },
                         @{
-                           @"_id" : @"user/user1",
-                           @"_type" : @"record",
-                           @"_transient" : @{@"_email" : @"jane.doe@example.com"},
+                            @"_id" : @"user/user1",
+                            @"_type" : @"record",
+                            @"_transient" : @{@"_email" : @"jane.doe@example.com"},
                         },
                     ],
                     @"info" : @{@"count" : @2}

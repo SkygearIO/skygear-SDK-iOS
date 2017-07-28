@@ -72,9 +72,7 @@ SpecBegin(SKYDownloadAssetOperation)
                                                             options:0];
                     return [OHHTTPStubsResponse responseWithData:data
                                                       statusCode:200
-                                                         headers:@{
-                                                             @"Content-Length" : @"11"
-                                                         }];
+                                                         headers:@{@"Content-Length" : @"11"}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -106,9 +104,7 @@ SpecBegin(SKYDownloadAssetOperation)
                                                             options:0];
                     return [OHHTTPStubsResponse responseWithData:data
                                                       statusCode:200
-                                                         headers:@{
-                                                             @"Content-Length" : @"11"
-                                                         }];
+                                                         headers:@{@"Content-Length" : @"11"}];
                 }];
 
             waitUntil(^(DoneCallback done) {
