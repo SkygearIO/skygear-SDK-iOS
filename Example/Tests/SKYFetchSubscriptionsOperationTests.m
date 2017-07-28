@@ -95,18 +95,18 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"id" : @"sub1",
-                               @"type" : @"query",
-                               @"query" : @{
-                                   @"record_type" : @"book",
-                               }
+                                @"id" : @"sub1",
+                                @"type" : @"query",
+                                @"query" : @{
+                                    @"record_type" : @"book",
+                                }
                             },
                             @{
-                               @"id" : @"sub2",
-                               @"type" : @"query",
-                               @"query" : @{
-                                   @"record_type" : @"bookmark",
-                               }
+                                @"id" : @"sub2",
+                                @"type" : @"query",
+                                @"query" : @{
+                                    @"record_type" : @"bookmark",
+                                }
                             },
                         ]
                     };
@@ -182,18 +182,18 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"id" : @"sub1",
-                               @"type" : @"query",
-                               @"query" : @{
-                                   @"record_type" : @"book",
-                               }
+                                @"id" : @"sub1",
+                                @"type" : @"query",
+                                @"query" : @{
+                                    @"record_type" : @"book",
+                                }
                             },
                             @{
-                               @"_id" : @"sub2",
-                               @"_type" : @"error",
-                               @"code" : @(SKYErrorResourceNotFound),
-                               @"message" : @"An error.",
-                               @"name" : @"ResourceNotFound",
+                                @"_id" : @"sub2",
+                                @"_type" : @"error",
+                                @"code" : @(SKYErrorResourceNotFound),
+                                @"message" : @"An error.",
+                                @"name" : @"ResourceNotFound",
                             },
                         ]
                     };

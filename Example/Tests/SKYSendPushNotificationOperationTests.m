@@ -131,11 +131,11 @@ SpecBegin(SKYSendPushNotificationOperation)
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @[
                             @{
-                               @"_id" : @"johndoe",
+                                @"_id" : @"johndoe",
                             },
                             @{
-                               @"_id" : @"janedoe",
-                               @"_type" : @"error",
+                                @"_id" : @"janedoe",
+                                @"_type" : @"error",
                             },
                         ]
                     };

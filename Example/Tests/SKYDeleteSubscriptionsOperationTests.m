@@ -136,12 +136,12 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
                         @"result" : @[
                             @{@"id" : @"my notes"},
                             @{
-                               @"_type" : @"error",
-                               @"_id" : @"ben's notes",
-                               @"message" : @"cannot find subscription \"ben's notes\"",
-                               @"name" : @"ResourceNotFound",
-                               @"code" : @(SKYErrorResourceNotFound),
-                               @"info" : @{@"id" : @"ben's notes"},
+                                @"_type" : @"error",
+                                @"_id" : @"ben's notes",
+                                @"message" : @"cannot find subscription \"ben's notes\"",
+                                @"name" : @"ResourceNotFound",
+                                @"code" : @(SKYErrorResourceNotFound),
+                                @"info" : @{@"id" : @"ben's notes"},
                             },
                         ]
                     };

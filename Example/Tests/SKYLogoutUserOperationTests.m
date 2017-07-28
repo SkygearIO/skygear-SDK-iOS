@@ -51,11 +51,10 @@ SpecBegin(SKYLogoutUserOperation)
             }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{};
-                    NSData *payload = [NSJSONSerialization dataWithJSONObject:@{
-                        @"result" : parameters
-                    }
-                                                                      options:0
-                                                                        error:nil];
+                    NSData *payload =
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
+                                                        options:0
+                                                          error:nil];
 
                     return
                         [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];

@@ -49,7 +49,7 @@ SpecBegin(SKYLambdaOperation)
         });
 
         it(@"calls lambda with dict args", ^{
-            NSDictionary *args = @{ @"name" : @"bob" };
+            NSDictionary *args = @{@"name" : @"bob"};
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
             operation.container = container;
@@ -63,7 +63,7 @@ SpecBegin(SKYLambdaOperation)
         });
 
         it(@"make request", ^{
-            NSDictionary *args = @{ @"name" : @"bob" };
+            NSDictionary *args = @{@"name" : @"bob"};
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
 
@@ -98,7 +98,7 @@ SpecBegin(SKYLambdaOperation)
         });
 
         it(@"pass error", ^{
-            NSDictionary *args = @{ @"name" : @"bob" };
+            NSDictionary *args = @{@"name" : @"bob"};
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
 

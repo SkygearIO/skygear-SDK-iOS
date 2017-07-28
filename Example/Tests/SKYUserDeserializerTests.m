@@ -59,7 +59,7 @@ SpecBegin(SKYUserDeserializerTests)
         });
 
         it(@"deserialize user with id only", ^{
-            NSDictionary *data = @{ @"_id" : @"userid" };
+            NSDictionary *data = @{@"_id" : @"userid"};
             SKYUser *user = [deserializer userWithDictionary:data];
             expect(user.userID).to.equal(@"userid");
         });
@@ -76,7 +76,7 @@ SpecBegin(SKYUserDeserializerTests)
         });
 
         it(@"return empty roles if missing", ^{
-            NSDictionary *data = @{ @"_id" : @"userid" };
+            NSDictionary *data = @{@"_id" : @"userid"};
             SKYUser *user = [deserializer userWithDictionary:data];
             expect(user.roles).notTo.beNil();
             expect(user.roles).to.haveACountOf(0);

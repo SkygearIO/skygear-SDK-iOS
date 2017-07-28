@@ -69,15 +69,15 @@ SpecBegin(SKYRemoveRelationsOperation)
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @[
                             @{
-                               @"id" : @"user1001",
+                                @"id" : @"user1001",
                             },
                             @{
-                               @"id" : @"user1002",
-                               @"type" : @"error",
-                               @"data" : @{
-                                   @"message" : @"cannot find user",
-                                   @"code" : @"ResourceNotFound",
-                               },
+                                @"id" : @"user1002",
+                                @"type" : @"error",
+                                @"data" : @{
+                                    @"message" : @"cannot find user",
+                                    @"code" : @"ResourceNotFound",
+                                },
                             }
                         ]
                     };

@@ -26,7 +26,7 @@ SpecBegin(NSURLRequestSKYRequest)
 
         it(@"make url request", ^{
             NSString *action = @"auth:login";
-            NSDictionary *payload = @{ @"email" : @"user@example.com" };
+            NSDictionary *payload = @{@"email" : @"user@example.com"};
 
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
 

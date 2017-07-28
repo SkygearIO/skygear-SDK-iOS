@@ -47,9 +47,7 @@
 - (void)prepareForRequest
 {
     self.request =
-        [[SKYRequest alloc] initWithAction:@"device:unregister" payload:@{
-            @"id" : self.deviceID
-        }];
+        [[SKYRequest alloc] initWithAction:@"device:unregister" payload:@{@"id" : self.deviceID}];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.auth.currentAccessToken;
 }

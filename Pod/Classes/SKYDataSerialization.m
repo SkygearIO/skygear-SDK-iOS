@@ -274,7 +274,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else if ([obj isKindOfClass:[SKYRelation class]]) {
         data = [SKYDataSerialization serializeRelation:obj];
     } else if ([obj isKindOfClass:[SKYSequence class]]) {
-        data = @{ @"$type" : @"seq" };
+        data = @{@"$type" : @"seq"};
     } else if ([obj isKindOfClass:[SKYUnknownValue class]]) {
         SKYUnknownValue *unknownValue = (SKYUnknownValue *)obj;
         NSMutableDictionary *unknownValueDict = [NSMutableDictionary dictionary];
@@ -317,10 +317,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (NSDictionary *)serializeAsset:(SKYAsset *)obj
 {
-    NSDictionary *data = @{
-        SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType,
-        @"$name" : [obj name]
-    };
+    NSDictionary *data =
+        @{SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType, @"$name" : [obj name]};
 
     NSURL *assetURL = [obj url];
     if (assetURL != nil) {

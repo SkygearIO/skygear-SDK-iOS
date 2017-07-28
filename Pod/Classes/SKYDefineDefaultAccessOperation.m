@@ -54,11 +54,9 @@
     id serialized =
         [[SKYAccessControlSerializer serializer] arrayWithAccessControl:self.accessControl];
 
-    self.request = [[SKYRequest alloc] initWithAction:@"schema:default_access"
-                                              payload:@{
-                                                  @"type" : self.recordType,
-                                                  @"default_access" : serialized
-                                              }];
+    self.request = [[SKYRequest alloc]
+        initWithAction:@"schema:default_access"
+               payload:@{@"type" : self.recordType, @"default_access" : serialized}];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.auth.currentAccessToken;
 }

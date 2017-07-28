@@ -61,9 +61,7 @@ describe(@"Access Control for user id", ^{
 
     it(@"is serialized correctly", ^{
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"$direct",
-               @"level" : @"write",
-               @"user_id" : @"userid" },
+            @{@"relation" : @"$direct", @"level" : @"write", @"user_id" : @"userid"},
         ]);
     });
 
@@ -71,9 +69,7 @@ describe(@"Access Control for user id", ^{
         [accessControl setReadOnlyForUserID:userID];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"$direct",
-               @"level" : @"read",
-               @"user_id" : @"userid" }
+            @{@"relation" : @"$direct", @"level" : @"read", @"user_id" : @"userid"}
         ]);
     });
 
@@ -87,9 +83,7 @@ describe(@"Access Control for user id", ^{
         [accessControl setReadWriteAccessForUserID:@"userid"];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"$direct",
-               @"level" : @"write",
-               @"user_id" : @"userid" },
+            @{@"relation" : @"$direct", @"level" : @"write", @"user_id" : @"userid"},
         ]);
     });
 });
@@ -108,8 +102,7 @@ describe(@"Access Control for relation", ^{
 
     it(@"is serialized correctly", ^{
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"friend",
-               @"level" : @"write" },
+            @{@"relation" : @"friend", @"level" : @"write"},
         ]);
     });
 
@@ -117,8 +110,7 @@ describe(@"Access Control for relation", ^{
         [accessControl setReadOnlyForRelation:friendRelation];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"friend",
-               @"level" : @"read" }
+            @{@"relation" : @"friend", @"level" : @"read"}
         ]);
     });
 
@@ -132,8 +124,7 @@ describe(@"Access Control for relation", ^{
         [accessControl setReadWriteAccessForRelation:friendRelation];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"friend",
-               @"level" : @"write" },
+            @{@"relation" : @"friend", @"level" : @"write"},
         ]);
     });
 });
@@ -151,8 +142,7 @@ describe(@"Access Control for role", ^{
 
     it(@"is serialized correctly", ^{
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"role" : @"admin",
-               @"level" : @"write" },
+            @{@"role" : @"admin", @"level" : @"write"},
         ]);
     });
 
@@ -160,8 +150,7 @@ describe(@"Access Control for role", ^{
         [accessControl setReadOnlyForRole:adminRole];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"role" : @"admin",
-               @"level" : @"read" }
+            @{@"role" : @"admin", @"level" : @"read"}
         ]);
     });
 
@@ -175,8 +164,7 @@ describe(@"Access Control for role", ^{
         [accessControl setReadWriteAccessForRole:adminRole];
         expect(accessControl.entries).to.haveCountOf(1);
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"role" : @"admin",
-               @"level" : @"write" },
+            @{@"role" : @"admin", @"level" : @"write"},
         ]);
     });
 });
@@ -245,20 +233,12 @@ describe(@"Access Control Entry", ^{
             writeRoleEntry
         ]];
         expect(serializedAccessControl(accessControl)).to.equal(@[
-            @{ @"relation" : @"friend",
-               @"level" : @"read" },
-            @{ @"relation" : @"follow",
-               @"level" : @"write" },
-            @{ @"relation" : @"$direct",
-               @"level" : @"read",
-               @"user_id" : @"userid0" },
-            @{ @"relation" : @"$direct",
-               @"level" : @"write",
-               @"user_id" : @"userid1" },
-            @{ @"level" : @"read",
-               @"role" : @"Human" },
-            @{ @"level" : @"write",
-               @"role" : @"God" },
+            @{@"relation" : @"friend", @"level" : @"read"},
+            @{@"relation" : @"follow", @"level" : @"write"},
+            @{@"relation" : @"$direct", @"level" : @"read", @"user_id" : @"userid0"},
+            @{@"relation" : @"$direct", @"level" : @"write", @"user_id" : @"userid1"},
+            @{@"level" : @"read", @"role" : @"Human"},
+            @{@"level" : @"write", @"role" : @"God"},
         ]);
     });
 
@@ -320,20 +300,12 @@ describe(@"SKYAccessControlDeserializer", ^{
 
     it(@"access control entries", ^{
         NSArray *undeserialized = @[
-            @{ @"relation" : @"friend",
-               @"level" : @"read" },
-            @{ @"relation" : @"follow",
-               @"level" : @"write" },
-            @{ @"relation" : @"$direct",
-               @"level" : @"read",
-               @"user_id" : @"userid0" },
-            @{ @"relation" : @"$direct",
-               @"level" : @"write",
-               @"user_id" : @"userid1" },
-            @{ @"level" : @"read",
-               @"role" : @"Human" },
-            @{ @"level" : @"write",
-               @"role" : @"God" },
+            @{@"relation" : @"friend", @"level" : @"read"},
+            @{@"relation" : @"follow", @"level" : @"write"},
+            @{@"relation" : @"$direct", @"level" : @"read", @"user_id" : @"userid0"},
+            @{@"relation" : @"$direct", @"level" : @"write", @"user_id" : @"userid1"},
+            @{@"level" : @"read", @"role" : @"Human"},
+            @{@"level" : @"write", @"role" : @"God"},
         ];
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
         expect(accessControl.entries).to.haveCountOf(6);
@@ -342,8 +314,7 @@ describe(@"SKYAccessControlDeserializer", ^{
 
     it(@"deserialize abnormal access control settings", ^{
         NSArray *undeserialized = @[
-            @{ @"level" : @"read",
-               @"user_id" : @"userid0" }, // missing "relation": "$direct"
+            @{@"level" : @"read", @"user_id" : @"userid0"}, // missing "relation": "$direct"
         ];
         SKYAccessControl *accessControl = [deserializer accessControlWithArray:undeserialized];
         expect(accessControl.entries).to.haveCountOf(1);

@@ -142,7 +142,7 @@ describe(@"serialize predicate", ^{
             [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"city = %@", ref]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
-        expect(result[2]).to.equal(@{ @"$type" : @"ref", @"$id" : @"city/hongkong" });
+        expect(result[2]).to.equal(@{@"$type" : @"ref", @"$id" : @"city/hongkong"});
     });
 
     it(@"greater than integer", ^{
@@ -244,12 +244,10 @@ describe(@"serialize predicate", ^{
         expect(result).to.equal(@[
             @"lt",
             @[
-               @"func", @"distance",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"location" },
-               @{ @"$type" : @"geo",
-                  @"$lng" : @2,
-                  @"$lat" : @1 }
+                @"func", @"distance", @{@"$type" : @"keypath", @"$val" : @"location"},
+                @{ @"$type" : @"geo",
+                   @"$lng" : @2,
+                   @"$lat" : @1 }
             ],
             @3,
         ]);
@@ -261,10 +259,7 @@ describe(@"serialize predicate", ^{
                                        predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
 
         expect(result).to.equal(
-            @[ @"like",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"content" },
-               @"hello%" ]);
+            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"hello%" ]);
     });
 
     it(@"serialize endswith", ^{
@@ -273,10 +268,7 @@ describe(@"serialize predicate", ^{
                                        predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
 
         expect(result).to.equal(
-            @[ @"like",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"content" },
-               @"%hello" ]);
+            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello" ]);
     });
 
     it(@"serialize contains", ^{
@@ -285,10 +277,7 @@ describe(@"serialize predicate", ^{
                                        predicateWithFormat:@"content CONTAINS %@", @"hello"]];
 
         expect(result).to.equal(
-            @[ @"like",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"content" },
-               @"%hello%" ]);
+            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello%" ]);
     });
 
     it(@"serialize like", ^{
@@ -297,10 +286,7 @@ describe(@"serialize predicate", ^{
                                                                                 @"*hello?"]];
 
         expect(result).to.equal(
-            @[ @"like",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"content" },
-               @"%hello_" ]);
+            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
     });
 
     it(@"serialize like[c]", ^{
@@ -309,10 +295,7 @@ describe(@"serialize predicate", ^{
                                        predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
 
         expect(result).to.equal(
-            @[ @"ilike",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"content" },
-               @"%hello_" ]);
+            @[ @"ilike", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
     });
 
     it(@"serialize in", ^{
@@ -321,10 +304,7 @@ describe(@"serialize predicate", ^{
                                                                     @[ @"recipe", @"fiction" ]]];
 
         expect(result).to.equal(@[
-            @"in",
-            @{ @"$type" : @"keypath",
-               @"$val" : @"category" },
-            @[ @"recipe", @"fiction" ]
+            @"in", @{@"$type" : @"keypath", @"$val" : @"category"}, @[ @"recipe", @"fiction" ]
         ]);
     });
 
@@ -336,8 +316,7 @@ describe(@"serialize predicate", ^{
         expect(result).to.equal(@[
             @"in",
             @"fiction",
-            @{ @"$type" : @"keypath",
-               @"$val" : @"categories" },
+            @{@"$type" : @"keypath", @"$val" : @"categories"},
         ]);
     });
 
@@ -348,12 +327,8 @@ describe(@"serialize predicate", ^{
         NSArray *result = [serializer serializeWithPredicate:p];
 
         expect(result).to.equal(@[
-            @"func", @"userRelation",
-            @{ @"$type" : @"keypath",
-               @"$val" : @"_owner" },
-            @{ @"$type" : @"relation",
-               @"$name" : @"_follow",
-               @"$direction" : @"outward" }
+            @"func", @"userRelation", @{@"$type" : @"keypath", @"$val" : @"_owner"},
+            @{@"$type" : @"relation", @"$name" : @"_follow", @"$direction" : @"outward"}
         ]);
     });
 
@@ -392,7 +367,7 @@ describe(@"serialize sort descriptors", ^{
         NSArray *result = [serializer serializeWithSortDescriptors:sd];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(1);
-        expect(result[0][0]).to.equal(@{ @"$type" : @"keypath", @"$val" : @"name" });
+        expect(result[0][0]).to.equal(@{@"$type" : @"keypath", @"$val" : @"name"});
         expect(result[0][1]).to.equal(@"asc");
     });
 
@@ -401,7 +376,7 @@ describe(@"serialize sort descriptors", ^{
         NSArray *result = [serializer serializeWithSortDescriptors:sd];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(1);
-        expect(result[0][0]).to.equal(@{ @"$type" : @"keypath", @"$val" : @"name" });
+        expect(result[0][0]).to.equal(@{@"$type" : @"keypath", @"$val" : @"name"});
         expect(result[0][1]).to.equal(@"desc");
     });
 
@@ -413,9 +388,9 @@ describe(@"serialize sort descriptors", ^{
         NSArray *result = [serializer serializeWithSortDescriptors:sd];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(2);
-        expect(result[0][0]).to.equal(@{ @"$type" : @"keypath", @"$val" : @"name" });
+        expect(result[0][0]).to.equal(@{@"$type" : @"keypath", @"$val" : @"name"});
         expect(result[0][1]).to.equal(@"desc");
-        expect(result[1][0]).to.equal(@{ @"$type" : @"keypath", @"$val" : @"age" });
+        expect(result[1][0]).to.equal(@{@"$type" : @"keypath", @"$val" : @"age"});
         expect(result[1][1]).to.equal(@"asc");
     });
 
@@ -427,13 +402,12 @@ describe(@"serialize sort descriptors", ^{
         NSArray *result = [serializer serializeWithSortDescriptors:sd];
         NSArray *expected = @[ @[
             @[
-               @"func",
-               @"distance",
-               @{ @"$type" : @"keypath",
-                  @"$val" : @"latlng" },
-               @{ @"$type" : @"geo",
-                  @"$lng" : @24,
-                  @"$lat" : @42 },
+                @"func",
+                @"distance",
+                @{@"$type" : @"keypath", @"$val" : @"latlng"},
+                @{ @"$type" : @"geo",
+                   @"$lng" : @24,
+                   @"$lat" : @42 },
             ],
             @"asc"
         ] ];

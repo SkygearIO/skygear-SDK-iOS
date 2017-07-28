@@ -77,7 +77,7 @@ SpecBegin(SKYQueryOperation)
             NSArray *predicateArray = request.payload[@"predicate"];
             expect([predicateArray class]).to.beSubclassOf([NSArray class]);
             expect(predicateArray[0]).to.equal(@"eq");
-            expect(predicateArray[1]).to.equal(@{ @"$type" : @"keypath", @"$val" : @"name" });
+            expect(predicateArray[1]).to.equal(@{@"$type" : @"keypath", @"$val" : @"name"});
             expect(predicateArray[2]).to.equal(@"A tale of two cities");
         });
 
@@ -93,15 +93,13 @@ SpecBegin(SKYQueryOperation)
             SKYRequest *request = operation.request;
 
             expect(request.payload[@"sort"][0]).to.equal(@[
-                @{ @"$type" : @"keypath",
-                   @"$val" : @"name" },
-                @"asc"
+                @{@"$type" : @"keypath", @"$val" : @"name"}, @"asc"
             ]);
         });
 
         it(@"transient", ^{
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-            query.transientIncludes = @{ @"shelf" : [NSExpression expressionForKeyPath:@"shelf"] };
+            query.transientIncludes = @{@"shelf" : [NSExpression expressionForKeyPath:@"shelf"]};
             SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             operation.container = container;
@@ -130,14 +128,14 @@ SpecBegin(SKYQueryOperation)
                         @"info" : @{@"count" : @2},
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
-                               @"title" : @"A tale of two cities",
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
+                                @"title" : @"A tale of two cities",
                             },
                             @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"record",
-                               @"title" : @"Old man and the sea",
+                                @"_id" : @"book/book2",
+                                @"_type" : @"record",
+                                @"title" : @"Old man and the sea",
                             }
                         ]
                     };
@@ -205,13 +203,13 @@ SpecBegin(SKYQueryOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
-                               @"title" : @"A tale of two cities",
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
+                                @"title" : @"A tale of two cities",
                             },
                             @{
-                               @"_id" : @"book/book2",
-                               @"_type" : @"unknown",
+                                @"_id" : @"book/book2",
+                                @"_type" : @"unknown",
                             },
                         ]
                     };
@@ -252,7 +250,7 @@ SpecBegin(SKYQueryOperation)
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
             query.transientIncludes =
-                @{ @"category" : [NSExpression expressionForKeyPath:@"category"] };
+                @{@"category" : [NSExpression expressionForKeyPath:@"category"]};
             SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -264,18 +262,18 @@ SpecBegin(SKYQueryOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                               @"_id" : @"book/book1",
-                               @"_type" : @"record",
-                               @"title" : @"A tale of two cities",
-                               @"category" : @{@"$type" : @"ref", @"$id" : @"category/important"},
-                               @"_transient" : @{
-                                   @"category" : @{
-                                       @"_id" : @"category/important",
-                                       @"_type" : @"record",
-                                       @"title" : @"Important",
-                                   }
+                                @"_id" : @"book/book1",
+                                @"_type" : @"record",
+                                @"title" : @"A tale of two cities",
+                                @"category" : @{@"$type" : @"ref", @"$id" : @"category/important"},
+                                @"_transient" : @{
+                                    @"category" : @{
+                                        @"_id" : @"category/important",
+                                        @"_type" : @"record",
+                                        @"title" : @"Important",
+                                    }
 
-                               }
+                                }
                             },
                         ],
                     };
