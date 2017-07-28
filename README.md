@@ -62,11 +62,11 @@ Then, run the following command:
 $ pod install
 ```
 
-For more detail and other installation guides, please refer to our [Get Started Guide](https://docs.skygear.io/ios/guide) at the Skygear [docs site](https://docs.skygear.io).
+For more detail and other installation guides, please refer to our [Get Started Guide](https://docs.skygear.io/guides/intro/quickstart/ios/) at the Skygear [docs site](https://docs.skygear.io).
 
 
 ## Documentation
-The full documentation for Skygear is available on our docs site. The [iOS SDK get started guide](https://docs.skygear.io/ios/guide) is a good place to get started.
+The full documentation for Skygear is available on our docs site. The [iOS SDK get started guide](https://docs.skygear.io/guides/intro/quickstart/ios/) is a good place to get started.
 
 
 ## Support
