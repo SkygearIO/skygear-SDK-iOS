@@ -77,10 +77,9 @@
     [self.pendingOperations removeAllObjects];
 }
 
-- (SKYUser *)currentUser
+- (NSString *)currentUserRecordID
 {
-    NSString *currentUserRecordID = [self.container.auth currentUserRecordID];
-    return currentUserRecordID ? [[SKYUser alloc] initWithUserID:currentUserRecordID] : nil;
+    return [self.container.auth currentUserRecordID];
 }
 
 #pragma mark - Subscriptions

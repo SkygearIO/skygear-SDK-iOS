@@ -122,6 +122,48 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return record;
 }
 
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    SKYRecordID *recordID = [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"recordID"];
+    if (!recordID) {
+        return nil;
+    }
+
+    NSDictionary *object = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"object"];
+    self = [self initWithRecordID:recordID data:object];
+    if (self) {
+        _transient = [aDecoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"transient"];
+        _ownerUserRecordID =
+            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"ownerUserRecordID"];
+        _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"creationDate"];
+        _creatorUserRecordID =
+            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"creationUserRecordID"];
+        _modificationDate =
+            [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"modificationDate"];
+        _lastModifiedUserRecordID =
+            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"lastModifiedUserRecordID"];
+        _accessControl =
+            [aDecoder decodeObjectOfClass:[SKYAccessControl class] forKey:@"accessControl"];
+    }
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:_recordID forKey:@"recordID"];
+    [aCoder encodeObject:_object forKey:@"object"];
+    [aCoder encodeObject:_transient forKey:@"transient"];
+    [aCoder encodeObject:_ownerUserRecordID forKey:@"ownerUserRecordID"];
+    [aCoder encodeObject:_creationDate forKey:@"creationDate"];
+    [aCoder encodeObject:_creatorUserRecordID forKey:@"creationUserRecordID"];
+    [aCoder encodeObject:_modificationDate forKey:@"modificationDate"];
+    [aCoder encodeObject:_lastModifiedUserRecordID forKey:@"lastModifiedUserRecordID"];
+    [aCoder encodeObject:_accessControl forKey:@"accessControl"];
+}
+
 #pragma mark - Properties
 
 - (void)setRecordID:(SKYRecordID *)recordID

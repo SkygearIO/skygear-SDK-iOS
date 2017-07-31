@@ -1,8 +1,8 @@
 //
-//  SKYQueryOperation+QueryUser.h
+//  SKYRevokeUserRoleOperation.h
 //  SKYKit
 //
-//  Copyright 2015 Oursky Ltd.
+//  Copyright 2017 Oursky Ltd.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,21 +18,24 @@
 //
 
 #import "SKYOperation.h"
-#import "SKYQueryOperation.h"
 
-@class SKYRelation;
+@class SKYRecord;
 
 /// Undocumented
-@interface SKYQueryOperation (QueryUser)
+@interface SKYRevokeUserRoleOperation : SKYOperation
 
-/**
- Returns an operation object that discovers users by their email.
- */
-+ (instancetype)queryUsersOperationByEmails:(NSArray /* NSString */ *)emails;
+/// Undocumented
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
-/**
- Returns an operation object that queries users by their relation to the current user.
- */
-+ (instancetype)queryUsersOperationByRelation:(SKYRelation *)relation;
+/// Undocumented
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *roleNames;
+
+/// Undocumented
+@property (nonatomic, copy) void (^revokeUserRoleCompletionBlock)
+    (NSArray<NSString *> *userIDs, NSError *error);
+
+/// Undocumented
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                           roleNames:(NSArray<NSString *> *)roleNames;
 
 @end

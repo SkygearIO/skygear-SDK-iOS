@@ -63,6 +63,10 @@ SpecBegin(SKYChangePasswordOperation)
                         @"result" : @{
                             @"user_id" : @"UUID",
                             @"access_token" : @"ACCESS_TOKEN",
+                            @"profile" : @{
+                                @"_id" : @"user/UUID",
+                                @"_access" : [NSNull null],
+                            },
                         },
                     };
                     return [OHHTTPStubsResponse responseWithJSONObject:resp
@@ -72,9 +76,10 @@ SpecBegin(SKYChangePasswordOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.changePasswordCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.userID).to.equal(@"UUID");
+                            expect(user.recordID.recordType).to.equal(@"user");
+                            expect(user.recordID.recordName).to.equal(@"UUID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -108,7 +113,7 @@ SpecBegin(SKYChangePasswordOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.changePasswordCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             expect(error.code).to.equal(SKYErrorInvalidCredentials);

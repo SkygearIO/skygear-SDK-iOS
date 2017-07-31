@@ -20,16 +20,16 @@
 #import "SKYLoginUserOperation.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
+#import "SKYRecordDeserializer.h"
 #import "SKYRequest.h"
-#import "SKYUserDeserializer.h"
 
 @implementation SKYLoginUserOperation {
     NSDictionary *_authPayload;
 }
 
-- (NSString *)username
+- (NSDictionary *)authData
 {
-    return _authPayload[@"username"];
+    return _authPayload[@"auth_data"];
 }
 
 - (NSString *)password
@@ -37,19 +37,14 @@
     return _authPayload[@"password"];
 }
 
-- (NSString *)email
-{
-    return _authPayload[@"email"];
-}
-
 - (NSString *)provider
 {
     return _authPayload[@"provider"];
 }
 
-- (NSString *)authenticationData
+- (NSDictionary *)providerAuthData
 {
-    return _authPayload[@"auth_data"];
+    return _authPayload[@"provider_auth_data"];
 }
 
 - (instancetype)initWithAuthenticationPayload:(NSDictionary *)authPayload
@@ -60,28 +55,20 @@
     return self;
 }
 
-+ (instancetype)operationWithUsername:(NSString *)username password:(NSString *)password
++ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password
 {
     return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
-        @"username" : username,
-        @"password" : password,
-    }];
-}
-
-+ (instancetype)operationWithEmail:(NSString *)email password:(NSString *)password
-{
-    return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
-        @"email" : email,
+        @"auth_data" : authData,
         @"password" : password,
     }];
 }
 
 + (instancetype)operationWithProvider:(NSString *)provider
-                   authenticationData:(NSDictionary *)authData
+                     providerAuthData:(NSDictionary *)providerAuthData
 {
     return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
         @"provider" : provider,
-        @"auth_data" : authData,
+        @"provider_auth_data" : providerAuthData,
     }];
 }
 
@@ -111,13 +98,15 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYUser *user = nil;
+    SKYRecord *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
-    if (response[@"user_id"] && response[@"access_token"]) {
-        user = [[SKYUserDeserializer deserializer] userWithDictionary:response];
+    NSDictionary *profile = response[@"profile"];
+    NSString *recordID = profile[@"_id"];
+    if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
+        user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
@@ -125,7 +114,7 @@
     }
 
     if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", user.userID);
+        NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
     }
 
     if (self.loginCompletionBlock) {

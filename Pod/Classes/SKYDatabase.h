@@ -21,7 +21,6 @@
 
 #import "SKYAsset.h"
 #import "SKYRecord.h"
-#import "SKYUser.h"
 
 @class SKYDatabaseOperation;
 @class SKYQuery;
@@ -223,7 +222,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 @interface SKYDatabase (SKYUser)
 
 /// Undocumented
-@property (nonatomic, readonly) SKYUser *currentUser;
+@property (nonatomic, readonly) NSString *currentUserRecordID;
 
 @end
 

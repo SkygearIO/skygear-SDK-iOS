@@ -26,7 +26,7 @@
 extern NSString *const SKYRecordTypeUserRecord;
 
 /// Undocumented
-@interface SKYRecord : NSObject <NSCopying>
+@interface SKYRecord : NSObject <NSCopying, NSCoding>
 
 /// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType;

@@ -19,46 +19,10 @@
 
 #import "SKYPublicDatabase.h"
 
-#import "SKYDefineAdminRolesOperation.h"
 #import "SKYDefineCreationAccessOperation.h"
 #import "SKYDefineDefaultAccessOperation.h"
-#import "SKYSetUserDefaultRoleOperation.h"
 
 @implementation SKYPublicDatabase
-
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock
-{
-    SKYDefineAdminRolesOperation *operation =
-        [SKYDefineAdminRolesOperation operationWithRoles:roles];
-
-    operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }
-    };
-
-    [self.container addOperation:operation];
-}
-
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock
-{
-    SKYSetUserDefaultRoleOperation *operation =
-        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
-
-    operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
-        if (completionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionBlock(error);
-            });
-        }
-    };
-
-    [self.container addOperation:operation];
-}
 
 - (void)defineCreationAccessWithRecordType:(NSString *)recordType
                                      roles:(NSArray<SKYRole *> *)roles

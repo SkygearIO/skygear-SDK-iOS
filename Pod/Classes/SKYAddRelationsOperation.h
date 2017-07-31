@@ -28,7 +28,8 @@
 
  @param records An array of users to be related.
  */
-- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray /* SKYUser */ *)users;
+- (instancetype)initWithType:(NSString *)relationType
+              usersToRelated:(NSArray /* SKYRecord */ *)users;
 
 /**
  Creates and returns an instance of <SKYAddRelationsOperation> with a list of user to be related
@@ -37,7 +38,7 @@
  @param records An array of users to be related.
  */
 + (instancetype)operationWithType:(NSString *)relationType
-                   usersToRelated:(NSArray /* SKYUser */ *)users;
+                   usersToRelated:(NSArray /* SKYRecord */ *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.
@@ -47,7 +48,7 @@
 /**
  Sets or returns an array of users to be related.
  */
-@property (nonatomic, copy) NSArray /* SKYUser */ *usersToRelate;
+@property (nonatomic, copy) NSArray /* SKYRecord */ *usersToRelate;
 
 /**
  Sets or returns a block to be called when the save operation for individual record is completed.

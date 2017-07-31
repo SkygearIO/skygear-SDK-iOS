@@ -20,8 +20,6 @@
 #import "SKYFetchRecordsOperation.h"
 #import "SKYOperationSubclass.h"
 
-#import "SKYUser.h"
-
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
 #import "SKYRecordDeserializer.h"

@@ -21,13 +21,12 @@
 
 #import "SKYAccessToken.h"
 #import "SKYDatabase.h"
-#import "SKYUser.h"
 
 @class SKYContainer;
 
 // keep it in sync with SKYUserOperationActionCompletion
 /// Undocumented
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSError *error);
 
 @interface SKYAuthContainer : NSObject
 
@@ -36,7 +35,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 /// Undocumented
 @property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
 /// Undocumented
-@property (nonatomic, readonly) SKYUser *currentUser;
+@property (nonatomic, readonly) SKYRecord *currentUser;
 
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
@@ -57,7 +56,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  convenient
  method and when the operation is completed successfully.
  */
-- (void)updateWithUser:(SKYUser *)user accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
@@ -92,6 +91,21 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
     (SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
+ Creates a user account with the specified auth data and password.
+ */
+- (void)signupWithAuthData:(NSDictionary *)authData
+                  password:(NSString *)password
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
+ Creates a user account with the specified auth data, password and profile.
+ */
+- (void)signupWithAuthData:(NSDictionary *)authData
+                  password:(NSString *)password
+         profileDictionary:(NSDictionary *)profile
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+
+/**
  Creates a user account with the specified username and password.
  */
 - (void)signupWithUsername:(NSString *)username
@@ -111,7 +125,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
          profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYRecordSaveCompletion)completionHandler;
+         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Creates a user account with the specified email, password and profile.
@@ -119,11 +133,18 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
       profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYRecordSaveCompletion)completionHandler;
+      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 @end
 
 @interface SKYAuthContainer (Login)
+
+/**
+ Logs in to an existing user account with the specified auth data and password.
+ */
+- (void)loginWithAuthData:(NSDictionary *)authData
+                 password:(NSString *)password
+        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
 /**
  Logs in to an existing user account with the specified username and password.
@@ -170,26 +191,85 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYUser *user, NSError
  */
 - (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
 
-/**
- *  Query user objects by emails
- */
-- (void)queryUsersByEmails:(NSArray<NSString *> *)emails
-         completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
-/**
- *  Query user objects by usernames
- */
-- (void)queryUsersByUsernames:(NSArray<NSString *> *)usernames
-            completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler;
-
 @end
 
-@interface SKYAuthContainer (UpdateUser)
+@interface SKYAuthContainer (UserRole)
 
 /**
- *  Update user information
+ *  Defines roles to have special powers
  */
-- (void)saveUser:(SKYUser *)user
-      completion:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
+              completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Sets default roles for new registered users
+ */
+- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
+                completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Get roles of users
+ *
+ *  @param users           Target users
+ *  @param completionBlock Completion Block, with a user-to-roles dictionary
+ */
+- (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
+               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
+                                    NSError *error))completionBlock;
+
+/**
+ *  Get roles of users
+ *
+ *  @param userIDs         Target user
+ *  @param completionBlock Completion Block, with a user-to-roles dictionary
+ */
+- (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
+                          completion:
+                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
+                                        NSError *error))completionBlock;
+
+/**
+ *  Assign roles to users
+ *
+ *  @param roles           Roles to be assigned
+ *  @param users           Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)assignRoles:(NSArray<SKYRole *> *)roles
+            toUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Assign roles to users
+ *
+ *  @param roleNames       Roles to be assigned
+ *  @param userIDs         Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)assignRolesWithNames:(NSArray<NSString *> *)roleNames
+              toUsersWithIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Revoke roles from users
+ *
+ *  @param roles           Roles to be revoked
+ *  @param users           Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)revokeRoles:(NSArray<SKYRole *> *)roles
+          fromUsers:(NSArray<SKYRecord *> *)users
+         completion:(void (^)(NSError *error))completionBlock;
+
+/**
+ *  Revoke roles from users
+ *
+ *  @param roleNames       Roles to be revoked
+ *  @param userIDs         Target users
+ *  @param completionBlock Completion Block
+ */
+- (void)revokeRolesWithNames:(NSArray<NSString *> *)roleNames
+            fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
+                  completion:(void (^)(NSError *error))completionBlock;
 
 @end

@@ -36,8 +36,9 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"normal user request", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
-                                                  password:@"password"];
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
+                                                     password:@"password"];
+
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -45,13 +46,12 @@ SpecBegin(SKYSignupUserOperation)
             expect(request.action).to.equal(@"auth:signup");
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
-            expect(request.payload[@"email"]).to.equal(@"user@example.com");
+            expect(request.payload[@"auth_data"][@"email"]).to.equal(@"user@example.com");
             expect(request.payload[@"password"]).to.equal(@"password");
         });
 
         it(@"anonymous user request", ^{
-            SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"password"];
+            SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAnonymousUser];
             operation.container = container;
             [operation prepareForRequest];
             SKYRequest *request = operation.request;
@@ -64,8 +64,8 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"make normal user request", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
-                                                  password:@"password"];
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
+                                                     password:@"password"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -75,6 +75,11 @@ SpecBegin(SKYSignupUserOperation)
                         @"result" : @{
                             @"user_id" : @"USER_ID",
                             @"access_token" : @"ACCESS_TOKEN",
+                            @"profile" : @{
+                                @"_id" : @"user/USER_ID",
+                                @"_access" : [NSNull null],
+                                @"email" : @"user@example.com",
+                            },
                         },
                     };
                     NSData *payload =
@@ -86,9 +91,11 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.userID).to.equal(@"USER_ID");
+                            expect(user.recordID.recordType).to.equal(@"user");
+                            expect(user.recordID.recordName).to.equal(@"USER_ID");
+                            expect(user[@"email"]).to.equal(@"user@example.com");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -100,8 +107,7 @@ SpecBegin(SKYSignupUserOperation)
         });
 
         it(@"make anonymous user request", ^{
-            SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithAnonymousUserAndPassword:@"password"];
+            SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAnonymousUser];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -111,6 +117,10 @@ SpecBegin(SKYSignupUserOperation)
                         @"result" : @{
                             @"user_id" : @"USER_ID",
                             @"access_token" : @"ACCESS_TOKEN",
+                            @"profile" : @{
+                                @"_id" : @"user/USER_ID",
+                                @"_access" : [NSNull null],
+                            },
                         },
                     };
                     NSData *payload =
@@ -122,9 +132,10 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.userID).to.equal(@"USER_ID");
+                            expect(user.recordID.recordType).to.equal(@"user");
+                            expect(user.recordID.recordName).to.equal(@"USER_ID");
                             expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
                             expect(error).to.beNil();
                             done();
@@ -137,8 +148,8 @@ SpecBegin(SKYSignupUserOperation)
 
         it(@"pass error", ^{
             SKYSignupUserOperation *operation =
-                [SKYSignupUserOperation operationWithEmail:@"user@example.com"
-                                                  password:@"password"];
+                [SKYSignupUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
+                                                     password:@"password"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -151,7 +162,7 @@ SpecBegin(SKYSignupUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.signupCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).toNot.beNil();
                             done();

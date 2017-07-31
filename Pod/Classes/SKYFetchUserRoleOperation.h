@@ -1,8 +1,8 @@
 //
-//  SKYUserDeserializer.h
+//  SKYFetchUserRoleOperation.h
 //  SKYKit
 //
-//  Copyright 2015 Oursky Ltd.
+//  Copyright 2017 Oursky Ltd.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,15 +17,21 @@
 //  limitations under the License.
 //
 
-#import "SKYUser.h"
+#import "SKYOperation.h"
+
+@class SKYRecord;
 
 /// Undocumented
-@interface SKYUserDeserializer : NSObject
+@interface SKYFetchUserRoleOperation : SKYOperation
 
 /// Undocumented
-+ (instancetype)deserializer;
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
 /// Undocumented
-- (SKYUser *)userWithDictionary:(NSDictionary *)dictionary;
+@property (nonatomic, copy) void (^fetchUserRoleCompletionBlock)
+    (NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error);
+
+/// Undocumented
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs;
 
 @end

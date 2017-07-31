@@ -59,10 +59,14 @@ SpecBegin(SKYGetCurrentUserOperation)
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                         @"result" : @{
                             @"user_id" : @"user-1",
-                            @"username" : @"user1",
-                            @"email" : @"user1@skygear.dev",
                             @"roles" : @[ @"Developer", @"Designer" ],
-                            @"access_token" : @"token-1"
+                            @"access_token" : @"token-1",
+                            @"profile" : @{
+                                @"_id" : @"user/user-1",
+                                @"_access" : [NSNull null],
+                                @"username" : @"user1",
+                                @"email" : @"user1@skygear.dev",
+                            },
                         }
                     }
                                                                    options:0
@@ -72,7 +76,7 @@ SpecBegin(SKYGetCurrentUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.getCurrentUserCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(error).to.beNil();
 
@@ -80,12 +84,10 @@ SpecBegin(SKYGetCurrentUserOperation)
                             expect(accessToken.tokenString).to.equal(@"token-1");
 
                             expect(user).notTo.beNil();
-                            expect(user.userID).to.equal(@"user-1");
-                            expect(user.username).to.equal(@"user1");
-                            expect(user.email).to.equal(@"user1@skygear.dev");
-                            expect(user.roles).to.haveLengthOf(2);
-                            expect(user.roles).to.contain([SKYRole roleWithName:@"Developer"]);
-                            expect(user.roles).to.contain([SKYRole roleWithName:@"Designer"]);
+                            expect(user.recordID.recordType).to.equal(@"user");
+                            expect(user.recordID.recordName).to.equal(@"user-1");
+                            expect(user[@"username"]).to.equal(@"user1");
+                            expect(user[@"email"]).to.equal(@"user1@skygear.dev");
 
                             done();
                         });
@@ -118,7 +120,7 @@ SpecBegin(SKYGetCurrentUserOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.getCurrentUserCompletionBlock =
-                    ^(SKYUser *user, SKYAccessToken *accessToken, NSError *error) {
+                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(user).to.beNil();
                             expect(accessToken).to.beNil();

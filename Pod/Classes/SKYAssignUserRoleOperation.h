@@ -1,8 +1,8 @@
 //
-//  SKYUpdateUserOperation.m
+//  SKYAssignUserRoleOperation.h
 //  SKYKit
 //
-//  Copyright 2015 Oursky Ltd.
+//  Copyright 2017 Oursky Ltd.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,18 +19,23 @@
 
 #import "SKYOperation.h"
 
-/// Undocumented
-@class SKYUser;
+@class SKYRecord;
 
 /// Undocumented
-@interface SKYUpdateUserOperation : SKYOperation
+@interface SKYAssignUserRoleOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, readonly, strong) SKYUser *user;
-/// Undocumented
-@property (nonatomic, copy) void (^updateUserCompletionBlock)(SKYUser *user, NSError *error);
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
 
 /// Undocumented
-+ (instancetype)operationWithUser:(SKYUser *)user;
+@property (nonatomic, copy, nonnull) NSArray<NSString *> *roleNames;
+
+/// Undocumented
+@property (nonatomic, copy) void (^assignUserRoleCompletionBlock)
+    (NSArray<NSString *> *userIDs, NSError *error);
+
+/// Undocumented
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                           roleNames:(NSArray<NSString *> *)roleNames;
 
 @end

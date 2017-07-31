@@ -22,18 +22,6 @@
 @interface SKYPublicDatabase : SKYDatabase
 
 /**
- *  Defines roles to have special powers
- */
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock;
-
-/**
- *  Sets default roles for new registered users
- */
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock;
-
-/**
  *  Limit creation access of a record type to some roles
  *
  *  @param recordType      Record type to set creation access

@@ -21,6 +21,7 @@
 
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
+#import "SKYRecordDeserializer.h"
 
 @implementation SKYChangePasswordOperation
 
@@ -68,13 +69,16 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYUser *user = nil;
+    SKYRecord *user = nil;
     SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
-    if (response[@"user_id"] && response[@"access_token"]) {
-        user = [SKYUser userWithUserID:response[@"user_id"]];
+    NSDictionary *profile = response[@"profile"];
+    NSString *recordID = profile[@"_id"];
+    if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
+        SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
+        user = [deserializer recordWithDictionary:profile];
         accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
     } else {
         error = [self.errorCreator errorWithResponseDictionary:response];

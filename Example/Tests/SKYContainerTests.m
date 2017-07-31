@@ -136,14 +136,14 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.publicCloudDatabase defineAdminRoles:@[
+            [container.auth defineAdminRoles:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                                                 completion:^(NSError *error) {
-                                                     expect(error).to.beNil();
-                                                     done();
-                                                 }];
+                                  completion:^(NSError *error) {
+                                      expect(error).to.beNil();
+                                      done();
+                                  }];
         });
     });
 
@@ -161,14 +161,14 @@ describe(@"manage roles", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.publicCloudDatabase setUserDefaultRole:@[
+            [container.auth setUserDefaultRole:@[
                 [SKYRole roleWithName:developerRoleName], [SKYRole roleWithName:testerRoleName],
                 [SKYRole roleWithName:pmRoleName]
             ]
-                                                   completion:^(NSError *error) {
-                                                       expect(error).to.beNil();
-                                                       done();
-                                                   }];
+                                    completion:^(NSError *error) {
+                                        expect(error).to.beNil();
+                                        done();
+                                    }];
         });
     });
 

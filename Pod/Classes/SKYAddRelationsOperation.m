@@ -35,26 +35,23 @@
 }
 
 + (instancetype)operationWithType:(NSString *)relationType
-                   usersToRelated:(NSArray /* SKYUser */ *)users
+                   usersToRelated:(NSArray /* SKYRecord */ *)users
 {
     return [[self alloc] initWithType:relationType usersToRelated:users];
-}
-
-- (NSArray /* NSString */ *)userStringIDs
-{
-    NSMutableArray *ids = [NSMutableArray arrayWithCapacity:self.usersToRelate.count];
-    for (SKYUser *user in self.usersToRelate) {
-        [ids addObject:user.username];
-    }
-    return ids;
 }
 
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{@"name" : self.relationType} mutableCopy];
     NSMutableArray *targets = [NSMutableArray array];
-    for (SKYUser *user in self.usersToRelate) {
-        [targets addObject:user.userID];
+    for (SKYRecord *user in self.usersToRelate) {
+        if (![user.recordType isEqualToString:@"user"]) {
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"usersToRelate must be user records."
+                                         userInfo:nil];
+        }
+
+        [targets addObject:user.recordID.recordName];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:add" payload:payload];
@@ -85,8 +82,8 @@
 
     NSMutableArray *savedUsers = [NSMutableArray arrayWithCapacity:itemsByID.count];
     NSMutableDictionary *errorsByStringUserID = [NSMutableDictionary dictionary];
-    for (SKYUser *user in self.usersToRelate) {
-        NSDictionary *itemDict = itemsByID[user.userID];
+    for (SKYRecord *user in self.usersToRelate) {
+        NSDictionary *itemDict = itemsByID[user.recordID.recordName];
 
         NSString *returnedUserID = nil;
         NSError *error = nil;
@@ -94,7 +91,7 @@
         if (!itemDict.count) {
             error = [self.errorCreator errorWithCode:SKYErrorResourceNotFound
                                             userInfo:@{
-                                                @"id" : user.userID,
+                                                @"id" : user.recordID.recordName,
                                                 SKYErrorMessageKey : @"User missing in response",
                                             }];
         } else {
@@ -102,7 +99,7 @@
             if ([itemType isEqualToString:@"error"]) {
                 error = [self.errorCreator errorWithResponseDictionary:itemDict[@"data"]];
             } else {
-                returnedUserID = user.userID;
+                returnedUserID = user.recordID.recordName;
                 if (returnedUserID == nil) {
                     error = [self.errorCreator
                         errorWithCode:SKYErrorInvalidData
@@ -121,7 +118,7 @@
         if (returnedUserID != nil) {
             [savedUsers addObject:returnedUserID];
         } else {
-            errorsByStringUserID[user.userID] = error;
+            errorsByStringUserID[user.recordID.recordName] = error;
         }
     }
 
