@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @class SKYRecord;
 /// Undocumented
@@ -32,7 +34,9 @@
 /**
  *  Completiong Block of the Get Current User Operation
  */
-@property (nonatomic, copy, nullable) void (^getCurrentUserCompletionBlock)
+@property (nonatomic, copy) void (^_Nullable getCurrentUserCompletionBlock)
     (SKYRecord *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
 
 @end
+
+NS_ASSUME_NONNULL_END

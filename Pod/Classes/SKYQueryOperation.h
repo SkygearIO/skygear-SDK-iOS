@@ -22,23 +22,25 @@
 #import "SKYQuery.h"
 #import "SKYQueryCursor.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQueryOperation : SKYDatabaseOperation
 
 /// Undocumented
-- (instancetype)initWithQuery:(SKYQuery *)query;
+- (instancetype _Nullable)initWithQuery:(SKYQuery *)query;
 /// Undocumented
-- (instancetype)initWithCursor:(SKYQueryCursor *)cursor;
+- (instancetype _Nullable)initWithCursor:(SKYQueryCursor *)cursor;
 
 /// Undocumented
-+ (instancetype)operationWithQuery:(SKYQuery *)query;
++ (instancetype _Nullable)operationWithQuery:(SKYQuery *)query;
 /// Undocumented
-+ (instancetype)operationWithCursor:(SKYQueryCursor *)cursor;
++ (instancetype _Nullable)operationWithCursor:(SKYQueryCursor *)cursor;
 
 /// Undocumented
 @property (nonatomic, copy) SKYQuery *query;
 /// Undocumented
-@property (nonatomic, copy) NSArray *results __deprecated;
+@property (nonatomic, copy) NSArray *_Nullable results __deprecated;
 
 /**
  Returns the nubmer of all matching records if the original query requested this info.
@@ -46,9 +48,12 @@
 @property (nonatomic, readonly) NSUInteger overallCount;
 
 /// Undocumented
-@property (nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record);
+@property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)(SKYRecord *record);
 /// Undocumented
-@property (nonatomic, copy) void (^queryRecordsCompletionBlock)
-    (NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable queryRecordsCompletionBlock)
+    (NSArray *_Nullable fetchedRecords, SKYQueryCursor *_Nullable cursor,
+     NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

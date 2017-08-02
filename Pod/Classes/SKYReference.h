@@ -22,6 +22,8 @@
 #import "SKYRecord.h"
 #import "SKYRecordID.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum SKYReferenceAction : NSInteger {
     SKYReferenceActionNone = 0,
@@ -32,27 +34,29 @@ typedef enum SKYReferenceAction : NSInteger {
 @interface SKYReference : NSObject <NSCoding>
 
 /// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype _Nullable)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype)initWithRecord:(SKYRecord *)record;
+- (instancetype _Nullable)initWithRecord:(SKYRecord *)record;
 /// Undocumented
-- (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
+- (instancetype _Nullable)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
 /// Undocumented
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID;
+- (instancetype _Nullable)initWithRecordID:(SKYRecordID *)recordID;
 /// Undocumented
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
+- (instancetype _Nullable)initWithRecordID:(SKYRecordID *)recordID
+                                    action:(SKYReferenceAction)action;
 
 /// Undocumented
-+ (instancetype)referenceWithRecord:(SKYRecord *)record;
++ (instancetype _Nullable)referenceWithRecord:(SKYRecord *)record;
 /// Undocumented
-+ (instancetype)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
++ (instancetype _Nullable)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
 /// Undocumented
-+ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID;
++ (instancetype _Nullable)referenceWithRecordID:(SKYRecordID *)recordID;
 /// Undocumented
-+ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
++ (instancetype _Nullable)referenceWithRecordID:(SKYRecordID *)recordID
+                                         action:(SKYReferenceAction)action;
 
 /// Undocumented
-- (BOOL)isEqualToReference:(SKYReference *)reference;
+- (BOOL)isEqualToReference:(SKYReference *_Nullable)reference;
 
 /// Undocumented
 @property (nonatomic, readonly, assign) SKYReferenceAction referenceAction;
@@ -60,6 +64,8 @@ typedef enum SKYReferenceAction : NSInteger {
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
 
 /// Undocumented
-@property (strong, nonatomic, readonly) SKYRecord *record;
+@property (strong, nonatomic, readonly) SKYRecord *_Nullable record;
 
 @end
+
+NS_ASSUME_NONNULL_END

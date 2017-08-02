@@ -21,13 +21,17 @@
 
 #import "SKYSubscription.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYSubscriptionSerializer : NSObject
 
 /// Undocumented
-+ (instancetype)serializer;
++ (instancetype _Nullable)serializer;
 
 /// Undocumented
 - (NSDictionary *)dictionaryWithSubscription:(SKYSubscription *)subscription;
 
 @end
+
+NS_ASSUME_NONNULL_END

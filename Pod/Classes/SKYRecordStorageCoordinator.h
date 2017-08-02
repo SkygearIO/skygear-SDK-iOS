@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecordStorage;
 @class SKYDatabase;
 @class SKYQuery;
@@ -62,10 +64,10 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 /**
  Returns the singleton instance of <SKYRecordStorageCoordinator>.
  */
-+ (instancetype)defaultCoordinator;
++ (instancetype _Nullable)defaultCoordinator;
 
 /// Undocumented
-- (instancetype)initWithContainer:(SKYContainer *)container NS_DESIGNATED_INITIALIZER;
+- (instancetype _Nullable)initWithContainer:(SKYContainer *)container NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns an instance of SKYRecordStorage that is set up to be synchronized
@@ -78,23 +80,25 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
  The coordinator keeps references to all <SKYRecordStorage> and
  all of them will synchronize with the remote server.
  */
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
-                                          query:(SKYQuery *)query
-                                        options:(NSDictionary *)options __deprecated;
+- (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
+                                                   query:(SKYQuery *_Nullable)query
+                                                 options:(NSDictionary *_Nullable)options
+    __deprecated;
 /// Undocumented
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
-                                          query:(SKYQuery *)query
-                                        options:(NSDictionary *)options
-                                          error:(NSError **)error;
+- (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
+                                                   query:(SKYQuery *_Nullable)query
+                                                 options:(NSDictionary *_Nullable)options
+                                                   error:(NSError **_Nullable)error;
 /// Undocumented
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
-                                        options:(NSDictionary *)options __deprecated;
+- (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
+                                                 options:(NSDictionary *_Nullable)options
+    __deprecated;
 /// Undocumented
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
-                                        options:(NSDictionary *)options
-                                          error:(NSError **)error;
+- (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
+                                                 options:(NSDictionary *_Nullable)options
+                                                   error:(NSError **_Nullable)error;
 /// Undocumented
-- (SKYRecordStorage *)recordStorageForPrivateDatabase;
+- (SKYRecordStorage *_Nullable)recordStorageForPrivateDatabase;
 
 /**
  Removes an <SKYRecordStorage> from an internal registry of local storage.
@@ -122,3 +126,5 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 - (BOOL)handleUpdateWithRemoteNotification:(SKYNotification *)note;
 
 @end
+
+NS_ASSUME_NONNULL_END

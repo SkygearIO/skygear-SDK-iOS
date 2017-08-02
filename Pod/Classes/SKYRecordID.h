@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRecordID : NSObject <NSCopying, NSSecureCoding>
 
@@ -35,17 +37,17 @@
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)type
-                              name:(NSString *)recordName NS_DESIGNATED_INITIALIZER;
+                              name:(NSString *_Nullable)recordName NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 + (instancetype)recordIDWithRecordType:(NSString *)type;
 /// Undocumented
 + (instancetype)recordIDWithCanonicalString:(NSString *)canonicalString;
 /// Undocumented
-+ (instancetype)recordIDWithRecordType:(NSString *)type name:(NSString *)recordName;
++ (instancetype)recordIDWithRecordType:(NSString *)type name:(NSString *_Nullable)recordName;
 
 /// Undocumented
-- (BOOL)isEqualToRecordID:(SKYRecordID *)recordID;
+- (BOOL)isEqualToRecordID:(SKYRecordID *_Nullable)recordID;
 
 /// Undocumented
 @property (nonatomic, readonly, strong) NSString *recordType;
@@ -55,3 +57,5 @@
 @property (nonatomic, readonly, strong) NSString *canonicalString;
 
 @end
+
+NS_ASSUME_NONNULL_END

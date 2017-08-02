@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRole;
 
 /// Undocumented
@@ -27,12 +29,15 @@
 /// Undocumented
 @property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
 /// Undocumented
-@property (nonatomic, readonly, strong) NSString *recordType;
+@property (nonatomic, readonly, strong) NSString *_Nullable recordType;
 /// Undocumented
-@property (nonatomic, copy) void (^defineCreationAccessCompletionBlock)
-    (NSString *recordType, NSArray<SKYRole *> *roles, NSError *error);
+@property (nonatomic, copy) void (^_Nullable defineCreationAccessCompletionBlock)
+    (NSString *_Nullable recordType, NSArray<SKYRole *> *_Nullable roles, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype)operationWithRecordType:(NSString *)recordType roles:(NSArray<SKYRole *> *)roles;
++ (instancetype _Nullable)operationWithRecordType:(NSString *)recordType
+                                            roles:(NSArray<SKYRole *> *)roles;
 
 @end
+
+NS_ASSUME_NONNULL_END

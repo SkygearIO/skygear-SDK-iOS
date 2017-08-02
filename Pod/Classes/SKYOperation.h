@@ -23,6 +23,8 @@
 #import "SKYRequest.h"
 #import "SKYResponse.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYOperation : NSOperation
 
@@ -37,7 +39,7 @@
 @property (nonatomic, readwrite) NSTimeInterval timeoutInterval;
 
 /// Undocumented
-- (instancetype)initWithRequest:(SKYRequest *)request;
+- (instancetype _Nullable)initWithRequest:(SKYRequest *)request;
 
 /**
  Prepares the operation before a request takes place. You should implement this method by creating a
@@ -99,8 +101,8 @@
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request;
+- (NSURLSessionTask *_Nullable)makeURLSessionTaskWithSession:(NSURLSession *)session
+                                                     request:(NSURLRequest *)request;
 
 /**
  Creates a <NSURLRequest> with <SKYRequest> specified as the property of this class.
@@ -109,7 +111,7 @@
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLRequest *)makeURLRequest;
+- (NSURLRequest *_Nullable)makeURLRequest;
 
 /// Undocumented
 - (void)handleRequestCompletionWithData:(NSData *)data
@@ -123,3 +125,5 @@
 + (Class)responseClass;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 
 /// Undocumented
@@ -31,11 +33,13 @@
 @property (nonatomic, copy, nonnull) NSArray<NSString *> *roleNames;
 
 /// Undocumented
-@property (nonatomic, copy) void (^revokeUserRoleCompletionBlock)
-    (NSArray<NSString *> *userIDs, NSError *error);
+@property (nonatomic, copy) void (^_Nullable revokeUserRoleCompletionBlock)
+    (NSArray<NSString *> *_Nullable userIDs, NSError *_Nullable error);
 
 /// Undocumented
 + (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
                            roleNames:(NSArray<NSString *> *)roleNames;
 
 @end
+
+NS_ASSUME_NONNULL_END

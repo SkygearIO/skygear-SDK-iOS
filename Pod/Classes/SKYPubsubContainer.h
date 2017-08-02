@@ -19,9 +19,11 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYPubsubContainer : NSObject
 
-@property (nonatomic, readonly) NSURL *endPointAddress;
+@property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just
@@ -48,3 +50,5 @@
 - (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel;
 
 @end
+
+NS_ASSUME_NONNULL_END

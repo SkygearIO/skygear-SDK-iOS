@@ -19,6 +19,8 @@
 
 #import "SKYDatabaseOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum : NSInteger {
     SKYRecordSaveIfServerRecordUnchanged = 0,
@@ -39,7 +41,7 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-- (instancetype)initWithRecordsToSave:(NSArray *)records;
+- (instancetype _Nullable)initWithRecordsToSave:(NSArray<SKYRecord *> *)records;
 
 /**
  Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to
@@ -47,12 +49,12 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-+ (instancetype)operationWithRecordsToSave:(NSArray *)records;
++ (instancetype _Nullable)operationWithRecordsToSave:(NSArray<SKYRecord *> *)records;
 
 /**
  Sets or returns an array of records to be saved to database.
  */
-@property (nonatomic, copy) NSArray *recordsToSave;
+@property (nonatomic, copy) NSArray<SKYRecord *> *recordsToSave;
 
 /**
  Sets whether the operation should be treated as an atomic operation. An atomic operation saves all
@@ -68,19 +70,23 @@ typedef enum : NSInteger {
 /**
  Sets or returns a block to be called when progress information is available for saving each record.
  */
-@property (nonatomic, copy) void (^perRecordProgressBlock)(SKYRecord *record, double progress);
+@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
+    (SKYRecord *_Nullable record, double progress);
 
 /**
  Sets or returns a block to be called when the save operation for individual record is completed.
  If an error occurred during the save, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^perRecordCompletionBlock)(SKYRecord *record, NSError *error);
+@property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
+    (SKYRecord *_Nullable record, NSError *error);
 
 /**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
-@property (nonatomic, copy) void (^modifyRecordsCompletionBlock)
-    (NSArray *savedRecords, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable modifyRecordsCompletionBlock)
+    (NSArray<SKYRecord *> *_Nullable savedRecords, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

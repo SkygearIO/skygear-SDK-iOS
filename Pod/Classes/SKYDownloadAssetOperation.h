@@ -21,18 +21,23 @@
 
 #import "SKYAsset.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYDownloadAssetOperation : SKYOperation
 
 /// Undocumented
-- (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
+- (instancetype _Nullable)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
 /// Undocumented
-+ (instancetype)operationWithAsset:(SKYAsset *)asset;
++ (instancetype _Nullable)operationWithAsset:(SKYAsset *)asset;
 
 /// Undocumented
-@property (nonatomic, copy) void (^downloadAssetProgressBlock)(SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^_Nullable downloadAssetProgressBlock)
+    (SKYAsset *_Nullable asset, double progress);
 /// Undocumented
-@property (nonatomic, copy) void (^downloadAssetCompletionBlock)
-    (SKYAsset *asset, NSData *data, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable downloadAssetCompletionBlock)
+    (SKYAsset *_Nullable asset, NSData *_Nullable data, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

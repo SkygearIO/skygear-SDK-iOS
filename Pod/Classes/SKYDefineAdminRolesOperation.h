@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRole;
 
 /// Undocumented
@@ -27,10 +29,12 @@
 /// Undocumented
 @property (nonatomic, readonly, strong) NSArray<SKYRole *> *roles;
 /// Undocumented
-@property (nonatomic, copy) void (^defineAdminRolesCompletionBlock)
-    (NSArray<SKYRole *> *roles, NSError *error);
+@property (nonatomic, copy) void (^_Nullable defineAdminRolesCompletionBlock)
+    (NSArray<SKYRole *> *_Nullable roles, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype)operationWithRoles:(NSArray<SKYRole *> *)roles;
++ (instancetype _Nullable)operationWithRoles:(NSArray<SKYRole *> *)roles;
 
 @end
+
+NS_ASSUME_NONNULL_END

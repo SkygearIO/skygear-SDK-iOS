@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYRecordSerializationRecordIDKey;
 /// Undocumented
@@ -37,3 +39,5 @@ extern NSString *const SKYRecordSerializationRecordUpdaterIDKey;
 extern NSString *const SKYRecordSerializationRecordAccessControlKey;
 /// Undocumented
 extern NSString *const SKYRecordSerializationRecordTransientKey;
+
+NS_ASSUME_NONNULL_END

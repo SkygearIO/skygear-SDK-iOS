@@ -19,6 +19,8 @@
 
 #import "SKYDatabase.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYPublicDatabase : SKYDatabase
 
 /**
@@ -30,7 +32,8 @@
  */
 - (void)defineCreationAccessWithRecordType:(NSString *)recordType
                                      roles:(NSArray<SKYRole *> *)roles
-                                completion:(void (^)(NSError *error))completionBlock;
+                                completion:
+                                    (void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Set default access of a record type
@@ -41,6 +44,9 @@
  */
 - (void)defineDefaultAccessWithRecordType:(NSString *)recordType
                                    access:(SKYAccessControl *)accessControl
-                               completion:(void (^)(NSError *error))completionBlock;
+                               completion:
+                                   (void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

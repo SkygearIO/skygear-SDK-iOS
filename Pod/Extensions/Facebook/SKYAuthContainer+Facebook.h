@@ -18,6 +18,8 @@
 
 #import "SKYKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class FBSDKAccessToken;
 
 @interface SKYAuthContainer (Facebook)
@@ -26,6 +28,9 @@
  Login a facebook user.
  */
 - (void)loginWithFacebookAccessToken:(FBSDKAccessToken *)accessToken
-                   completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+                   completionHandler:
+                       (SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

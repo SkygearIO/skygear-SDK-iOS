@@ -20,6 +20,8 @@
 #import "SKYAccessControl.h"
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRole;
 
 /// Undocumented
@@ -30,11 +32,14 @@
 /// Undocumented
 @property (nonatomic, readonly, strong) NSString *recordType;
 /// Undocumented
-@property (nonatomic, copy) void (^defineDefaultAccessCompletionBlock)
-    (NSString *recordType, SKYAccessControl *accessControl, NSError *error);
+@property (nonatomic, copy) void (^_Nullable defineDefaultAccessCompletionBlock)
+    (NSString *_Nullable recordType, SKYAccessControl *_Nullable accessControl,
+     NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype)operationWithRecordType:(NSString *)recordType
-                          accessControl:(SKYAccessControl *)accessControl;
++ (instancetype _Nullable)operationWithRecordType:(NSString *)recordType
+                                    accessControl:(SKYAccessControl *)accessControl;
 
 @end
+
+NS_ASSUME_NONNULL_END

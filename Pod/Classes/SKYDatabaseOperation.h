@@ -21,10 +21,14 @@
 
 #import "SKYDatabase.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYDatabaseOperation : SKYOperation
 
 /// Undocumented
-@property (strong, nonatomic) SKYDatabase *database;
+@property (strong, nonatomic) SKYDatabase *_Nonnull database;
 
 @end
+
+NS_ASSUME_NONNULL_END

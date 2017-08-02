@@ -21,6 +21,8 @@
 
 #import "SKYNotificationID.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum SKYNotificationType : NSInteger {
     SKYNotificationTypeQuery = 1,
@@ -47,18 +49,20 @@ typedef enum SKYNotificationType : NSInteger {
 @property (nonatomic, readonly, assign) BOOL isPruned;
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *alertBody;
+@property (nonatomic, readonly, copy) NSString *_Nullable alertBody;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *alertLocalizationKey;
+@property (nonatomic, readonly, copy) NSString *_Nullable alertLocalizationKey;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSArray *alertLocalizationArgs;
+@property (nonatomic, readonly, copy) NSArray *_Nullable alertLocalizationArgs;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *alertActionLocalizationKey;
+@property (nonatomic, readonly, copy) NSString *_Nullable alertActionLocalizationKey;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *alertLaunchImage;
+@property (nonatomic, readonly, copy) NSString *_Nullable alertLaunchImage;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *soundName;
+@property (nonatomic, readonly, copy) NSString *_Nullable soundName;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSNumber *badge;
+@property (nonatomic, readonly, copy) NSNumber *_Nullable badge;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,6 +19,8 @@
 
 #import "SKYDatabaseOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  <SKYFetchRecordsOperation> is a subclass of <SKYOperation> that implements fetching records from
  Ourd. Use this to
@@ -37,7 +39,7 @@
  @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
  @return an instance of SKYFetchRecordsOperation.
  */
-- (instancetype)initWithRecordIDs:(NSArray *)recordIDs;
+- (instancetype _Nullable)initWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Creates and returns an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
@@ -45,26 +47,27 @@
  @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
  @return an instance of SKYFetchRecordsOperation.
  */
-+ (instancetype)operationWithRecordIDs:(NSArray *)recordIDs;
++ (instancetype _Nullable)operationWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Sets or returns an array of <SKYRecordID>s to be fetched from Ourd.
  */
-@property (nonatomic, copy) NSArray *recordIDs;
+@property (nonatomic, copy) NSArray<SKYRecordID *> *recordIDs;
 
 /**
  Sets or returns an array of desired keys to be fetched from each record. A subset of keys for each
  record
  will be fetched from Ourd. <SKYRecord> without the specified keys will not have such key set.
  */
-@property (nonatomic, copy) NSArray *desiredKeys;
+@property (nonatomic, copy) NSArray<NSString *> *desiredKeys;
 
 /**
  Sets or returns a block to be called for progress information for each <SKYRecordID>. This is only
  called
  when progress information is available.
  */
-@property (nonatomic, copy) void (^perRecordProgressBlock)(SKYRecordID *recordID, double progress);
+@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
+    (SKYRecordID *_Nullable recordID, double progress);
 
 /**
  Sets or returns a block to be called when a record fetch operation completes for a <SKYRecordID>.
@@ -73,8 +76,8 @@
 
  This block is not called when the entire operation results in an error.
  */
-@property (nonatomic, copy) void (^perRecordCompletionBlock)
-    (SKYRecord *record, SKYRecordID *recordID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
+    (SKYRecord *_Nullable record, SKYRecordID *_Nullable recordID, NSError *_Nullable error);
 
 /**
  Sets or returns a block to be called when the entire operation completes. The fetched records are
@@ -83,7 +86,9 @@
  error will
  be specified.
  */
-@property (nonatomic, copy) void (^fetchRecordsCompletionBlock)
-    (NSDictionary *recordsByRecordID, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable fetchRecordsCompletionBlock)
+    (NSDictionary *_Nullable recordsByRecordID, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

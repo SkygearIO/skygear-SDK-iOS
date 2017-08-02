@@ -21,17 +21,19 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQueryCache : NSObject
 
 /// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype _Nullable)init NS_UNAVAILABLE;
 
 /**
  Initializes an instance of `SKYQueryCache` that is suitable for caching query results
  returned by performing queries on the specified database.
  */
-- (instancetype)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
+- (instancetype _Nullable)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 @property (nonatomic, readonly) SKYDatabase *database;
@@ -46,6 +48,8 @@
 
  If the results of a query is not cached, this method will return nil.
  */
-- (NSArray *)cachedResultsWithQuery:(SKYQuery *)query;
+- (NSArray *_Nullable)cachedResultsWithQuery:(SKYQuery *)query;
 
 @end
+
+NS_ASSUME_NONNULL_END

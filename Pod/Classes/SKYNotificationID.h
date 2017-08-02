@@ -19,7 +19,11 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYNotificationID : NSObject <NSCopying>
 
 @end
+
+NS_ASSUME_NONNULL_END

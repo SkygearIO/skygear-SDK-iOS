@@ -21,6 +21,8 @@
 
 #import "SKYAsset.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYDataSerializationCustomTypeKey;
 /// Undocumented
@@ -41,15 +43,17 @@ NSString *localFunctionName(NSString *remoteFunctionName);
 @interface SKYDataSerialization : NSObject
 
 /// Undocumented
-+ (NSDate *)dateFromString:(NSString *)dateStr;
++ (NSDate *_Nullable)dateFromString:(NSString *_Nullable)dateStr;
 /// Undocumented
-+ (NSString *)stringFromDate:(NSDate *)date;
++ (NSString *_Nullable)stringFromDate:(NSDate *_Nullable)date;
 /// Undocumented
-+ (id)deserializeObjectWithValue:(id)value;
++ (id _Nullable)deserializeObjectWithValue:(id _Nullable)value;
 /// Undocumented
-+ (SKYAsset *)deserializeAssetWithDictionary:(NSDictionary *)data;
++ (SKYAsset *_Nullable)deserializeAssetWithDictionary:(NSDictionary *)data;
 
 /// Undocumented
-+ (id)serializeObject:(id)obj;
++ (id)serializeObject:(id _Nullable)obj;
 
 @end
+
+NS_ASSUME_NONNULL_END

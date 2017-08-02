@@ -17,6 +17,8 @@
 //  limitations under the License.
 //
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYErrorMessageKey;
 /// Undocumented
@@ -72,3 +74,5 @@ extern NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode);
  Returns the name of the error code in string representation.
  */
 extern NSString *SKYErrorNameWithCode(SKYErrorCode errorCode);
+
+NS_ASSUME_NONNULL_END

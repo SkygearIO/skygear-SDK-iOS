@@ -19,18 +19,21 @@
 
 #import "SKYDatabaseOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYFetchSubscriptionsOperation : SKYDatabaseOperation
 
 /// Undocumented
-- (instancetype)initWithDeviceID:(NSString *)deviceID
-                 subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs NS_DESIGNATED_INITIALIZER;
+- (instancetype _Nullable)initWithDeviceID:(NSString *)deviceID
+                           subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs
+    NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-+ (instancetype)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
++ (instancetype _Nullable)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
 /// Undocumented
-+ (instancetype)operationWithDeviceID:(NSString *)deviceID
-                      subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
++ (instancetype _Nullable)operationWithDeviceID:(NSString *)deviceID
+                                subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
 
 /// Undocumented
 @property (nonatomic, copy) NSString *deviceID;
@@ -39,10 +42,13 @@
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionIDs;
 
 /// Undocumented
-@property (nonatomic, copy) void (^perSubscriptionCompletionBlock)
-    (SKYSubscription *subscription, NSString *subscriptionID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable perSubscriptionCompletionBlock)
+    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID,
+     NSError *_Nullable error);
 /// Undocumented
-@property (nonatomic, copy) void (^fetchSubscriptionsCompletionBlock)
-    (NSDictionary *subscriptionsBySubscriptionID, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable fetchSubscriptionsCompletionBlock)
+    (NSDictionary *_Nullable subscriptionsBySubscriptionID, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

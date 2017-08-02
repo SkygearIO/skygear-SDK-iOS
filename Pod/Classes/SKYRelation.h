@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum : NSInteger {
     SKYRelationDirectionOutward,
@@ -30,17 +32,18 @@ typedef enum : NSInteger {
 @interface SKYRelation : NSObject <NSCoding>
 
 /// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype _Nullable)init NS_UNAVAILABLE;
 
 /// Undocumented
-+ (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction;
++ (instancetype _Nullable)relationWithName:(NSString *)name
+                                 direction:(SKYRelationDirection)direction;
 
 /// Undocumented
-+ (instancetype)friendRelation;
++ (instancetype _Nullable)friendRelation;
 /// Undocumented
-+ (instancetype)followingRelation;
++ (instancetype _Nullable)followingRelation;
 /// Undocumented
-+ (instancetype)followedRelation;
++ (instancetype _Nullable)followedRelation;
 
 /// Undocumented
 - (BOOL)isEqualToRelation:(SKYRelation *)relation;
@@ -51,3 +54,5 @@ typedef enum : NSInteger {
 @property (nonatomic, readonly) SKYRelationDirection direction;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYAccessToken;
 
 /// Undocumented
@@ -30,13 +32,15 @@
 @property (nonatomic, readonly, copy) NSString *passwordToSet;
 
 /// Undocumented
-@property (nonatomic, copy) void (^changePasswordCompletionBlock)
-    (SKYRecord *user, SKYAccessToken *accessToken, NSError *error);
+@property (nonatomic, copy) void (^_Nullable changePasswordCompletionBlock)
+    (SKYRecord *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
 
 /**
  Creates and returns an instance of operation for changing the existing user password
  */
-+ (instancetype)operationWithOldPassword:(NSString *)oldPassword
-                           passwordToSet:(NSString *)newPassword;
++ (instancetype _Nullable)operationWithOldPassword:(NSString *)oldPassword
+                                     passwordToSet:(NSString *)newPassword;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -20,6 +20,8 @@
 #import "SKYAccessToken.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRequest : NSObject
 
@@ -40,6 +42,9 @@
 @property (nonatomic, readonly) NSString *requestPath;
 
 /// Undocumented
-- (instancetype)initWithAction:(NSString *)action payload:(NSDictionary *)payload;
+- (instancetype _Nullable)initWithAction:(NSString *)action
+                                 payload:(NSDictionary *_Nullable)payload;
 
 @end
+
+NS_ASSUME_NONNULL_END

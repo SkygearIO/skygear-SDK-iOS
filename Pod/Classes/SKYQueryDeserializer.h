@@ -20,19 +20,23 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQueryDeserializer : NSObject
 
 /// Undocumented
-+ (instancetype)deserializer;
++ (instancetype _Nullable)deserializer;
 
 /// Undocumented
-- (SKYQuery *)queryWithDictionary:(NSDictionary *)dictionary;
+- (SKYQuery *_Nullable)queryWithDictionary:(NSDictionary *)dictionary;
 /// Undocumented
-- (NSExpression *)expressionWithObject:(id)obj;
+- (NSExpression *_Nullable)expressionWithObject:(id)obj;
 /// Undocumented
-- (NSPredicate *)predicateWithArray:(NSArray *)array;
+- (NSPredicate *_Nullable)predicateWithArray:(NSArray *)array;
 /// Undocumented
-- (NSArray *)sortDescriptorsWithArray:(NSArray *)array;
+- (NSArray *_Nullable)sortDescriptorsWithArray:(NSArray *)array;
 
 @end
+
+NS_ASSUME_NONNULL_END

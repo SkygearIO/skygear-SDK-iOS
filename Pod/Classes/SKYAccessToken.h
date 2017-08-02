@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYAccessToken : NSObject
 
@@ -26,6 +28,8 @@
 @property (nonatomic, copy) NSString *tokenString;
 
 /// Undocumented
-- (instancetype)initWithTokenString:(NSString *)tokenString;
+- (instancetype _Nullable)initWithTokenString:(NSString *)tokenString;
 
 @end
+
+NS_ASSUME_NONNULL_END

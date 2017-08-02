@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 @class SKYRecordID;
 
@@ -70,18 +72,20 @@ typedef enum : NSInteger {
 /// Undocumented
 @property (nonatomic, readonly) SKYRecordResolveMethod resolveMethod;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSError *error;
+@property (nonatomic, readonly, copy) NSError *_Nullable error;
 
 /// Undocumented
 - (instancetype)initWithRecord:(SKYRecord *)record
                         action:(SKYRecordChangeAction)action
                  resolveMethod:(SKYRecordResolveMethod)resolveMethod
-              attributesToSave:(NSDictionary *)attributesToSave;
+              attributesToSave:(NSDictionary *_Nullable)attributesToSave;
 
 /// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID
                           action:(SKYRecordChangeAction)action
                    resolveMethod:(SKYRecordResolveMethod)resolveMethod
-                attributesToSave:(NSDictionary *)attributesToSave;
+                attributesToSave:(NSDictionary *_Nullable)attributesToSave;
 
 @end
+
+NS_ASSUME_NONNULL_END

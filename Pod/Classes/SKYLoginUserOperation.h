@@ -21,31 +21,36 @@
 
 #import "SKYAccessToken.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYLoginUserOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *authData;
+@property (nonatomic, readonly, copy) NSDictionary *_Nullable authData;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *password;
+@property (nonatomic, readonly, copy) NSString *_Nullable password;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *provider;
+@property (nonatomic, readonly, copy) NSString *_Nullable provider;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *providerAuthData;
+@property (nonatomic, readonly, copy) NSDictionary *_Nullable providerAuthData;
 
 /// Undocumented
-@property (nonatomic, copy) void (^loginCompletionBlock)
-    (SKYRecord *user, SKYAccessToken *accessToken, NSError *error);
+@property (nonatomic, copy) void (^_Nullable loginCompletionBlock)
+    (SKYRecord *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
 
 /**
  Creates and returns an instance of operation for logging in a user with auth data and password.
  */
-+ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password;
++ (instancetype _Nullable)operationWithAuthData:(NSDictionary *)authData
+                                       password:(NSString *)password;
 
 /**
  Creates and returns an instance of operation for logging in a user with provider and its auth data.
  */
-+ (instancetype)operationWithProvider:(NSString *)provider
-                     providerAuthData:(NSDictionary *)providerAuthData;
++ (instancetype _Nullable)operationWithProvider:(NSString *)provider
+                               providerAuthData:(NSDictionary *)providerAuthData;
 
 @end
+
+NS_ASSUME_NONNULL_END

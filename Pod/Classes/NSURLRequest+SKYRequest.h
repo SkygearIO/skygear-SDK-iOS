@@ -20,6 +20,8 @@
 #import "SKYRequest.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYRequestHeaderAPIKey;
 /// Undocumented
@@ -29,8 +31,10 @@ extern NSString *const SKYRequestHeaderAccessTokenKey;
 @interface NSURLRequest (SKYRequest)
 
 /// Undocumented
-+ (NSMutableURLRequest *)mutableRequestWithSKYRequest:(SKYRequest *)request;
++ (NSMutableURLRequest *_Nullable)mutableRequestWithSKYRequest:(SKYRequest *)request;
 /// Undocumented
-+ (NSURLRequest *)requestWithSKYRequest:(SKYRequest *)request;
++ (NSURLRequest *_Nullable)requestWithSKYRequest:(SKYRequest *)request;
 
 @end
+
+NS_ASSUME_NONNULL_END

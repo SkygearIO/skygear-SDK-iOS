@@ -19,12 +19,14 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYPushContainer : NSObject
 
 /**
  Returns the currently registered device ID.
  */
-@property (nonatomic, readonly) NSString *registeredDeviceID;
+@property (nonatomic, readonly) NSString *_Nullable registeredDeviceID;
 
 /**
  Acknowledge the container that a remote notification is received. If the notification is sent by
@@ -36,8 +38,10 @@
 /**
  Registers a device token for push notification.
  */
-- (void)registerRemoteNotificationDeviceToken:(NSData *)deviceToken
-                            completionHandler:(void (^)(NSString *, NSError *))completionHandler
+- (void)registerRemoteNotificationDeviceToken:(NSData *_Nullable)deviceToken
+                            completionHandler:
+                                (void (^_Nullable)(NSString *_Nullable,
+                                                   NSError *_Nullable))completionHandler
     __deprecated;
 
 /**
@@ -45,8 +49,9 @@
  When the user is no longer associated to the device, you should call
  -[SKYContainer unregisterDeviceCompletionHandler:].
  */
-- (void)registerDeviceWithDeviceToken:(NSData *)deviceToken
-                    completionHandler:(void (^)(NSString *, NSError *))completionHandler;
+- (void)registerDeviceWithDeviceToken:(NSData *_Nullable)deviceToken
+                    completionHandler:(void (^_Nullable)(NSString *_Nullable,
+                                                         NSError *_Nullable))completionHandler;
 
 /**
  Registers a device without device token. This method should be called when the user denied
@@ -56,7 +61,8 @@
  the application launches. It is okay to call this on subsequent launches, even if a device
  token is already associated with this device.
  */
-- (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler;
+- (void)registerDeviceCompletionHandler:(void (^_Nullable)(NSString *_Nullable,
+                                                           NSError *_Nullable))completionHandler;
 
 /**
  * Unregister the current user from the current device.
@@ -71,7 +77,9 @@
  * @param completionHandler the completion handler
  *
  */
-- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
-                                                    NSError *error))completionHandler;
+- (void)unregisterDeviceCompletionHandler:
+    (void (^_Nullable)(NSString *_Nullable deviceID, NSError *_Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

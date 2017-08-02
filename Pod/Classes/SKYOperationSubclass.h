@@ -20,8 +20,12 @@
 #import "SKYErrorCreator.h"
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYOperation ()
 
 @property (nonatomic, readonly) SKYErrorCreator *errorCreator;
 
 @end
+
+NS_ASSUME_NONNULL_END

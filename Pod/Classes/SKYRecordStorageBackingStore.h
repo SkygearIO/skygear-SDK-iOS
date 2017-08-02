@@ -20,6 +20,8 @@
 #import "SKYRecordChange.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 @class SKYRecordID;
 
@@ -29,7 +31,7 @@
 /**
  Delete data associated with this backing store.
  */
-- (BOOL)purgeWithError:(NSError **)error;
+- (BOOL)purgeWithError:(NSError **_Nullable)error;
 
 /**
  Writes data to persistent storage if the backing store supports it.
@@ -94,7 +96,7 @@
  If both a permanent copy and a local copy exist for the same record, the local copy
  will be returned. If the record is deleted locally, this will return nil.
  */
-- (SKYRecord *)fetchRecordWithRecordID:(SKYRecordID *)recordID;
+- (SKYRecord *_Nullable)fetchRecordWithRecordID:(SKYRecordID *)recordID;
 
 /**
  Returns whether a record from backing store exists.
@@ -112,7 +114,7 @@
  Enumerate all records in the backing store regardless of record
  type.
  */
-- (void)enumerateRecordsWithBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
+- (void)enumerateRecordsWithBlock:(void (^_Nullable)(SKYRecord *record, BOOL *stop))block;
 
 /**
  Enumerate records in the backing store with the specified type.
@@ -120,9 +122,9 @@
  You can use this method to enumerate records satisfying a predicate and sorted in an order.
  */
 - (void)enumerateRecordsWithType:(NSString *)recordType
-                       predicate:(NSPredicate *)predicate
-                 sortDescriptors:(NSArray *)sortDescriptors
-                      usingBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
+                       predicate:(NSPredicate *_Nullable)predicate
+                 sortDescriptors:(NSArray *_Nullable)sortDescriptors
+                      usingBlock:(void (^_Nullable)(SKYRecord *record, BOOL *stop))block;
 
 #pragma mark - Change management
 
@@ -142,7 +144,7 @@
 /**
  Set a change to be finished and optionally specify an NSError that has occurred.
   */
-- (void)setFinishedWithError:(NSError *)error change:(SKYRecordChange *)change;
+- (void)setFinishedWithError:(NSError *_Nullable)error change:(SKYRecordChange *)change;
 
 /**
  Returns a change related with a record by a record ID.
@@ -165,3 +167,5 @@
 - (NSArray *)failedChanges;
 
 @end
+
+NS_ASSUME_NONNULL_END

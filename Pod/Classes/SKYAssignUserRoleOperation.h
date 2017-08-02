@@ -19,23 +19,27 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 
 /// Undocumented
 @interface SKYAssignUserRoleOperation : SKYOperation
 
 /// Undocumented
-@property (nonatomic, copy, nonnull) NSArray<NSString *> *userIDs;
+@property (nonatomic, copy) NSArray<NSString *> *userIDs;
 
 /// Undocumented
-@property (nonatomic, copy, nonnull) NSArray<NSString *> *roleNames;
+@property (nonatomic, copy) NSArray<NSString *> *roleNames;
 
 /// Undocumented
-@property (nonatomic, copy) void (^assignUserRoleCompletionBlock)
-    (NSArray<NSString *> *userIDs, NSError *error);
+@property (nonatomic, copy) void (^_Nullable assignUserRoleCompletionBlock)
+    (NSArray<NSString *> *_Nullable userIDs, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
-                           roleNames:(NSArray<NSString *> *)roleNames;
++ (instancetype _Nullable)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                                     roleNames:(NSArray<NSString *> *)roleNames;
 
 @end
+
+NS_ASSUME_NONNULL_END

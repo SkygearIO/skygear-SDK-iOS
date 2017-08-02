@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  <SKYLogoutUserOperation> is a subclass of <SKYDatabaseOperation> that implements ends a user login
  session in
@@ -31,6 +33,8 @@
  error
  will be specified.
  */
-@property (nonatomic, copy) void (^logoutCompletionBlock)(NSError *error);
+@property (nonatomic, copy) void (^_Nullable logoutCompletionBlock)(NSError *_Nullable error);
 
 @end
+
+NS_ASSUME_NONNULL_END

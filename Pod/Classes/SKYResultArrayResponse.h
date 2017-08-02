@@ -20,6 +20,8 @@
 #import "SKYResponse.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  <SKYResultArrayResponse> implements a common processing pattern for processing response dictionary.
 
@@ -37,7 +39,10 @@
 /**
  Enumerate result dictionary in result array.
  */
-- (void)enumerateResultsUsingBlock:(void (^)(NSString *resultKey, NSDictionary *result,
-                                             NSError *error, NSUInteger idx, BOOL *stop))block;
+- (void)enumerateResultsUsingBlock:
+    (void (^_Nullable)(NSString *_Nullable resultKey, NSDictionary *_Nullable result,
+                       NSError *_Nullable error, NSUInteger idx, BOOL *stop))block;
 
 @end
+
+NS_ASSUME_NONNULL_END

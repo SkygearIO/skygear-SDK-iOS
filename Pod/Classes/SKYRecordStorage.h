@@ -24,6 +24,8 @@
 #import "SKYRecordChange.h"
 #import "SKYRecordStorageBackingStore.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYRecordStorageDidUpdateNotification;
 /// Undocumented
@@ -115,7 +117,7 @@ typedef enum : NSInteger {
 @property (nonatomic, readonly) BOOL hasUpdateAvailable;
 
 /// Undocumented
-- (instancetype)initWithBackingStore:(id<SKYRecordStorageBackingStore>)backingStore;
+- (instancetype _Nullable)initWithBackingStore:(id<SKYRecordStorageBackingStore>)backingStore;
 
 #pragma mark - Changing all records
 
@@ -125,8 +127,8 @@ typedef enum : NSInteger {
  Update are performed asynchronously. If there are pending changes, the record storage
  cannot be updated. This method returns <NO> when the receiver cannot perform update.
  */
-- (void)performUpdateWithCompletionHandler:(void (^)(BOOL finished,
-                                                     NSError *error))completionHandler;
+- (void)performUpdateWithCompletionHandler:
+    (void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
 
 #pragma mark - Saving and removing
 
@@ -143,7 +145,7 @@ typedef enum : NSInteger {
 /// Undocumented
 - (void)saveRecord:(SKYRecord *)record
          whenConflict:(SKYRecordResolveMethod)resolution
-    completionHandler:(id)handler;
+    completionHandler:(id _Nullable)handler;
 /// Undocumented
 - (void)saveRecords:(NSArray *)records;
 
@@ -160,7 +162,7 @@ typedef enum : NSInteger {
 /// Undocumented
 - (void)deleteRecord:(SKYRecord *)record
          whenConflict:(SKYRecordResolveMethod)resolution
-    completionHandler:(id)handler;
+    completionHandler:(id _Nullable)handler;
 /// Undocumented
 - (void)deleteRecords:(NSArray *)records;
 
@@ -181,16 +183,16 @@ typedef enum : NSInteger {
  using the specified predicate.
  */
 - (NSArray *)recordsWithType:(NSString *)recordType
-                   predicate:(NSPredicate *)predicate
-             sortDescriptors:(NSArray *)sortDescriptors;
+                   predicate:(NSPredicate *_Nullable)predicate
+             sortDescriptors:(NSArray *_Nullable)sortDescriptors;
 
 /**
  Enumerate SKYRecords in the local storage.
  */
 - (void)enumerateRecordsWithType:(NSString *)recordType
-                       predicate:(NSPredicate *)predicate
-                 sortDescriptors:(NSArray *)sortDescriptors
-                      usingBlock:(void (^)(SKYRecord *record, BOOL *stop))block;
+                       predicate:(NSPredicate *_Nullable)predicate
+                 sortDescriptors:(NSArray *_Nullable)sortDescriptors
+                      usingBlock:(void (^_Nullable)(SKYRecord *record, BOOL *stop))block;
 
 #pragma mark - Managing Record changes
 
@@ -244,7 +246,7 @@ typedef enum : NSInteger {
  Specifying a change that is currently processed by the remote server
  will result in an error.
  */
-- (BOOL)dismissChange:(SKYRecordChange *)item error:(NSError **)error;
+- (BOOL)dismissChange:(SKYRecordChange *)item error:(NSError **_Nullable)error;
 
 /**
  Returns a dictionary of modified attributes that will be saved to
@@ -262,7 +264,8 @@ typedef enum : NSInteger {
 
  <SKYRecordStorage> will call the specified block for each failed record.
  */
-- (void)dismissFailedChangesWithBlock:(BOOL (^)(SKYRecordChange *item, SKYRecord *record))block;
+- (void)dismissFailedChangesWithBlock:(BOOL (^_Nullable)(SKYRecordChange *item,
+                                                         SKYRecord *record))block;
 
 #pragma mark - Applying updates
 
@@ -291,7 +294,9 @@ typedef enum : NSInteger {
  Apply a pending change to the backing store.
  */
 - (void)updateByApplyingChange:(SKYRecordChange *)change
-                recordOnRemote:(SKYRecord *)remoteRecord
-                         error:(NSError *)error;
+                recordOnRemote:(SKYRecord *_Nullable)remoteRecord
+                         error:(NSError *_Nullable)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

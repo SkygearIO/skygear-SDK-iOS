@@ -21,13 +21,17 @@
 
 #import "SKYNotificationInfo.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYNotificationInfoSerializer : NSObject
 
 /// Undocumented
-+ (instancetype)serializer;
++ (instancetype _Nullable)serializer;
 
 /// Undocumented
-- (NSDictionary *)dictionaryWithNotificationInfo:(SKYNotificationInfo *)notificationInfo;
+- (NSDictionary *)dictionaryWithNotificationInfo:(SKYNotificationInfo *_Nullable)notificationInfo;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,13 +19,15 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYPubsubClient : NSObject
 
 /// Undocumented
-@property (nonatomic, copy) NSURL *endPointAddress;
+@property (nonatomic, copy) NSURL *_Nullable endPointAddress;
 /// Undocumented
-@property (nonatomic, copy) NSString *APIKey;
+@property (nonatomic, copy) NSString *_Nullable APIKey;
 
 /**
  In normal usage, you will not need to init the PubsubClient by yourself. You just get the
@@ -42,7 +44,8 @@
  [[SKYContainer defaultContainer].pubsubClient publishMessage:@{@"note":@"cool"}
  toChannel:@"noteapp"];
  */
-- (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey;
+- (instancetype _Nullable)initWithEndPoint:(NSURL *_Nullable)endPoint
+                                    APIKey:(NSString *_Nullable)APIKey;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just
@@ -69,3 +72,5 @@
 - (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -21,18 +21,23 @@
 
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYUnregisterDeviceOperation : SKYOperation
 
 /// Undocumented
-- (instancetype)initWithDeviceID:(nonnull NSString *)deviceID;
+- (instancetype _Nullable)initWithDeviceID:(NSString *)deviceID;
 
 /// Undocumented
-+ (instancetype)operationWithDeviceID:(nonnull NSString *)deviceID;
++ (instancetype _Nullable)operationWithDeviceID:(NSString *)deviceID;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *deviceID;
 /// Undocumented
-@property (nonatomic, copy) void (^unregisterCompletionBlock)(NSString *deviceID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable unregisterCompletionBlock)
+    (NSString *_Nullable deviceID, NSError *_Nullable error);
 
 @end
+
+NS_ASSUME_NONNULL_END

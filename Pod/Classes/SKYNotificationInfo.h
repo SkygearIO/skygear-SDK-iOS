@@ -22,6 +22,8 @@
 #import "SKYAPSNotificationInfo.h"
 #import "SKYGCMNotificationInfo.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYNotificationInfo : NSObject <NSCopying>
 
@@ -29,14 +31,16 @@
 + (instancetype)notificationInfo;
 
 /// Undocumented
-@property (nonatomic, copy) SKYAPSNotificationInfo *apsNotificationInfo;
+@property (nonatomic, copy) SKYAPSNotificationInfo *_Nullable apsNotificationInfo;
 /// Undocumented
-@property (nonatomic, copy) SKYGCMNotificationInfo *gcmNotificationInfo;
+@property (nonatomic, copy) SKYGCMNotificationInfo *_Nullable gcmNotificationInfo;
 
 /// Undocumented
-@property (nonatomic, copy) NSArray *desiredKeys;
+@property (nonatomic, copy) NSArray<NSString *> *_Nullable desiredKeys;
 
 /// Undocumented
-- (BOOL)isEqualToNotificationInfo:(SKYNotificationInfo *)notificationInfo;
+- (BOOL)isEqualToNotificationInfo:(SKYNotificationInfo *_Nullable)notificationInfo;
 
 @end
+
+NS_ASSUME_NONNULL_END

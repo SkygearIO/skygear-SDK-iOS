@@ -22,6 +22,8 @@
 #import "SKYNotificationInfo.h"
 #import "SKYQuery.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum : NSInteger {
     SKYSubscriptionTypeQuery = 1,
@@ -34,12 +36,13 @@ typedef enum : NSInteger {
 /// Undocumented
 - (instancetype)initWithQuery:(SKYQuery *)query;
 /// Undocumented
-- (instancetype)initWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
+- (instancetype)initWithQuery:(SKYQuery *)query subscriptionID:(NSString *_Nullable)subscriptionID;
 
 /// Undocumented
 + (instancetype)subscriptionWithQuery:(SKYQuery *)query;
 /// Undocumented
-+ (instancetype)subscriptionWithQuery:(SKYQuery *)query subscriptionID:(NSString *)subscriptionID;
++ (instancetype)subscriptionWithQuery:(SKYQuery *)query
+                       subscriptionID:(NSString *_Nullable)subscriptionID;
 
 /// Undocumented
 @property (nonatomic, readonly, assign) SKYSubscriptionType subscriptionType;
@@ -49,14 +52,16 @@ typedef enum : NSInteger {
 
 // probably duplicated with query?
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *recordType;
+@property (nonatomic, readonly, copy) NSString *_Nullable recordType;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSPredicate *predicate;
+@property (nonatomic, readonly, copy) NSPredicate *_Nullable predicate;
 
 /// Undocumented
-@property (nonatomic, copy) SKYNotificationInfo *notificationInfo;
+@property (nonatomic, copy) SKYNotificationInfo *_Nullable notificationInfo;
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *subscriptionID;
+@property (nonatomic, readonly, copy) NSString *_Nullable subscriptionID;
 
 @end
+
+NS_ASSUME_NONNULL_END

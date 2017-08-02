@@ -21,6 +21,8 @@
 
 #import "SKYRelation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 @class SKYRole;
 
@@ -28,7 +30,7 @@
 @interface SKYAccessControl : NSObject <NSCoding, NSCopying>
 
 /// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype _Nullable)init NS_UNAVAILABLE;
 
 #pragma mark - set no access
 /// Undocumented
@@ -91,3 +93,5 @@
 - (BOOL)hasWriteAccessForPublic;
 
 @end
+
+NS_ASSUME_NONNULL_END
