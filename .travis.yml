@@ -27,21 +27,16 @@ before_deploy:
 - rvm install ruby-2.2.4 # jazzy doesn't work in old rubies
 - rvm use ruby-2.2.4
 - gem install jazzy
-- make docs
+- sudo pip install awscli
+- aws configure set preview.cloudfront true
 deploy:
-- provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: "docs.skygear.io"
-  skip_cleanup: true
-  acl: public_read
-  local_dir: "docs"
-  upload-dir: "ios/reference"
-  cache_control: "max-age=604800"
-  on:
-    repo: SkygearIO/skygear-SDK-iOS
-    tags: true
-    condition: "$TRAVIS_TAG = latest"
+  - provider: script
+    script: scripts/deploy.sh
+    skip_cleanup: true
+    on:
+      repo: SkygearIO/skygear-SDK-iOS
+      all_branches: true
+
 env:
   global:
     - LC_CTYPE=en_US.UTF-8
