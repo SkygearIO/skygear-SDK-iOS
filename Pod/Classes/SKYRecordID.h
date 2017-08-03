@@ -27,9 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Instantiates an instance of SKYRecordID with a random record name.
  */
-- (instancetype)init __deprecated;
-/// Undocumented
-- (instancetype)initWithRecordName:(NSString *)recordName __deprecated;
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)type;
