@@ -20,6 +20,8 @@
 #import "SKYDatabaseOperation.h"
 #import "SKYSubscription.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYSubscriptionDeserializer : SKYDatabaseOperation
 
@@ -30,3 +32,5 @@
 - (SKYSubscription *)subscriptionWithDictionary:(NSDictionary *)dictionary;
 
 @end
+
+NS_ASSUME_NONNULL_END

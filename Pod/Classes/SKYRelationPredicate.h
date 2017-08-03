@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRelation;
 
 /**
@@ -45,3 +47,5 @@
 + (instancetype)predicateWithRelation:(SKYRelation *)relation keyPath:(NSString *)keyPath;
 
 @end
+
+NS_ASSUME_NONNULL_END

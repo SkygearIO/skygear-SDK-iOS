@@ -20,14 +20,16 @@
 #import "SKYOperation.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRegisterDeviceOperation : SKYOperation
 
 /// Undocumented
-- (instancetype)initWithDeviceToken:(NSData *)deviceToken
+- (instancetype)initWithDeviceToken:(NSData *_Nullable)deviceToken
     __attribute__((deprecated("Use -initWithDeviceToken:topic: instead")));
 /// Undocumented
-- (instancetype)initWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic;
+- (instancetype)initWithDeviceToken:(NSData *_Nullable)deviceToken topic:(NSString *_Nullable)topic;
 
 /**
  Returns an instance of operation that registers a device without supplying a device token.
@@ -38,18 +40,22 @@
  */
 + (instancetype)operation;
 /// Undocumented
-+ (instancetype)operationWithDeviceToken:(NSData *)deviceToken
++ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
     __attribute__((deprecated("Use +operationWithDeviceToken:topic: instead")));
 /// Undocumented
-+ (instancetype)operationWithDeviceToken:(NSData *)topic topic:(NSString *)topic;
++ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
+                                   topic:(NSString *_Nullable)topic;
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSData *deviceToken;
+@property (nonatomic, readonly, copy) NSData *_Nullable deviceToken;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *topic;
+@property (nonatomic, readonly, copy) NSString *_Nullable topic;
 /// Undocumented
-@property (nonatomic, readwrite, copy) NSString *deviceID;
+@property (nonatomic, readwrite, copy) NSString *_Nullable deviceID;
 /// Undocumented
-@property (nonatomic, copy) void (^registerCompletionBlock)(NSString *deviceID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable registerCompletionBlock)
+    (NSString *_Nullable deviceID, NSError *_Nullable error);
 
 @end
+
+NS_ASSUME_NONNULL_END

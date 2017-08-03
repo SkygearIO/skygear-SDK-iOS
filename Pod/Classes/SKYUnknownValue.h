@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  SKYUnknownValue indicates that the value is of unknown type to Skygear. This usually occurs
  when the database contains data that is not managed by Skygear.
@@ -39,3 +41,5 @@
 @property (nonatomic, readonly, copy) NSString *underlyingType;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -22,9 +22,10 @@
 #import "SKYAsset.h"
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYGetAssetPostRequestOperation : SKYOperation
-NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 - (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
@@ -40,5 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
      NSDictionary<NSString *, NSObject *> *_Nullable extraFields, NSError *_Nullable operationError)
         ;
 
-NS_ASSUME_NONNULL_END
 @end
+
+NS_ASSUME_NONNULL_END

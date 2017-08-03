@@ -22,6 +22,8 @@
 #import "SKYAsset.h"
 #import "SKYOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYUploadAssetOperation : SKYOperation
 
@@ -34,9 +36,12 @@
 @property (nonatomic, readwrite) SKYAsset *asset;
 
 /// Undocumented
-@property (nonatomic, copy) void (^uploadAssetProgressBlock)(SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^_Nullable uploadAssetProgressBlock)
+    (SKYAsset *asset, double progress);
 /// Undocumented
-@property (nonatomic, copy) void (^uploadAssetCompletionBlock)
-    (SKYAsset *asset, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable uploadAssetCompletionBlock)
+    (SKYAsset *_Nullable asset, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

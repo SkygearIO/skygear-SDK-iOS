@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @class CLLocation;
 
@@ -32,7 +34,7 @@
            relativeLocation:(CLLocation *)relativeLocation
                   ascending:(BOOL)ascending NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+- (instancetype _Nullable)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 /// Undocumented
 + (instancetype)locationSortDescriptorWithKey:(NSString *)key
                              relativeLocation:(CLLocation *)relativeLocation
@@ -42,3 +44,5 @@
 @property (nonatomic, copy, readonly) CLLocation *relativeLocation;
 
 @end
+
+NS_ASSUME_NONNULL_END

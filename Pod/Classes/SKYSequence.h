@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  SKYSequence is a special value that creates an auto-increment field on the record when
  saved.
@@ -31,3 +33,5 @@
 + (instancetype)sequence;
 
 @end
+
+NS_ASSUME_NONNULL_END

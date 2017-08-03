@@ -20,6 +20,8 @@
 #import "SKYOperation.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYNotificationInfo;
 
 /// Undocumented
@@ -40,7 +42,7 @@ typedef enum : NSUInteger {
 - (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend
-                                   topic:(NSString *)topic;
+                                   topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
@@ -49,7 +51,7 @@ typedef enum : NSUInteger {
 /// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                                 userIDsToSend:(NSArray *)userIDsToSend
-                                        topic:(NSString *)topic;
+                                        topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
@@ -58,7 +60,7 @@ typedef enum : NSUInteger {
 /// Undocumented
 + (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
                               deviceIDsToSend:(NSArray *)deviceIDsToSend
-                                        topic:(NSString *)topic;
+                                        topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 @property (nonatomic, readwrite, copy) SKYNotificationInfo *notificationInfo;
@@ -67,10 +69,14 @@ typedef enum : NSUInteger {
 /// Undocumented
 @property (nonatomic, readwrite, copy) NSArray *IDsToSend;
 /// Undocumented
-@property (nonatomic, readwrite, copy) NSString *topic;
+@property (nonatomic, readwrite, copy) NSString *_Nullable topic;
 /// Undocumented
-@property (nonatomic, copy) void (^perSendCompletionHandler)(NSString *userID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable perSendCompletionHandler)
+    (NSString *_Nullable userID, NSError *_Nullable error);
 /// Undocumented
-@property (nonatomic, copy) void (^sendCompletionHandler)(NSArray *userIDs, NSError *error);
+@property (nonatomic, copy) void (^_Nullable sendCompletionHandler)
+    (NSArray *_Nullable userIDs, NSError *_Nullable error);
 
 @end
+
+NS_ASSUME_NONNULL_END

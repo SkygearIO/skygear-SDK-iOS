@@ -23,6 +23,8 @@
 #import "SKYRequest.h"
 #import "SKYResponse.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYOperation : NSOperation
 
@@ -123,3 +125,5 @@
 + (Class)responseClass;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -21,6 +21,8 @@
 
 #import "SKYRelation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 @class SKYRole;
 
@@ -91,3 +93,5 @@
 - (BOOL)hasWriteAccessForPublic;
 
 @end
+
+NS_ASSUME_NONNULL_END

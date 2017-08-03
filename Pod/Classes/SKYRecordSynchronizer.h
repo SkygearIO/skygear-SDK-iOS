@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYContainer;
 @class SKYDatabase;
 @class SKYQuery;
@@ -47,14 +49,14 @@
 
  Returns <nil> when the synchronizer synchronizes with the entire database.
  */
-@property (nonatomic, readonly, strong) SKYQuery *query;
+@property (nonatomic, readonly, strong) SKYQuery *_Nullable query;
 
 /**
  Instantiate an instance of record synchronizer.
  */
 - (instancetype)initWithContainer:(SKYContainer *)container
                          database:(SKYDatabase *)database
-                            query:(SKYQuery *)query;
+                            query:(SKYQuery *_Nullable)query;
 
 /**
  Notifies the synchronizer that update is available to the specified record storage.
@@ -66,16 +68,19 @@
  Instantiate network operations that causes the specified record storage to be updated.
  */
 - (void)recordStorageFetchUpdates:(SKYRecordStorage *)storage
-                completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
+                completionHandler:
+                    (void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
 
 /**
  Instantiate network operations that causes the specified changes to be saved.
  */
 - (void)recordStorage:(SKYRecordStorage *)storage
           saveChanges:(NSArray *)changes
-    completionHandler:(void (^)(BOOL finished, NSError *error))completionHandler;
+    completionHandler:(void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
 
 /// Undocumented
 - (BOOL)isProcessingChange:(SKYRecordChange *)change storage:(SKYRecordStorage *)storage;
 
 @end
+
+NS_ASSUME_NONNULL_END

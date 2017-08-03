@@ -35,7 +35,7 @@
         return nil;
     }
 
-    NSMutableArray *array = [NSMutableArray array];
+    NSMutableArray<NSDictionary *> *array = [NSMutableArray array];
     for (SKYAccessControlEntry *entry in accessControl.entries) {
         [array addObject:[self dictionaryWithAccessControlEntry:entry]];
     }

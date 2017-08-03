@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionIDKey;
 /// Undocumented
@@ -27,3 +29,5 @@ extern NSString *const SKYSubscriptionSerializationSubscriptionTypeKey;
 extern NSString *const SKYSubscriptionSerializationSubscriptionTypeQuery;
 /// Undocumented
 extern NSString *const SKYSubscriptionSerializationSubscriptionTypeError;
+
+NS_ASSUME_NONNULL_END

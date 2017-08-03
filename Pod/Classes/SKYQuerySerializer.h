@@ -20,6 +20,8 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQuerySerializer : NSObject
 
@@ -35,3 +37,5 @@
 - (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors;
 
 @end
+
+NS_ASSUME_NONNULL_END

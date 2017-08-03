@@ -29,7 +29,7 @@
     return [[SKYAccessControlDeserializer alloc] init];
 }
 
-- (SKYAccessControl *)accessControlWithArray:(NSArray *)array
+- (SKYAccessControl *)accessControlWithArray:(NSArray<NSDictionary *> *)array
 {
     if (array == nil) {
         return nil;

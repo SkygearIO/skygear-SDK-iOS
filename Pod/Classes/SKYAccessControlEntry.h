@@ -23,6 +23,8 @@
 #import "SKYRelation.h"
 #import "SKYRole.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 typedef enum : NSUInteger {
     SKYAccessControlEntryLevelRead = 0,
@@ -82,11 +84,11 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 /// Undocumented
 @property (nonatomic, readonly, assign) SKYAccessControlEntryLevel accessLevel;
 /// Undocumented
-@property (nonatomic, readonly) SKYRelation *relation;
+@property (nonatomic, readonly) SKYRelation *_Nullable relation;
 /// Undocumented
-@property (nonatomic, readonly) SKYRole *role;
+@property (nonatomic, readonly) SKYRole *_Nullable role;
 /// Undocumented
-@property (nonatomic, copy, readonly) NSString *userID;
+@property (nonatomic, copy, readonly) NSString *_Nullable userID;
 
 @end
 
@@ -98,3 +100,5 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 + (instancetype)writeEntryForUser:(SKYRecord *)user;
 
 @end
+
+NS_ASSUME_NONNULL_END

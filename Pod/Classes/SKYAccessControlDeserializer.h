@@ -21,6 +21,8 @@
 
 #import "SKYAccessControl.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYAccessControlDeserializer : NSObject
 
@@ -28,6 +30,8 @@
 + (instancetype)deserializer;
 
 /// Undocumented
-- (SKYAccessControl *)accessControlWithArray:(NSArray *)array;
+- (SKYAccessControl *)accessControlWithArray:(NSArray<NSDictionary *> *)array;
 
 @end
+
+NS_ASSUME_NONNULL_END

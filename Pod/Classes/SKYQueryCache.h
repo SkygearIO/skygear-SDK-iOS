@@ -21,6 +21,8 @@
 #import "SKYQuery.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQueryCache : NSObject
 
@@ -46,6 +48,8 @@
 
  If the results of a query is not cached, this method will return nil.
  */
-- (NSArray *)cachedResultsWithQuery:(SKYQuery *)query;
+- (NSArray *_Nullable)cachedResultsWithQuery:(SKYQuery *)query;
 
 @end
+
+NS_ASSUME_NONNULL_END

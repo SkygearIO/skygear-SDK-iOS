@@ -18,14 +18,21 @@
 
 #import "SKYKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYAuthContainer (ForgotPassword)
 
 - (void)forgotPasswordWithEmail:(NSString *)emailAddress
-              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+              completionHandler:
+                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
 - (void)resetPasswordWithUserID:(NSString *)userID
                            code:(NSString *)code
+                       expireAt:(NSDate *)expireAt
                        password:(NSString *)password
-              completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler;
+              completionHandler:
+                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

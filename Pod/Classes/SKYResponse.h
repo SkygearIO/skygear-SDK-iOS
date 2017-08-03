@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  <SKYResponse> encapsulates the response dictionary by providing convenient methods
  to access its content.
@@ -37,7 +39,7 @@
  Gets the NSError that is contained within the responseDictionary or encountered
  when processing the responseDictionary.
  */
-@property (nonatomic, readonly) NSError *error;
+@property (nonatomic, readonly) NSError *_Nullable error;
 
 /**
  Instantiates an instance of <SKYResponse>.
@@ -61,3 +63,5 @@
 - (void)foundResponseError:(NSError *)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

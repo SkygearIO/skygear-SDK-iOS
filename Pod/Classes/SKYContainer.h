@@ -28,12 +28,13 @@
 #import "SKYPubsubContainer.h"
 #import "SKYPushContainer.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @protocol SKYContainerDelegate <NSObject>
 
 /// Undocumented
-- (void)container:(SKYContainer *_Nonnull)container
-    didReceiveNotification:(SKYNotification *_Nonnull)notification;
+- (void)container:(SKYContainer *)container didReceiveNotification:(SKYNotification *)notification;
 
 @end
 
@@ -41,13 +42,13 @@
  Notification posted by <SKYContainer> when the current user
  has been updated.
  */
-extern NSString *_Nonnull const SKYContainerDidChangeCurrentUserNotification;
+extern NSString *const SKYContainerDidChangeCurrentUserNotification;
 
 /**
  Notification posted by <SKYContainer> when the current device
  has been registered with skygear.
  */
-extern NSString *_Nonnull const SKYContainerDidRegisterDeviceNotification;
+extern NSString *const SKYContainerDidRegisterDeviceNotification;
 
 @class NSString;
 @class SKYOperation;
@@ -57,35 +58,35 @@ extern NSString *_Nonnull const SKYContainerDidRegisterDeviceNotification;
 
 // seems we need a way to authenticate app
 /// Undocumented
-+ (nonnull SKYContainer *)defaultContainer;
++ (SKYContainer *)defaultContainer;
 
 /// Undocumented
-@property (nonatomic, readonly, nonnull) SKYAuthContainer *auth;
+@property (nonatomic, readonly) SKYAuthContainer *auth;
 
 /// Undocumented
-@property (nonatomic, readonly, nonnull) SKYPubsubContainer *pubsub;
+@property (nonatomic, readonly) SKYPubsubContainer *pubsub;
 
 /// Undocumented
-@property (nonatomic, readonly, nonnull) SKYPushContainer *push;
+@property (nonatomic, readonly) SKYPushContainer *push;
 
 /// Undocumented
-@property (nonatomic, weak, nullable) id<SKYContainerDelegate> delegate;
+@property (nonatomic, weak) id<SKYContainerDelegate> _Nullable delegate;
 
 /// Undocumented
-@property (nonatomic, nonatomic, nonnull) NSURL *endPointAddress;
+@property (nonatomic, nonatomic) NSURL *endPointAddress;
 
 /// Undocumented
-@property (nonatomic, readonly, nonnull) SKYPublicDatabase *publicCloudDatabase;
+@property (nonatomic, readonly) SKYPublicDatabase *publicCloudDatabase;
 /// Undocumented
-@property (nonatomic, readonly, nonnull) SKYDatabase *privateCloudDatabase;
+@property (nonatomic, readonly) SKYDatabase *privateCloudDatabase;
 
 /// Undocumented
-@property (nonatomic, readonly, nullable) NSString *containerIdentifier;
+@property (nonatomic, readonly) NSString *_Nullable containerIdentifier;
 
 /**
  Returns the API key of the container.
  */
-@property (nonatomic, readonly, nullable) NSString *APIKey;
+@property (nonatomic, readonly) NSString *_Nullable APIKey;
 
 /**
  The maximum amount of time to wait before the request is considered timed out.
@@ -95,29 +96,29 @@ extern NSString *_Nonnull const SKYContainerDidRegisterDeviceNotification;
 @property (nonatomic, readwrite) NSTimeInterval defaultTimeoutInterval;
 
 /// Configuration on the container End-Point, API-Token
-- (void)configAddress:(nonnull NSString *)address;
+- (void)configAddress:(NSString *)address;
 
 /**
  Set a new API key to the container.
  */
-- (void)configureWithAPIKey:(nullable NSString *)APIKey;
+- (void)configureWithAPIKey:(NSString *_Nullable)APIKey;
 
 /// Undocumented
-- (void)addOperation:(nonnull SKYOperation *)operation;
+- (void)addOperation:(SKYOperation *)operation;
 
 /**
  Calls a registered lambda function without arguments.
  */
-- (void)callLambda:(nonnull NSString *)action
-    completionHandler:
-        (void (^_Nullable)(NSDictionary *_Nonnull, NSError *_Nullable))completionHandler;
+- (void)callLambda:(NSString *)action
+    completionHandler:(void (^_Nullable)(NSDictionary *, NSError *_Nullable))completionHandler;
 
 /**
  Calls a registered lambda function with arguments.
  */
-- (void)callLambda:(nonnull NSString *)action
-            arguments:(nullable NSArray *)arguments
-    completionHandler:
-        (void (^_Nullable)(NSDictionary *_Nonnull, NSError *_Nullable))completionHandler;
+- (void)callLambda:(NSString *)action
+            arguments:(NSArray *_Nullable)arguments
+    completionHandler:(void (^_Nullable)(NSDictionary *, NSError *_Nullable))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

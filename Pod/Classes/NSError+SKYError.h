@@ -19,16 +19,20 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface NSError (SKYError)
 
 /// Undocumented
-- (NSString *)SKYErrorMessage __deprecated;
+- (NSString *_Nullable)SKYErrorMessage __deprecated;
 /// Undocumented
-- (NSString *)SKYErrorType __deprecated;
+- (NSString *_Nullable)SKYErrorType __deprecated;
 /// Undocumented
 - (NSInteger)SKYErrorCode __deprecated;
 /// Undocumented
-- (NSDictionary *)SKYErrorInfo __deprecated;
+- (NSDictionary *_Nullable)SKYErrorInfo __deprecated;
 
 @end
+
+NS_ASSUME_NONNULL_END

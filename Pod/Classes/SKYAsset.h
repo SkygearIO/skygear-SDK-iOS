@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYAsset : NSObject <NSCopying>
 
@@ -47,3 +49,5 @@
 @property (nonatomic, readwrite, copy) NSString *mimeType;
 
 @end
+
+NS_ASSUME_NONNULL_END

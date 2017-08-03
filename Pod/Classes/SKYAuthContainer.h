@@ -22,20 +22,23 @@
 #import "SKYAccessToken.h"
 #import "SKYDatabase.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYContainer;
 
 // keep it in sync with SKYUserOperationActionCompletion
 /// Undocumented
-typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSError *error);
+typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable user,
+                                                          NSError *_Nullable error);
 
 @interface SKYAuthContainer : NSObject
 
 /// Undocumented
-@property (nonatomic, readonly) NSString *currentUserRecordID;
+@property (nonatomic, readonly) NSString *_Nullable currentUserRecordID;
 /// Undocumented
-@property (nonatomic, readonly) SKYAccessToken *currentAccessToken;
+@property (nonatomic, readonly) SKYAccessToken *_Nullable currentAccessToken;
 /// Undocumented
-@property (nonatomic, readonly) SKYRecord *currentUser;
+@property (nonatomic, readonly) SKYRecord *_Nullable currentUser;
 
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
@@ -46,7 +49,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  convenient
  method and when the operation is completed successfully.
  */
-- (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUserRecordID:(NSString *_Nullable)userRecordID
+                   accessToken:(SKYAccessToken *_Nullable)accessToken;
 
 /**
  Updates the <currentUser> and <currentAccessToken>. The updated access credentials are also
@@ -56,7 +60,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  convenient
  method and when the operation is completed successfully.
  */
-- (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken;
+- (void)updateWithUser:(SKYRecord *_Nullable)user
+           accessToken:(SKYAccessToken *_Nullable)accessToken;
 
 /**
  Set the handler to be called when SKYOperation's subclasses failed to authenticate itself with
@@ -73,8 +78,9 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  NOTE: Any attempt to invoke user logout related operation within the set handler will created an
  feedback loop as logouting an invalid access token is also a kind of authentication error.
  */
-- (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
-                                                NSError *error))authErrorHandler;
+- (void)setAuthenticationErrorHandler:(void (^_Nullable)(SKYContainer *container,
+                                                         SKYAccessToken *_Nullable token,
+                                                         NSError *_Nullable error))authErrorHandler;
 
 @end
 
@@ -88,52 +94,52 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  <SKYSignupUserOperation>.
  */
 - (void)signupAnonymouslyWithCompletionHandler:
-    (SKYContainerUserOperationActionCompletion)completionHandler;
+    (SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified auth data and password.
  */
 - (void)signupWithAuthData:(NSDictionary *)authData
                   password:(NSString *)password
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified auth data, password and profile.
  */
 - (void)signupWithAuthData:(NSDictionary *)authData
                   password:(NSString *)password
-         profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+         profileDictionary:(NSDictionary *_Nullable)profile
+         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified username and password.
  */
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified email and password.
  */
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
-      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+      completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified username, password and profile.
  */
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
-         profileDictionary:(NSDictionary *)profile
-         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+         profileDictionary:(NSDictionary *_Nullable)profile
+         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified email, password and profile.
  */
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
-      profileDictionary:(NSDictionary *)profile
-      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+      profileDictionary:(NSDictionary *_Nullable)profile
+      completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
 
@@ -144,28 +150,29 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)loginWithAuthData:(NSDictionary *)authData
                  password:(NSString *)password
-        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+        completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Logs in to an existing user account with the specified username and password.
  */
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
-        completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+        completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Logs in to an existing user account with the specified email and password.
  */
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+     completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Logs out the current user of this container.
 
  This is a convenient method for <SKYLogoutUserOperation>.
  */
-- (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)logoutWithCompletionHandler:
+    (SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
 
@@ -178,7 +185,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)setNewPassword:(NSString *)newPassword
            oldPassword:(NSString *)oldPassword
-     completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+     completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
 
@@ -189,7 +196,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  *
  *  @param completionHandler the completion handler
  */
-- (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
+- (void)getWhoAmIWithCompletionHandler:
+    (SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
 
@@ -199,13 +207,13 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  *  Defines roles to have special powers
  */
 - (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock;
+              completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Sets default roles for new registered users
  */
 - (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock;
+                completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Get roles of users
@@ -214,8 +222,9 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  *  @param completionBlock Completion Block, with a user-to-roles dictionary
  */
 - (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
-               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *userRoles,
-                                    NSError *error))completionBlock;
+               completion:(void (^_Nullable)(
+                              NSDictionary<NSString *, NSArray<SKYRole *> *> *_Nullable userRoles,
+                              NSError *_Nullable error))completionBlock;
 
 /**
  *  Get roles of users
@@ -225,8 +234,9 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
                           completion:
-                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                        NSError *error))completionBlock;
+                              (void (^_Nullable)(NSDictionary<NSString *, NSArray<NSString *> *>
+                                                     *_Nullable userRoles,
+                                                 NSError *_Nullable error))completionBlock;
 
 /**
  *  Assign roles to users
@@ -237,7 +247,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)assignRoles:(NSArray<SKYRole *> *)roles
             toUsers:(NSArray<SKYRecord *> *)users
-         completion:(void (^)(NSError *error))completionBlock;
+         completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Assign roles to users
@@ -248,7 +258,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)assignRolesWithNames:(NSArray<NSString *> *)roleNames
               toUsersWithIDs:(NSArray<NSString *> *)userIDs
-                  completion:(void (^)(NSError *error))completionBlock;
+                  completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Revoke roles from users
@@ -259,7 +269,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)revokeRoles:(NSArray<SKYRole *> *)roles
           fromUsers:(NSArray<SKYRecord *> *)users
-         completion:(void (^)(NSError *error))completionBlock;
+         completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Revoke roles from users
@@ -270,6 +280,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *user, NSErr
  */
 - (void)revokeRolesWithNames:(NSArray<NSString *> *)roleNames
             fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
-                  completion:(void (^)(NSError *error))completionBlock;
+                  completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

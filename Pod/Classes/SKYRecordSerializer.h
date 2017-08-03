@@ -20,6 +20,8 @@
 #import "SKYRecord.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRecordSerializer : NSObject
 
@@ -31,11 +33,13 @@
 @property (nonatomic, readwrite) BOOL serializeTransientDictionary;
 
 /// Undocumented
-+ (instancetype)serializer;
++ (instancetype _Nullable)serializer;
 
 /// Undocumented
 - (NSDictionary *)dictionaryWithRecord:(SKYRecord *)record;
 /// Undocumented
-- (NSData *)JSONDataWithRecord:(SKYRecord *)record error:(NSError **)error;
+- (NSData *_Nullable)JSONDataWithRecord:(SKYRecord *)record error:(NSError **_Nullable)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

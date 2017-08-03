@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQuery : NSObject <NSSecureCoding>
 
@@ -26,17 +28,18 @@
 - (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
-                         predicate:(NSPredicate *)predicate NS_DESIGNATED_INITIALIZER;
+                         predicate:(NSPredicate *_Nullable)predicate NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-+ (instancetype)queryWithRecordType:(NSString *)recordType predicate:(NSPredicate *)predicate;
++ (instancetype)queryWithRecordType:(NSString *)recordType
+                          predicate:(NSPredicate *_Nullable)predicate;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSPredicate *predicate;
+@property (nonatomic, readonly, copy) NSPredicate *_Nullable predicate;
 /// Undocumented
-@property (nonatomic, copy) NSArray *sortDescriptors;
+@property (nonatomic, copy) NSArray *_Nullable sortDescriptors;
 
 /**
  Gets or sets the number of records after which records will be returned.
@@ -61,6 +64,8 @@
  An NSDictionary of expression to be evaluated on the server side and returned as transient
  dictionary in SKYRecord.
  */
-@property (strong, nonatomic) NSDictionary *transientIncludes;
+@property (strong, nonatomic) NSDictionary *_Nullable transientIncludes;
 
 @end
+
+NS_ASSUME_NONNULL_END

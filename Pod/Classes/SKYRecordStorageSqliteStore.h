@@ -20,6 +20,8 @@
 #import "SKYRecordStorageBackingStore.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRecordStorageSqliteStore : NSObject <SKYRecordStorageBackingStore>
 
@@ -29,3 +31,5 @@
 - (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

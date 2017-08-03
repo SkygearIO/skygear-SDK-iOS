@@ -20,6 +20,8 @@
 #import "SKYRecordStorageBackingStore.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYRecord;
 @class SKYRecordID;
 
@@ -27,3 +29,5 @@
 @interface SKYRecordStorageMemoryStore : NSObject <SKYRecordStorageBackingStore>
 
 @end
+
+NS_ASSUME_NONNULL_END

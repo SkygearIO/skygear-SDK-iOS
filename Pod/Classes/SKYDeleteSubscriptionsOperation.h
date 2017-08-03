@@ -19,6 +19,8 @@
 
 #import "SKYDatabaseOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYDeleteSubscriptionsOperation : SKYDatabaseOperation
 
@@ -36,7 +38,9 @@
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionIDsToDelete;
 
 /// Undocumented
-@property (nonatomic, copy) void (^deleteSubscriptionsCompletionBlock)
-    (NSArray *deletedSubscriptionIDs, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable deleteSubscriptionsCompletionBlock)
+    (NSArray *_Nullable deletedSubscriptionIDs, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

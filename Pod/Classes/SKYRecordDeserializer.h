@@ -20,6 +20,8 @@
 #import "SKYRecord.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYRecordDeserializer : NSObject
 
@@ -29,6 +31,8 @@
 /// Undocumented
 - (SKYRecord *)recordWithDictionary:(NSDictionary *)dictionary;
 /// Undocumented
-- (SKYRecord *)recordWithJSONData:(NSData *)data error:(NSError **)error;
+- (SKYRecord *_Nullable)recordWithJSONData:(NSData *)data error:(NSError **_Nullable)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

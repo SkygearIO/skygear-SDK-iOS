@@ -19,6 +19,8 @@
 
 #import "SKYQuery.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYQuery (Caching)
 
@@ -31,3 +33,5 @@
 @property (nonatomic, readonly) NSString *cacheKey;
 
 @end
+
+NS_ASSUME_NONNULL_END

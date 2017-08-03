@@ -22,6 +22,8 @@
 #import "SKYAccessControl.h"
 #import "SKYRecordID.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 extern NSString *const SKYRecordTypeUserRecord;
 
@@ -35,9 +37,9 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType
                                 name:(NSString *)recordName
-                                data:(NSDictionary *)data;
+                                data:(NSDictionary *_Nullable)data;
 /// Undocumented
-+ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data;
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *_Nullable)data;
 
 /**
  Instantiates an instance of <SKYRecord> with the specified record type with a randomly generated
@@ -57,48 +59,48 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                           recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary *)data __deprecated;
+                              data:(NSDictionary *_Nullable)data __deprecated;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                               name:(NSString *)recordName
-                              data:(NSDictionary *)data;
+                              data:(NSDictionary *_Nullable)data;
 /// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId
-                            data:(NSDictionary *)data NS_DESIGNATED_INITIALIZER;
+                            data:(NSDictionary *_Nullable)data NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-- (id)objectForKey:(id)key;
+- (id _Nullable)objectForKey:(id)key;
 /// Undocumented
-- (id)objectForKeyedSubscript:(id)key;
+- (id _Nullable)objectForKeyedSubscript:(id)key;
 
 /// Undocumented
-- (void)setObject:(id)object forKey:(id<NSCopying>)key;
+- (void)setObject:(id)object forKey:(id<NSCopying> _Nullable)key;
 /// Undocumented
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying> _Nullable)key;
 
 /// Undocumented
-- (SKYRecord *)referencedRecordForKey:(id)key;
+- (SKYRecord *_Nullable)referencedRecordForKey:(id)key;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *ownerUserRecordID;
+@property (nonatomic, readonly, copy) NSString *_Nullable ownerUserRecordID;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDate *creationDate;
+@property (nonatomic, readonly, copy) NSDate *_Nullable creationDate;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *creatorUserRecordID;
+@property (nonatomic, readonly, copy) NSString *_Nullable creatorUserRecordID;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDate *modificationDate;
+@property (nonatomic, readonly, copy) NSDate *_Nullable modificationDate;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *lastModifiedUserRecordID;
+@property (nonatomic, readonly, copy) NSString *_Nullable lastModifiedUserRecordID;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *recordChangeTag;
+@property (nonatomic, readonly, copy) NSString *_Nullable recordChangeTag;
 /**
  Gets or sets the access control settings for this record.
  */
-@property (nonatomic, readwrite, strong, nonnull) SKYAccessControl *accessControl;
+@property (nonatomic, readwrite, strong) SKYAccessControl *_Nullable accessControl;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *dictionary;
 
@@ -111,3 +113,5 @@ extern NSString *const SKYRecordTypeUserRecord;
 @property (nonatomic, readonly, copy) NSMutableDictionary *transient;
 
 @end
+
+NS_ASSUME_NONNULL_END

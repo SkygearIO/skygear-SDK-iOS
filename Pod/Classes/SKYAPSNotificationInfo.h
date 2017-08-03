@@ -19,30 +19,34 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYAPSNotificationInfo : NSObject <NSCopying>
 
 /// Undocumented
-+ (instancetype)notificationInfo;
++ (instancetype _Nullable)notificationInfo;
 
 /// Undocumented
-@property (nonatomic, copy) NSString *alertBody;
+@property (nonatomic, copy) NSString *_Nullable alertBody;
 /// Undocumented
-@property (nonatomic, copy) NSString *alertLocalizationKey;
+@property (nonatomic, copy) NSString *_Nullable alertLocalizationKey;
 /// Undocumented
-@property (nonatomic, copy) NSArray *alertLocalizationArgs;
+@property (nonatomic, copy) NSArray *_Nullable alertLocalizationArgs;
 /// Undocumented
-@property (nonatomic, copy) NSString *alertActionLocalizationKey;
+@property (nonatomic, copy) NSString *_Nullable alertActionLocalizationKey;
 /// Undocumented
-@property (nonatomic, copy) NSString *alertLaunchImage;
+@property (nonatomic, copy) NSString *_Nullable alertLaunchImage;
 /// Undocumented
-@property (nonatomic, copy) NSString *soundName;
+@property (nonatomic, copy) NSString *_Nullable soundName;
 /// Undocumented
 @property (nonatomic, assign) BOOL shouldBadge;
 /// Undocumented
 @property (nonatomic, assign) BOOL shouldSendContentAvailable;
 
 /// Undocumented
-- (BOOL)isEqualToNotificationInfo:(SKYAPSNotificationInfo *)notificationInfo;
+- (BOOL)isEqualToNotificationInfo:(SKYAPSNotificationInfo *_Nullable)notificationInfo;
 
 @end
+
+NS_ASSUME_NONNULL_END

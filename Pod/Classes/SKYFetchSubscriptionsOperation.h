@@ -19,6 +19,8 @@
 
 #import "SKYDatabaseOperation.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYFetchSubscriptionsOperation : SKYDatabaseOperation
 
@@ -39,10 +41,13 @@
 @property (nonatomic, copy) NSArray<NSString *> *subscriptionIDs;
 
 /// Undocumented
-@property (nonatomic, copy) void (^perSubscriptionCompletionBlock)
-    (SKYSubscription *subscription, NSString *subscriptionID, NSError *error);
+@property (nonatomic, copy) void (^_Nullable perSubscriptionCompletionBlock)
+    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID,
+     NSError *_Nullable error);
 /// Undocumented
-@property (nonatomic, copy) void (^fetchSubscriptionsCompletionBlock)
-    (NSDictionary *subscriptionsBySubscriptionID, NSError *operationError);
+@property (nonatomic, copy) void (^_Nullable fetchSubscriptionsCompletionBlock)
+    (NSDictionary *_Nullable subscriptionsBySubscriptionID, NSError *_Nullable operationError);
 
 @end
+
+NS_ASSUME_NONNULL_END

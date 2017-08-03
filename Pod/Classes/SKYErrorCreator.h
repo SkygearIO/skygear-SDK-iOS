@@ -20,6 +20,8 @@
 #import "SKYError.h"
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYErrorCreator : NSObject
 
@@ -39,10 +41,12 @@
 /// Undocumented
 - (NSError *)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
 /// Undocumented
-- (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *)userInfoToAdd;
+- (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *_Nullable)userInfoToAdd;
 /// Undocumented
 - (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
 /// Undocumented
 - (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
 
 @end
+
+NS_ASSUME_NONNULL_END

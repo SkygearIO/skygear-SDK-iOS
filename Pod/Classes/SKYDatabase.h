@@ -22,13 +22,15 @@
 #import "SKYAsset.h"
 #import "SKYRecord.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class SKYDatabaseOperation;
 @class SKYQuery;
 @class SKYSubscription;
 @class SKYContainer;
 
 /// Undocumented
-typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
+typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_Nullable error);
 
 /// Undocumented
 @interface SKYDatabase : NSObject
@@ -50,11 +52,12 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 
 /// Undocumented
 - (void)performQuery:(SKYQuery *)query
-    completionHandler:(void (^)(NSArray *results, NSError *error))completionHandler;
+    completionHandler:
+        (void (^_Nullable)(NSArray *_Nullable results, NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)performCachedQuery:(SKYQuery *)query
-         completionHandler:
-             (void (^)(NSArray *results, BOOL pending, NSError *error))completionHandler;
+         completionHandler:(void (^_Nullable)(NSArray *_Nullable results, BOOL pending,
+                                              NSError *_Nullable error))completionHandler;
 
 /**
  Fetches a single record from Ourd.
@@ -70,7 +73,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  @param completionHandler the block to be called when operation completes.
  */
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
-        completionHandler:(void (^)(SKYRecord *record, NSError *error))completionHandler;
+        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable record,
+                                             NSError *_Nullable error))completionHandler;
 
 /**
  Fetches multiple records from Ourd.
@@ -86,10 +90,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  also called when an operation error occurred.
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
-- (void)fetchRecordsWithIDs:(NSArray *)recordIDs
-          completionHandler:(void (^)(NSDictionary *recordsByRecordID,
-                                      NSError *operationError))completionHandler
-      perRecordErrorHandler:(void (^)(SKYRecordID *recordID, NSError *error))errorHandler;
+- (void)fetchRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
+          completionHandler:(void (^_Nullable)(NSDictionary *_Nullable recordsByRecordID,
+                                               NSError *_Nullable operationError))completionHandler
+      perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
+                                               NSError *_Nullable error))errorHandler;
 
 /**
  Saves a single record to Ourd.
@@ -107,7 +112,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  @param completionHandler the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion)completion;
+- (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion _Nullable)completion;
 
 /**
  Saves multiple records to Ourd.
@@ -125,10 +130,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  also called when an operation error occurred.
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
-- (void)saveRecords:(NSArray *)records
-        completionHandler:(void (^)(NSArray *savedRecords,
-                                    NSError *operationError))completionHandler
-    perRecordErrorHandler:(void (^)(SKYRecord *record, NSError *error))errorHandler;
+- (void)saveRecords:(NSArray<SKYRecord *> *)records
+        completionHandler:(void (^_Nullable)(NSArray *_Nullable savedRecords,
+                                             NSError *_Nullable operationError))completionHandler
+    perRecordErrorHandler:
+        (void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))errorHandler;
 
 /**
  Saves multiple records atomically to Ourd.
@@ -142,9 +148,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  @param completionHandler the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)saveRecordsAtomically:(NSArray *)records
+- (void)saveRecordsAtomically:(NSArray<SKYRecord *> *)records
             completionHandler:
-                (void (^)(NSArray *savedRecords, NSError *operationError))completionHandler;
+                (void (^_Nullable)(NSArray *_Nullable savedRecords,
+                                   NSError *_Nullable operationError))completionHandler;
 
 /**
  Deletes a single record from Ourd.
@@ -161,7 +168,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  also called when an operation error occurred.
  */
 - (void)deleteRecordWithID:(SKYRecordID *)recordID
-         completionHandler:(void (^)(SKYRecordID *recordID, NSError *error))completionHandler;
+         completionHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
+                                              NSError *_Nullable error))completionHandler;
 
 /**
  Deletes multiple records from Ourd.
@@ -177,9 +185,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  also called when an operation error occurred.
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
-- (void)deleteRecordsWithIDs:(NSArray *)recordIDs
-           completionHandler:(void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler
-       perRecordErrorHandler:(void (^)(SKYRecordID *recordID, NSError *error))errorHandler;
+- (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
+           completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+                                                NSError *_Nullable error))completionHandler
+       perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
+                                                NSError *_Nullable error))errorHandler;
 
 /**
  Deletes multiple records atomically to Ourd.
@@ -194,35 +204,38 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
  @param completionHandler the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)deleteRecordsWithIDsAtomically:(NSArray *)recordIDs
+- (void)deleteRecordsWithIDsAtomically:(NSArray<SKYRecordID *> *)recordIDs
                      completionHandler:
-                         (void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler;
+                         (void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+                                            NSError *_Nullable error))completionHandler;
 
 /// Undocumented
-- (void)fetchAllSubscriptionsWithCompletionHandler:(void (^)(NSArray *subscriptions,
-                                                             NSError *error))completionHandler;
+- (void)fetchAllSubscriptionsWithCompletionHandler:
+    (void (^_Nullable)(NSArray *_Nullable subscriptions,
+                       NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)fetchSubscriptionWithID:(NSString *)subscriptionID
-              completionHandler:
-                  (void (^)(SKYSubscription *subscription, NSError *error))completionHandler;
+              completionHandler:(void (^_Nullable)(SKYSubscription *_Nullable subscription,
+                                                   NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)saveSubscription:(SKYSubscription *)subscription
-       completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler;
+       completionHandler:(void (^_Nullable)(SKYSubscription *_Nullable subscription,
+                                            NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)deleteSubscriptionWithID:(NSString *)subscriptionID
-               completionHandler:
-                   (void (^)(NSString *subscriptionID, NSError *error))completionHandler;
+               completionHandler:(void (^_Nullable)(NSString *_Nullable subscriptionID,
+                                                    NSError *_Nullable error))completionHandler;
 
 /// Undocumented
 - (void)uploadAsset:(SKYAsset *)asset
-    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler;
+    completionHandler:(void (^_Nullable)(SKYAsset *_Nullable, NSError *_Nullable))completionHandler;
 
 @end
 
 @interface SKYDatabase (SKYUser)
 
 /// Undocumented
-@property (nonatomic, readonly) NSString *currentUserRecordID;
+@property (nonatomic, readonly) NSString *_Nullable currentUserRecordID;
 
 @end
 
@@ -230,6 +243,9 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *record, NSError *error);
 
 /// Undocumented
 - (void)fetchUserNewsFeed:(NSString *)newsfeedID
-        completionHandler:(void (^)(SKYRecord *results, NSError *error))completionHandler;
+        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable results,
+                                             NSError *_Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

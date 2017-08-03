@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYAccessToken : NSObject
 
@@ -29,3 +31,5 @@
 - (instancetype)initWithTokenString:(NSString *)tokenString;
 
 @end
+
+NS_ASSUME_NONNULL_END

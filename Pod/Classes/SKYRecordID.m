@@ -23,12 +23,9 @@
 
 - (instancetype)init
 {
-    return [self initWithRecordType:nil name:nil];
-}
-
-- (instancetype)initWithRecordName:(NSString *)recordName
-{
-    return [self initWithRecordType:nil name:recordName];
+    @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                   reason:@"Missing Record type."
+                                 userInfo:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)type
@@ -53,8 +50,9 @@
     self = [super init];
     if (self) {
         if (!type) {
-            NSLog(@"Deprecation Warning: %@ created without record type.",
-                  NSStringFromClass([self class]));
+            @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                           reason:@"Missing Record type."
+                                         userInfo:nil];
         }
         _recordType = [type copy];
         _recordName = recordName ? [recordName copy] : [[NSUUID UUID] UUIDString];

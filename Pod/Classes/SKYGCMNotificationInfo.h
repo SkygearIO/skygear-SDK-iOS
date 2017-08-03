@@ -19,32 +19,34 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Undocumented
 @interface SKYGCMInnerNotificationInfo : NSObject <NSCopying>
 
 /// Undocumented
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *_Nullable title;
 /// Undocumented
-@property (nonatomic, copy) NSString *body;
+@property (nonatomic, copy) NSString *_Nullable body;
 /// Undocumented
-@property (nonatomic, copy) NSString *icon;
+@property (nonatomic, copy) NSString *_Nullable icon;
 /// Undocumented
-@property (nonatomic, copy) NSString *sound;
+@property (nonatomic, copy) NSString *_Nullable sound;
 /// Undocumented
-@property (nonatomic, copy) NSString *tag;
+@property (nonatomic, copy) NSString *_Nullable tag;
 /// Undocumented
-@property (nonatomic, copy) NSString *clickAction;
+@property (nonatomic, copy) NSString *_Nullable clickAction;
 /// Undocumented
-@property (nonatomic, copy) NSString *bodyLocKey;
+@property (nonatomic, copy) NSString *_Nullable bodyLocKey;
 /// Undocumented
-@property (nonatomic, copy) NSArray *bodyLocArgs;
+@property (nonatomic, copy) NSArray *_Nullable bodyLocArgs;
 /// Undocumented
-@property (nonatomic, copy) NSString *titleLocKey;
+@property (nonatomic, copy) NSString *_Nullable titleLocKey;
 /// Undocumented
-@property (nonatomic, copy) NSArray *titleLocArgs;
+@property (nonatomic, copy) NSArray *_Nullable titleLocArgs;
 
 /// Undocumented
-- (BOOL)isEqualToNotificationInfo:(SKYGCMInnerNotificationInfo *)notificationInfo;
+- (BOOL)isEqualToNotificationInfo:(SKYGCMInnerNotificationInfo *_Nullable)notificationInfo;
 
 @end
 
@@ -52,10 +54,10 @@
 @interface SKYGCMNotificationInfo : NSObject <NSCopying>
 
 /// Undocumented
-+ (instancetype)notificationInfo;
++ (instancetype _Nullable)notificationInfo;
 
 /// Undocumented
-@property (nonatomic, copy) NSString *collapseKey;
+@property (nonatomic, copy) NSString *_Nullable collapseKey;
 /// Undocumented
 @property (nonatomic, assign) NSUInteger priority;
 /// Undocumented
@@ -65,12 +67,14 @@
 /// Undocumented
 @property (nonatomic, assign) NSUInteger timeToLive;
 /// Undocumented
-@property (nonatomic, copy) NSString *restrictedPackageName;
+@property (nonatomic, copy) NSString *_Nullable restrictedPackageName;
 
 /// Undocumented
-@property (nonatomic, copy) SKYGCMInnerNotificationInfo *notification;
+@property (nonatomic, copy) SKYGCMInnerNotificationInfo *_Nullable notification;
 
 /// Undocumented
-- (BOOL)isEqualToNotificationInfo:(SKYGCMNotificationInfo *)notificationInfo;
+- (BOOL)isEqualToNotificationInfo:(SKYGCMNotificationInfo *_Nullable)notificationInfo;
 
 @end
+
+NS_ASSUME_NONNULL_END
