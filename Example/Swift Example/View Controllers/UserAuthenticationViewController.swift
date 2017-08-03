@@ -260,7 +260,7 @@ class UserAuthenticationViewController: UITableViewController {
                 cell.detailTextLabel?.text = SKYContainer.default().auth.currentUserRecordID
             } else if indexPath.row == 2 {
                 cell.textLabel?.text = "Access Token"
-                cell.detailTextLabel?.text = SKYContainer.default().auth.currentAccessToken.tokenString
+                cell.detailTextLabel?.text = SKYContainer.default().auth.currentAccessToken?.tokenString
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
                 if let user = SKYContainer.default().auth.currentUser {

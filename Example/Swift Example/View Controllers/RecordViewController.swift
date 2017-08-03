@@ -66,9 +66,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             }
 
             var metadata: [(String, AnyObject)] = []
-            if record.recordID != nil {
-                metadata.append(("ID", record.recordID))
-            }
+            metadata.append(("ID", record.recordID))
 
             if record.creatorUserRecordID != nil {
                 metadata.append(("Created by", record.creatorUserRecordID as AnyObject))
@@ -161,7 +159,11 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     }
 
     func deleteCurrentRecord() {
-        SKYContainer.default().publicCloudDatabase.deleteRecord(with: record?.recordID) { (recordID, error) in
+        guard let record = self.record else {
+            return
+        }
+
+        SKYContainer.default().publicCloudDatabase.deleteRecord(with: record.recordID) { (recordID, error) in
             guard error == nil else {
                 let alert = UIAlertController(title: "Unable to delete", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -181,7 +183,11 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     }
 
     func saveCurrentRecord() {
-        SKYContainer.default().publicCloudDatabase.save(self.record) { (record, error) in
+        guard let record = self.record else {
+            return
+        }
+
+        SKYContainer.default().publicCloudDatabase.save(record) { (record, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to Save", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -307,8 +313,8 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         alert.addTextField(configurationHandler: { (textField) in
             textField.placeholder = "Value"
 
-            if let record = self.record {
-                textField.text = record.object(forKey: self.selectedAttributeName) as? String
+            if let record = self.record, let attributeName = self.selectedAttributeName {
+                textField.text = record.object(forKey: attributeName) as? String
             }
         })
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -525,10 +531,14 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return
         }
 
-        let asset = SKYAsset(data: UIImagePNGRepresentation(image))
+        guard let data = UIImagePNGRepresentation(image) else {
+            return
+        }
+
+        let asset = SKYAsset(data: data)
         asset?.mimeType = "image/png"
 
-        SKYContainer.default().publicCloudDatabase.uploadAsset(asset) { (asset, error) in
+        SKYContainer.default().publicCloudDatabase.uploadAsset(asset!) { (asset, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -544,7 +554,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
                 return
             }
 
-            record.setObject(asset, forKey: fieldName as NSCopying)
+            record.setObject(asset!, forKey: fieldName as NSCopying)
             self.insertOrReloadAttribute(fieldName)
             self.modified = true
         }
