@@ -30,8 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param records An array of users to be related.
  */
-- (instancetype _Nullable)initWithType:(NSString *)relationType
-                        usersToRelated:(NSArray<SKYRecord *> *)users;
+- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray<SKYRecord *> *)users;
 
 /**
  Creates and returns an instance of <SKYAddRelationsOperation> with a list of user to be related
@@ -39,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param records An array of users to be related.
  */
-+ (instancetype _Nullable)operationWithType:(NSString *)relationType
-                             usersToRelated:(NSArray<SKYRecord *> *)users;
++ (instancetype)operationWithType:(NSString *)relationType
+                   usersToRelated:(NSArray<SKYRecord *> *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.

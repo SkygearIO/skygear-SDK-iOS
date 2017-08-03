@@ -536,9 +536,9 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         }
 
         let asset = SKYAsset(data: data)
-        asset?.mimeType = "image/png"
+        asset.mimeType = "image/png"
 
-        SKYContainer.default().publicCloudDatabase.uploadAsset(asset!) { (asset, error) in
+        SKYContainer.default().publicCloudDatabase.uploadAsset(asset) { (asset, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

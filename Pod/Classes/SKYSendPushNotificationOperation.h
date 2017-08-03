@@ -34,33 +34,33 @@ typedef enum : NSUInteger {
 @interface SKYSendPushNotificationOperation : SKYOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                        pushTarget:(SKYPushTarget)pushTarget
-                                         IDsToSend:(NSArray *)IDsToSend;
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              pushTarget:(SKYPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend;
 
 /// Undocumented
-- (instancetype _Nullable)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                        pushTarget:(SKYPushTarget)pushTarget
-                                         IDsToSend:(NSArray *)IDsToSend
-                                             topic:(NSString *_Nullable)topic;
+- (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              pushTarget:(SKYPushTarget)pushTarget
+                               IDsToSend:(NSArray *)IDsToSend
+                                   topic:(NSString *_Nullable)topic;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                          userIDsToSend:(NSArray *)userIDsToSend;
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                                userIDsToSend:(NSArray *)userIDsToSend;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                          userIDsToSend:(NSArray *)userIDsToSend
-                                                  topic:(NSString *_Nullable)topic;
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                                userIDsToSend:(NSArray *)userIDsToSend
+                                        topic:(NSString *_Nullable)topic;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                        deviceIDsToSend:(NSArray *)deviceIDsToSend;
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
-                                        deviceIDsToSend:(NSArray *)deviceIDsToSend
-                                                  topic:(NSString *_Nullable)topic;
++ (instancetype)operationWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
+                              deviceIDsToSend:(NSArray *)deviceIDsToSend
+                                        topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 @property (nonatomic, readwrite, copy) SKYNotificationInfo *notificationInfo;

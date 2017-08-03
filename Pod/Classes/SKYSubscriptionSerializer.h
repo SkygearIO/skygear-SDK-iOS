@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYSubscriptionSerializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)serializer;
++ (instancetype)serializer;
 
 /// Undocumented
 - (NSDictionary *)dictionaryWithSubscription:(SKYSubscription *)subscription;

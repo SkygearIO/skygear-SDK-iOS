@@ -30,13 +30,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYUnknownValue : NSObject <NSCoding>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithUnderlyingType:(NSString *)underlyingType
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithUnderlyingType:(NSString *)underlyingType NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-+ (instancetype _Nullable)unknownValueWithUnderlyingType:(NSString *)underlyingType;
++ (instancetype)unknownValueWithUnderlyingType:(NSString *)underlyingType;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *underlyingType;

@@ -31,16 +31,15 @@ extern NSString *const SKYRecordTypeUserRecord;
 @interface SKYRecord : NSObject <NSCopying, NSCoding>
 
 /// Undocumented
-+ (instancetype _Nullable)recordWithRecordType:(NSString *)recordType;
++ (instancetype)recordWithRecordType:(NSString *)recordType;
 /// Undocumented
-+ (instancetype _Nullable)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName;
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 /// Undocumented
-+ (instancetype _Nullable)recordWithRecordType:(NSString *)recordType
-                                          name:(NSString *)recordName
-                                          data:(NSDictionary *_Nullable)data;
++ (instancetype)recordWithRecordType:(NSString *)recordType
+                                name:(NSString *)recordName
+                                data:(NSDictionary *_Nullable)data;
 /// Undocumented
-+ (instancetype _Nullable)recordWithRecordID:(SKYRecordID *)recordId
-                                        data:(NSDictionary *_Nullable)data;
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *_Nullable)data;
 
 /**
  Instantiates an instance of <SKYRecord> with the specified record type with a randomly generated
@@ -49,25 +48,25 @@ extern NSString *const SKYRecordTypeUserRecord;
  @param recordType Record type of the record.
  @return An instance of SKYRecord.
  */
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType;
+- (instancetype)initWithRecordType:(NSString *)recordType;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType
-                                    recordID:(SKYRecordID *)recordId __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordId __deprecated;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType
-                                    recordID:(SKYRecordID *)recordId
-                                        data:(NSDictionary *_Nullable)data __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(SKYRecordID *)recordId
+                              data:(NSDictionary *_Nullable)data __deprecated;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType
-                                        name:(NSString *)recordName
-                                        data:(NSDictionary *_Nullable)data;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                              name:(NSString *)recordName
+                              data:(NSDictionary *_Nullable)data;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordID:(SKYRecordID *)recordId
-                                      data:(NSDictionary *_Nullable)data NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordID:(SKYRecordID *)recordId
+                            data:(NSDictionary *_Nullable)data NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 - (id _Nullable)objectForKey:(id)key;

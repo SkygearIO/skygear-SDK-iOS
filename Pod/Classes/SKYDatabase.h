@@ -41,7 +41,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 @property (nonatomic, strong, readonly) SKYContainer *container;
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Undocumented
 - (void)addOperation:(SKYDatabaseOperation *)operation;

@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
         ;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithUserIDs:(NSArray<NSString *> *)userIDs;
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs;
 
 @end
 

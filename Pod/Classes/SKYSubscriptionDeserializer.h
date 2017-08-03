@@ -26,10 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYSubscriptionDeserializer : SKYDatabaseOperation
 
 /// Undocumented
-+ (instancetype _Nullable)deserializer;
++ (instancetype)deserializer;
 
 /// Undocumented
-- (SKYSubscription *_Nullable)subscriptionWithDictionary:(NSDictionary *)dictionary;
+- (SKYSubscription *)subscriptionWithDictionary:(NSDictionary *)dictionary;
 
 @end
 

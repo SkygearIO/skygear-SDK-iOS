@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Returns an instance of <SKYRelationPredicate>.
  */
-+ (instancetype _Nullable)predicateWithRelation:(SKYRelation *)relation keyPath:(NSString *)keyPath;
++ (instancetype)predicateWithRelation:(SKYRelation *)relation keyPath:(NSString *)keyPath;
 
 @end
 

@@ -64,10 +64,10 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 /**
  Returns the singleton instance of <SKYRecordStorageCoordinator>.
  */
-+ (instancetype _Nullable)defaultCoordinator;
++ (instancetype)defaultCoordinator;
 
 /// Undocumented
-- (instancetype _Nullable)initWithContainer:(SKYContainer *)container NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithContainer:(SKYContainer *)container NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns an instance of SKYRecordStorage that is set up to be synchronized

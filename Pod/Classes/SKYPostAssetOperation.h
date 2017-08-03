@@ -28,16 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYPostAssetOperation : SKYOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
+- (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithAsset:(SKYAsset *)asset url:(NSURL *)url;
++ (instancetype)operationWithAsset:(SKYAsset *)asset url:(NSURL *)url;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithAsset:(SKYAsset *)asset
-                                         url:(NSURL *)url
-                                 extraFields:
-                                     (NSDictionary<NSString *, NSObject *> *_Nullable)extraFields;
++ (instancetype)operationWithAsset:(SKYAsset *)asset
+                               url:(NSURL *)url
+                       extraFields:(NSDictionary<NSString *, NSObject *> *_Nullable)extraFields;
 
 /// Undocumented
 @property (nonatomic, readonly) SKYAsset *asset;

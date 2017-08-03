@@ -28,14 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYQueryOperation : SKYDatabaseOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithQuery:(SKYQuery *)query;
+- (instancetype)initWithQuery:(SKYQuery *)query;
 /// Undocumented
-- (instancetype _Nullable)initWithCursor:(SKYQueryCursor *)cursor;
+- (instancetype)initWithCursor:(SKYQueryCursor *)cursor;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithQuery:(SKYQuery *)query;
++ (instancetype)operationWithQuery:(SKYQuery *)query;
 /// Undocumented
-+ (instancetype _Nullable)operationWithCursor:(SKYQueryCursor *)cursor;
++ (instancetype)operationWithCursor:(SKYQueryCursor *)cursor;
 
 /// Undocumented
 @property (nonatomic, copy) SKYQuery *query;

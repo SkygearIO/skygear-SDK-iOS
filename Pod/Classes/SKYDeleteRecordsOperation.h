@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param records An array of records to be deleted from database.
  */
-- (instancetype _Nullable)initWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
+- (instancetype)initWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Creates and returns an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param records An array of records to be deleted from database.
  */
-+ (instancetype _Nullable)operationWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
++ (instancetype)operationWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Sets or returns an array of records to be from from database.

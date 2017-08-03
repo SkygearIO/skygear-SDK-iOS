@@ -28,17 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYLocationSortDescriptor : NSSortDescriptor <NSSecureCoding>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithKey:(NSString *)key
-                     relativeLocation:(CLLocation *)relativeLocation
-                            ascending:(BOOL)ascending NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithKey:(NSString *)key
+           relativeLocation:(CLLocation *)relativeLocation
+                  ascending:(BOOL)ascending NS_DESIGNATED_INITIALIZER;
 /// Undocumented
 - (instancetype _Nullable)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-+ (instancetype _Nullable)locationSortDescriptorWithKey:(NSString *)key
-                                       relativeLocation:(CLLocation *)relativeLocation
-                                              ascending:(BOOL)ascending;
++ (instancetype)locationSortDescriptorWithKey:(NSString *)key
+                             relativeLocation:(CLLocation *)relativeLocation
+                                    ascending:(BOOL)ascending;
 
 /// Undocumented
 @property (nonatomic, copy, readonly) CLLocation *relativeLocation;

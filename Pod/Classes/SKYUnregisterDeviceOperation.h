@@ -27,10 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYUnregisterDeviceOperation : SKYOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithDeviceID:(NSString *)deviceID;
+- (instancetype)initWithDeviceID:(NSString *)deviceID;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithDeviceID:(NSString *)deviceID;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *deviceID;

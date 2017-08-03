@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns an instance of SKYSequence.
  */
-+ (instancetype _Nullable)sequence;
++ (instancetype)sequence;
 
 @end
 

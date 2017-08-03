@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) NSTimeInterval timeoutInterval;
 
 /// Undocumented
-- (instancetype _Nullable)initWithRequest:(SKYRequest *)request;
+- (instancetype)initWithRequest:(SKYRequest *)request;
 
 /**
  Prepares the operation before a request takes place. You should implement this method by creating a
@@ -101,8 +101,8 @@ NS_ASSUME_NONNULL_BEGIN
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLSessionTask *_Nullable)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                                     request:(NSURLRequest *)request;
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
+                                            request:(NSURLRequest *)request;
 
 /**
  Creates a <NSURLRequest> with <SKYRequest> specified as the property of this class.
@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLRequest *_Nullable)makeURLRequest;
+- (NSURLRequest *)makeURLRequest;
 
 /// Undocumented
 - (void)handleRequestCompletionWithData:(NSData *)data

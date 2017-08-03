@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 @property (nonatomic, copy) NSString *action;
 /// Undocumented
-@property (nonatomic, copy) NSDictionary *payload;
+@property (nonatomic, copy) NSDictionary *_Nullable payload;
 /// Undocumented
 @property (nonatomic, strong) SKYAccessToken *accessToken;
 
@@ -42,8 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSString *requestPath;
 
 /// Undocumented
-- (instancetype _Nullable)initWithAction:(NSString *)action
-                                 payload:(NSDictionary *_Nullable)payload;
+- (instancetype)initWithAction:(NSString *)action payload:(NSDictionary *_Nullable)payload;
 
 @end
 

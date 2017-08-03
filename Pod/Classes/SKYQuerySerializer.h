@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYQuerySerializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)serializer;
++ (instancetype)serializer;
 /// Undocumented
 - (id)serializeWithQuery:(SKYQuery *)query;
 /// Undocumented

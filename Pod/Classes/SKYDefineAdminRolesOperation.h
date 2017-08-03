@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     (NSArray<SKYRole *> *_Nullable roles, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithRoles:(NSArray<SKYRole *> *)roles;
++ (instancetype)operationWithRoles:(NSArray<SKYRole *> *)roles;
 
 @end
 

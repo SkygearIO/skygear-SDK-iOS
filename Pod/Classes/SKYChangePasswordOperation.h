@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and returns an instance of operation for changing the existing user password
  */
-+ (instancetype _Nullable)operationWithOldPassword:(NSString *)oldPassword
-                                     passwordToSet:(NSString *)newPassword;
++ (instancetype)operationWithOldPassword:(NSString *)oldPassword
+                           passwordToSet:(NSString *)newPassword;
 
 @end
 

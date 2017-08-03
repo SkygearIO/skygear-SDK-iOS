@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
  @return an instance of SKYFetchRecordsOperation.
  */
-- (instancetype _Nullable)initWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
+- (instancetype)initWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Creates and returns an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
  @return an instance of SKYFetchRecordsOperation.
  */
-+ (instancetype _Nullable)operationWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
++ (instancetype)operationWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
  Sets or returns an array of <SKYRecordID>s to be fetched from Ourd.

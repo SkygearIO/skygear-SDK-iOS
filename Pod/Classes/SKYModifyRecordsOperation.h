@@ -41,7 +41,7 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-- (instancetype _Nullable)initWithRecordsToSave:(NSArray<SKYRecord *> *)records;
+- (instancetype)initWithRecordsToSave:(NSArray<SKYRecord *> *)records;
 
 /**
  Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to
@@ -49,7 +49,7 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-+ (instancetype _Nullable)operationWithRecordsToSave:(NSArray<SKYRecord *> *)records;
++ (instancetype)operationWithRecordsToSave:(NSArray<SKYRecord *> *)records;
 
 /**
  Sets or returns an array of records to be saved to database.

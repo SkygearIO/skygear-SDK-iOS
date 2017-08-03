@@ -26,12 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYModifySubscriptionsOperation : SKYDatabaseOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithDeviceID:(NSString *)deviceID
-                       subscriptionsToSave:(NSArray<SKYSubscription *> *)subscriptionsToSave;
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+             subscriptionsToSave:(NSArray<SKYSubscription *> *)subscriptionsToSave;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithDeviceID:(NSString *)deviceID
-                            subscriptionsToSave:(NSArray<SKYSubscription *> *)subscriptionsToSave;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+                  subscriptionsToSave:(NSArray<SKYSubscription *> *)subscriptionsToSave;
 
 /// Undocumented
 @property (nonatomic, copy) NSString *deviceID;

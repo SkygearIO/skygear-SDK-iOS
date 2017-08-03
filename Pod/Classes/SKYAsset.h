@@ -25,20 +25,20 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYAsset : NSObject <NSCopying>
 
 /// Undocumented
-+ (instancetype _Nullable)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;
++ (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;
 /// Undocumented
-+ (instancetype _Nullable)assetWithName:(NSString *)name data:(NSData *)data;
++ (instancetype)assetWithName:(NSString *)name data:(NSData *)data;
 /// Undocumented
-+ (instancetype _Nullable)assetWithFileURL:(NSURL *)fileURL;
++ (instancetype)assetWithFileURL:(NSURL *)fileURL;
 /// Undocumented
-+ (instancetype _Nullable)assetWithData:(NSData *)data;
++ (instancetype)assetWithData:(NSData *)data;
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSString *_Nullable name;
+@property (nonatomic, readonly, copy) NSString *name;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSURL *_Nullable url;
+@property (nonatomic, readonly, copy) NSURL *url;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSNumber *_Nullable fileSize;
+@property (nonatomic, readonly, copy) NSNumber *fileSize;
 
 /**
  The MIME type of the asset when the MIME type is known.
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
  When uploading asset, the MIME type stored in this property will be used to set the asset
  content type.
  */
-@property (nonatomic, readwrite, copy) NSString *_Nullable mimeType;
+@property (nonatomic, readwrite, copy) NSString *mimeType;
 
 @end
 

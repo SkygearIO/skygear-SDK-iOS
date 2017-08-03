@@ -25,12 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYDeleteSubscriptionsOperation : SKYDatabaseOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithDeviceID:(NSString *)deviceID
-                   subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
+- (instancetype)initWithDeviceID:(NSString *)deviceID
+         subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithDeviceID:(NSString *)deviceID
-                        subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID
+              subscriptionIDsToDelete:(NSArray<NSString *> *)subscriptionIDsToDelete;
 
 /// Undocumented
 @property (nonatomic, copy) NSString *deviceID;

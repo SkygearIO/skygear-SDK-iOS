@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYNotificationInfoDeserializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)deserializer;
++ (instancetype)deserializer;
 
 /// Undocumented
 - (SKYNotificationInfo *_Nullable)notificationInfoWithDictionary:

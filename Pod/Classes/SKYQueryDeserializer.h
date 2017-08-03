@@ -26,12 +26,12 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYQueryDeserializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)deserializer;
++ (instancetype)deserializer;
 
 /// Undocumented
 - (SKYQuery *_Nullable)queryWithDictionary:(NSDictionary *)dictionary;
 /// Undocumented
-- (NSExpression *_Nullable)expressionWithObject:(id)obj;
+- (NSExpression *)expressionWithObject:(id)obj;
 /// Undocumented
 - (NSPredicate *_Nullable)predicateWithArray:(NSArray *)array;
 /// Undocumented

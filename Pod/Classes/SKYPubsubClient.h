@@ -44,8 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  [[SKYContainer defaultContainer].pubsubClient publishMessage:@{@"note":@"cool"}
  toChannel:@"noteapp"];
  */
-- (instancetype _Nullable)initWithEndPoint:(NSURL *_Nullable)endPoint
-                                    APIKey:(NSString *_Nullable)APIKey;
+- (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint APIKey:(NSString *_Nullable)APIKey;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just

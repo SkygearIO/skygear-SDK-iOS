@@ -60,8 +60,8 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
             self.present(alert, animated: true, completion: nil)
         }
         let query = SKYQuery(recordType: recordType!, predicate: self.predicateFromUI())
-        performQuery(query!, handler: {
-            self.lastQueryRecordType = query?.recordType
+        performQuery(query, handler: {
+            self.lastQueryRecordType = query.recordType
             self.performSegue(withIdentifier: "submit", sender: nil)
         })
     }

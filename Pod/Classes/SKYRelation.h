@@ -32,18 +32,17 @@ typedef enum : NSInteger {
 @interface SKYRelation : NSObject <NSCoding>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /// Undocumented
-+ (instancetype _Nullable)relationWithName:(NSString *)name
-                                 direction:(SKYRelationDirection)direction;
++ (instancetype)relationWithName:(NSString *)name direction:(SKYRelationDirection)direction;
 
 /// Undocumented
-+ (instancetype _Nullable)friendRelation;
++ (instancetype)friendRelation;
 /// Undocumented
-+ (instancetype _Nullable)followingRelation;
++ (instancetype)followingRelation;
 /// Undocumented
-+ (instancetype _Nullable)followedRelation;
++ (instancetype)followedRelation;
 
 /// Undocumented
 - (BOOL)isEqualToRelation:(SKYRelation *)relation;

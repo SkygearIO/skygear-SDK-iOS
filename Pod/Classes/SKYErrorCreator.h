@@ -26,28 +26,26 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYErrorCreator : NSObject
 
 /// Undocumented
-@property (nonatomic, readwrite, copy) NSString *_Nullable errorDomain;
+@property (nonatomic, readwrite, copy) NSString *errorDomain;
 /// Undocumented
-@property (nonatomic, readonly) NSDictionary *_Nullable defaultUserInfo;
+@property (nonatomic, readonly) NSDictionary *defaultUserInfo;
 
 /// Undocumented
-- (instancetype _Nullable)initWithDefaultErrorDomain:(NSString *)errorDomain
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDefaultErrorDomain:(NSString *)errorDomain NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 - (void)setDefaultUserInfoObject:(id)obj forKey:(NSString *)key;
 
 /// Undocumented
-- (NSError *_Nullable)errorWithCode:(SKYErrorCode)code;
+- (NSError *)errorWithCode:(SKYErrorCode)code;
 /// Undocumented
-- (NSError *_Nullable)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
+- (NSError *)errorWithCode:(SKYErrorCode)code message:(NSString *)message;
 /// Undocumented
-- (NSError *_Nullable)errorWithCode:(SKYErrorCode)code
-                           userInfo:(NSDictionary *_Nullable)userInfoToAdd;
+- (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *_Nullable)userInfoToAdd;
 /// Undocumented
-- (NSError *_Nullable)errorWithResponseDictionary:(NSDictionary *)dictionary;
+- (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
 /// Undocumented
-- (NSError *_Nullable)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
+- (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
 
 @end
 

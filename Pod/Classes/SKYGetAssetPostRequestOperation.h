@@ -28,9 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYGetAssetPostRequestOperation : SKYOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
+- (instancetype)initWithRequest:(SKYRequest *)request NS_UNAVAILABLE;
 /// Undocumented
-+ (instancetype _Nullable)operationWithAsset:(SKYAsset *)asset;
++ (instancetype)operationWithAsset:(SKYAsset *)asset;
 
 /// Undocumented
 @property (nonatomic, readwrite) SKYAsset *asset;

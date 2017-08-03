@@ -26,11 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYRegisterDeviceOperation : SKYOperation
 
 /// Undocumented
-- (instancetype _Nullable)initWithDeviceToken:(NSData *_Nullable)deviceToken
+- (instancetype)initWithDeviceToken:(NSData *_Nullable)deviceToken
     __attribute__((deprecated("Use -initWithDeviceToken:topic: instead")));
 /// Undocumented
-- (instancetype _Nullable)initWithDeviceToken:(NSData *_Nullable)deviceToken
-                                        topic:(NSString *_Nullable)topic;
+- (instancetype)initWithDeviceToken:(NSData *_Nullable)deviceToken topic:(NSString *_Nullable)topic;
 
 /**
  Returns an instance of operation that registers a device without supplying a device token.
@@ -39,13 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
  the permission for remote notification. Notification will arrive through the pubsub mechanism
  instead of remote notification.
  */
-+ (instancetype _Nullable)operation;
++ (instancetype)operation;
 /// Undocumented
-+ (instancetype _Nullable)operationWithDeviceToken:(NSData *_Nullable)deviceToken
++ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
     __attribute__((deprecated("Use +operationWithDeviceToken:topic: instead")));
 /// Undocumented
-+ (instancetype _Nullable)operationWithDeviceToken:(NSData *_Nullable)deviceToken
-                                             topic:(NSString *_Nullable)topic;
++ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
+                                   topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSData *_Nullable deviceToken;

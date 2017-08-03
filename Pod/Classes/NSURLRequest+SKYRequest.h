@@ -31,9 +31,9 @@ extern NSString *const SKYRequestHeaderAccessTokenKey;
 @interface NSURLRequest (SKYRequest)
 
 /// Undocumented
-+ (NSMutableURLRequest *_Nullable)mutableRequestWithSKYRequest:(SKYRequest *)request;
++ (NSMutableURLRequest *)mutableRequestWithSKYRequest:(SKYRequest *)request;
 /// Undocumented
-+ (NSURLRequest *_Nullable)requestWithSKYRequest:(SKYRequest *)request;
++ (NSURLRequest *)requestWithSKYRequest:(SKYRequest *)request;
 
 @end
 

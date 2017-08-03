@@ -46,37 +46,37 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 @interface SKYAccessControlEntry : NSObject <NSCoding>
 
 /// Undocumented
-+ (instancetype _Nullable)readEntryForUserID:(NSString *)user;
++ (instancetype)readEntryForUserID:(NSString *)user;
 /// Undocumented
-+ (instancetype _Nullable)readEntryForRelation:(SKYRelation *)relation;
++ (instancetype)readEntryForRelation:(SKYRelation *)relation;
 /// Undocumented
-+ (instancetype _Nullable)readEntryForRole:(SKYRole *)role;
++ (instancetype)readEntryForRole:(SKYRole *)role;
 /// Undocumented
-+ (instancetype _Nullable)readEntryForPublic;
++ (instancetype)readEntryForPublic;
 
 /// Undocumented
-+ (instancetype _Nullable)writeEntryForUserID:(NSString *)user;
++ (instancetype)writeEntryForUserID:(NSString *)user;
 /// Undocumented
-+ (instancetype _Nullable)writeEntryForRelation:(SKYRelation *)relation;
++ (instancetype)writeEntryForRelation:(SKYRelation *)relation;
 /// Undocumented
-+ (instancetype _Nullable)writeEntryForRole:(SKYRole *)role;
++ (instancetype)writeEntryForRole:(SKYRole *)role;
 /// Undocumented
-+ (instancetype _Nullable)writeEntryForPublic;
++ (instancetype)writeEntryForPublic;
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 // avoid the following initializers, it is here because of deserializer
 /// Undocumented
-- (instancetype _Nullable)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                                       userID:(NSString *)userID NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
+                             userID:(NSString *)userID NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-- (instancetype _Nullable)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                                     relation:(SKYRelation *)relation NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
+                           relation:(SKYRelation *)relation NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-- (instancetype _Nullable)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                                         role:(SKYRole *)role NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
+                               role:(SKYRole *)role NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-- (instancetype _Nullable)initWithPublicAccessLevel:(SKYAccessControlEntryLevel)accessLevel
+- (instancetype)initWithPublicAccessLevel:(SKYAccessControlEntryLevel)accessLevel
     NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
@@ -95,9 +95,9 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 @interface SKYAccessControlEntry (UserRecord)
 
 /// Undocumented
-+ (instancetype _Nullable)readEntryForUser:(SKYRecord *)user;
++ (instancetype)readEntryForUser:(SKYRecord *)user;
 /// Undocumented
-+ (instancetype _Nullable)writeEntryForUser:(SKYRecord *)user;
++ (instancetype)writeEntryForUser:(SKYRecord *)user;
 
 @end
 

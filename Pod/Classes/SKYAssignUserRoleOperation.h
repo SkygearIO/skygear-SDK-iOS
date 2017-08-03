@@ -37,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
     (NSArray<NSString *> *_Nullable userIDs, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithUserIDs:(NSArray<NSString *> *)userIDs
-                                     roleNames:(NSArray<NSString *> *)roleNames;
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
+                           roleNames:(NSArray<NSString *> *)roleNames;
 
 @end
 

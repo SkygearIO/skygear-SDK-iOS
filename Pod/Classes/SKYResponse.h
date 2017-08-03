@@ -46,12 +46,12 @@ NS_ASSUME_NONNULL_BEGIN
 
  Subclass is expected to implement this to implement custom processing for the response dictionary.
  */
-- (instancetype _Nullable)initWithDictionary:(NSDictionary *)response;
+- (instancetype)initWithDictionary:(NSDictionary *)response;
 
 /**
  Returns an instance of <SKYResponse>.
  */
-+ (instancetype _Nullable)responseWithDictionary:(NSDictionary *)response;
++ (instancetype)responseWithDictionary:(NSDictionary *)response;
 
 /**
  Sets the NSError that is contained within the responseDictionary or encountered when processing

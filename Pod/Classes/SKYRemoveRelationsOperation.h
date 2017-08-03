@@ -28,13 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
  Instantiates an instance of <SKYDeleteRelationsOperation> with a list of user to be related with
  current user.
  */
-- (instancetype _Nullable)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
+- (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
 
 /**
  Creates and returns an instance of <SKYDeleteRelationsOperation> with a list of user to be related
  with current user.
  */
-+ (instancetype _Nullable)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
++ (instancetype)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.

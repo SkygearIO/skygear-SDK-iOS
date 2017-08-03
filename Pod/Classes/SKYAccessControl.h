@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYAccessControl : NSObject <NSCoding, NSCopying>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - set no access
 /// Undocumented

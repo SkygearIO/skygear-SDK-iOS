@@ -27,13 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYQueryCache : NSObject
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Initializes an instance of `SKYQueryCache` that is suitable for caching query results
  returned by performing queries on the specified database.
  */
-- (instancetype _Nullable)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDatabase:(SKYDatabase *)database NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 @property (nonatomic, readonly) SKYDatabase *database;

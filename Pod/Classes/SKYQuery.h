@@ -25,15 +25,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYQuery : NSObject <NSSecureCoding>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordType:(NSString *)recordType
-                                   predicate:(NSPredicate *_Nullable)predicate
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                         predicate:(NSPredicate *_Nullable)predicate NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-+ (instancetype _Nullable)queryWithRecordType:(NSString *)recordType
-                                    predicate:(NSPredicate *_Nullable)predicate;
++ (instancetype)queryWithRecordType:(NSString *)recordType
+                          predicate:(NSPredicate *_Nullable)predicate;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;

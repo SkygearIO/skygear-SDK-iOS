@@ -27,10 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYAccessControlSerializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)serializer;
++ (instancetype)serializer;
 
 /// Undocumented
-- (NSArray<NSDictionary *> *_Nullable)arrayWithAccessControl:(SKYAccessControl *)accessControl;
+- (NSArray<NSDictionary *> *)arrayWithAccessControl:(SKYAccessControl *)accessControl;
 
 @end
 

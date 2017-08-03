@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYDatabaseOperation : SKYOperation
 
 /// Undocumented
-@property (strong, nonatomic) SKYDatabase *_Nonnull database;
+@property (strong, nonatomic) SKYDatabase *database;
 
 @end
 

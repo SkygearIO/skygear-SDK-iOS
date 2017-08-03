@@ -35,8 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
     (NSString *_Nullable recordType, NSArray<SKYRole *> *_Nullable roles, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithRecordType:(NSString *)recordType
-                                            roles:(NSArray<SKYRole *> *)roles;
++ (instancetype)operationWithRecordType:(NSString *)recordType roles:(NSArray<SKYRole *> *)roles;
 
 @end
 

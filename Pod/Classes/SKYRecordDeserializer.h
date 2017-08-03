@@ -26,10 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYRecordDeserializer : NSObject
 
 /// Undocumented
-+ (instancetype _Nullable)deserializer;
++ (instancetype)deserializer;
 
 /// Undocumented
-- (SKYRecord *_Nullable)recordWithDictionary:(NSDictionary *)dictionary;
+- (SKYRecord *)recordWithDictionary:(NSDictionary *)dictionary;
 /// Undocumented
 - (SKYRecord *_Nullable)recordWithJSONData:(NSData *)data error:(NSError **_Nullable)error;
 

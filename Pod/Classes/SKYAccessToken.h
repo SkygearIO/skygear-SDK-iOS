@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *tokenString;
 
 /// Undocumented
-- (instancetype _Nullable)initWithTokenString:(NSString *)tokenString;
+- (instancetype)initWithTokenString:(NSString *)tokenString;
 
 @end
 

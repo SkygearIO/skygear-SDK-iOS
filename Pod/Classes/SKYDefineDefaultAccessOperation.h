@@ -37,8 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
      NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype _Nullable)operationWithRecordType:(NSString *)recordType
-                                    accessControl:(SKYAccessControl *)accessControl;
++ (instancetype)operationWithRecordType:(NSString *)recordType
+                          accessControl:(SKYAccessControl *)accessControl;
 
 @end
 

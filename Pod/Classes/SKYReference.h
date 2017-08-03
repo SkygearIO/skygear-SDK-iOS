@@ -34,26 +34,24 @@ typedef enum SKYReferenceAction : NSInteger {
 @interface SKYReference : NSObject <NSCoding>
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithRecord:(SKYRecord *)record;
+- (instancetype)initWithRecord:(SKYRecord *)record;
 /// Undocumented
-- (instancetype _Nullable)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
+- (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordID:(SKYRecordID *)recordID;
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID;
 /// Undocumented
-- (instancetype _Nullable)initWithRecordID:(SKYRecordID *)recordID
-                                    action:(SKYReferenceAction)action;
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
 /// Undocumented
-+ (instancetype _Nullable)referenceWithRecord:(SKYRecord *)record;
++ (instancetype)referenceWithRecord:(SKYRecord *)record;
 /// Undocumented
-+ (instancetype _Nullable)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
++ (instancetype)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
 /// Undocumented
-+ (instancetype _Nullable)referenceWithRecordID:(SKYRecordID *)recordID;
++ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID;
 /// Undocumented
-+ (instancetype _Nullable)referenceWithRecordID:(SKYRecordID *)recordID
-                                         action:(SKYReferenceAction)action;
++ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
 /// Undocumented
 - (BOOL)isEqualToReference:(SKYReference *_Nullable)reference;

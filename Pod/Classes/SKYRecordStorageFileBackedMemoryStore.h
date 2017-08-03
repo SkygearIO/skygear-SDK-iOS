@@ -26,9 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYRecordStorageFileBackedMemoryStore : SKYRecordStorageMemoryStore
 
 /// Undocumented
-- (instancetype _Nullable)init NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 /// Undocumented
-- (instancetype _Nullable)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 @end
 

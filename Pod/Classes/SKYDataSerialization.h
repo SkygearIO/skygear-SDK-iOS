@@ -43,11 +43,11 @@ NSString *localFunctionName(NSString *remoteFunctionName);
 @interface SKYDataSerialization : NSObject
 
 /// Undocumented
-+ (NSDate *_Nullable)dateFromString:(NSString *_Nullable)dateStr;
++ (NSDate *_Nullable)dateFromString:(NSString *)dateStr;
 /// Undocumented
-+ (NSString *_Nullable)stringFromDate:(NSDate *_Nullable)date;
++ (NSString *_Nullable)stringFromDate:(NSDate *)date;
 /// Undocumented
-+ (id _Nullable)deserializeObjectWithValue:(id _Nullable)value;
++ (id _Nullable)deserializeObjectWithValue:(id)value;
 /// Undocumented
 + (SKYAsset *_Nullable)deserializeAssetWithDictionary:(NSDictionary *)data;
 
