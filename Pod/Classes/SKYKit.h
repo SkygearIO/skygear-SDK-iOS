@@ -89,6 +89,10 @@
 #import "SKYUnknownValue.h"
 #import "SKYUnregisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
+#import "SKYAuthContainer.h"
+#import "SKYPubsubContainer.h"
+#import "SKYPushContainer.h"
+#import "SKYPublicDatabase.h"
 
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
