@@ -7,7 +7,6 @@ github_file_prefix: https://github.com/SkygearIO/skygear-SDK-iOS/tree/master
 umbrella_header: Pod/Classes/SKYKit.h
 framework_root: .
 module: SKYKit
-skip_undocumented: true
 hide_documentation_coverage: true
 theme: fullwidth
 sdk: iphonesimulator

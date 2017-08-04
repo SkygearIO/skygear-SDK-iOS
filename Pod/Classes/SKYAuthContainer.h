@@ -24,6 +24,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Undocumented
 @class SKYContainer;
 
 // keep it in sync with SKYUserOperationActionCompletion
