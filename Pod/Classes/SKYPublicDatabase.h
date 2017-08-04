@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Set default access of a record type
  *
  *  @param recordType      Record type to set creation access
- *  @param roles           Roles can create the record
+ *  @param accessControl   Roles can create the record
  *  @param completionBlock Completion Block
  */
 - (void)defineDefaultAccessWithRecordType:(NSString *)recordType
