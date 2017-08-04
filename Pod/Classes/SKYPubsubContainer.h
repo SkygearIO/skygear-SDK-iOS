@@ -21,6 +21,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Undocumented
 @interface SKYPubsubContainer : NSObject
 
 @property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
