@@ -1,3 +1,25 @@
+## Changes since 1.0.0
+
+### Incompatible Changes
+
+- SKYRecord will replace SKYUser for representing user
+
+  In previous version of SKYKit, authentication methods return a SKYUser
+  which contains user-related information such as User ID, username and
+  email. These information is moved to SKYRecord and the authentication methods
+  are updated to return SKYRecord instead.
+
+### Features
+
+- New signup login, remove SKYUser object (#112)
+- Add forgot password functions to SKYAuthContainer (#110, SkygearIO/features#70)
+
+### Other Notes
+
+- Upload doc prefixed with version to s3 bucket for CI
+- Add nullability annotation to objective-c header files (#51)
+- Update links to Get Started Guide in README
+
 ## 1.0.0 (2017-06-30)
 
 ### Incompatible Changes
