@@ -1,4 +1,4 @@
-## Changes since 1.0.0
+## 1.1.0 (2017-08-07)
 
 ### Incompatible Changes
 
@@ -29,7 +29,7 @@
 ### Bug Fixes
 
 - Make accessControl property on SKYRecord readwrite
-    
+
     The existing implementation does not work for newly create record
     because the access control property is initially null.
 
