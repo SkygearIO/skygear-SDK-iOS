@@ -111,6 +111,9 @@
     }
     NSMutableURLRequest *request = [NSMutableURLRequest mutableRequestWithSKYRequest:self.request];
     request.timeoutInterval = self.timeoutInterval;
+
+    NSString *version = [NSString stringWithFormat:@"skygear-SDK-iOS/%@", SKYVersion];
+    [request setValue:version forHTTPHeaderField:@"X-Skygear-SDK-Version"];
     return [request copy];
 }
 
