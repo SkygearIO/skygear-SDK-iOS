@@ -30,6 +30,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *const SKYVersion;
+
 /// Undocumented
 @protocol SKYContainerDelegate <NSObject>
 

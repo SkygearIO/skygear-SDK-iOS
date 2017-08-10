@@ -27,6 +27,10 @@
 #import "SKYPubsubContainer_Private.h"
 #import "SKYPushContainer_Private.h"
 
+#import "SKYKit+version.h"
+
+NSString *const SKYVersion = SKY_VERSION;
+
 NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
 
 NSString *const SKYContainerDidChangeCurrentUserNotification =
