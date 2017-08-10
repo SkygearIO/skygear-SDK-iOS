@@ -1,4 +1,4 @@
-VERSION := v$(shell git describe --always --tags --dirty)
+VERSION := v$(shell git describe --always)
 DOCS_AWS_BUCKET := docs.skygear.io
 DOCS_AWS_DISTRIBUTION := E31J8XF8IPV2V
 DOCS_PREFIX = /ios/reference
@@ -11,6 +11,11 @@ endif
 .PHONY: vendor
 vendor:
 	cd Example; pod install
+
+.PHONY: update-version
+update-version:
+	sed -i "" "s/\(s\.version[^=]*=[^\"]*\"\)[^\"]*/\1$(VERSION)/" SKYKit.podspec
+	sed -i "" "s/#define SKY_VERSION @\".*\"/#define SKY_VERSION @\"$(VERSION)\"/" Pod/Classes/SKYKit+version.h
 
 .PHONY: doc
 doc:
