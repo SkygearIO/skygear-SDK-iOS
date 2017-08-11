@@ -79,9 +79,11 @@
     NSDictionary *responseDictionary = response[@"result"];
     if ([responseDictionary isKindOfClass:[NSDictionary class]]) {
         resultDictionary = responseDictionary;
+    } else if ([responseDictionary isKindOfClass:[NSNull class]]) {
+        resultDictionary = nil;
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+                                         message:@"Result is not a dictionary."];
     }
 
     if (self.lambdaCompletionBlock) {
