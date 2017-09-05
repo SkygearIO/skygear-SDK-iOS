@@ -128,7 +128,7 @@
                 SKYAccessToken *accessToken =
                     [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
 
-                NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"_id"],
+                NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
                       response[@"access_token"]);
 
                 signupCompletionBlock(user, accessToken, nil);
