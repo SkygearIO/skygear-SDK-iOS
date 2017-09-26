@@ -28,7 +28,6 @@ before_deploy:
 - rvm use ruby-2.2.4
 - gem install jazzy
 - sudo pip install awscli
-- aws configure set preview.cloudfront true
 deploy:
   - provider: script
     script: scripts/deploy.sh
