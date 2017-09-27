@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  <SKYLambdaOperation> is a subclass of <SKYOperation> that implements calling lambda functions
- registered in Ourd.
+ registered in Skygear.
  */
 @interface SKYLambdaOperation : SKYOperation
 

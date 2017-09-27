@@ -30,7 +30,7 @@ typedef enum : NSInteger {
 
 /**
  <SKYModifyRecordsOperation> is a subclass of <SKYDatabaseOperation> that implements record saving
- to Ourd.
+ to Skygear.
  Use this operation to save new record or modify existing record in the database.
  */
 @interface SKYModifyRecordsOperation : SKYDatabaseOperation

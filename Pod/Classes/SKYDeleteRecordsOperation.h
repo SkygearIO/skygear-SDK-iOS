@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  <SKYDeleteRecordsOperation> is a subclass of <SKYDatabaseOperation> that implements records
- deletion in Ourd. Use this operation
+ deletion in Skygear. Use this operation
  to delete multiple existing records from the database.
  */
 @interface SKYDeleteRecordsOperation : SKYDatabaseOperation
