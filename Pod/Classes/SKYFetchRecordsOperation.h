@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  <SKYFetchRecordsOperation> is a subclass of <SKYOperation> that implements fetching records from
- Ourd. Use this to
+ Skygear. Use this to
  fetch a number of records by specifying an array of <SKYRecordID>s.
 
  When the operation completes, the <fetchRecordsCompletionBlock> will be called
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Instantiates an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
 
- @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
+ @param recordIDs An array of <SKYRecordID>s of records to be fetched from Skygear.
  @return an instance of SKYFetchRecordsOperation.
  */
 - (instancetype)initWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
@@ -44,20 +44,20 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and returns an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
 
- @param recordIDs An array of <SKYRecordID>s of records to be fetched from Ourd.
+ @param recordIDs An array of <SKYRecordID>s of records to be fetched from Skygear.
  @return an instance of SKYFetchRecordsOperation.
  */
 + (instancetype)operationWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
- Sets or returns an array of <SKYRecordID>s to be fetched from Ourd.
+ Sets or returns an array of <SKYRecordID>s to be fetched from Skygear.
  */
 @property (nonatomic, copy) NSArray<SKYRecordID *> *recordIDs;
 
 /**
  Sets or returns an array of desired keys to be fetched from each record. A subset of keys for each
  record
- will be fetched from Ourd. <SKYRecord> without the specified keys will not have such key set.
+ will be fetched from Skygear. <SKYRecord> without the specified keys will not have such key set.
  */
 @property (nonatomic, copy) NSArray<NSString *> *desiredKeys;
 

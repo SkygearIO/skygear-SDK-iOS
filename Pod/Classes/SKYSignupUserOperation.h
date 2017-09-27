@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  <SKYSignupUserOperation> is a subclass of <SKYOperation> which an user object
- in Ourd. Use this operation to create a new user account in the container.
+ in Skygear. Use this operation to create a new user account in the container.
  When a new user is created, an <NSString> and an <SKYAccessToken>
  will be returned.
 

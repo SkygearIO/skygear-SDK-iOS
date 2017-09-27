@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Acknowledge the container that a remote notification is received. If the notification is sent by
- Ourd, container
+ Skygear, container
  would invoke container:didReceiveNotification: on its delegate.
  */
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;

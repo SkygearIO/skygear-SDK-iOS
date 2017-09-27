@@ -60,11 +60,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                               NSError *_Nullable error))completionHandler;
 
 /**
- Fetches a single record from Ourd.
+ Fetches a single record from Skygear.
 
- Use this method to fetch a single record from Ourd by specifying a <SKYRecordID>. The fetch will be
- performed asynchronously
- and <completeionHandler> will be called when the operation completes.
+ Use this method to fetch a single record from Skygear by specifying a <SKYRecordID>. The fetch will
+ be performed asynchronously and <completeionHandler> will be called when the operation completes.
 
  This is a convenient method for <SKYFetchRecordsOperation>, which supports fetching multiple
  records by specifying multiple <SKYRecordID>s.
@@ -77,11 +76,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                              NSError *_Nullable error))completionHandler;
 
 /**
- Fetches multiple records from Ourd.
+ Fetches multiple records from Skygear.
 
- Use this method to fetch multiple records from Ourd by specifying an array of <SKYRecordID>s. The
- fetch will be performed asynchronously
- and <completeionHandler> will be called when the operation completes.
+ Use this method to fetch multiple records from Skygear by specifying an array of <SKYRecordID>s.
+ The fetch will be performed asynchronously and <completeionHandler> will be called when the
+ operation completes.
 
  This is a convenient method for <SKYFetchRecordsOperation>.
 
@@ -97,9 +96,9 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                                NSError *_Nullable error))errorHandler;
 
 /**
- Saves a single record to Ourd.
+ Saves a single record to Skygear.
 
- Use this method to save a single record to Ourd by specifying a <SKYReord>. The save will be
+ Use this method to save a single record to Skygear by specifying a <SKYReord>. The save will be
  performed asynchronously and
  <completionHandler> will be called when the operation completes.
 
@@ -115,9 +114,9 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion _Nullable)completion;
 
 /**
- Saves multiple records to Ourd.
+ Saves multiple records to Skygear.
 
- Use this method to save multiple record to Ourd by specifying an array of <SKYReord>s. The save
+ Use this method to save multiple record to Skygear by specifying an array of <SKYReord>s. The save
  will be performed asynchronously and
  <completionHandler> will be called when the operation completes.
 
@@ -137,7 +136,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
         (void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))errorHandler;
 
 /**
- Saves multiple records atomically to Ourd.
+ Saves multiple records atomically to Skygear.
 
  The behaviour of this method is identical to saveRecords:completionHandler:perRecordErrorHandler:,
  except that it also sets the atomic flag on the operation.
@@ -154,9 +153,9 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                    NSError *_Nullable operationError))completionHandler;
 
 /**
- Deletes a single record from Ourd.
+ Deletes a single record from Skygear.
 
- Use this method to delete a single record from Ourd by specifying a <SKYRecordID>. The deletion
+ Use this method to delete a single record from Skygear by specifying a <SKYRecordID>. The deletion
  will be performed asynchronously and
  <completionHandler> will be called when the operation completes.
 
@@ -172,11 +171,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                               NSError *_Nullable error))completionHandler;
 
 /**
- Deletes multiple records from Ourd.
+ Deletes multiple records from Skygear.
 
- Use this method to delete multiple records from Ourd by specifying a <SKYRecordID>s. The deletion
- will be performed asynchronously and
- <completionHandler> will be called when the operation completes.
+ Use this method to delete multiple records from Skygear by specifying a <SKYRecordID>s. The
+ deletion will be performed asynchronously and <completionHandler> will be called when the operation
+ completes.
 
  This is a convenient method for <SKYDeleteRecordsOperation>.
 
@@ -192,7 +191,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                                 NSError *_Nullable error))errorHandler;
 
 /**
- Deletes multiple records atomically to Ourd.
+ Deletes multiple records atomically to Skygear.
 
  The behaviour of this method is identical to
  deleteRecordsWithIDs:completionHandler:perRecordErrorHandler:,
