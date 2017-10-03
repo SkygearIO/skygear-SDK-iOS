@@ -11,6 +11,7 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
+  - MagicKit (0.0.1)
   - OCMock (3.2)
   - OHHTTPStubs (4.6.0):
     - OHHTTPStubs/Default (= 4.6.0)
@@ -30,6 +31,7 @@ PODS:
     - SKYKit/ForgotPassword (= 1.1.0)
   - SKYKit/Core (1.1.0):
     - FMDB (~> 2.5)
+    - MagicKit
     - SocketRocket (~> 0.4)
   - SKYKit/Facebook (1.1.0):
     - FBSDKCoreKit (~> 4.0)
@@ -56,9 +58,10 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  MagicKit: bee71811572a42d8b23d45bf6ab10d59be3cef96
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 124d42572fc55e93dadc3a4136a7fcfa956c680b
+  SKYKit: e024999d1cf144ca780eefd3e639ed522c8e272a
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
