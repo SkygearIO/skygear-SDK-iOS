@@ -19,7 +19,6 @@
 
 #import "SKYAsset.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import <MagicKit/MagicKit.h>
 
 @interface SKYAsset ()
 
@@ -123,11 +122,22 @@
 // derive mimeType used in SKYGetAssetPostRequestOperation
 - (NSString *)deriveMimeType
 {
-    NSString *mimeType = [GEMagicKit magicForFileAtURL:_url].mimeType;
+    CFStringRef extension = (__bridge CFStringRef)_url.pathExtension;
+    CFStringRef UTI =
+        UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
+    if (!UTI) {
+        NSLog(@"Cannot derive mimeType since UTI == NULL");
+        return nil;
+    }
 
-    // Remove charset
-    NSArray<NSString *> *split = [mimeType componentsSeparatedByString:@";"];
-    return split[0];
+    NSString *mimetype =
+        CFBridgingRelease(UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType));
+    if (!mimetype) {
+        NSLog(@"Cannot derive mimeType");
+    }
+
+    CFRelease(UTI);
+    return mimetype;
 }
 
 @end
