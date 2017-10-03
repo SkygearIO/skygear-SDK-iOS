@@ -34,6 +34,20 @@ SpecBegin(SKYAsset)
             expect(asset.mimeType).to.equal(copiedAsset.mimeType);
             expect(asset.fileSize).to.equal(copiedAsset.fileSize);
         });
+
+        it(@"derive correct mimeType", ^{
+            NSString *base64String = @"data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+            NSURL *url = [NSURL URLWithString:base64String];
+            NSData *gifData = [NSData dataWithContentsOfURL:url];
+            UIImage *ret = [UIImage imageWithData:gifData];
+            NSData *jpgData = UIImageJPEGRepresentation(ret, 0.8);
+
+            SKYAsset *gifAsset = [SKYAsset assetWithData:gifData];
+            SKYAsset *jpgAsset = [SKYAsset assetWithData:jpgData];
+
+            expect(gifAsset.mimeType).to.equal(@"image/gif");
+            expect(jpgAsset.mimeType).to.equal(@"image/jpeg");
+        });
     });
 
 SpecEnd

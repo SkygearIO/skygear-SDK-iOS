@@ -123,7 +123,11 @@
 // derive mimeType used in SKYGetAssetPostRequestOperation
 - (NSString *)deriveMimeType
 {
-    return [GEMagicKit magicForFileAtURL:_url].mimeType;
+    NSString *mimeType = [GEMagicKit magicForFileAtURL:_url].mimeType;
+
+    // Remove charset
+    NSArray<NSString *> *split = [mimeType componentsSeparatedByString:@";"];
+    return split[0];
 }
 
 @end
