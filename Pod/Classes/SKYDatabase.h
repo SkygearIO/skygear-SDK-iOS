@@ -108,7 +108,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  by specifying multiple <SKYRecordID>s.
 
  @param record the record to save
- @param completionHandler the block to be called when operation completes. The specified block is
+ @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
 - (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion _Nullable)completion;
@@ -199,7 +199,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 
  Since the operation either succeeds or fails as a whole, perRecordErrorHandler is omitted.
 
- @param records the records to save
+ @param recordIDs the records to save
  @param completionHandler the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */

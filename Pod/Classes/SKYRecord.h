@@ -41,6 +41,8 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 + (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *_Nullable)data;
 
+/// Undocumented
+- (instancetype)init NS_UNAVAILABLE;
 /**
  Instantiates an instance of <SKYRecord> with the specified record type with a randomly generated
  <SKYRecordID>.
@@ -48,9 +50,7 @@ extern NSString *const SKYRecordTypeUserRecord;
  @param recordType Record type of the record.
  @return An instance of SKYRecord.
  */
-- (instancetype)init NS_UNAVAILABLE;
-/// Undocumented
-- (instancetype)initWithRecordType:(NSString *)recordType;
+ - (instancetype)initWithRecordType:(NSString *)recordType;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 /// Undocumented
