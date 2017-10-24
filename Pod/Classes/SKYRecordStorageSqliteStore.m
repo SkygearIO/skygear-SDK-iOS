@@ -473,14 +473,14 @@
 
 - (void)beginTransactionIfNotAlready
 {
-    if (![_db inTransaction]) {
+    if (![_db isInTransaction]) {
         [_db beginTransaction];
     }
 }
 
 - (void)synchronize
 {
-    if (![_db inTransaction]) {
+    if (![_db isInTransaction]) {
         return;
     }
 

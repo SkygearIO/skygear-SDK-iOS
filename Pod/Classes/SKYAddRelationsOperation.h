@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  Instantiates an instance of <SKYAddRelationsOperation> with a list of user to be related with
  current user.
 
- @param records An array of users to be related.
+ @param users An array of users to be related.
  */
 - (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray<SKYRecord *> *)users;
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
  Creates and returns an instance of <SKYAddRelationsOperation> with a list of user to be related
  with current user.
 
- @param records An array of users to be related.
+ @param users An array of users to be related.
  */
 + (instancetype)operationWithType:(NSString *)relationType
                    usersToRelated:(NSArray<SKYRecord *> *)users;
