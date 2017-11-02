@@ -20,6 +20,7 @@ update-version:
 .PHONY: doc
 doc:
 	jazzy --github-file-prefix https://github.com/SkygearIO/skygear-SDK-iOS/tree/$(GIT_REF_NAME)
+	cp -rf .github docs/
 
 .PHONY: doc-clean
 doc-clean:
