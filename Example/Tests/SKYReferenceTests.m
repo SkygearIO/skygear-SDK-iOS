@@ -18,7 +18,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYReference)
@@ -26,7 +25,7 @@ SpecBegin(SKYReference)
     describe(@"SKYReference", ^{
         it(@"can be copied", ^{
             SKYReference *ref = [[SKYReference alloc]
-                                 initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
+                initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
             SKYReference *refClone = [ref copy];
 
             expect(refClone.recordID).to.equal(ref.recordID);
@@ -35,7 +34,7 @@ SpecBegin(SKYReference)
 
         it(@"can be encoded and decoded", ^{
             SKYReference *ref = [[SKYReference alloc]
-                                 initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
+                initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
 
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject:ref];
             SKYReference *refClone = [NSKeyedUnarchiver unarchiveObjectWithData:data];

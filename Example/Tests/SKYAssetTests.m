@@ -18,7 +18,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYAsset)
@@ -36,8 +35,8 @@ SpecBegin(SKYAsset)
         });
 
         it(@"can be encoded and decoded", ^{
-            SKYAsset *asset = [SKYAsset assetWithData:
-                               [@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
+            SKYAsset *asset =
+                [SKYAsset assetWithData:[@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
 
             NSData *archived = [NSKeyedArchiver archivedDataWithRootObject:asset];
             SKYAsset *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:archived];

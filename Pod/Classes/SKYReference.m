@@ -111,7 +111,6 @@
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
-
     SKYRecordID *recordID = [decoder decodeObjectOfClass:[SKYRecordID class] forKey:@"recordID"];
     SKYReferenceAction action = [decoder decodeIntegerForKey:@"referenceAction"];
     self = [super init];
