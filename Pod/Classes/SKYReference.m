@@ -111,7 +111,8 @@
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
-    SKYRecordID *recordID = [decoder decodeObjectForKey:@"recordID"];
+
+    SKYRecordID *recordID = [decoder decodeObjectOfClass:[SKYRecordID class] forKey:@"recordID"];
     SKYReferenceAction action = [decoder decodeIntegerForKey:@"referenceAction"];
     self = [super init];
     if (self) {
@@ -125,6 +126,16 @@
 {
     [encoder encodeObject:_recordID forKey:@"recordID"];
     [encoder encodeInteger:_referenceAction forKey:@"referenceAction"];
+}
+
+#pragma NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    SKYRecordID *recordID = [self.recordID copyWithZone:zone];
+    SKYReferenceAction action = self.referenceAction;
+
+    return [[SKYReference alloc] initWithRecordID:recordID action:action];
 }
 
 @end
