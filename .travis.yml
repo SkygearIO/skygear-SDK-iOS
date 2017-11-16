@@ -27,7 +27,7 @@ before_deploy:
 - rvm install ruby-2.2.4 # jazzy doesn't work in old rubies
 - rvm use ruby-2.2.4
 - gem install jazzy
-- sudo pip install awscli
+- pip2 install awscli
 deploy:
   - provider: script
     script: scripts/deploy.sh
