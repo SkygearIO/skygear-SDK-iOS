@@ -1,3 +1,12 @@
+## 1.1.1 (2017-11-16)
+
+### Bug Fixes
+
+- Ensure all field types of SKYRecord conform NSCopying and NSCoding (#144)
+- Derive asset mimeType with MagicKit (#133)
+- Fix unable to print user_id in log upon sign up
+- Handle lambda responds with null result
+
 ## 1.1.0 (2017-08-07)
 
 ### Incompatible Changes
