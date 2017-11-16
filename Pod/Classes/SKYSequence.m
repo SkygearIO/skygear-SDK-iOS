@@ -42,4 +42,10 @@
 {
 }
 
+#pragma NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+    return [SKYSequence sequence];
+}
+
 @end

@@ -18,7 +18,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYAsset)
@@ -33,6 +32,19 @@ SpecBegin(SKYAsset)
             expect(asset.url).to.equal(copiedAsset.url);
             expect(asset.mimeType).to.equal(copiedAsset.mimeType);
             expect(asset.fileSize).to.equal(copiedAsset.fileSize);
+        });
+
+        it(@"can be encoded and decoded", ^{
+            SKYAsset *asset =
+                [SKYAsset assetWithData:[@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
+
+            NSData *archived = [NSKeyedArchiver archivedDataWithRootObject:asset];
+            SKYAsset *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:archived];
+
+            expect(asset.name).to.equal(unarchived.name);
+            expect(asset.url).to.equal(unarchived.url);
+            expect(asset.mimeType).to.equal(unarchived.mimeType);
+            expect(asset.fileSize).to.equal(unarchived.fileSize);
         });
     });
 

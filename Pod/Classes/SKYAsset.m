@@ -57,6 +57,27 @@
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSString *name = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"];
+    if (!name) {
+        return nil;
+    }
+
+    NSURL *url = [aDecoder decodeObjectOfClass:[NSURL class] forKey:@"url"];
+    self = [self initWithName:name url:url];
+    if (self) {
+        NSNumber *fileSize = [aDecoder decodeObjectOfClass:[NSNumber class] forKey:@"fileSize"];
+        if (fileSize.intValue > 0) {
+            self.fileSize = fileSize;
+        }
+
+        self.mimeType = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"mimeType"];
+    }
+
+    return self;
+}
+
 + (instancetype)assetWithName:(NSString *)name url:(NSURL *)url
 {
     return [[self alloc] initWithName:name url:url];
@@ -98,6 +119,14 @@
         asset->_mimeType = [self.mimeType copyWithZone:zone];
     }
     return asset;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.name forKey:@"name"];
+    [aCoder encodeObject:self.url forKey:@"url"];
+    [aCoder encodeObject:self.fileSize forKey:@"fileSize"];
+    [aCoder encodeObject:self.mimeType forKey:@"mimeType"];
 }
 
 // derive fileSize used in SKYGetAssetPostRequestOperation

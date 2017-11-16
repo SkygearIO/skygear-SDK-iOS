@@ -76,6 +76,7 @@
 		604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */; };
 		604A899D1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604A899C1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m */; };
 		604CBFD01E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */; };
+		606CB9941FB5991800046BCE /* SKYReferenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 606CB9931FB5991800046BCE /* SKYReferenceTests.m */; };
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */; };
 		A3146DAC57A1BAB2F2B7C597 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8C71207B2B56D001272DBE /* libPods-Tests.a */; };
@@ -184,6 +185,7 @@
 		604A899A1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineAdminRolesOperationTests.m; sourceTree = "<group>"; };
 		604A899C1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSetUserDefaultRoleOperationTests.m; sourceTree = "<group>"; };
 		604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYUnregisterDeviceOperationTests.m; sourceTree = "<group>"; };
+		606CB9931FB5991800046BCE /* SKYReferenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKYReferenceTests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		607B788C1C7B0DD500498FAC /* SKYRoleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRoleTests.m; sourceTree = "<group>"; };
 		60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineCreationAccessOperationTests.m; sourceTree = "<group>"; };
@@ -363,12 +365,12 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				37F26A081AF8E91E006A21A8 /* Commons */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
 				372E77901B28338A001F1972 /* SKYAccessControlTests.m */,
 				5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */,
+				F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */,
 				A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */,
-				A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */,
+				A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */,
 				374863D91C3CF16000A6E787 /* SKYChangePasswordOperationTests.m */,
 				CD48CE0C1AA05A9200A1CD04 /* SKYContainerTests.m */,
 				CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */,
@@ -381,9 +383,9 @@
 				38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */,
 				CD98A8A51A9F34390056420F /* SKYFetchRecordsOperationTests.m */,
 				376CB11C1AE906B600FA0324 /* SKYFetchSubscriptionsOperationTests.m */,
+				A9CC0CB41F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m */,
 				60209E5A1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m */,
 				6019C1E01D6BF6D50028C6F6 /* SKYGetCurrentUserOperationTests.m */,
-				A9CC0CB41F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m */,
 				383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */,
 				38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */,
 				CD7FE26C1A9DBB9F002C076E /* SKYLoginUserOperationTests.m */,
@@ -392,7 +394,9 @@
 				3785584E1AE6CF5D00685319 /* SKYModifySubscriptionsOperationTests.m */,
 				CD7FE2681A9D9F31002C076E /* SKYOperationTests.m */,
 				60209E641D76F18400B7E10B /* SKYPostAssetOperationTests.m */,
+				A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */,
 				5F0532C01B8D912E00DA4D8B /* SKYPubsubTests.m */,
+				A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */,
 				37B477B61AE8A9C100B8566D /* SKYQueryDeserializerTests.m */,
 				CD42FE131AA4499C0079B3DA /* SKYQueryOperationTests.m */,
 				CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */,
@@ -406,10 +410,12 @@
 				383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */,
 				38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */,
 				CD56972D1AAC7E2500AE596B /* SKYRecordTests.m */,
+				606CB9931FB5991800046BCE /* SKYReferenceTests.m */,
 				38E053D81AC1489A00850988 /* SKYRegisterDeviceOperationTests.m */,
 				5F9F71421B0B349700F7ADDD /* SKYRemoveRelationsOperationTests.m */,
 				38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */,
 				38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */,
+				A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */,
 				607B788C1C7B0DD500498FAC /* SKYRoleTests.m */,
 				38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */,
 				604A899C1C7C34390013E114 /* SKYSetUserDefaultRoleOperationTests.m */,
@@ -418,11 +424,8 @@
 				378558491AE63FEC00685319 /* SKYSubscriptionSerializerTests.m */,
 				604CBFCF1E06FC2E00AC859B /* SKYUnregisterDeviceOperationTests.m */,
 				37CDD6031B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m */,
+				37F26A081AF8E91E006A21A8 /* Commons */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
-				F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */,
-				A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */,
-				A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */,
-				A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -618,9 +621,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -677,13 +683,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Swift Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4BF1AC8DFC5E22D4A38AA2E9 /* [CP] Embed Pods Frameworks */ = {
@@ -692,9 +701,20 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts-framework/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit-framework/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB-framework/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/SKYKit-framework/SKYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket-framework/SocketRocket.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -752,13 +772,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Test Runner-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		83C89C1733D3E831C42BBEFF /* 📦 Embed Pods Frameworks */ = {
@@ -812,9 +835,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -857,13 +883,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AF706E77B7EA270CED194D2C /* [CP] Check Pods Manifest.lock */ = {
@@ -1003,6 +1032,7 @@
 				CD98A8A61A9F34390056420F /* SKYFetchRecordsOperationTests.m in Sources */,
 				383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */,
 				A9CC0CB51F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m in Sources */,
+				606CB9941FB5991800046BCE /* SKYReferenceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

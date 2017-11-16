@@ -14,7 +14,7 @@ before_install:
 - brew install clang-format
 - clang-format --version
 - brew install swiftlint || brew upgrade swiftlint
-- sudo pip install lizard
+- pip2 install lizard
 - pod update --project-directory=Example
 - pod install --project-directory=Example
 script:

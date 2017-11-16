@@ -22,7 +22,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
-@interface SKYAsset : NSObject <NSCopying>
+@interface SKYAsset : NSObject <NSCopying, NSCoding>
 
 /// Undocumented
 + (instancetype)assetWithName:(NSString *)name fileURL:(NSURL *)fileURL;

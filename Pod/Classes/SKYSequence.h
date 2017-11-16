@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  SKYSequence is a special value that creates an auto-increment field on the record when
  saved.
  */
-@interface SKYSequence : NSObject <NSCoding>
+@interface SKYSequence : NSObject <NSCopying, NSCoding>
 
 /**
  Returns an instance of SKYSequence.

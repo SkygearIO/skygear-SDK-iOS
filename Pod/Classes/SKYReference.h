@@ -31,7 +31,7 @@ typedef enum SKYReferenceAction : NSInteger {
 } SKYReferenceAction;
 
 /// Undocumented
-@interface SKYReference : NSObject <NSCoding>
+@interface SKYReference : NSObject <NSCopying, NSCoding>
 
 /// Undocumented
 - (instancetype)init NS_UNAVAILABLE;

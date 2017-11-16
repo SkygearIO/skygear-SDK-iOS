@@ -5,31 +5,31 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - Expecta (1.0.5)
-  - FBSDKCoreKit (4.17.0):
+  - Expecta (1.0.6)
+  - FBSDKCoreKit (4.28.0):
     - Bolts (~> 1.7)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - OCMock (3.2)
-  - OHHTTPStubs (4.6.0):
-    - OHHTTPStubs/Default (= 4.6.0)
-  - OHHTTPStubs/Core (4.6.0)
-  - OHHTTPStubs/Default (4.6.0):
+  - OCMock (3.3.1)
+  - OHHTTPStubs (6.0.0):
+    - OHHTTPStubs/Default (= 6.0.0)
+  - OHHTTPStubs/Core (6.0.0)
+  - OHHTTPStubs/Default (6.0.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (4.6.0):
+  - OHHTTPStubs/JSON (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (4.6.0):
+  - OHHTTPStubs/NSURLSession (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (4.6.0)
+  - OHHTTPStubs/OHPathHelpers (6.0.0)
   - SKYKit (1.1.0):
     - SKYKit/Core (= 1.1.0)
     - SKYKit/ForgotPassword (= 1.1.0)
   - SKYKit/Core (1.1.0):
-    - FMDB (~> 2.5)
+    - FMDB (~> 2.6.0)
     - SocketRocket (~> 0.4)
   - SKYKit/Facebook (1.1.0):
     - FBSDKCoreKit (~> 4.0)
@@ -37,7 +37,7 @@ PODS:
   - SKYKit/ForgotPassword (1.1.0):
     - SKYKit/Core
   - SocketRocket (0.5.1)
-  - Specta (1.0.5)
+  - Specta (1.0.7)
 
 DEPENDENCIES:
   - Expecta
@@ -49,19 +49,19 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   SKYKit:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
+  FBSDKCoreKit: ca961e279113f691fd83dc634c0bbad9d4e3f370
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
-  OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  SKYKit: 124d42572fc55e93dadc3a4136a7fcfa956c680b
+  OCMock: f3f61e6eaa16038c30caa5798c5e49d3307b6f22
+  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
+  SKYKit: 53c6f64b893504414361f985018c7a902522bcc7
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: a27ec2d7e040773324262697418dfdc4a2481f63
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
