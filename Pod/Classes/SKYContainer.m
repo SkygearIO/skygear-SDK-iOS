@@ -171,9 +171,35 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
             arguments:(NSArray *)arguments
     completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
+    [self callLambda:action arrayArguments:arguments completionHandler:completionHandler];
+}
+
+- (void)callLambda:(NSString *)action
+       arrayArguments:(NSArray *)arguments
+    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+{
     arguments = arguments ? arguments : @[];
     SKYLambdaOperation *operation =
         [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:arguments];
+
+    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionHandler) {
+                completionHandler(result, error);
+            }
+        });
+    };
+
+    [self addOperation:operation];
+}
+
+- (void)callLambda:(NSString *)action
+    dictionaryArguments:(NSDictionary *)arguments
+      completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+{
+    arguments = arguments ? arguments : @{};
+    SKYLambdaOperation *operation =
+        [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:arguments];
 
     operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

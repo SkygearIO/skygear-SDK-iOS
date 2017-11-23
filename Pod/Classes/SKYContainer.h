@@ -123,6 +123,23 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
     completionHandler:
         (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
+/**
+ Calls a registered lambda function with array arguments.
+ */
+
+- (void)callLambda:(NSString *)action
+       arrayArguments:(NSArray *_Nullable)arguments
+    completionHandler:
+        (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+
+/**
+ Calls a registered lambda function with dictionay arguments.
+ */
+- (void)callLambda:(NSString *)action
+    dictionaryArguments:(NSDictionary *_Nullable)arguments
+      completionHandler:
+          (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

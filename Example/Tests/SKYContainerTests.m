@@ -18,6 +18,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <OHHTTPStubs/NSURLRequest+HTTPBodyTesting.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
@@ -81,6 +82,15 @@ describe(@"calls lambda", ^{
             return YES;
         }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSData *body = request.OHHTTPStubs_HTTPBody;
+                NSError *jsonError;
+                NSDictionary *bodyJSON =
+                    [NSJSONSerialization JSONObjectWithData:body
+                                                    options:NSJSONReadingMutableContainers
+                                                      error:&jsonError];
+                expect(bodyJSON[@"action"]).to.equal(@"hello:world");
+                expect(bodyJSON[@"args"]).to.equal(@[ @"this", @"is", @"bob" ]);
+
                 NSDictionary *parameters =
                     @{ @"request_id" : @"REQUEST_ID",
                        @"result" : @{@"message" : @"hello bob"} };
@@ -93,6 +103,72 @@ describe(@"calls lambda", ^{
         waitUntil(^(DoneCallback done) {
             [container callLambda:@"hello:world"
                         arguments:@[ @"this", @"is", @"bob" ]
+                completionHandler:^(NSDictionary *result, NSError *error) {
+                    done();
+                }];
+        });
+    });
+
+    it(@"calls lambda with array arguments", ^{
+        SKYContainer *container = [[SKYContainer alloc] init];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSData *body = request.OHHTTPStubs_HTTPBody;
+                NSError *jsonError;
+                NSDictionary *bodyJSON =
+                    [NSJSONSerialization JSONObjectWithData:body
+                                                    options:NSJSONReadingMutableContainers
+                                                      error:&jsonError];
+                expect(bodyJSON[@"action"]).to.equal(@"hello:world");
+                expect(bodyJSON[@"args"]).to.equal(@[ @"this", @"is", @"bob" ]);
+
+                NSDictionary *parameters =
+                    @{ @"request_id" : @"REQUEST_ID",
+                       @"result" : @{@"message" : @"hello bob"} };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container callLambda:@"hello:world"
+                        arguments:@[ @"this", @"is", @"bob" ]
+                completionHandler:^(NSDictionary *result, NSError *error) {
+                    done();
+                }];
+        });
+    });
+
+    it(@"calls lambda with dictionary arguments", ^{
+        SKYContainer *container = [[SKYContainer alloc] init];
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        }
+            withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                NSData *body = request.OHHTTPStubs_HTTPBody;
+                NSError *jsonError;
+                NSDictionary *bodyJSON =
+                    [NSJSONSerialization JSONObjectWithData:body
+                                                    options:NSJSONReadingMutableContainers
+                                                      error:&jsonError];
+                expect(bodyJSON[@"action"]).to.equal(@"hello:world");
+                expect(bodyJSON[@"args"]).to.equal(@{ @"message" : @[ @"this", @"is", @"bob" ] });
+
+                NSDictionary *parameters =
+                    @{ @"request_id" : @"REQUEST_ID",
+                       @"result" : @{@"message" : @"hello bob"} };
+                NSData *payload =
+                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+            }];
+
+        waitUntil(^(DoneCallback done) {
+            [container callLambda:@"hello:world"
+                dictionaryArguments:@{
+                    @"message" : @[ @"this", @"is", @"bob" ]
+                }
                 completionHandler:^(NSDictionary *result, NSError *error) {
                     done();
                 }];
