@@ -90,6 +90,11 @@
         ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
                 [weakSelf updateWithUser:user accessToken:accessToken];
+                // register device when login and signup success
+                if ([operation isKindOfClass:[SKYLoginUserOperation class]] ||
+                    [operation isKindOfClass:[SKYSignupUserOperation class]]) {
+                    [weakSelf.container.push registerDeviceCompletionHandler:nil];
+                }
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);

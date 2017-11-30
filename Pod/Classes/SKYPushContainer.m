@@ -65,6 +65,20 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                       object:self.container];
 }
 
+- (NSData *)deviceToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerDeviceToken"];
+}
+
+- (void)setDeviceToken:(NSData *)deviceToken
+{
+    if (deviceToken) {
+        [[NSUserDefaults standardUserDefaults] setObject:deviceToken
+                                                  forKey:@"SKYContainerDeviceToken"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info
 {
     NSDictionary *data = info[@"_ourd"];
@@ -107,6 +121,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
                      existingDeviceID:(NSString *)existingDeviceID
                     completionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
+    [self setDeviceToken:deviceToken];
+
     NSString *topic = [[NSBundle mainBundle] bundleIdentifier];
     SKYRegisterDeviceOperation *op =
         [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken topic:topic];
@@ -161,7 +177,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)registerDeviceCompletionHandler:(void (^)(NSString *, NSError *))completionHandler
 {
     NSString *existingDeviceID = [self registeredDeviceID];
-    [self registerDeviceWithDeviceToken:nil
+    NSData *deviceToken = [self deviceToken];
+    [self registerDeviceWithDeviceToken:deviceToken
                        existingDeviceID:existingDeviceID
                       completionHandler:^(NSString *deviceID, NSError *error) {
                           if (!error) {
