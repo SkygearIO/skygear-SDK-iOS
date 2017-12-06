@@ -100,17 +100,14 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         switch predicate.predicateOperatorType {
         case .equalTo:
             predicateOperator = 0
-            break
         case .notEqualTo:
             predicateOperator = 1
-            break
         case .like:
             if predicate.options == .caseInsensitive {
                 predicateOperator = 3
             } else {
                 predicateOperator = 2
             }
-            break
         default:
             predicateOperator = 0
         }
@@ -140,28 +137,24 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                                               modifier: .direct,
                                               type: .equalTo,
                                               options: .normalized)
-            break
         case 1:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .notEqualTo,
                                               options: .normalized)
-            break
         case 2:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .like,
                                               options: .normalized)
-            break
         case 3:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .like,
                                               options: .caseInsensitive)
-            break
         default:
             break
         }

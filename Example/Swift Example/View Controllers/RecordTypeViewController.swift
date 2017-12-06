@@ -132,10 +132,8 @@ class RecordTypeViewController: UITableViewController {
                 cell.textLabel?.text = ""
                 cell.accessoryType = .none
             }
-            break
         case addNewSectionIndex:
             cell.textLabel?.text = "Add New Record Type..."
-            break
         default:
             break
         }
@@ -166,7 +164,6 @@ class RecordTypeViewController: UITableViewController {
             self.selectedRecordTypeIndex = indexPath.row
 
             self.tableView.reloadRows(at: indexPathsToUpdate, with: .none)
-            break
         case addNewSectionIndex:
             let alert = UIAlertController(title: "Add New", message: "Enter name of new record type", preferredStyle: .alert)
             alert.addTextField(configurationHandler: { (textField) in
@@ -202,7 +199,6 @@ class RecordTypeViewController: UITableViewController {
             self.present(alert, animated: true, completion: {
                 self.tableView.deselectRow(at: indexPath, animated: true)
             })
-            break
         default:
             break
         }
