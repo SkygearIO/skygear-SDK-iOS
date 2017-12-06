@@ -48,6 +48,7 @@ class UserAuthenticationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // swiftlint:disable:next discarded_notification_center_observer
         NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser, object: nil, queue: OperationQueue.main) { (_) in
 
             self.loginStatusDidChange()

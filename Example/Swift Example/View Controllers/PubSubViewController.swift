@@ -53,6 +53,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
         // Do any additional setup after loading the view.
 
+        // swiftlint:disable:next discarded_notification_center_observer
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil, queue: nil) { (note) in
             // swiftlint:disable force_cast
             let keyboardFrame: CGRect = (note.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
@@ -66,6 +67,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
             })
         }
 
+        // swiftlint:disable:next discarded_notification_center_observer
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { (note) in
             // swiftlint:disable:next force_cast
             let animationDuration: TimeInterval = (note.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
