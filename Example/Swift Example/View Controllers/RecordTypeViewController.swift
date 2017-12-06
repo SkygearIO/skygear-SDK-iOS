@@ -19,7 +19,7 @@
 
 import UIKit
 
-protocol RecordTypeViewControllerDelegate {
+protocol RecordTypeViewControllerDelegate: class {
     func recordTypeViewController(_ controller: RecordTypeViewController, didSelectRecordType recordType: String)
 }
 

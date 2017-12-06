@@ -19,7 +19,7 @@
 
 import UIKit
 
-protocol PredicateViewControllerDelegate {
+protocol PredicateViewControllerDelegate: class {
     func predicate(_ controller: PredicateViewController, didFinish predicate: NSComparisonPredicate)
     func predicateDidDelete(_ controller: PredicateViewController)
 }

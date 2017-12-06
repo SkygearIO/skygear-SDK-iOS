@@ -20,7 +20,7 @@
 import UIKit
 import SKYKit
 
-protocol RecordViewControllerDelegate {
+protocol RecordViewControllerDelegate: class {
     func recordViewController(_ controller: RecordViewController, didSaveRecord record: SKYRecord)
     func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID)
 }
