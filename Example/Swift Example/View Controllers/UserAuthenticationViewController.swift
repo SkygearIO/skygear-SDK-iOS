@@ -236,6 +236,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case self.actionSectionIndex:

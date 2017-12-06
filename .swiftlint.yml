@@ -11,3 +11,4 @@ weak_delegate: error
 class_delegate_protocol: error
 syntactic_sugar: error
 discarded_notification_center_observer: error
+cyclomatic_complexity: error
