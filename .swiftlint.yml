@@ -1,5 +1,8 @@
 disabled_rules:
   - line_length
+  - file_length
+  - type_body_length
+  - implicit_getter
+  - unused_optional_binding
 force_cast: warning
 trailing_semicolon: error
-
