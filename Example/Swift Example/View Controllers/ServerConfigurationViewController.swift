@@ -61,7 +61,7 @@ class ServerConfigurationViewController: UITableViewController {
                 textField.placeholder = "https://myapp.skygeario.com/"
                 textField.text = UserDefaults.standard.string(forKey: "SkygearEndpoint")
             }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 let textField = alert.textFields?.first
                 UserDefaults.standard.set(textField?.text, forKey: "SkygearEndpoint")
@@ -77,7 +77,7 @@ class ServerConfigurationViewController: UITableViewController {
                 textField.placeholder = "dc0903fa85924776baa77df813901efc"
                 textField.text = UserDefaults.standard.string(forKey: "SkygearApiKey")
             }
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 let textField = alert.textFields?.first
                 UserDefaults.standard.set(textField?.text, forKey: "SkygearApiKey")

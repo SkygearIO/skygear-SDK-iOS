@@ -182,7 +182,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
 
     func recordTypeViewController(_ controller: RecordTypeViewController, didSelectRecordType recordType: String) {
         self.recordType = recordType
-        self.tableView.reloadRows(at: [IndexPath(row: 0, section:0)], with: .none)
+        self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
     }
 
     // MARK: - PredicateViewControllerDelegate
