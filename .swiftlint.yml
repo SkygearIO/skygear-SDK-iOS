@@ -10,3 +10,4 @@ unneeded_break_in_switch: error
 colon: error
 weak_delegate: error
 class_delegate_protocol: error
+syntactic_sugar: error

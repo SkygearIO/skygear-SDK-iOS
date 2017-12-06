@@ -39,7 +39,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     var record: SKYRecord? = nil {
         didSet {
             if let record = self.record {
-                self.attributes = (record.dictionary as! Dictionary<String, AnyObject>).keys.sorted()
+                self.attributes = (record.dictionary as! [String: AnyObject]).keys.sorted()
             } else {
                 self.attributes = []
             }
