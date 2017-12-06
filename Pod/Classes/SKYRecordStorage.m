@@ -391,12 +391,13 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     } else {
         if ([_synchronizer isProcessingChange:item storage:self]) {
             if (error) {
-                *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
-                                             code:0
-                                         userInfo:@{
-                                             NSLocalizedDescriptionKey : NSLocalizedString(
-                                                 @"Cannot dismiss a started change.", nil)
-                                         }];
+                *error = [NSError
+                    errorWithDomain:@"SKYRecordStorageErrorDomain"
+                               code:0
+                           userInfo:@{
+                               NSLocalizedDescriptionKey :
+                                   NSLocalizedString(@"Cannot dismiss a started change.", nil)
+                           }];
                 return NO;
             }
         }

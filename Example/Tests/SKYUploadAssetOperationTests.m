@@ -76,7 +76,7 @@ SpecBegin(SKYUploadAssetOperation)
             expect(request.allHTTPHeaderFields).to.equal(@{
                 @"X-Skygear-API-Key" : @"API_KEY",
                 @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
-                @"Content-Type": @"text/plain",
+                @"Content-Type" : @"text/plain",
             });
         });
 
