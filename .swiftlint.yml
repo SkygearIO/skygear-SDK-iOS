@@ -8,3 +8,4 @@ force_cast: warning
 trailing_semicolon: error
 unneeded_break_in_switch: error
 colon: error
+weak_delegate: error

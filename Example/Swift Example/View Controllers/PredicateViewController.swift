@@ -26,7 +26,7 @@ protocol PredicateViewControllerDelegate {
 
 class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
-    var delegate: PredicateViewControllerDelegate?
+    weak var delegate: PredicateViewControllerDelegate?
     var attributeNameCell: TextFieldTableViewCell?
     var attributeValueCell: TextFieldTableViewCell?
     var comparisonPickerCell: PickerTableViewCell?

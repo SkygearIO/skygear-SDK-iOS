@@ -73,7 +73,7 @@ class RecordTypeViewController: UITableViewController {
         }
     }
 
-    var delegate: RecordTypeViewControllerDelegate?
+    weak var delegate: RecordTypeViewControllerDelegate?
 
     let listSectionIndex = 0
     let addNewSectionIndex = 1

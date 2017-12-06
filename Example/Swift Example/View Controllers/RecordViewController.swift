@@ -46,7 +46,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         }
     }
 
-    var delegate: RecordViewControllerDelegate?
+    weak var delegate: RecordViewControllerDelegate?
     var creatingNewRecord: Bool = false
     var readonly: Bool = false
     var selectedAttributeName: String?
