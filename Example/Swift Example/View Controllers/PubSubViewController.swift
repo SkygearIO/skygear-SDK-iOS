@@ -54,9 +54,11 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         // Do any additional setup after loading the view.
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil, queue: nil) { (note) in
+            // swiftlint:disable force_cast
             let keyboardFrame: CGRect = (note.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             let animationDuration: TimeInterval = (note.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
             let animationCurve: UIViewAnimationCurve = UIViewAnimationCurve(rawValue: (note.userInfo![UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue)!
+            // swiftlint:enable force_cast
             UIView.animate(withDuration: animationDuration, animations: {
                 UIView.setAnimationCurve(animationCurve)
                 self.bottomEdgeConstraint.constant = keyboardFrame.height
@@ -65,6 +67,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         }
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: nil) { (note) in
+            // swiftlint:disable:next force_cast
             let animationDuration: TimeInterval = (note.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
 
             UIView.animate(withDuration: animationDuration, animations: {
@@ -183,7 +186,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func subscribe(_ channel: String) {
         self.pubsub.subscribe(to: channel) { (obj) in
-            guard let info: NSDictionary = obj as! NSDictionary else {
+            guard let info = obj as NSDictionary else {
                 return
             }
             self.handle(info)

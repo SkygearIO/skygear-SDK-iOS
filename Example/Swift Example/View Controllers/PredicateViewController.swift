@@ -202,6 +202,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable force_cast
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 if let attributeNameCell = self.attributeNameCell {
@@ -233,6 +234,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 return cell
             }
         }
+        // swiftlint:enable force_cast
 
         return UITableViewCell()
     }
