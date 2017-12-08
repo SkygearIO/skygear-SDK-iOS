@@ -328,7 +328,8 @@ describe(@"record default access", ^{
                     @"result" : @{
                         @"type" : paintingRecordType,
                         @"default_access" : @[
-                            @{@"public" : @1, @"level" : @"read"},
+                            @{ @"public" : @1,
+                               @"level" : @"read" },
                             @{@"role" : @"Painter", @"level" : @"write"}
                         ]
                     }
