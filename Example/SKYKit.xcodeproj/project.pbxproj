@@ -623,6 +623,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/MagicKit-Skygear/magic.mgc",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -705,6 +706,7 @@
 				"${BUILT_PRODUCTS_DIR}/Bolts-framework/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit-framework/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB-framework/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-framework/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit-framework/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-framework/SocketRocket.framework",
 			);
@@ -713,6 +715,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
@@ -837,6 +840,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-resources.sh",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/MagicKit-Skygear/magic.mgc",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (

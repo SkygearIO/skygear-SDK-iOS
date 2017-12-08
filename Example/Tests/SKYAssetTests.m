@@ -34,17 +34,19 @@ SpecBegin(SKYAsset)
             expect(asset.fileSize).to.equal(copiedAsset.fileSize);
         });
 
-        it(@"can be encoded and decoded", ^{
-            SKYAsset *asset =
-                [SKYAsset assetWithData:[@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
+        it(@"derive correct mimeType", ^{
+            NSString *base64String =
+                @"data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+            NSURL *url = [NSURL URLWithString:base64String];
+            NSData *gifData = [NSData dataWithContentsOfURL:url];
+            UIImage *ret = [UIImage imageWithData:gifData];
+            NSData *jpgData = UIImageJPEGRepresentation(ret, 0.8);
 
-            NSData *archived = [NSKeyedArchiver archivedDataWithRootObject:asset];
-            SKYAsset *unarchived = [NSKeyedUnarchiver unarchiveObjectWithData:archived];
+            SKYAsset *gifAsset = [SKYAsset assetWithData:gifData];
+            SKYAsset *jpgAsset = [SKYAsset assetWithData:jpgData];
 
-            expect(asset.name).to.equal(unarchived.name);
-            expect(asset.url).to.equal(unarchived.url);
-            expect(asset.mimeType).to.equal(unarchived.mimeType);
-            expect(asset.fileSize).to.equal(unarchived.fileSize);
+            expect(gifAsset.mimeType).to.equal(@"image/gif");
+            expect(jpgAsset.mimeType).to.equal(@"image/jpeg");
         });
     });
 
