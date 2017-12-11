@@ -19,14 +19,14 @@
 
 import UIKit
 
-protocol PredicateViewControllerDelegate {
+protocol PredicateViewControllerDelegate: class {
     func predicate(_ controller: PredicateViewController, didFinish predicate: NSComparisonPredicate)
     func predicateDidDelete(_ controller: PredicateViewController)
 }
 
 class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
 
-    var delegate: PredicateViewControllerDelegate?
+    weak var delegate: PredicateViewControllerDelegate?
     var attributeNameCell: TextFieldTableViewCell?
     var attributeValueCell: TextFieldTableViewCell?
     var comparisonPickerCell: PickerTableViewCell?
@@ -100,17 +100,14 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
         switch predicate.predicateOperatorType {
         case .equalTo:
             predicateOperator = 0
-            break
         case .notEqualTo:
             predicateOperator = 1
-            break
         case .like:
             if predicate.options == .caseInsensitive {
                 predicateOperator = 3
             } else {
                 predicateOperator = 2
             }
-            break
         default:
             predicateOperator = 0
         }
@@ -140,28 +137,24 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                                               modifier: .direct,
                                               type: .equalTo,
                                               options: .normalized)
-            break
         case 1:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .notEqualTo,
                                               options: .normalized)
-            break
         case 2:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .like,
                                               options: .normalized)
-            break
         case 3:
             predicate = NSComparisonPredicate(leftExpression: leftExpr,
                                               rightExpression: rightExpr,
                                               modifier: .direct,
                                               type: .like,
                                               options: .caseInsensitive)
-            break
         default:
             break
         }
@@ -209,6 +202,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // swiftlint:disable force_cast
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 if let attributeNameCell = self.attributeNameCell {
@@ -240,6 +234,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
                 return cell
             }
         }
+        // swiftlint:enable force_cast
 
         return UITableViewCell()
     }

@@ -48,6 +48,7 @@ class UserAuthenticationViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // swiftlint:disable:next discarded_notification_center_observer
         NotificationCenter.default.addObserver(forName: NSNotification.Name.SKYContainerDidChangeCurrentUser, object: nil, queue: OperationQueue.main) { (_) in
 
             self.loginStatusDidChange()
@@ -79,8 +80,8 @@ class UserAuthenticationViewController: UITableViewController {
 
     func whoami() {
         SKYContainer.default().auth.getWhoAmI { (user, error) in
-            if error != nil {
-                self.showAuthenticationError(user, error: error as! NSError, completion: {
+            if let error as NSError {
+                self.showAuthenticationError(user, error: error, completion: {
                     self.login(nil)
                 })
                 return
@@ -90,6 +91,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     func loginStatusDidChange() {
         if let user = SKYContainer.default().auth.currentUser {
+            // swiftlint:disable:next force_cast
             self.lastUsername = user["username"] as! String!
         }
 
@@ -129,8 +131,8 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.login(withAuthData: authData, password: password, completionHandler: { (user, error) in
-                guard error == nil else {
-                    self.showAuthenticationError(user, error: error as! NSError, completion: {
+                if let error as NSError {
+                    self.showAuthenticationError(user, error: error, completion: {
                         self.login(username)
                     })
                     return
@@ -173,8 +175,8 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.signup(withAuthData: authData, password: password, completionHandler: { (user, error) in
-                if error != nil {
-                    self.showAuthenticationError(user, error: error as! NSError, completion: {
+                if let error as NSError {
+                    self.showAuthenticationError(user, error: error, completion: {
                         self.signup()
                     })
                     return
@@ -191,8 +193,8 @@ class UserAuthenticationViewController: UITableViewController {
         }
 
         SKYContainer.default().auth.logout { (user, error) in
-            if error != nil {
-                self.showAuthenticationError(user, error: error as! NSError, completion: nil)
+            if let error as NSError {
+                self.showAuthenticationError(user, error: error, completion: nil)
                 return
             }
 
@@ -234,6 +236,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case self.actionSectionIndex:
@@ -251,6 +254,7 @@ class UserAuthenticationViewController: UITableViewController {
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
                 if let user = SKYContainer.default().auth.currentUser {
+                    // swiftlint:disable:next force_cast
                     cell.detailTextLabel?.text = user["username"] as! String!
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
@@ -264,6 +268,7 @@ class UserAuthenticationViewController: UITableViewController {
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
                 if let user = SKYContainer.default().auth.currentUser {
+                    // swiftlint:disable:next force_cast
                     if let lastLoginAt = user["last_login_at"] as! Date! {
                         let f = self.dateFormatter.string(from: lastLoginAt)
                         cell.detailTextLabel?.text = f

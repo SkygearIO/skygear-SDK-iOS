@@ -20,7 +20,7 @@
 import UIKit
 import SKYKit
 
-protocol RecordViewControllerDelegate {
+protocol RecordViewControllerDelegate: class {
     func recordViewController(_ controller: RecordViewController, didSaveRecord record: SKYRecord)
     func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID)
 }
@@ -38,15 +38,15 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     var recordType: String?
     var record: SKYRecord? = nil {
         didSet {
-            if let record = self.record {
-                self.attributes = (record.dictionary as! Dictionary<String, AnyObject>).keys.sorted()
+            if let record = self.record, dict = record.dictionary as [String: AnyObject] {
+                self.attributes = dict.keys.sorted()
             } else {
                 self.attributes = []
             }
         }
     }
 
-    var delegate: RecordViewControllerDelegate?
+    weak var delegate: RecordViewControllerDelegate?
     var creatingNewRecord: Bool = false
     var readonly: Bool = false
     var selectedAttributeName: String?
@@ -374,9 +374,10 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "record_type" {
-            let controller = segue.destination as! RecordTypeViewController
-            controller.delegate = self
-            controller.selectedRecordType = self.recordType
+            if let controller = segue.destination as RecordTypeViewController {
+                controller.delegate = self
+                controller.selectedRecordType = self.recordType
+            }
         }
     }
 
@@ -525,7 +526,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
 
     // MARK: - UIImagePickerControllerDelegate
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
         self.navigationController?.dismiss(animated: true, completion: nil)
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return

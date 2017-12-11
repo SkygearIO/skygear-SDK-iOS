@@ -1,5 +1,14 @@
 disabled_rules:
   - line_length
-force_cast: warning
+  - file_length
+  - type_body_length
+  - implicit_getter
+  - unused_optional_binding
 trailing_semicolon: error
-
+unneeded_break_in_switch: error
+colon: error
+weak_delegate: error
+class_delegate_protocol: error
+syntactic_sugar: error
+discarded_notification_center_observer: error
+cyclomatic_complexity: error
