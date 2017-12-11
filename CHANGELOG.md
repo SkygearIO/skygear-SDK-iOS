@@ -1,3 +1,16 @@
+## 1.2.0 (2017-12-11)
+
+### Features
+
+- Derive asset mimeType with MagicKit(#148)
+- Register device token in login and signup success callback
+- Support using NSDictionary as named arguments for callLambda (#89)
+
+### Other Notes
+
+- Fix swiftlint and update rules
+- Fix clang-format
+
 ## 1.1.1 (2017-11-16)
 
 ### Bug Fixes
