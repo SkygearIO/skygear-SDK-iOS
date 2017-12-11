@@ -18,6 +18,7 @@
 
 #import "SKYAuthContainer+SSO.h"
 #import "SKYAuthContainer_Private.h"
+#import "SKYWebOAuth.h"
 
 typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthActionType;
 
@@ -38,6 +39,12 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                         action:(SKYOAuthActionType)action
              completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    NSError *validateError = [self _validateGetAuthURLParams:options];
+    if (validateError) {
+        completionHandler(nil, validateError);
+        return;
+    }
+
     NSDictionary *params = [self _genAuthURLParams:options];
     NSString *urlFormat = [self _getAuthURLWithAction:action];
     [[self container] callLambda:[NSString stringWithFormat:urlFormat, providerID]
@@ -47,7 +54,12 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                        completionHandler(nil, error);
                        return;
                    }
-                   NSLog(result[@"auth_url"]);
+                   [[[SKYWebOAuth alloc] init]
+                          startOAuthFlow:result[@"auth_url"]
+                             callbackURL:[self _genCallbackURL:options[@"scheme"]]
+                       completionHandler:^(NSDictionary *result, NSError *error){
+                           NSLog(@"result %@", [result debugDescription]);
+                       }];
                }];
 }
 
@@ -65,15 +77,22 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     }
 }
 
-- (NSMutableDictionary *)_genAuthURLParams:(NSDictionary *)params
+- (NSError *)_validateGetAuthURLParams:(NSDictionary *)params
+{
+    if (!params[@"scheme"]) {
+        return [[[SKYErrorCreator alloc] init] errorWithCode:SKYErrorInvalidData
+                                                     message:@"Scheme is required"];
+    }
+
+    return nil;
+}
+
+- (NSDictionary *)_genAuthURLParams:(NSDictionary *)params
 {
     NSMutableDictionary *newParams = [NSMutableDictionary dictionary];
     newParams[@"ux_mode"] = @"ios";
 
-    NSString *host = self.container.endPointAddress.host;
-    newParams[@"callback_url"] =
-        [[NSURL alloc] initWithScheme:params[@"scheme"] host:host path:@"/auth_handler"]
-            .absoluteString;
+    newParams[@"callback_url"] = [self _genCallbackURL:params[@"scheme"]].absoluteString;
 
     if (params[@"scope"] != nil) {
         newParams[@"scope"] = params[@"scope"];
@@ -82,7 +101,13 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     if (params[@"options"]) {
         newParams[@"options"] = params[@"options"];
     }
-    return newParams;
+    return [NSDictionary dictionaryWithDictionary:newParams];
+}
+
+- (NSURL *)_genCallbackURL:(NSString *)scheme
+{
+    NSString *host = self.container.endPointAddress.host;
+    return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
 }
 
 @end
