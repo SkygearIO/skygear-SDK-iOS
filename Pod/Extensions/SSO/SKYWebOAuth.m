@@ -32,6 +32,7 @@
     SFSafariViewController *_safariVC;
     UIViewController *_topVC;
     SKYWebOAuthCompletion _oauthCompletionHandler;
+    SKYErrorCreator *_errorCreator;
 }
 
 + (instancetype)shared
@@ -42,6 +43,14 @@
         sharedInstance = [[SKYWebOAuth alloc] init];
     });
     return sharedInstance;
+}
+
+- (instancetype)init
+{
+    if ((self = [super init])) {
+        _errorCreator = [[SKYErrorCreator alloc] init];
+    }
+    return self;
 }
 
 - (void)startOAuthFlow:(NSString *_Nonnull)url
@@ -65,7 +74,9 @@
                 if (callbackURL) {
                     [self resumeAuthorizationFlowWithURL:callbackURL];
                 } else {
-                    _oauthCompletionHandler(nil, error);
+                    _oauthCompletionHandler(nil, [_errorCreator
+                                                     errorWithCode:SKYErrorNotAuthenticated
+                                                           message:@"User cancel oauth flow"]);
                     [self didCompleteOAuthFlow];
                 }
             }];
@@ -77,6 +88,10 @@
         _safariVC.delegate = self;
         _topVC = [self _findTopViewController];
         [_topVC presentViewController:_safariVC animated:YES completion:nil];
+    } else {
+        _oauthCompletionHandler(nil, [_errorCreator errorWithCode:SKYErrorUnknownError
+                                                          message:@"Only support iOS 9 or abrove"]);
+        [self didCompleteOAuthFlow];
     }
 }
 
@@ -121,8 +136,13 @@
     if (result && result[@"result"]) {
         _oauthCompletionHandler(result, nil);
     } else if (result && result[@"error"]) {
-        _oauthCompletionHandler(nil, result[@"error"]);
+        _oauthCompletionHandler(nil, [_errorCreator errorWithResponseDictionary:result[@"error"]]);
     } else {
+        NSError *error = [_errorCreator errorWithCode:SKYErrorUnknownError
+                                             userInfo:@{
+                                                 SKYErrorMessageKey : @"Fail to parse callback url",
+                                                 @"callbackURL" : url.absoluteString
+                                             }];
         _oauthCompletionHandler(nil, error);
     }
 
@@ -168,6 +188,12 @@
     }
     if (!_inProgress) {
         return;
+    }
+
+    if (_oauthCompletionHandler) {
+        _oauthCompletionHandler(nil, [_errorCreator errorWithCode:SKYErrorNotAuthenticated
+                                                          message:@"User cancel oauth flow"]);
+        [self didCompleteOAuthFlow];
     }
 }
 

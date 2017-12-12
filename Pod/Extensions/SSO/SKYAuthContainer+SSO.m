@@ -58,6 +58,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                                             callbackURL:[self _genCallbackURL:options[@"scheme"]]
                                       completionHandler:^(NSDictionary *result, NSError *error) {
                                           NSLog(@"result %@", [result debugDescription]);
+                                          NSLog(@"error %@", [error debugDescription]);
                                       }];
                }];
 }

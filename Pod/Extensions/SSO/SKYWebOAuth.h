@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#import <Foundation/Foundation.h>
+#import <SKYKit/SKYKit.h>
 
 typedef void (^SKYWebOAuthCompletion)(NSDictionary *_Nullable result, NSError *_Nullable error);
 
