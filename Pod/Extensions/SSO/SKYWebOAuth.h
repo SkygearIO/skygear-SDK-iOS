@@ -22,8 +22,10 @@ typedef void (^SKYWebOAuthCompletion)(NSDictionary *_Nullable result, NSError *_
 
 @interface SKYWebOAuth : NSObject
 
++ (instancetype _Nonnull)shared;
 - (void)startOAuthFlow:(NSString *_Nonnull)url
            callbackURL:(NSURL *_Nonnull)callbackURL
      completionHandler:(SKYWebOAuthCompletion _Nullable)completionHandler;
+- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *_Nonnull)url;
 
 @end

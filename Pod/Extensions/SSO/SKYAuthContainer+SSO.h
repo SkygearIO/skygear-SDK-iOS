@@ -23,8 +23,13 @@
 /**
   Login user with given provider.
  */
-- (void)loginOAuthProvider:(NSString *_Nullable)providerID
+- (void)loginOAuthProvider:(NSString *_Nonnull)providerID
                    options:(NSDictionary *_Nullable)options
          completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
+/**
+  Resume current oauth flow with url.
+ */
+- (BOOL)resumeOAuthFlow:(NSURL *_Nonnull)url
+                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *_Nullable)options;
 @end

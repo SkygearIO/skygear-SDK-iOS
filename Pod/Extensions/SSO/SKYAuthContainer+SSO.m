@@ -54,12 +54,11 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                        completionHandler(nil, error);
                        return;
                    }
-                   [[[SKYWebOAuth alloc] init]
-                          startOAuthFlow:result[@"auth_url"]
-                             callbackURL:[self _genCallbackURL:options[@"scheme"]]
-                       completionHandler:^(NSDictionary *result, NSError *error){
-                           NSLog(@"result %@", [result debugDescription]);
-                       }];
+                   [[SKYWebOAuth shared] startOAuthFlow:result[@"auth_url"]
+                                            callbackURL:[self _genCallbackURL:options[@"scheme"]]
+                                      completionHandler:^(NSDictionary *result, NSError *error) {
+                                          NSLog(@"result %@", [result debugDescription]);
+                                      }];
                }];
 }
 
@@ -108,6 +107,12 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 {
     NSString *host = self.container.endPointAddress.host;
     return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
+}
+
+- (BOOL)resumeOAuthFlow:(NSURL *)url
+                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+{
+    return [[SKYWebOAuth shared] resumeAuthorizationFlowWithURL:url];
 }
 
 @end
