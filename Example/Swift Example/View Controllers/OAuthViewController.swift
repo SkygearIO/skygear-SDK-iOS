@@ -31,15 +31,17 @@ class OAuthViewController: UITableViewController {
     let actionSectionIndex = 1
     let loginProviderIndex = 0
     let selectedProvider = "google"
+    let dateFormatter = DateFormatter()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        self.dateFormatter.locale = Locale.current
+        self.dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        self.dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        self.providerLabel.text = selectedProvider
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.updateUsersLabel()
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,13 +77,36 @@ class OAuthViewController: UITableViewController {
     }
 
     func loginWithProvider() {
+        weak var weakSelf = self
         SKYContainer.default().auth.loginOAuthProvider(selectedProvider, options: [
             "scheme": "skygearexample"
-        ]) { (user, error) in
+        ]) {(user, error) in
             if error != nil {
                 self.showError(error: error)
                 return
             }
+
+            print("Login user %@", user.debugDescription)
+            weakSelf?.updateUsersLabel()
+        }
+    }
+
+    func updateUsersLabel() {
+        if let user = SKYContainer.default().auth.currentUser {
+            // swiftlint:disable:next force_cast
+            self.userEmailLabel?.text = user["email"] as! String!
+            self.userIDLabel?.text = SKYContainer.default().auth.currentUserRecordID
+            self.userAccessTokenLabel?.text = SKYContainer.default().auth.currentAccessToken?.tokenString
+            // swiftlint:disable:next force_cast
+            if let lastLoginAt = user["last_login_at"] as! Date! {
+                let f = self.dateFormatter.string(from: lastLoginAt)
+                self.userLastLoginLabel?.text = f
+            }
+        } else {
+            self.userEmailLabel?.text = nil
+            self.userIDLabel?.text = nil
+            self.userAccessTokenLabel?.text = nil
+            self.userLastLoginLabel?.text = nil
         }
     }
 

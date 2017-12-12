@@ -28,25 +28,31 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                    options:(NSDictionary *)options
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    __weak typeof(self) weakSelf = self;
     [self _oauthFlowWithProvider:providerID
                          options:options
                           action:SKYOAuthActionLogin
-               completionHandler:completionHandler];
+               completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
+                   [weakSelf _handleLoginOAuthResult:result
+                                               error:error
+                                   completionHandler:completionHandler];
+               }];
 }
 
 - (void)_oauthFlowWithProvider:(NSString *)providerID
                        options:(NSDictionary *)options
                         action:(SKYOAuthActionType)action
-             completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+             completionHandler:(SKYWebOAuthCompletion)completionHandler
 {
     NSError *validateError = [self _validateGetAuthURLParams:options];
     if (validateError) {
         completionHandler(nil, validateError);
         return;
     }
-
     NSDictionary *params = [self _genAuthURLParams:options];
     NSString *urlFormat = [self _getAuthURLWithAction:action];
+    NSURL *callbackURL = [self _genCallbackURL:options[@"scheme"]];
+
     [[self container] callLambda:[NSString stringWithFormat:urlFormat, providerID]
              dictionaryArguments:params
                completionHandler:^(NSDictionary *result, NSError *error) {
@@ -55,12 +61,36 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                        return;
                    }
                    [[SKYWebOAuth shared] startOAuthFlow:result[@"auth_url"]
-                                            callbackURL:[self _genCallbackURL:options[@"scheme"]]
-                                      completionHandler:^(NSDictionary *result, NSError *error) {
-                                          NSLog(@"result %@", [result debugDescription]);
-                                          NSLog(@"error %@", [error debugDescription]);
-                                      }];
+                                            callbackURL:callbackURL
+                                      completionHandler:completionHandler];
                }];
+}
+
+- (void)_handleLoginOAuthResult:(NSDictionary *)result
+                          error:(NSError *)error
+              completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    NSError *loginError = error;
+    SKYRecord *user = nil;
+    SKYAccessToken *accessToken = nil;
+    if (!loginError) {
+        NSDictionary *response = result[@"result"];
+        NSDictionary *profile = response[@"profile"];
+        NSString *recordID = profile[@"_id"];
+        if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
+            user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
+            accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+
+            [self updateWithUser:user accessToken:accessToken];
+            // register device when login and signup success
+            [self.container.push registerDeviceCompletionHandler:nil];
+        } else {
+            loginError = [[[SKYErrorCreator alloc] init]
+                errorWithCode:SKYErrorBadResponse
+                      message:@"Returned data does not contain expected data."];
+        }
+    }
+    completionHandler(user, loginError);
 }
 
 - (NSString *)_getAuthURLWithAction:(SKYOAuthActionType)action
