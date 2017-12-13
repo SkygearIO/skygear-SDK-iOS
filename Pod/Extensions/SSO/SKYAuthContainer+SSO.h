@@ -28,6 +28,13 @@
          completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
+ Link user with given provider.
+ */
+- (void)linkOAuthProvider:(NSString *_Nonnull)providerID
+                  options:(NSDictionary *_Nullable)options
+        completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler;
+
+/**
   Resume current oauth flow with url.
  */
 - (BOOL)resumeOAuthFlow:(NSURL *_Nonnull)url

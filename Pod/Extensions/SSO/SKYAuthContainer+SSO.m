@@ -39,6 +39,18 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                }];
 }
 
+- (void)linkOAuthProvider:(NSString *)providerID
+                  options:(NSDictionary *)options
+        completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler
+{
+    [self _oauthFlowWithProvider:providerID
+                         options:options
+                          action:SKYOAuthActionLink
+               completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
+                   completionHandler(error);
+               }];
+}
+
 - (void)_oauthFlowWithProvider:(NSString *)providerID
                        options:(NSDictionary *)options
                         action:(SKYOAuthActionType)action

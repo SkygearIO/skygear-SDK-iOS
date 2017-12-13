@@ -30,6 +30,7 @@ class OAuthViewController: UITableViewController {
 
     let actionSectionIndex = 1
     let loginProviderIndex = 0
+    let linkProviderIndex = 1
     let selectedProvider = "google"
     let dateFormatter = DateFormatter()
 
@@ -55,6 +56,8 @@ class OAuthViewController: UITableViewController {
         switch indexPath.row {
         case loginProviderIndex:
             loginWithProvider()
+        case linkProviderIndex:
+            linkWithProvider()
         default:
             break
         }
@@ -82,12 +85,29 @@ class OAuthViewController: UITableViewController {
             "scheme": "skygearexample"
         ]) {(user, error) in
             if error != nil {
-                self.showError(error: error)
+                weakSelf?.showError(error: error)
                 return
             }
 
             print("Login user %@", user.debugDescription)
             weakSelf?.updateUsersLabel()
+        }
+    }
+
+    func linkWithProvider() {
+        weak var weakSelf = self
+        SKYContainer.default().auth.linkOAuthProvider(selectedProvider, options: [
+            "scheme": "skygearexample"
+        ]) {(error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            let alert = UIAlertController(title: "Success",
+                                          message: "Link provider successfully",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            weakSelf?.present(alert, animated: true, completion: nil)
         }
     }
 
