@@ -128,6 +128,8 @@ class OAuthViewController: UITableViewController {
             self.userAccessTokenLabel?.text = nil
             self.userLastLoginLabel?.text = nil
         }
+
+        self.tableView.reloadData()
     }
 
 }
