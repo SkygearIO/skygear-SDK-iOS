@@ -23,6 +23,7 @@
 #import "SKYAddRelationsOperation.h"
 #import "SKYAsset.h"
 #import "SKYAssignUserRoleOperation.h"
+#import "SKYAuthContainer+SSO.h"
 #import "SKYAuthContainer.h"
 #import "SKYChangePasswordOperation.h"
 #import "SKYContainer.h"
@@ -93,7 +94,6 @@
 #import "SKYUnknownValue.h"
 #import "SKYUnregisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
-#import "SKYAuthContainer+SSO.h"
 
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"

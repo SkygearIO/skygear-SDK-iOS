@@ -105,8 +105,6 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
             accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
 
             [self updateWithUser:user accessToken:accessToken];
-            // register device when login and signup success
-            [self.container.push registerDeviceCompletionHandler:nil];
         } else {
             loginError = [[[SKYErrorCreator alloc] init]
                 errorWithCode:SKYErrorBadResponse
@@ -118,7 +116,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     }
 }
 
-- (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action provider:(NSString*)provider
+- (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action provider:(NSString *)provider
 {
     switch (action) {
         case SKYOAuthActionLogin:
