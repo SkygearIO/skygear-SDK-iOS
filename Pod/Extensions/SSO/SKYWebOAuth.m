@@ -86,7 +86,7 @@
         _safariVC =
             [[SFSafariViewController alloc] initWithURL:requestURL entersReaderIfAvailable:NO];
         _safariVC.delegate = self;
-        _topVC = [self _findTopViewController];
+        _topVC = [self findTopViewController];
         [_topVC presentViewController:_safariVC animated:YES completion:nil];
     } else {
         _oauthCompletionHandler(nil, [_errorCreator errorWithCode:SKYErrorUnknownError
@@ -156,13 +156,13 @@
     return true;
 }
 
-- (UIViewController *)_findTopViewController
+- (UIViewController *)findTopViewController
 {
     UIViewController *vc = UIApplication.sharedApplication.keyWindow.rootViewController;
-    return [self _findTopViewController:vc];
+    return [self findTopViewController:vc];
 }
 
-- (UIViewController *)_findTopViewController:(UIViewController *)viewController
+- (UIViewController *)findTopViewController:(UIViewController *)viewController
 {
     UIViewController *nextVC = nil;
     if (viewController.presentedViewController) {
@@ -176,7 +176,7 @@
     } else {
         return viewController;
     }
-    return [self _findTopViewController:nextVC];
+    return [self findTopViewController:nextVC];
 }
 
 #pragma mark - SFSafariViewControllerDelegate

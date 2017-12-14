@@ -29,41 +29,47 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     __weak typeof(self) weakSelf = self;
-    [self _oauthFlowWithProvider:providerID
-                         options:options
-                          action:SKYOAuthActionLogin
-               completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
-                   [weakSelf _handleLoginOAuthResult:result
-                                               error:error
-                                   completionHandler:completionHandler];
-               }];
+    [self sso_oauthFlowWithProvider:providerID
+                            options:options
+                             action:SKYOAuthActionLogin
+                  completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
+                      [weakSelf sso_handleLoginOAuthResult:result
+                                                     error:error
+                                         completionHandler:completionHandler];
+                  }];
 }
 
 - (void)linkOAuthProvider:(NSString *)providerID
                   options:(NSDictionary *)options
         completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler
 {
-    [self _oauthFlowWithProvider:providerID
-                         options:options
-                          action:SKYOAuthActionLink
-               completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
-                   completionHandler(error);
-               }];
+    [self sso_oauthFlowWithProvider:providerID
+                            options:options
+                             action:SKYOAuthActionLink
+                  completionHandler:^(NSDictionary *_Nullable result, NSError *_Nullable error) {
+                      completionHandler(error);
+                  }];
 }
 
-- (void)_oauthFlowWithProvider:(NSString *)providerID
-                       options:(NSDictionary *)options
-                        action:(SKYOAuthActionType)action
-             completionHandler:(SKYWebOAuthCompletion)completionHandler
+- (BOOL)resumeOAuthFlow:(NSURL *)url
+                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
-    NSError *validateError = [self _validateGetAuthURLParams:options];
+    return [[SKYWebOAuth shared] resumeAuthorizationFlowWithURL:url];
+}
+
+- (void)sso_oauthFlowWithProvider:(NSString *)providerID
+                          options:(NSDictionary *)options
+                           action:(SKYOAuthActionType)action
+                completionHandler:(SKYWebOAuthCompletion)completionHandler
+{
+    NSError *validateError = [self sso_validateGetAuthURLParams:options];
     if (validateError) {
         completionHandler(nil, validateError);
         return;
     }
-    NSDictionary *params = [self _genAuthURLParams:options];
-    NSString *urlFormat = [self _getAuthURLWithAction:action];
-    NSURL *callbackURL = [self _genCallbackURL:options[@"scheme"]];
+    NSDictionary *params = [self sso_genAuthURLParams:options];
+    NSString *urlFormat = [self sso_getAuthURLWithAction:action];
+    NSURL *callbackURL = [self sso_genCallbackURL:options[@"scheme"]];
 
     [[self container] callLambda:[NSString stringWithFormat:urlFormat, providerID]
              dictionaryArguments:params
@@ -78,9 +84,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                }];
 }
 
-- (void)_handleLoginOAuthResult:(NSDictionary *)result
-                          error:(NSError *)error
-              completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+- (void)sso_handleLoginOAuthResult:(NSDictionary *)result
+                             error:(NSError *)error
+                 completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     NSError *loginError = error;
     SKYRecord *user = nil;
@@ -105,7 +111,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     completionHandler(user, loginError);
 }
 
-- (NSString *)_getAuthURLWithAction:(SKYOAuthActionType)action
+- (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action
 {
     switch (action) {
         case SKYOAuthActionLogin:
@@ -119,7 +125,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     }
 }
 
-- (NSError *)_validateGetAuthURLParams:(NSDictionary *)params
+- (NSError *)sso_validateGetAuthURLParams:(NSDictionary *)params
 {
     if (!params[@"scheme"]) {
         return [[[SKYErrorCreator alloc] init] errorWithCode:SKYErrorInvalidData
@@ -129,12 +135,12 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     return nil;
 }
 
-- (NSDictionary *)_genAuthURLParams:(NSDictionary *)params
+- (NSDictionary *)sso_genAuthURLParams:(NSDictionary *)params
 {
     NSMutableDictionary *newParams = [NSMutableDictionary dictionary];
     newParams[@"ux_mode"] = @"ios";
 
-    newParams[@"callback_url"] = [self _genCallbackURL:params[@"scheme"]].absoluteString;
+    newParams[@"callback_url"] = [self sso_genCallbackURL:params[@"scheme"]].absoluteString;
 
     if (params[@"scope"] != nil) {
         newParams[@"scope"] = params[@"scope"];
@@ -146,16 +152,10 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     return [NSDictionary dictionaryWithDictionary:newParams];
 }
 
-- (NSURL *)_genCallbackURL:(NSString *)scheme
+- (NSURL *)sso_genCallbackURL:(NSString *)scheme
 {
     NSString *host = self.container.endPointAddress.host;
     return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
-}
-
-- (BOOL)resumeOAuthFlow:(NSURL *)url
-                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
-{
-    return [[SKYWebOAuth shared] resumeAuthorizationFlowWithURL:url];
 }
 
 @end
