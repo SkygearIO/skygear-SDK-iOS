@@ -53,9 +53,9 @@
     return self;
 }
 
-- (void)startOAuthFlow:(NSString *_Nonnull)url
-           callbackURL:(NSURL *_Nonnull)callbackURL
-     completionHandler:(SKYWebOAuthCompletion _Nullable)completionHandler
+- (void)startOAuthFlow:(NSString *)url
+           callbackURL:(NSURL *)callbackURL
+     completionHandler:(SKYWebOAuthCompletion)completionHandler
 {
     if (_inProgress) {
         return;
@@ -70,7 +70,7 @@
         SFAuthenticationSession *authenticationVC = [[SFAuthenticationSession alloc]
                   initWithURL:requestURL
             callbackURLScheme:callbackURL.scheme
-            completionHandler:^(NSURL *_Nullable callbackURL, NSError *_Nullable error) {
+            completionHandler:^(NSURL *callbackURL, NSError *error) {
                 if (callbackURL) {
                     [self resumeAuthorizationFlowWithURL:callbackURL];
                 } else {

@@ -18,14 +18,20 @@
 
 #import <SKYKit/SKYKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void (^SKYWebOAuthCompletion)(NSDictionary *_Nullable result, NSError *_Nullable error);
 
 @interface SKYWebOAuth : NSObject
 
-+ (instancetype _Nonnull)shared;
-- (void)startOAuthFlow:(NSString *_Nonnull)url
-           callbackURL:(NSURL *_Nonnull)callbackURL
++ (instancetype)shared;
+
+- (void)startOAuthFlow:(NSString *)url
+           callbackURL:(NSURL *)callbackURL
      completionHandler:(SKYWebOAuthCompletion _Nullable)completionHandler;
-- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *_Nonnull)url;
+
+- (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)url;
 
 @end
+
+NS_ASSUME_NONNULL_END
