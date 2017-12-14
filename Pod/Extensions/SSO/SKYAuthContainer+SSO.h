@@ -38,11 +38,25 @@ NS_ASSUME_NONNULL_BEGIN
         completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler;
 
 /**
-  Resume current oauth flow with url, need to be called by application:openURL:options: in
-  appDelegate
+ Resume current oauth flow with url, need to be called by application:openURL:options: in
+ appDelegate
  */
 - (BOOL)resumeOAuthFlow:(NSURL *)url
                 options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *_Nullable)options;
+
+/**
+ Login user with given provider by access token.
+*/
+- (void)loginOAuthProvider:(NSString *)providerID
+               accessToken:(NSString *)accessToken
+         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
+
+/**
+ Link user with given provider by access token.
+ */
+- (void)linkOAuthProvider:(NSString *)providerID
+              accessToken:(NSString *)accessToken
+        completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler;
 
 /**
  Login the user with a custom token.
