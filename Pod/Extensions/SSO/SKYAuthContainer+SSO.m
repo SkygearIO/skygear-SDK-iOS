@@ -102,6 +102,13 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
              }];
 }
 
+- (void)getOAuthProviderProfiles:(NSString *)providerID
+               completionHandler:
+                   (void (^)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler
+{
+    [self.container callLambda:@"sso/provider_profiles" completionHandler:completionHandler];
+}
+
 - (void)sso_oauthFlowWithProvider:(NSString *)providerID
                           options:(NSDictionary *)options
                            action:(SKYOAuthActionType)action

@@ -20,6 +20,8 @@
 import UIKit
 import SKYKit
 
+let OAuthProfilesResultSegueIdentifier: String = "showOAuthProfilesResult"
+
 class OAuthViewController: UITableViewController {
 
     @IBOutlet weak var providerLabel: UILabel!
@@ -34,6 +36,7 @@ class OAuthViewController: UITableViewController {
     let loginProviderWithAccessTokenIndex = 2
     let linkProviderWithAccessTokenIndex = 3
     let unlinkProviderIndex = 4
+    let getProviderProfilesIndex = 5
     let selectedProvider = "google"
     let dateFormatter = DateFormatter()
 
@@ -67,11 +70,22 @@ class OAuthViewController: UITableViewController {
             showLinkWithAccessTokenInput()
         case unlinkProviderIndex:
             unlinkProvider()
+        case getProviderProfilesIndex:
+            getProviderProfiles()
         default:
             break
         }
 
         tableView.deselectRow(at: indexPath, animated: false)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == OAuthProfilesResultSegueIdentifier {
+            if let vc = segue.destination as? OAuthProfilesResultViewController,
+                let result = sender as? String {
+                vc.result = result
+            }
+        }
     }
 
     // MARK: - Actions
@@ -192,6 +206,26 @@ class OAuthViewController: UITableViewController {
         }
     }
 
+    func getProviderProfiles() {
+        weak var weakSelf = self
+        SKYContainer.default().auth.getOAuthProviderProfiles(selectedProvider) { (result, error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            guard let data = try? JSONSerialization.data(withJSONObject: result!, options: .prettyPrinted) else {
+                let alert = UIAlertController(title: "Error",
+                                              message: "Fail to decode json",
+                                              preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            let json = String.init(data: data, encoding: .utf8)
+            weakSelf?.performSegue(withIdentifier: OAuthProfilesResultSegueIdentifier, sender: json)
+        }
+    }
+
     func updateUsersLabel() {
         if let user = SKYContainer.default().auth.currentUser {
             // swiftlint:disable:next force_cast
@@ -212,5 +246,4 @@ class OAuthViewController: UITableViewController {
 
         self.tableView.reloadData()
     }
-
 }

@@ -374,6 +374,40 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="JPt-fk-ssk" style="IBUITableViewCellStyleDefault" id="QGp-iq-OAU">
+                                        <rect key="frame" x="0.0" y="507.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QGp-iq-OAU" id="ztc-fa-zlD">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Unlink provider" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JPt-fk-ssk">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="EjT-PI-JH3" style="IBUITableViewCellStyleDefault" id="I24-xJ-1zv">
+                                        <rect key="frame" x="0.0" y="551.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I24-xJ-1zv" id="Iod-1t-PsD">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Get provider profiles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EjT-PI-JH3">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -389,11 +423,47 @@
                         <outlet property="userEmailLabel" destination="xrH-uz-6c6" id="DXm-V4-o6l"/>
                         <outlet property="userIDLabel" destination="h0H-Bo-Fg5" id="DUl-pT-8Gf"/>
                         <outlet property="userLastLoginLabel" destination="GqL-nf-y8g" id="etD-TQ-sjS"/>
+                        <segue destination="u5x-Vr-4YF" kind="show" identifier="showOAuthProfilesResult" id="Vue-xL-5re"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jRT-ZL-plS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-185" y="331"/>
+            <point key="canvasLocation" x="-498" y="1235"/>
+        </scene>
+        <!--Profiles Result-->
+        <scene sceneID="pH3-gm-E4O">
+            <objects>
+                <viewController title="Profiles Result" id="u5x-Vr-4YF" customClass="OAuthProfilesResultViewController" customModule="Swift_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="W0G-pU-Oe9"/>
+                        <viewControllerLayoutGuide type="bottom" id="BEr-c7-LzT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="POA-60-fVF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="D1g-yP-qab">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="D1g-yP-qab" firstAttribute="centerX" secondItem="POA-60-fVF" secondAttribute="centerX" id="2Gx-Xf-yiX"/>
+                            <constraint firstItem="D1g-yP-qab" firstAttribute="height" secondItem="POA-60-fVF" secondAttribute="height" id="9kV-tv-weB"/>
+                            <constraint firstItem="D1g-yP-qab" firstAttribute="width" secondItem="POA-60-fVF" secondAttribute="width" id="Ka1-HR-o3z"/>
+                            <constraint firstItem="D1g-yP-qab" firstAttribute="centerY" secondItem="POA-60-fVF" secondAttribute="centerY" id="SQu-md-dSu"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="resultTextView" destination="D1g-yP-qab" id="tU7-6j-nVF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PEa-UE-zAg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="346" y="1235"/>
         </scene>
         <!--Publish/Subscribe-->
         <scene sceneID="FWX-qR-EW6">
