@@ -106,6 +106,8 @@
 		CF234C631E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CF234C621E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m */; };
 		DF862921DB633F3364419993 /* Pods_Swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA35E28666BD02136512A2B5 /* Pods_Swift_Example.framework */; };
 		F413CD5C1ED6BBE2001EBFAB /* SKYAssetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */; };
+		F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */; };
+		F43389E21FE2816F00B7B317 /* SKYAuthContainerSSOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -225,6 +227,8 @@
 		E14141B974E77B52FC7F22EF /* Pods-SKYKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SKYKit.release.xcconfig"; path = "Pods/Target Support Files/Pods-SKYKit/Pods-SKYKit.release.xcconfig"; sourceTree = "<group>"; };
 		E61967EA35930CACEBEC4FC6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssetTests.m; sourceTree = "<group>"; };
+		F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLoginCustomTokenOperationTests.m; sourceTree = "<group>"; };
+		F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerSSOTests.m; sourceTree = "<group>"; };
 		FBC0F6D83E10A7B47F5417C2 /* Pods-Swift Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -368,6 +372,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F43389DE1FE2809000B7B317 /* SSO */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
 				372E77901B28338A001F1972 /* SKYAccessControlTests.m */,
 				5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */,
@@ -451,6 +456,15 @@
 				2C525CB7BEDCD9C5F745CECD /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		F43389DE1FE2809000B7B317 /* SSO */ = {
+			isa = PBXGroup;
+			children = (
+				F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */,
+				F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */,
+			);
+			path = SSO;
 			sourceTree = "<group>";
 		};
 		FA7CA32942AF38C4CD0CB8A0 /* Pods */ = {
@@ -1018,6 +1032,7 @@
 				38EAA71B1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */,
 				38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */,
+				F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */,
 				3745755A1B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m in Sources */,
 				5F9F71431B0B349700F7ADDD /* SKYRemoveRelationsOperationTests.m in Sources */,
 				A9CC0CAB1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m in Sources */,
@@ -1041,6 +1056,7 @@
 				383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */,
 				A9CC0CB51F25E09600FE8B8D /* SKYFetchUserRoleOperationTests.m in Sources */,
 				606CB9941FB5991800046BCE /* SKYReferenceTests.m in Sources */,
+				F43389E21FE2816F00B7B317 /* SKYAuthContainerSSOTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
