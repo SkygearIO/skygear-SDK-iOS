@@ -31,6 +31,8 @@ class OAuthViewController: UITableViewController {
     let actionSectionIndex = 1
     let loginProviderIndex = 0
     let linkProviderIndex = 1
+    let loginProviderWithAccessTokenIndex = 2
+    let linkProviderWithAccessTokenIndex = 3
     let selectedProvider = "google"
     let dateFormatter = DateFormatter()
 
@@ -58,6 +60,10 @@ class OAuthViewController: UITableViewController {
             loginWithProvider()
         case linkProviderIndex:
             linkWithProvider()
+        case loginProviderWithAccessTokenIndex:
+            showLoginWithAccessTokenInput()
+        case linkProviderWithAccessTokenIndex:
+            showLinkWithAccessTokenInput()
         default:
             break
         }
@@ -99,6 +105,63 @@ class OAuthViewController: UITableViewController {
         SKYContainer.default().auth.linkOAuthProvider(selectedProvider, options: [
             "scheme": "skygearexample"
         ]) {(error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            let alert = UIAlertController(title: "Success",
+                                          message: "Link provider successfully",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            weakSelf?.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func showLoginWithAccessTokenInput() {
+        weak var weakSelf = self
+        let title = "Login with access token"
+        let message = "Input \(selectedProvider) access token"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Login", style: .default) { (_) in
+            weakSelf?.loginWithAccessToken((alert.textFields?.first)!)
+        })
+        alert.addTextField(configurationHandler: {(textField: UITextField!) in
+            textField.placeholder = "Access token"
+        })
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func loginWithAccessToken(_ sender: UITextField) {
+        weak var weakSelf = self
+        SKYContainer.default().auth.loginOAuthProvider(selectedProvider, accessToken: sender.text!) { (user, error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            print("Login user %@", user.debugDescription)
+            weakSelf?.updateUsersLabel()
+        }
+    }
+
+    func showLinkWithAccessTokenInput() {
+        weak var weakSelf = self
+        let title = "Link with access token"
+        let message = "Input \(selectedProvider) access token"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Link", style: .default) { (_) in
+            weakSelf?.linkWithAccessToken((alert.textFields?.first)!)
+        })
+        alert.addTextField(configurationHandler: {(textField: UITextField!) in
+            textField.placeholder = "Access token"
+        })
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func linkWithAccessToken(_ sender: UITextField) {
+        weak var weakSelf = self
+        SKYContainer.default().auth.linkOAuthProvider(selectedProvider, accessToken: sender.text!) { (error) in
             if error != nil {
                 weakSelf?.showError(error: error)
                 return
