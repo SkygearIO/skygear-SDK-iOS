@@ -59,6 +59,12 @@ NS_ASSUME_NONNULL_BEGIN
         completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler;
 
 /**
+ Unlink given provider.
+ */
+- (void)unlinkOAuthProvider:(NSString *)providerID
+          completionHandler:(void (^_Nullable)(NSError *_Nullable))completionHandler;
+
+/**
  Login the user with a custom token.
 
  The custom token is typically created on an external server hosting a user database. This

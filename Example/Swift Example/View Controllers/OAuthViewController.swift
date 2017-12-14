@@ -33,6 +33,7 @@ class OAuthViewController: UITableViewController {
     let linkProviderIndex = 1
     let loginProviderWithAccessTokenIndex = 2
     let linkProviderWithAccessTokenIndex = 3
+    let unlinkProviderIndex = 4
     let selectedProvider = "google"
     let dateFormatter = DateFormatter()
 
@@ -64,6 +65,8 @@ class OAuthViewController: UITableViewController {
             showLoginWithAccessTokenInput()
         case linkProviderWithAccessTokenIndex:
             showLinkWithAccessTokenInput()
+        case unlinkProviderIndex:
+            unlinkProvider()
         default:
             break
         }
@@ -168,6 +171,21 @@ class OAuthViewController: UITableViewController {
             }
             let alert = UIAlertController(title: "Success",
                                           message: "Link provider successfully",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            weakSelf?.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func unlinkProvider() {
+        weak var weakSelf = self
+        SKYContainer.default().auth.unlinkOAuthProvider(selectedProvider) { (error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            let alert = UIAlertController(title: "Success",
+                                          message: "Unlink provider successfully",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             weakSelf?.present(alert, animated: true, completion: nil)
