@@ -47,7 +47,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                             options:options
                              action:SKYOAuthActionLink
                   completionHandler:^(NSDictionary *result, NSError *error) {
-                      completionHandler(error);
+                      if (completionHandler) {
+                          completionHandler(error);
+                      }
                   }];
 }
 
@@ -64,7 +66,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 {
     NSError *validateError = [self sso_validateGetAuthURLParams:options];
     if (validateError) {
-        completionHandler(nil, validateError);
+        if (completionHandler) {
+            completionHandler(nil, validateError);
+        }
         return;
     }
     NSDictionary *params = [self sso_genAuthURLParams:options];
@@ -75,7 +79,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
              dictionaryArguments:params
                completionHandler:^(NSDictionary *result, NSError *error) {
                    if (error != nil) {
-                       completionHandler(nil, error);
+                       if (completionHandler) {
+                           completionHandler(nil, error);
+                       }
                        return;
                    }
                    [[SKYWebOAuth shared] startOAuthFlow:result[@"auth_url"]
@@ -108,7 +114,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                       message:@"Returned data does not contain expected data."];
         }
     }
-    completionHandler(user, loginError);
+    if (completionHandler) {
+        completionHandler(user, loginError);
+    }
 }
 
 - (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action
