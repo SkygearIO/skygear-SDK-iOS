@@ -38,7 +38,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     var recordType: String?
     var record: SKYRecord? = nil {
         didSet {
-            if let record = self.record, dict = record.dictionary as [String: AnyObject] {
+            if let record = self.record, let dict = record.dictionary as? [String: AnyObject] {
                 self.attributes = dict.keys.sorted()
             } else {
                 self.attributes = []
@@ -374,7 +374,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "record_type" {
-            if let controller = segue.destination as RecordTypeViewController {
+            if let controller = segue.destination as? RecordTypeViewController {
                 controller.delegate = self
                 controller.selectedRecordType = self.recordType
             }

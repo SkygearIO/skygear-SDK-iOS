@@ -62,7 +62,7 @@ class MainViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "create_record" {
-            if let controller = segue.destination as RecordViewController {
+            if let controller = segue.destination as? RecordViewController {
                 controller.creatingNewRecord = true
             }
         }

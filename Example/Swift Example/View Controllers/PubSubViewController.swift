@@ -28,7 +28,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
     @IBOutlet weak var bottomEdgeConstraint: NSLayoutConstraint!
 
     var subscribedChannel: String?
-    var messageDictionaries: [NSDictionary] = []
+    var messageDictionaries: [[AnyHashable: Any]] = []
 
     var pubsub: SKYPubsubContainer {
         get {
@@ -176,7 +176,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         self.messageTextField.text = ""
     }
 
-    func handle(_ info: NSDictionary) {
+    func handle(_ info: [AnyHashable: Any]) {
         messageDictionaries.append(info)
         let indexPath = IndexPath(row: messageDictionaries.count-1, section: 0)
         self.tableView.insertRows(at: [indexPath], with: .automatic)
@@ -188,10 +188,7 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func subscribe(_ channel: String) {
         self.pubsub.subscribe(to: channel) { (obj) in
-            guard let info = obj as NSDictionary else {
-                return
-            }
-            self.handle(info)
+            self.handle(obj)
         }
     }
 

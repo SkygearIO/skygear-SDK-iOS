@@ -68,8 +68,8 @@ class UserAuthenticationViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func showAuthenticationError(_ user: SKYRecord?, error: NSError?, completion: (() -> Void)?) {
-        let alert = UIAlertController(title: "Unable to Authenticate", message: error?.localizedDescription, preferredStyle: .alert)
+    func showAuthenticationError(_ user: SKYRecord?, error: Error, completion: (() -> Void)?) {
+        let alert = UIAlertController(title: "Unable to Authenticate", message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
             if let c = completion {
                 c()
@@ -80,7 +80,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     func whoami() {
         SKYContainer.default().auth.getWhoAmI { (user, error) in
-            if let error as NSError {
+            if let error = error {
                 self.showAuthenticationError(user, error: error, completion: {
                     self.login(nil)
                 })
@@ -131,7 +131,7 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.login(withAuthData: authData, password: password, completionHandler: { (user, error) in
-                if let error as NSError {
+                if let error = error {
                     self.showAuthenticationError(user, error: error, completion: {
                         self.login(username)
                     })
@@ -175,7 +175,7 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.signup(withAuthData: authData, password: password, completionHandler: { (user, error) in
-                if let error as NSError {
+                if let error = error {
                     self.showAuthenticationError(user, error: error, completion: {
                         self.signup()
                     })
@@ -193,7 +193,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
 
         SKYContainer.default().auth.logout { (user, error) in
-            if let error as NSError {
+            if let error = error {
                 self.showAuthenticationError(user, error: error, completion: nil)
                 return
             }
