@@ -72,10 +72,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
         return;
     }
     NSDictionary *params = [self sso_genAuthURLParams:options];
-    NSString *urlFormat = [self sso_getAuthURLWithAction:action];
     NSURL *callbackURL = [self sso_genCallbackURL:options[@"scheme"]];
 
-    [[self container] callLambda:[NSString stringWithFormat:urlFormat, providerID]
+    [[self container] callLambda:[self sso_getAuthURLWithAction:action provider:providerID]
              dictionaryArguments:params
                completionHandler:^(NSDictionary *result, NSError *error) {
                    if (error != nil) {
@@ -119,17 +118,15 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     }
 }
 
-- (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action
+- (NSString *)sso_getAuthURLWithAction:(SKYOAuthActionType)action provider:(NSString*)provider
 {
     switch (action) {
         case SKYOAuthActionLogin:
-            return @"sso/%@/login_auth_url";
-            break;
+            return [NSString stringWithFormat:@"sso/%@/login_auth_url", provider];
         case SKYOAuthActionLink:
-            return @"sso/%@/link_auth_url";
+            return [NSString stringWithFormat:@"sso/%@/link_auth_url", provider];
         default:
             return nil;
-            break;
     }
 }
 
