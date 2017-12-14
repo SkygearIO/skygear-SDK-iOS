@@ -24,12 +24,17 @@ typedef void (^SKYWebOAuthCompletion)(NSDictionary *_Nullable result, NSError *_
 
 @interface SKYWebOAuth : NSObject
 
+/// Undocumented
 + (instancetype)shared;
 
+/**
+ Use the url to open safari and start the web oauth throw
+ */
 - (void)startOAuthFlow:(NSString *)url
            callbackURL:(NSURL *)callbackURL
      completionHandler:(SKYWebOAuthCompletion _Nullable)completionHandler;
 
+/// Undocumented
 - (BOOL)resumeAuthorizationFlowWithURL:(NSURL *)url;
 
 @end

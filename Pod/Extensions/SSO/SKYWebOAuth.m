@@ -94,7 +94,7 @@
         if (_oauthCompletionHandler) {
             _oauthCompletionHandler(nil,
                                     [_errorCreator errorWithCode:SKYErrorUnknownError
-                                                         message:@"Only support iOS 9 or abrove"]);
+                                                         message:@"Only support iOS 9 or above"]);
         }
         [self didCompleteOAuthFlow];
     }
