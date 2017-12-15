@@ -1,6 +1,6 @@
 //
-//  SkyKitFacebookExtension.h
-//  SkyKit
+//  SKYKitFacebookExtension.h
+//  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
 //

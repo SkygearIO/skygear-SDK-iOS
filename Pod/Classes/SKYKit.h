@@ -96,3 +96,15 @@
 
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
+
+#if __has_include("SKYKitFacebookExtension.h")
+#include "SKYKitFacebookExtension.h"
+#endif
+
+#if __has_include("SKYKitForgotPasswordExtension.h")
+#include "SKYKitForgotPasswordExtension.h"
+#endif
+
+#if __has_include("SKYKitSSOExtension.h")
+#include "SKYKitSSOExtension.h"
+#endif
