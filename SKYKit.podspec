@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
     core.requires_arc = true
 
     core.source_files = 'Pod/Classes/**/*'
+    core.private_header_files = 'Pod/Classes/**/*_Private.h'
 
     # core.public_header_files = 'Pod/Classes/**/*.h'
     # core.frameworks = 'UIKit', 'MapKit'
