@@ -90,11 +90,6 @@
         ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
             if (!error) {
                 [weakSelf updateWithUser:user accessToken:accessToken];
-                // register device when login and signup success
-                if ([operation isKindOfClass:[SKYLoginUserOperation class]] ||
-                    [operation isKindOfClass:[SKYSignupUserOperation class]]) {
-                    [weakSelf.container.push registerDeviceCompletionHandler:nil];
-                }
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);
@@ -175,6 +170,8 @@
 
 - (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken
 {
+    BOOL needRegisterDevice = user && ![user.recordID.recordName isEqualToString:_userRecordID];
+
     if (user && accessToken) {
         _userRecordID = user.recordID.recordName;
         _accessToken = accessToken;
@@ -186,6 +183,11 @@
     }
 
     [self saveCurrentUserAndAccessToken];
+
+    // register device when current user change
+    if (needRegisterDevice) {
+        [self.container.push registerDeviceCompletionHandler:nil];
+    }
 
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SKYContainerDidChangeCurrentUserNotification

@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '7.0'
 
-  s.default_subspecs = 'Core', 'ForgotPassword'
+  s.default_subspecs = 'Core', 'ForgotPassword', 'SSO'
 
   s.subspec 'Core' do |core|
     core.requires_arc = true
@@ -42,4 +42,11 @@ Pod::Spec.new do |s|
 
     forgotPassword.dependency 'SKYKit/Core'
   end
+
+    s.subspec 'SSO' do |sso|
+        sso.source_files = 'Pod/Extensions/SSO/**/*.{h,m}'
+        sso.requires_arc = true
+
+        sso.dependency 'SKYKit/Core'
+    end
 end
