@@ -180,7 +180,6 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
         }
 
         [self.container.auth updateWithUser:user accessToken:accessToken];
-        [self.container.push registerDeviceCompletionHandler:nil];
 
         if (completionHandler) {
             completionHandler(user, error);
