@@ -172,17 +172,14 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
     SKYLoginCustomTokenOperation *op =
         [SKYLoginCustomTokenOperation operationWithCustomToken:customToken];
     op.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-        if (error) {
-            if (completionHandler) {
-                completionHandler(user, error);
-            }
-            return;
+        if (!error) {
+            [self.container.auth updateWithUser:user accessToken:accessToken];
         }
 
-        [self.container.auth updateWithUser:user accessToken:accessToken];
-
         if (completionHandler) {
-            completionHandler(user, error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
         }
     };
     [self.container addOperation:op];
