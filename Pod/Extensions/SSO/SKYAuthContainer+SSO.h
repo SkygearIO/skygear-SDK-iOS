@@ -43,6 +43,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)resumeOAuthFlow:(NSURL *)url
                 options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *_Nullable)options;
+
+/**
+ Login the user with a custom token.
+
+ The custom token is typically created on an external server hosting a user database. This
+ server generates the custom token so that the user on an external server can log in to
+ Skygear Server.
+ */
+- (void)loginWithCustomToken:(NSString *)customToken
+           completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END

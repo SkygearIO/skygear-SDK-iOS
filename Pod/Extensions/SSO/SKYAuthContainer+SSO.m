@@ -18,11 +18,14 @@
 
 #import "SKYAuthContainer+SSO.h"
 #import "SKYAuthContainer_Private.h"
+#import "SKYLoginCustomTokenOperation.h"
 #import "SKYWebOAuth.h"
 
 typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthActionType;
 
 @implementation SKYAuthContainer (SSO)
+
+#pragma mark - OAuth
 
 - (void)loginOAuthProvider:(NSString *)providerID
                    options:(NSDictionary *)options
@@ -159,6 +162,27 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 {
     NSString *host = self.container.endPointAddress.host;
     return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
+}
+
+#pragma mark - Custom Token
+
+- (void)loginWithCustomToken:(NSString *)customToken
+           completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+{
+    SKYLoginCustomTokenOperation *op =
+        [SKYLoginCustomTokenOperation operationWithCustomToken:customToken];
+    op.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (!error) {
+            [self.container.auth updateWithUser:user accessToken:accessToken];
+        }
+
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
+    [self.container addOperation:op];
 }
 
 @end
