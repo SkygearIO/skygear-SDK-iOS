@@ -87,6 +87,7 @@
 		A9E9311E1EEA4E2E004AF717 /* SKYPushContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */; };
 		A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */; };
 		CC4B7F2A1FBDB590006D5317 /* OAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B7F291FBDB590006D5317 /* OAuthViewController.swift */; };
+		CC8016141FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8016131FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift */; };
 		CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */; };
 		CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */; };
 		CD42FE101AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */; };
@@ -206,6 +207,7 @@
 		A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPushContainerTests.m; sourceTree = "<group>"; };
 		A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPubsubContainerTests.m; sourceTree = "<group>"; };
 		CC4B7F291FBDB590006D5317 /* OAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthViewController.swift; sourceTree = "<group>"; };
+		CC8016131FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthProfilesResultViewController.swift; sourceTree = "<group>"; };
 		CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDatabaseTest.m; sourceTree = "<group>"; };
 		CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDeleteRecordsOperationTests.m; sourceTree = "<group>"; };
 		CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLogoutUserOperationTests.m; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				38E8EB481D3F115D004AE52B /* ServerConfigurationViewController.swift */,
 				38E8EB491D3F115D004AE52B /* UserAuthenticationViewController.swift */,
 				CC4B7F291FBDB590006D5317 /* OAuthViewController.swift */,
+				CC8016131FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -969,6 +972,7 @@
 				38E8EB4E1D3F115D004AE52B /* RecordResultViewController.swift in Sources */,
 				38E8EB511D3F115D004AE52B /* ServerConfigurationViewController.swift in Sources */,
 				387F41BB1D3DE5690081D2AE /* PickerTableViewCell.swift in Sources */,
+				CC8016141FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift in Sources */,
 				38E8EB521D3F115D004AE52B /* UserAuthenticationViewController.swift in Sources */,
 				38E8EB4D1D3F115D004AE52B /* QueryViewController.swift in Sources */,
 				387F41B91D3DE52D0081D2AE /* TextFieldTableViewCell.swift in Sources */,
