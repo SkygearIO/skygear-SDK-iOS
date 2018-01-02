@@ -140,7 +140,6 @@
                 NSString *json =
                     [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
 
-                NSLog(@"Decode String Value: %@", json);
                 NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
                 result =
                     [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
