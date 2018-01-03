@@ -131,9 +131,15 @@
         NSArray<NSURLQueryItem *> *queryItems = components.queryItems;
         for (NSURLQueryItem *queryItem in queryItems) {
             if ([queryItem.name isEqualToString:@"result"]) {
-                NSString *json = [queryItem.value
+                NSString *encodedJSON = [queryItem.value
                     stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                json = [json stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                encodedJSON =
+                    [encodedJSON stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                NSData *decodedData =
+                    [[NSData alloc] initWithBase64EncodedString:encodedJSON options:0];
+                NSString *json =
+                    [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+
                 NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
                 result =
                     [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
