@@ -1,3 +1,17 @@
+## 1.3.0 (2018-01-04)
+
+### Features
+
+- Base64 decode result from url (#164)
+- Add login with custom token #153
+- OAuth web login and link flow (#127, #141)
+
+### Other Notes
+
+- Fix missing doc for subspec
+- Fix clang-format
+- Update travis osx_image to xcode9.2
+
 ## 1.2.0 (2017-12-11)
 
 ### Features
