@@ -30,17 +30,22 @@ SpecBegin(SKYPubsubContainer)
     describe(@"maintains a private pubsub", ^{
         __block SKYContainer *container = nil;
         __block id pubsub = nil;
+        __block id publicPubsub = nil;
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
 
             pubsub = OCMClassMock([SKYPubsubClient class]);
+            publicPubsub = OCMClassMock([SKYPubsubClient class]);
             container.pubsub.internalPubsubClient = pubsub;
+            container.pubsub.pubsubClient = publicPubsub;
         });
 
         afterEach(^{
             container.pubsub.internalPubsubClient = nil;
+            container.pubsub.pubsubClient = nil;
             pubsub = nil;
+            publicPubsub = nil;
         });
 
         it(@"sets endpoint correct address", ^{
@@ -50,6 +55,25 @@ SpecBegin(SKYPubsubContainer)
             [container configAddress:@"http://newpoint.com:4321/"];
 
             OCMVerifyAll(pubsub);
+        });
+
+        it(@"sets callbacks to client", ^{
+            void (^onOpenCallback)(void) = ^{
+            };
+            void (^onCloseCallback)(void) = ^{
+            };
+            void (^onErrorCallback)(NSError *error) = ^(NSError *error) {
+            };
+
+            OCMExpect([publicPubsub setOnOpenCallback:onOpenCallback]);
+            OCMExpect([publicPubsub setOnCloseCallback:onCloseCallback]);
+            OCMExpect([publicPubsub setOnErrorCallback:onErrorCallback]);
+
+            [container.pubsub setOnOpenCallback:onOpenCallback];
+            [container.pubsub setOnCloseCallback:onCloseCallback];
+            [container.pubsub setOnErrorCallback:onErrorCallback];
+
+            OCMVerifyAll(publicPubsub);
         });
 
         it(@"subscribes without deviceID", ^{
