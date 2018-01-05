@@ -85,6 +85,21 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     [self.pubsubClient close];
 }
 
+- (void)setOnOpenCallback:(void (^)(void))onOpenCallback
+{
+    [self.pubsubClient setOnOpenCallback:onOpenCallback];
+}
+
+- (void)setOnCloseCallback:(void (^)(void))onCloseCallback
+{
+    [self.pubsubClient setOnCloseCallback:onCloseCallback];
+}
+
+- (void)setOnErrorCallback:(void (^)(NSError *_Nonnull))onErrorCallback
+{
+    [self.pubsubClient setOnErrorCallback:onErrorCallback];
+}
+
 - (void)subscribeTo:(NSString *)channel handler:(void (^)(NSDictionary *))messageHandler
 {
     [self.pubsubClient subscribeTo:channel handler:messageHandler];

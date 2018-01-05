@@ -29,6 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 @property (nonatomic, copy) NSString *_Nullable APIKey;
 
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onOpenCallback)(void);
+
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onCloseCallback)(void);
+
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onErrorCallback)(NSError *error);
+
 /**
  In normal usage, you will not need to init the PubsubClient by yourself. You just get the
  pubsubClient from the default
@@ -45,6 +54,15 @@ NS_ASSUME_NONNULL_BEGIN
  toChannel:@"noteapp"];
  */
 - (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint APIKey:(NSString *_Nullable)APIKey;
+
+/**
+ Initiate a pubsub client with open, close and error callbacks
+ */
+- (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint
+                          APIKey:(NSString *_Nullable)APIKey
+                          onOpen:(nullable void (^)(void))onOpenCallback
+                         onClose:(nullable void (^)(void))onCloseCallback
+                         onError:(nullable void (^)(NSError *error))onErrorCallback;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just

@@ -40,6 +40,15 @@ double const SKYPubsubReconnectWait = 1.0;
 
 - (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey
 {
+    return [self initWithEndPoint:endPoint APIKey:APIKey onOpen:nil onClose:nil onError:nil];
+}
+
+- (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint
+                          APIKey:(NSString *_Nullable)APIKey
+                          onOpen:(nullable void (^)(void))onOpenCallback
+                         onClose:(nullable void (^)(void))onCloseCallback
+                         onError:(nullable void (^)(NSError *error))onErrorCallback;
+{
     self = [super init];
     if (self) {
         _endPointAddress = [endPoint copy];
@@ -49,6 +58,11 @@ double const SKYPubsubReconnectWait = 1.0;
         _opened = false;
         _connecting = false;
         _closing = false;
+
+        _onOpenCallback = [onOpenCallback copy];
+        _onCloseCallback = [onCloseCallback copy];
+        _onErrorCallback = [onErrorCallback copy];
+
         [NSTimer scheduledTimerWithTimeInterval:SKYPubsubPingInterval
                                          target:self
                                        selector:@selector(sendPing)
@@ -168,6 +182,11 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _opened = true;
     _connecting = false;
+
+    if (self.onOpenCallback) {
+        self.onOpenCallback();
+    }
+
     for (NSString *key in _channelHandlers) {
         [self send:@{@"action" : @"sub", @"channel" : key}];
     }
@@ -180,6 +199,11 @@ double const SKYPubsubReconnectWait = 1.0;
     _webSocket = nil;
     _opened = false;
     _connecting = false;
+
+    if (self.onErrorCallback) {
+        self.onErrorCallback(error);
+    }
+
     [NSTimer scheduledTimerWithTimeInterval:SKYPubsubReconnectWait
                                      target:self
                                    selector:@selector(connect)
@@ -220,6 +244,11 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _webSocket = nil;
     _opened = false;
+
+    if (self.onCloseCallback) {
+        self.onCloseCallback();
+    }
+
     if (!_closing) {
         NSLog(@"Websocket unexpected handup by remote, trying to reconnect");
         [self connect];

@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
 
+@property (nonatomic, copy, nullable) void (^onOpenCallback)(void);
+@property (nonatomic, copy, nullable) void (^onCloseCallback)(void);
+@property (nonatomic, copy, nullable) void (^onErrorCallback)(NSError *error);
+
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just
  */
