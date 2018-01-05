@@ -16,6 +16,11 @@ vendor:
 release-commit:
 	./scripts/release-commit.sh
 
+.PHONY: update-version
+update-version:
+	sed -i "" "s/\(s\.version[^=]*=[^\"]*\"\)[^\"]*/\1$(VERSION)/" SKYKit.podspec
+	sed -i "" "s/#define SKY_VERSION @\".*\"/#define SKY_VERSION @\"$(VERSION)\"/" Pod/Classes/SKYKit+version.h
+
 .PHONY: doc
 doc:
 	jazzy --github-file-prefix https://github.com/SkygearIO/skygear-SDK-iOS/tree/$(GIT_REF_NAME)
