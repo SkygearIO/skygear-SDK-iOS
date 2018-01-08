@@ -12,6 +12,10 @@ endif
 vendor:
 	cd Example; pod install
 
+.PHONY: release-commit
+release-commit:
+	./scripts/release-commit.sh
+
 .PHONY: update-version
 update-version:
 	sed -i "" "s/\(s\.version[^=]*=[^\"]*\"\)[^\"]*/\1$(VERSION)/" SKYKit.podspec
