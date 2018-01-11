@@ -37,6 +37,7 @@ class OAuthViewController: UITableViewController {
     let linkProviderWithAccessTokenIndex = 3
     let unlinkProviderIndex = 4
     let getProviderProfilesIndex = 5
+    let loginWithCustomTokenIndex = 6
     let selectedProvider = "google"
     let dateFormatter = DateFormatter()
 
@@ -72,6 +73,8 @@ class OAuthViewController: UITableViewController {
             unlinkProvider()
         case getProviderProfilesIndex:
             getProviderProfiles()
+        case loginWithCustomTokenIndex:
+            showLoginWithCustomTokenInput()
         default:
             break
         }
@@ -223,6 +226,38 @@ class OAuthViewController: UITableViewController {
             }
             let json = String.init(data: data, encoding: .utf8)
             weakSelf?.performSegue(withIdentifier: OAuthProfilesResultSegueIdentifier, sender: json)
+        }
+    }
+
+    func showLoginWithCustomTokenInput() {
+        weak var weakSelf = self
+        let title = "Login with custom token"
+        let message = "Input your server generated JWT token"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Login", style: .default) { (_) in
+            weakSelf?.loginWithCustomToken((alert.textFields?.first)!)
+        })
+        alert.addTextField(configurationHandler: {(textField: UITextField!) in
+            textField.placeholder = "JWT Custom token"
+        })
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func loginWithCustomToken(_ sender: UITextField) {
+        weak var weakSelf = self
+        SKYContainer.default().auth.login(withCustomToken: sender.text!) { (user, error) in
+            if error != nil {
+                weakSelf?.showError(error: error)
+                return
+            }
+            print("Login user %@", user.debugDescription)
+            weakSelf?.updateUsersLabel()
+            let alert = UIAlertController(title: "Success",
+                                          message: "Login with custom token success",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            weakSelf?.present(alert, animated: true, completion: nil)
         }
     }
 
