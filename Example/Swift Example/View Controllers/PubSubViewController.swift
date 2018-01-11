@@ -79,25 +79,12 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
         }
 
-        self.pubsub.onOpenCallback = { [weak self] in
-            self?.pubsubDidOpened()
-        }
-
-        self.pubsub.onCloseCallback = { [weak self] in
-            self?.pubsubDidClosed()
-        }
-
-        self.pubsub.onErrorCallback = { [weak self] (error) in
-            self?.pubsubDidGetError(error: error)
-        }
+        self.pubsub.delegate = self
 
         updateMessageWidgetState()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        self.pubsub.onOpenCallback = nil
-        self.pubsub.onCloseCallback = nil
-        self.pubsub.onErrorCallback = nil
         if let channel: String = subscribedChannel {
             self.unsubscribe(channel)
         }
@@ -159,31 +146,6 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
         }
 
         self.sendMessage(message, channel: channel)
-    }
-
-    func pubsubDidOpened() {
-        let alert = UIAlertController(title: nil, message: "Pubsub connection is open", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    func pubsubDidClosed() {
-        let alert = UIAlertController(title: nil, message: "Pubsub connection is closed", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    func pubsubDidGetError(error: Error) {
-        let alert = UIAlertController(
-            title: "Error",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true, completion: nil)
     }
 
     func updateMessageWidgetState() {
@@ -280,5 +242,34 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
+    }
+}
+
+// MARK: - SKYPubsubContainerDelegate
+
+extension PubSubViewController: SKYPubsubContainerDelegate {
+    func pubsubDidOpen() {
+        let alert = UIAlertController(title: nil, message: "Pubsub connection is open", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func pubsubDidClose() {
+        let alert = UIAlertController(title: nil, message: "Pubsub connection is closed", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func pubsub(onError error: Error) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
     }
 }

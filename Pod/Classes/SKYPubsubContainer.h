@@ -19,16 +19,26 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol SKYPubsubContainerDelegate <NSObject>
+
+@optional
+
+- (void)pubsubDidOpen;
+
+- (void)pubsubDidClose;
+
+- (void)pubsubOnError:(NSError *)error;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @interface SKYPubsubContainer : NSObject
 
-@property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
+@property (nonatomic, weak) id<SKYPubsubContainerDelegate> _Nullable delegate;
 
-@property (nonatomic, copy, nullable) void (^onOpenCallback)(void);
-@property (nonatomic, copy, nullable) void (^onCloseCallback)(void);
-@property (nonatomic, copy, nullable) void (^onErrorCallback)(NSError *error);
+@property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just

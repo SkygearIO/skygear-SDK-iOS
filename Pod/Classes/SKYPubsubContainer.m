@@ -33,11 +33,10 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     self = [super init];
     if (self) {
         self.container = container;
-
-        _pubsubClient = [[SKYPubsubClient alloc]
+        self.pubsubClient = [[SKYPubsubClient alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
                       APIKey:nil];
-        _internalPubsubClient = [[SKYPubsubClient alloc]
+        self.internalPubsubClient = [[SKYPubsubClient alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];
     }
@@ -70,6 +69,30 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
 
 #pragma mark - Pubsub client
 
+- (void)setPubsubClient:(SKYPubsubClient *)pubsubClient
+{
+    _pubsubClient = pubsubClient;
+    __weak typeof(self) wself = self;
+    [_pubsubClient setOnOpenCallback:^{
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsubDidOpen)]) {
+            [delegate pubsubDidOpen];
+        }
+    }];
+    [_pubsubClient setOnCloseCallback:^{
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsubDidClose)]) {
+            [delegate pubsubDidClose];
+        }
+    }];
+    [_pubsubClient setOnErrorCallback:^(NSError *_Nonnull error) {
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsubOnError:)]) {
+            [delegate pubsubOnError:error];
+        }
+    }];
+}
+
 - (NSURL *)endPointAddress
 {
     return self.pubsubClient.endPointAddress;
@@ -83,21 +106,6 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
 - (void)close
 {
     [self.pubsubClient close];
-}
-
-- (void)setOnOpenCallback:(void (^)(void))onOpenCallback
-{
-    [self.pubsubClient setOnOpenCallback:onOpenCallback];
-}
-
-- (void)setOnCloseCallback:(void (^)(void))onCloseCallback
-{
-    [self.pubsubClient setOnCloseCallback:onCloseCallback];
-}
-
-- (void)setOnErrorCallback:(void (^)(NSError *_Nonnull))onErrorCallback
-{
-    [self.pubsubClient setOnErrorCallback:onErrorCallback];
 }
 
 - (void)subscribeTo:(NSString *)channel handler:(void (^)(NSDictionary *))messageHandler

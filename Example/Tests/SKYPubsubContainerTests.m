@@ -57,25 +57,6 @@ SpecBegin(SKYPubsubContainer)
             OCMVerifyAll(pubsub);
         });
 
-        it(@"sets callbacks to client", ^{
-            void (^onOpenCallback)(void) = ^{
-            };
-            void (^onCloseCallback)(void) = ^{
-            };
-            void (^onErrorCallback)(NSError *error) = ^(NSError *error) {
-            };
-
-            OCMExpect([publicPubsub setOnOpenCallback:onOpenCallback]);
-            OCMExpect([publicPubsub setOnCloseCallback:onCloseCallback]);
-            OCMExpect([publicPubsub setOnErrorCallback:onErrorCallback]);
-
-            [container.pubsub setOnOpenCallback:onOpenCallback];
-            [container.pubsub setOnCloseCallback:onCloseCallback];
-            [container.pubsub setOnErrorCallback:onErrorCallback];
-
-            OCMVerifyAll(publicPubsub);
-        });
-
         it(@"subscribes without deviceID", ^{
             OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
 

@@ -40,15 +40,6 @@ double const SKYPubsubReconnectWait = 1.0;
 
 - (instancetype)initWithEndPoint:(NSURL *)endPoint APIKey:(NSString *)APIKey
 {
-    return [self initWithEndPoint:endPoint APIKey:APIKey onOpen:nil onClose:nil onError:nil];
-}
-
-- (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint
-                          APIKey:(NSString *_Nullable)APIKey
-                          onOpen:(nullable void (^)(void))onOpenCallback
-                         onClose:(nullable void (^)(void))onCloseCallback
-                         onError:(nullable void (^)(NSError *error))onErrorCallback;
-{
     self = [super init];
     if (self) {
         _endPointAddress = [endPoint copy];
@@ -58,10 +49,6 @@ double const SKYPubsubReconnectWait = 1.0;
         _opened = false;
         _connecting = false;
         _closing = false;
-
-        _onOpenCallback = [onOpenCallback copy];
-        _onCloseCallback = [onCloseCallback copy];
-        _onErrorCallback = [onErrorCallback copy];
 
         [NSTimer scheduledTimerWithTimeInterval:SKYPubsubPingInterval
                                          target:self
@@ -96,6 +83,21 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _APIKey = [APIKey copy];
     [self reconnectIfOpen];
+}
+
+- (void)setOnOpenCallback:(void (^)(void))onOpenCallback
+{
+    _onOpenCallback = [onOpenCallback copy];
+}
+
+- (void)setOnCloseCallback:(void (^)(void))onCloseCallback
+{
+    _onCloseCallback = [onCloseCallback copy];
+}
+
+- (void)setOnErrorCallback:(void (^)(NSError *_Nonnull))onErrorCallback
+{
+    _onErrorCallback = [onErrorCallback copy];
 }
 
 - (SRWebSocket *)makeWebSocket

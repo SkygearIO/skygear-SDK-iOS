@@ -56,15 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint APIKey:(NSString *_Nullable)APIKey;
 
 /**
- Initiate a pubsub client with open, close and error callbacks
- */
-- (instancetype)initWithEndPoint:(NSURL *_Nullable)endPoint
-                          APIKey:(NSString *_Nullable)APIKey
-                          onOpen:(nullable void (^)(void))onOpenCallback
-                         onClose:(nullable void (^)(void))onCloseCallback
-                         onError:(nullable void (^)(NSError *error))onErrorCallback;
-
-/**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just
  */
 - (void)connect;
