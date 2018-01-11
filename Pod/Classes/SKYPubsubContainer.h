@@ -19,19 +19,21 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
+@class SKYPubsubContainer;
+
 @protocol SKYPubsubContainerDelegate <NSObject>
 
 @optional
 
-- (void)pubsubDidOpen;
+- (void)pubsubDidOpen:(SKYPubsubContainer *)pubsub;
 
-- (void)pubsubDidClose;
+- (void)pubsubDidClose:(SKYPubsubContainer *)pubsub;
 
-- (void)pubsubOnError:(NSError *)error;
+- (void)pubsub:(SKYPubsubContainer *)pubsub didFailWithError:(NSError *)error;
 
 @end
-
-NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @interface SKYPubsubContainer : NSObject

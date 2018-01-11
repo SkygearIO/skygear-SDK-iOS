@@ -75,20 +75,23 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     __weak typeof(self) wself = self;
     [_pubsubClient setOnOpenCallback:^{
         id<SKYPubsubContainerDelegate> delegate = wself.delegate;
-        if ([delegate respondsToSelector:@selector(pubsubDidOpen)]) {
-            [delegate pubsubDidOpen];
+        if ([delegate respondsToSelector:@selector(pubsubDidOpen:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsubDidOpen:strongSelf];
         }
     }];
     [_pubsubClient setOnCloseCallback:^{
         id<SKYPubsubContainerDelegate> delegate = wself.delegate;
-        if ([delegate respondsToSelector:@selector(pubsubDidClose)]) {
-            [delegate pubsubDidClose];
+        if ([delegate respondsToSelector:@selector(pubsubDidClose:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsubDidClose:strongSelf];
         }
     }];
     [_pubsubClient setOnErrorCallback:^(NSError *_Nonnull error) {
         id<SKYPubsubContainerDelegate> delegate = wself.delegate;
-        if ([delegate respondsToSelector:@selector(pubsubOnError:)]) {
-            [delegate pubsubOnError:error];
+        if ([delegate respondsToSelector:@selector(pubsub:didFailWithError:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsub:strongSelf didFailWithError:error];
         }
     }];
 }
