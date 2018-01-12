@@ -30,17 +30,22 @@ SpecBegin(SKYPubsubContainer)
     describe(@"maintains a private pubsub", ^{
         __block SKYContainer *container = nil;
         __block id pubsub = nil;
+        __block id publicPubsub = nil;
 
         beforeEach(^{
             container = [[SKYContainer alloc] init];
 
             pubsub = OCMClassMock([SKYPubsubClient class]);
+            publicPubsub = OCMClassMock([SKYPubsubClient class]);
             container.pubsub.internalPubsubClient = pubsub;
+            container.pubsub.pubsubClient = publicPubsub;
         });
 
         afterEach(^{
             container.pubsub.internalPubsubClient = nil;
+            container.pubsub.pubsubClient = nil;
             pubsub = nil;
+            publicPubsub = nil;
         });
 
         it(@"sets endpoint correct address", ^{

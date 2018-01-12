@@ -79,6 +79,8 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
         }
 
+        self.pubsub.delegate = self
+
         updateMessageWidgetState()
     }
 
@@ -113,7 +115,6 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Unsubscribe", style: .plain, target: self, action: #selector(PubSubViewController.triggerUnsubscribe(_:)))
             self.updateMessageWidgetState()
-            self.messageTextField.becomeFirstResponder()
         }))
         alert.preferredAction = alert.actions.last
         self.present(alert, animated: true, completion: nil)
@@ -194,6 +195,9 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func unsubscribe(_ channel: String) {
         self.pubsub.unsubscribe(channel)
+
+        // close on purpose to demonstate onClose callback
+        self.pubsub.close()
     }
 
     // MARK: - UITextFieldDelegate
@@ -238,5 +242,34 @@ class PubSubViewController: UIViewController, UITextFieldDelegate, UITableViewDe
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
+    }
+}
+
+// MARK: - SKYPubsubContainerDelegate
+
+extension PubSubViewController: SKYPubsubContainerDelegate {
+    func pubsubDidOpen() {
+        let alert = UIAlertController(title: nil, message: "Pubsub connection is open", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func pubsubDidClose() {
+        let alert = UIAlertController(title: nil, message: "Pubsub connection is closed", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func pubsub(onError error: Error) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Got it", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
     }
 }

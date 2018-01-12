@@ -33,11 +33,10 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     self = [super init];
     if (self) {
         self.container = container;
-
-        _pubsubClient = [[SKYPubsubClient alloc]
+        self.pubsubClient = [[SKYPubsubClient alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
                       APIKey:nil];
-        _internalPubsubClient = [[SKYPubsubClient alloc]
+        self.internalPubsubClient = [[SKYPubsubClient alloc]
             initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
                       APIKey:nil];
     }
@@ -69,6 +68,33 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
 }
 
 #pragma mark - Pubsub client
+
+- (void)setPubsubClient:(SKYPubsubClient *)pubsubClient
+{
+    _pubsubClient = pubsubClient;
+    __weak typeof(self) wself = self;
+    [_pubsubClient setOnOpenCallback:^{
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsubDidOpen:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsubDidOpen:strongSelf];
+        }
+    }];
+    [_pubsubClient setOnCloseCallback:^{
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsubDidClose:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsubDidClose:strongSelf];
+        }
+    }];
+    [_pubsubClient setOnErrorCallback:^(NSError *_Nonnull error) {
+        id<SKYPubsubContainerDelegate> delegate = wself.delegate;
+        if ([delegate respondsToSelector:@selector(pubsub:didFailWithError:)]) {
+            typeof(wself) strongSelf = wself;
+            [delegate pubsub:strongSelf didFailWithError:error];
+        }
+    }];
+}
 
 - (NSURL *)endPointAddress
 {

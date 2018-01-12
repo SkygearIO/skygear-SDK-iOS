@@ -49,6 +49,7 @@ double const SKYPubsubReconnectWait = 1.0;
         _opened = false;
         _connecting = false;
         _closing = false;
+
         [NSTimer scheduledTimerWithTimeInterval:SKYPubsubPingInterval
                                          target:self
                                        selector:@selector(sendPing)
@@ -82,6 +83,21 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _APIKey = [APIKey copy];
     [self reconnectIfOpen];
+}
+
+- (void)setOnOpenCallback:(void (^)(void))onOpenCallback
+{
+    _onOpenCallback = [onOpenCallback copy];
+}
+
+- (void)setOnCloseCallback:(void (^)(void))onCloseCallback
+{
+    _onCloseCallback = [onCloseCallback copy];
+}
+
+- (void)setOnErrorCallback:(void (^)(NSError *_Nonnull))onErrorCallback
+{
+    _onErrorCallback = [onErrorCallback copy];
 }
 
 - (SRWebSocket *)makeWebSocket
@@ -168,6 +184,11 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _opened = true;
     _connecting = false;
+
+    if (self.onOpenCallback) {
+        self.onOpenCallback();
+    }
+
     for (NSString *key in _channelHandlers) {
         [self send:@{@"action" : @"sub", @"channel" : key}];
     }
@@ -180,6 +201,11 @@ double const SKYPubsubReconnectWait = 1.0;
     _webSocket = nil;
     _opened = false;
     _connecting = false;
+
+    if (self.onErrorCallback) {
+        self.onErrorCallback(error);
+    }
+
     [NSTimer scheduledTimerWithTimeInterval:SKYPubsubReconnectWait
                                      target:self
                                    selector:@selector(connect)
@@ -220,6 +246,11 @@ double const SKYPubsubReconnectWait = 1.0;
 {
     _webSocket = nil;
     _opened = false;
+
+    if (self.onCloseCallback) {
+        self.onCloseCallback();
+    }
+
     if (!_closing) {
         NSLog(@"Websocket unexpected handup by remote, trying to reconnect");
         [self connect];

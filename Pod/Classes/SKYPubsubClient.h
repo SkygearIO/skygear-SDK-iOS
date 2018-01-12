@@ -29,6 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 @property (nonatomic, copy) NSString *_Nullable APIKey;
 
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onOpenCallback)(void);
+
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onCloseCallback)(void);
+
+/// Undocumented
+@property (nonatomic, copy, nullable) void (^onErrorCallback)(NSError *error);
+
 /**
  In normal usage, you will not need to init the PubsubClient by yourself. You just get the
  pubsubClient from the default

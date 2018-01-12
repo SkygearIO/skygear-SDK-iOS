@@ -97,6 +97,43 @@ SpecBegin(SKYPubsub)
             [mockWS verify];
         });
 
+        it(@"calls onOpen callbacks", ^{
+            __block BOOL onOpenCalled = NO;
+            [pubsubClient setOnOpenCallback:^{
+                onOpenCalled = YES;
+            }];
+
+            [[mockWS expect] open];
+
+            [pubsubClient webSocketDidOpen:mockWS];
+            expect(onOpenCalled).to.equal(YES);
+        });
+
+        it(@"calls onClose callbacks", ^{
+            __block BOOL onCloseCalled = NO;
+            [pubsubClient setOnCloseCallback:^{
+                onCloseCalled = YES;
+            }];
+
+            [[mockWS expect] open];
+            [[mockWS expect] close];
+
+            [pubsubClient webSocket:mockWS didCloseWithCode:0 reason:@"" wasClean:NO];
+            expect(onCloseCalled).to.equal(YES);
+        });
+
+        it(@"calls onError callbacks", ^{
+            __block NSError *onErrorCalledWithError = nil;
+            [pubsubClient setOnErrorCallback:^(NSError *error) {
+                onErrorCalledWithError = error;
+            }];
+
+            NSError *errorOnInvocation =
+                [[NSError alloc] initWithDomain:@"io.skygear.test" code:0 userInfo:nil];
+            [pubsubClient webSocket:mockWS didFailWithError:errorOnInvocation];
+            expect(onErrorCalledWithError).to.equal(errorOnInvocation);
+        });
+
         afterEach(^{
             [mockPubsub stopMocking];
             [mockWS stopMocking];

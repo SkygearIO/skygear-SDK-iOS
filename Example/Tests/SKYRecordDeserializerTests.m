@@ -20,8 +20,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
-#import <SKYKit/SKYAccessControl_Private.h>
 #import <SKYKit/SKYKit.h>
+
+#import "SKYAccessControl_Private.h"
 
 SpecBegin(SKYRecordDeserializer)
 

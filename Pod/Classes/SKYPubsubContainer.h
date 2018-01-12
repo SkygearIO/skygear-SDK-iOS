@@ -21,8 +21,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SKYPubsubContainer;
+
+@protocol SKYPubsubContainerDelegate <NSObject>
+
+@optional
+
+- (void)pubsubDidOpen:(SKYPubsubContainer *)pubsub;
+
+- (void)pubsubDidClose:(SKYPubsubContainer *)pubsub;
+
+- (void)pubsub:(SKYPubsubContainer *)pubsub didFailWithError:(NSError *)error;
+
+@end
+
 /// Undocumented
 @interface SKYPubsubContainer : NSObject
+
+@property (nonatomic, weak) id<SKYPubsubContainerDelegate> _Nullable delegate;
 
 @property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
 

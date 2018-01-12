@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Failed to register remote notification: \(error.localizedDescription)")
     }
 
-    func application(_ app: UIApplication, open url: URL, options:[UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
         return SKYContainer.default().auth.resumeOAuthFlow(url, options: options)
     }
 }
