@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
     # core.frameworks = 'UIKit', 'MapKit'
     core.dependency 'FMDB', '~> 2.6.0'
     core.dependency 'SocketRocket', '~> 0.4'
-    core.dependency 'MagicKit-Skygear', '~> 0.0.5'
+    core.dependency 'MagicKit-Skygear', '~> 0.0.6'
   end
 
   s.subspec 'Facebook' do |facebook|
