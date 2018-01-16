@@ -1,3 +1,16 @@
+## 1.3.1 (2018-01-16)
+
+### Features
+
+- Add open, close and error hook for pubsub (#155)
+
+### Bug Fixes
+
+- Fix unable to init SKYAsset (#169)
+
+### Other Notes
+
+- Add login with custom token example
 ## 1.3.0 (2018-01-04)
 
 ### Features
