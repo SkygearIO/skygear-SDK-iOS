@@ -6,33 +6,33 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - Expecta (1.0.6)
-  - FBSDKCoreKit (4.28.0):
+  - FBSDKCoreKit (4.29.0):
     - Bolts (~> 1.7)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - MagicKit-Skygear (0.0.5)
+  - MagicKit-Skygear (0.0.6)
   - OCMock (3.3.1)
-  - OHHTTPStubs (6.0.0):
-    - OHHTTPStubs/Default (= 6.0.0)
-  - OHHTTPStubs/Core (6.0.0)
-  - OHHTTPStubs/Default (6.0.0):
+  - OHHTTPStubs (6.1.0):
+    - OHHTTPStubs/Default (= 6.1.0)
+  - OHHTTPStubs/Core (6.1.0)
+  - OHHTTPStubs/Default (6.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.0.0):
+  - OHHTTPStubs/JSON (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.0.0):
+  - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.0.0)
+  - OHHTTPStubs/OHPathHelpers (6.1.0)
   - SKYKit (1.3.0):
     - SKYKit/Core (= 1.3.0)
     - SKYKit/ForgotPassword (= 1.3.0)
     - SKYKit/SSO (= 1.3.0)
   - SKYKit/Core (1.3.0):
     - FMDB (~> 2.6.0)
-    - MagicKit-Skygear (~> 0.0.5)
+    - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
   - SKYKit/Facebook (1.3.0):
     - FBSDKCoreKit (~> 4.0)
@@ -59,12 +59,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  FBSDKCoreKit: ca961e279113f691fd83dc634c0bbad9d4e3f370
+  FBSDKCoreKit: 6f139173dc63a1deaff4430a55f2fe5bb222d2af
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  MagicKit-Skygear: 05123882deb6deec5e1218963ab8411e81b338d0
+  MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: f3f61e6eaa16038c30caa5798c5e49d3307b6f22
-  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
-  SKYKit: f2299a3632273b675a260c63e8f9c4e082968afa
+  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  SKYKit: 799390b66407df797472428f3823bc096a40fbc7
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
