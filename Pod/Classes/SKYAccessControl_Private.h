@@ -22,10 +22,6 @@
 
 @interface SKYAccessControl ()
 
-+ (instancetype)emptyAccessControl;
-+ (instancetype)publicReadableAccessControl;
-+ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries;
-
 - (instancetype)initWithPublicReadableAccessControl;
 - (instancetype)initWithEntries:(NSArray<SKYAccessControlEntry *> *)entries
     NS_DESIGNATED_INITIALIZER;

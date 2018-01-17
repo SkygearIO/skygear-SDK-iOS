@@ -25,9 +25,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SKYRecord;
 @class SKYRole;
+@class SKYAccessControlEntry;
 
 /// Undocumented
 @interface SKYAccessControl : NSObject <NSCoding, NSCopying>
+
+/**
+ * Returns an empty access control object.
+ */
++ (instancetype)emptyAccessControl;
+
+/**
+ * Returns a public readable access control object.
+ */
++ (instancetype)publicReadableAccessControl;
+
+/**
+ * Returns a access control objects with the specified access control entries.
+ */
++ (instancetype)accessControlWithEntries:(NSArray<SKYAccessControlEntry *> *)entries;
 
 /// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
