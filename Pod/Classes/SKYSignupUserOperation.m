@@ -18,9 +18,9 @@
 //
 
 #import "SKYSignupUserOperation.h"
+#import "SKYDataSerialization.h"
 #import "SKYOperation_Private.h"
 #import "SKYRecordDeserializer.h"
-#import "SKYDataSerialization.h"
 #import "SKYRequest.h"
 
 @implementation SKYSignupUserOperation
