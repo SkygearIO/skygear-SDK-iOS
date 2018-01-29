@@ -18,6 +18,7 @@
 //
 
 #import "SKYSignupUserOperation.h"
+#import "SKYDataSerialization.h"
 #import "SKYOperation_Private.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYRequest.h"
@@ -95,7 +96,7 @@
         payload[@"password"] = self.password;
     }
     if (self.profile) {
-        payload[@"profile"] = self.profile;
+        payload[@"profile"] = [SKYDataSerialization serializeObject:self.profile];
     }
 
     self.request = [[SKYRequest alloc] initWithAction:@"auth:signup" payload:payload];
