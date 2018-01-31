@@ -10,12 +10,14 @@ Pod::Spec.new do |s|
   s.author           = { "Oursky Ltd." => "hello@oursky.com" }
   s.source           = { :git => "https://github.com/SkygearIO/skygear-SDK-iOS.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '7.0'
+  s.ios.deployment_target = '7.0'
 
   s.default_subspecs = 'Core', 'ForgotPassword', 'SSO'
 
   s.subspec 'Core' do |core|
     core.requires_arc = true
+    core.ios.deployment_target = '7.0'
+    core.osx.deployment_target = '10.9'
 
     core.source_files = 'Pod/Classes/**/*'
     core.private_header_files = 'Pod/Classes/**/*_Private.h'
@@ -28,6 +30,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Facebook' do |facebook|
+    facebook.ios.deployment_target = '7.0'
+
     facebook.source_files = 'Pod/Extensions/Facebook/**/*.{h,m}'
     facebook.requires_arc = true
     # Allow the weak linking to Bolts (see FBSDKAppLinkResolver.h) in Cocoapods 0.39.0
@@ -38,16 +42,20 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'ForgotPassword' do |forgotPassword|
+    forgotPassword.ios.deployment_target = '7.0'
+
     forgotPassword.source_files = 'Pod/Extensions/Forgot Password/**/*.{h,m}'
     forgotPassword.requires_arc = true
 
     forgotPassword.dependency 'SKYKit/Core'
   end
 
-    s.subspec 'SSO' do |sso|
-        sso.source_files = 'Pod/Extensions/SSO/**/*.{h,m}'
-        sso.requires_arc = true
+  s.subspec 'SSO' do |sso|
+    sso.ios.deployment_target = '7.0'
 
-        sso.dependency 'SKYKit/Core'
-    end
+    sso.source_files = 'Pod/Extensions/SSO/**/*.{h,m}'
+    sso.requires_arc = true
+
+    sso.dependency 'SKYKit/Core'
+  end
 end

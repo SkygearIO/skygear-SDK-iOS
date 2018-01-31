@@ -19,7 +19,6 @@
 
 #import "SKYAsset.h"
 #import <MagicKit/MagicKit.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 
 @interface SKYAsset ()
 
