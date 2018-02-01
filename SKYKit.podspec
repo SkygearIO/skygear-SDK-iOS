@@ -10,13 +10,13 @@ Pod::Spec.new do |s|
   s.author           = { "Oursky Ltd." => "hello@oursky.com" }
   s.source           = { :git => "https://github.com/SkygearIO/skygear-SDK-iOS.git", :tag => s.version.to_s }
 
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
 
   s.default_subspecs = 'Core', 'ForgotPassword', 'SSO'
 
   s.subspec 'Core' do |core|
     core.requires_arc = true
-    core.ios.deployment_target = '7.0'
+    core.ios.deployment_target = '8.0'
     core.osx.deployment_target = '10.9'
 
     core.source_files = 'Pod/Classes/**/*'
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Facebook' do |facebook|
-    facebook.ios.deployment_target = '7.0'
+    facebook.ios.deployment_target = '8.0'
 
     facebook.source_files = 'Pod/Extensions/Facebook/**/*.{h,m}'
     facebook.requires_arc = true
@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'ForgotPassword' do |forgotPassword|
-    forgotPassword.ios.deployment_target = '7.0'
+    forgotPassword.ios.deployment_target = '8.0'
 
     forgotPassword.source_files = 'Pod/Extensions/Forgot Password/**/*.{h,m}'
     forgotPassword.requires_arc = true
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'SSO' do |sso|
-    sso.ios.deployment_target = '7.0'
+    sso.ios.deployment_target = '8.0'
 
     sso.source_files = 'Pod/Extensions/SSO/**/*.{h,m}'
     sso.requires_arc = true
