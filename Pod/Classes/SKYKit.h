@@ -97,14 +97,18 @@
 #import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
 
+#if TARGET_OS_IOS
 #if __has_include("SKYKitFacebookExtension.h")
 #include "SKYKitFacebookExtension.h"
+#endif
 #endif
 
 #if __has_include("SKYKitForgotPasswordExtension.h")
 #include "SKYKitForgotPasswordExtension.h"
 #endif
 
+#if TARGET_OS_IOS
 #if __has_include("SKYKitSSOExtension.h")
 #include "SKYKitSSOExtension.h"
+#endif
 #endif

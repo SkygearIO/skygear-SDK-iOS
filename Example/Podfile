@@ -1,13 +1,14 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.1'
-
 target 'Test Runner' do
+  platform :ios, '8.0'
+
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
 end
 
 target 'Swift Example' do
+  platform :ios, '8.0'
   use_frameworks!
 
   pod "SKYKit", :path => "../"
@@ -15,6 +16,8 @@ target 'Swift Example' do
 end
 
 target 'Tests' do
+  platform :ios, '8.0'
+
   pod "SKYKit", :path => "../"
   pod "SKYKit/Facebook", :path => "../"
 
@@ -22,6 +25,12 @@ target 'Tests' do
   pod 'Expecta'
   pod 'OHHTTPStubs'
   pod 'OCMock'
+end
+
+target 'Mac Example' do
+  platform :osx, '10.9'
+
+  pod "SKYKit/Core", :path => "../"
 end
 
 post_install do |installer|
