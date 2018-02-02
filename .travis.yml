@@ -18,9 +18,9 @@ before_install:
 - pod update --project-directory=Example
 - pod install --project-directory=Example
 script:
-- xcodebuild -scheme "Test Runner" -workspace "$WORKSPACE" -sdk "$SDK" -destination "$DESTINATION" build test | xcpretty
-- xcodebuild -scheme "Swift Example" -workspace "$WORKSPACE" -sdk "$SDK" -destination "$DESTINATION" build | xcpretty
-- xcodebuild -scheme "Mac Example" -workspace "$WORKSPACE" build | xcpretty
+- sh -eo pipefail -c "xcodebuild -scheme \"Test Runner\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build test | xcpretty"
+- sh -eo pipefail -c "xcodebuild -scheme \"Swift Example\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build | xcpretty"
+- sh -eo pipefail -c "xcodebuild -scheme \"Mac Example\" -workspace \"$WORKSPACE\" build | xcpretty"
 - pod lib lint --allow-warnings
 - ./clang-check.sh
 - swiftlint
