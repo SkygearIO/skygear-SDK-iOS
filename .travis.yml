@@ -10,10 +10,9 @@ cache:
 - pip
 before_install:
 - gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
-- brew update
-- brew install clang-format
+- brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/2c2c4b8bfb93e3b409c1c9c51b8a76c3497e0ca0/Formula/clang-format.rb
+- brew upgrade --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/6dcd3c206681f02b267e4cf3d44ec9a8ded36b40/Formula/swiftlint.rb
 - clang-format --version
-- brew install swiftlint || brew upgrade swiftlint
 - pip2 install lizard
 - pod update --project-directory=Example
 - pod install --project-directory=Example
