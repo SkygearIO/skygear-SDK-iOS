@@ -68,9 +68,8 @@ NS_ASSUME_NONNULL_BEGIN
  Get oauth provider user profiles, the result dictionary key is provider id and value is profile
  dictionary.
 */
-- (void)getOAuthProviderProfiles:(NSString *)providerID
-               completionHandler:(void (^_Nullable)(NSDictionary *_Nullable,
-                                                    NSError *_Nullable))completionHandler;
+- (void)getOAuthProviderProfilesWithCompletionHandler:
+    (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
 /**
  Login the user with a custom token.
