@@ -84,6 +84,7 @@
 #import "SKYRole.h"
 #import "SKYSendPushNotificationOperation.h"
 #import "SKYSequence.h"
+#import "SKYSetDisableUserOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYSignupUserOperation.h"
 #import "SKYSubscription.h"
