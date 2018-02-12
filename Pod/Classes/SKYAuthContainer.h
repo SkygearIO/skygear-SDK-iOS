@@ -283,6 +283,32 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
             fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
                   completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
+/**
+ *  Enable user account of a disabled user.
+ *
+ *  @param userID          User ID of a disabled user
+ *  @param completionBlock Completion Block
+ */
+- (void)enableUserWithUserID:(NSString *)userID
+                  completion:(void (^_Nullable)(NSString *userID,
+                                                NSError *_Nullable error))completionBlock;
+
+/**
+ *  Disable user account of a user.
+ *
+ *  @param userID          User ID of user to disable
+ *  @param message         Message to be shown to user, to explain why the account is disabled,
+ * optional
+ *  @param expiry          Date and time when the disable user account is automatically enabled,
+ * optional
+ *  @param completionBlock Completion Block
+ */
+- (void)disableUserWithUserID:(NSString *)userID
+                      message:(NSString *_Nullable)message
+                       expiry:(NSDate *_Nullable)expiry
+                   completion:(void (^_Nullable)(NSString *userID,
+                                                 NSError *_Nullable error))completionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

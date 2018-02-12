@@ -114,6 +114,7 @@
 		F4BACC8820221D79003E2FAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8720221D79003E2FAA /* Assets.xcassets */; };
 		F4BACC8B20221D79003E2FAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8920221D79003E2FAA /* MainMenu.xib */; };
 		F4BACC8E20221D79003E2FAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BACC8D20221D79003E2FAA /* main.m */; };
+		F4E355DC20343B120053E0A9 /* SKYSetDisableUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -247,6 +248,7 @@
 		F4BACC8C20221D79003E2FAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4BACC8D20221D79003E2FAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F4BACC8F20221D79003E2FAA /* Mac_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mac_Example.entitlements; sourceTree = "<group>"; };
+		F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSetDisableUserOperationTests.m; sourceTree = "<group>"; };
 		FBC0F6D83E10A7B47F5417C2 /* Pods-Swift Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -402,6 +404,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */,
 				F43389DE1FE2809000B7B317 /* SSO */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
 				372E77901B28338A001F1972 /* SKYAccessControlTests.m */,
@@ -724,7 +727,8 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -941,7 +945,8 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1068,7 +1073,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1179,6 +1184,7 @@
 				60209E651D76F18400B7E10B /* SKYPostAssetOperationTests.m in Sources */,
 				CD8FE8301A9F1FE10087FE71 /* SKYRecordSerializerTests.m in Sources */,
 				CD42FE141AA4499C0079B3DA /* SKYQueryOperationTests.m in Sources */,
+				F4E355DC20343B120053E0A9 /* SKYSetDisableUserOperationTests.m in Sources */,
 				CD7FE26B1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m in Sources */,
 				604A899B1C7C05A20013E114 /* SKYDefineAdminRolesOperationTests.m in Sources */,
 				37B477B71AE8A9C100B8566D /* SKYQueryDeserializerTests.m in Sources */,
