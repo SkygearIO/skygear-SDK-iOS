@@ -102,9 +102,8 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
              }];
 }
 
-- (void)getOAuthProviderProfiles:(NSString *)providerID
-               completionHandler:
-                   (void (^)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler
+- (void)getOAuthProviderProfilesWithCompletionHandler:
+    (void (^)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler
 {
     [self.container callLambda:@"sso/provider_profiles" completionHandler:completionHandler];
 }
@@ -224,8 +223,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 
 - (NSURL *)sso_genCallbackURL:(NSString *)scheme
 {
-    NSString *host = self.container.endPointAddress.host;
-    return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
+    return [[NSURL alloc] initWithScheme:scheme host:@"skygeario.com" path:@"/auth_handler"];
 }
 
 #pragma mark - Custom Token

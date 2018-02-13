@@ -211,11 +211,12 @@ class OAuthViewController: UITableViewController {
 
     func getProviderProfiles() {
         weak var weakSelf = self
-        SKYContainer.default().auth.getOAuthProviderProfiles(selectedProvider) { (result, error) in
+        SKYContainer.default().auth.getOAuthProviderProfiles { (result, error) in
             if error != nil {
                 weakSelf?.showError(error: error)
                 return
             }
+
             guard let data = try? JSONSerialization.data(withJSONObject: result!, options: .prettyPrinted) else {
                 let alert = UIAlertController(title: "Error",
                                               message: "Fail to decode json",
