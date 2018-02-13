@@ -61,6 +61,16 @@ typedef enum : NSInteger {
     SKYErrorAtomicOperationFailure = 115,
     SKYErrorPartialOperationFailure = 116,
     SKYErrorUndefinedOperation = 117,
+    SKYErrorPluginUnavailable = 118,
+    SKYErrorPluginTimeout = 119,
+    SKYErrorRecordQueryInvalid = 120,
+    SKYErrorPluginInitializing = 121,
+    SKYErrorResponseTimeout = 122,
+    SKYErrorDeniedArgument = 123,
+    SKYErrorRecordQueryDenied = 124,
+    SKYErrorNotConfigured = 125,
+    SKYErrorPasswordPolicyViolated = 126,
+    SKYErrorUserDisabled = 127,
 
     SKYErrorUnexpectedError = 10000,
 } SKYErrorCode;
@@ -68,7 +78,8 @@ typedef enum : NSInteger {
 /**
  Returns a localized description for the error code.
  */
-extern NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode);
+extern NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
+                                                             NSDictionary<NSString *, id> *info);
 
 /**
  Returns the name of the error code in string representation.

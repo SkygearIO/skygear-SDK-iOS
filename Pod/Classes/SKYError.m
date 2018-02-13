@@ -77,6 +77,26 @@ NSString *SKYErrorNameWithCode(SKYErrorCode errorCode)
             return @"PartialOperationFailure";
         case SKYErrorUndefinedOperation:
             return @"UndefinedOperation";
+        case SKYErrorPluginUnavailable:
+            return @"PluginUnavailable";
+        case SKYErrorPluginTimeout:
+            return @"PluginTimeout";
+        case SKYErrorRecordQueryInvalid:
+            return @"RecordQueryInvalid";
+        case SKYErrorPluginInitializing:
+            return @"PluginInitializing";
+        case SKYErrorResponseTimeout:
+            return @"ResponseTimeout";
+        case SKYErrorDeniedArgument:
+            return @"DeniedArgument";
+        case SKYErrorRecordQueryDenied:
+            return @"RecordQueryDenied";
+        case SKYErrorNotConfigured:
+            return @"NotConfigured";
+        case SKYErrorPasswordPolicyViolated:
+            return @"PasswordPolicyViolated";
+        case SKYErrorUserDisabled:
+            return @"UserDisabled";
         case SKYErrorUnexpectedError:
             return @"UnexpectedError";
         default:
@@ -84,7 +104,8 @@ NSString *SKYErrorNameWithCode(SKYErrorCode errorCode)
     }
 }
 
-NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode)
+NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
+                                                      NSDictionary<NSString *, id> *info)
 {
     switch (errorCode) {
         case SKYErrorUnknownError:
@@ -136,6 +157,32 @@ NSString *SKYErrorLocalizedDescriptionWithCode(SKYErrorCode errorCode)
             return NSLocalizedString(@"A problem occurred while processing this request.", nil);
         case SKYErrorUndefinedOperation:
             return NSLocalizedString(@"The requested operation is not available.", nil);
+        case SKYErrorPluginUnavailable:
+            return NSLocalizedString(@"The server is unable to process the request.", nil);
+        case SKYErrorPluginTimeout:
+            return NSLocalizedString(@"The server timed out while processing the request.", nil);
+        case SKYErrorRecordQueryInvalid:
+            return NSLocalizedString(@"The server is unable to process the query.", nil);
+        case SKYErrorPluginInitializing:
+            return NSLocalizedString(@"The server is still initializing.", nil);
+        case SKYErrorResponseTimeout:
+            return NSLocalizedString(@"The server timed out while processing the request.", nil);
+        case SKYErrorDeniedArgument:
+            return NSLocalizedString(@"The server is unable to process the data.", nil);
+        case SKYErrorRecordQueryDenied:
+            return NSLocalizedString(@"You are not allowed to perform this operation.", nil);
+        case SKYErrorNotConfigured:
+            return NSLocalizedString(@"The server is not configured for this operation.", nil);
+        case SKYErrorPasswordPolicyViolated:
+            return NSLocalizedString(@"The password does not meet policy requirement.", nil);
+        case SKYErrorUserDisabled:
+            if (info[@"message"]) {
+                return
+                    [NSString stringWithFormat:NSLocalizedString(@"The user is disabled: %@", nil),
+                                               info[@"message"]];
+            } else {
+                return NSLocalizedString(@"The user is disabled.", nil);
+            }
         case SKYErrorUnexpectedError:
             return NSLocalizedString(@"An unexpected error has occurred.", nil);
         default:
