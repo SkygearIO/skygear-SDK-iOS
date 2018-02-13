@@ -223,8 +223,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 
 - (NSURL *)sso_genCallbackURL:(NSString *)scheme
 {
-    NSString *host = self.container.endPointAddress.host;
-    return [[NSURL alloc] initWithScheme:scheme host:host path:@"/auth_handler"];
+    return [[NSURL alloc] initWithScheme:scheme host:@"skygeario.com" path:@"/auth_handler"];
 }
 
 #pragma mark - Custom Token
