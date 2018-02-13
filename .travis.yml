@@ -22,7 +22,7 @@ script:
 - pod lib lint --allow-warnings
 - ./clang-check.sh
 - swiftlint
-- lizard Pod/ -C 15 -w -i 0
+- lizard Pod/ -C 15 -W .lizard -w -i 0
 before_deploy:
 - rvm install ruby-2.2.4 # jazzy doesn't work in old rubies
 - rvm use ruby-2.2.4
