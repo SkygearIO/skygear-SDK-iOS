@@ -34,6 +34,7 @@
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYRevokeUserRoleOperation.h"
+#import "SKYSetDisableUserOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYSignupUserOperation.h"
 
@@ -501,6 +502,46 @@
         if (completionBlock) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(error);
+            });
+        }
+    };
+
+    [self.container addOperation:operation];
+}
+
+- (void)enableUserWithUserID:(NSString *)userID
+                  completion:
+                      (void (^_Nullable)(NSString *userID, NSError *_Nullable error))completionBlock
+{
+    SKYSetDisableUserOperation *operation =
+        [SKYSetDisableUserOperation enableOperationWithUserID:userID];
+
+    operation.setCompletionBlock = ^(NSString *userID, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(userID, error);
+            });
+        }
+    };
+
+    [self.container addOperation:operation];
+}
+
+- (void)disableUserWithUserID:(NSString *)userID
+                      message:(NSString *_Nullable)message
+                       expiry:(NSDate *_Nullable)expiry
+                   completion:(void (^_Nullable)(NSString *userID,
+                                                 NSError *_Nullable error))completionBlock
+{
+    SKYSetDisableUserOperation *operation =
+        [SKYSetDisableUserOperation disableOperationWithUserID:userID
+                                                       message:message
+                                                        expiry:expiry];
+
+    operation.setCompletionBlock = ^(NSString *userID, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(userID, error);
             });
         }
     };

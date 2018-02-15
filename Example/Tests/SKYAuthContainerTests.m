@@ -446,6 +446,62 @@ describe(@"AuthenticationError callback", ^{
     afterEach(^{
         [OHHTTPStubs removeAllStubs];
     });
+
+    describe(@"Enable User", ^{
+        it(@"should create and add operation", ^{
+            id container = OCMClassMock([SKYContainer class]);
+            SKYAuthContainer *auth =
+                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+
+            NSString *currentUserID = @"some-uuid";
+
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                    expect(operation.userID).to.equal(currentUserID);
+                    operation.setCompletionBlock(currentUserID, nil);
+                    return YES;
+                }]]);
+
+            waitUntil(^(DoneCallback done) {
+                [auth enableUserWithUserID:currentUserID
+                                completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
+                                    expect(userID).to.equal(currentUserID);
+                                    expect(error).to.beNil();
+                                    done();
+                                }];
+            });
+
+            OCMVerifyAll(container);
+        });
+    });
+
+    describe(@"Disable User", ^{
+        it(@"should create and add operation", ^{
+            id container = OCMClassMock([SKYContainer class]);
+            SKYAuthContainer *auth =
+                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+
+            NSString *currentUserID = @"some-uuid";
+
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                    expect(operation.userID).to.equal(currentUserID);
+                    operation.setCompletionBlock(currentUserID, nil);
+                    return YES;
+                }]]);
+
+            waitUntil(^(DoneCallback done) {
+                [auth enableUserWithUserID:currentUserID
+                                completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
+                                    expect(userID).to.equal(currentUserID);
+                                    expect(error).to.beNil();
+                                    done();
+                                }];
+            });
+
+            OCMVerifyAll(container);
+        });
+    });
 });
 
 SpecEnd
