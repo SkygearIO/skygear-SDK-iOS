@@ -1,3 +1,22 @@
+## 1.4.0 (2018-03-07)
+
+### Features
+
+- Support enable/disable user account
+
+### Bug Fixes
+
+- Serialise profile when signup
+
+### Other Notes
+
+- Update error code list
+- Remove unnecessary config and parameters for SSO
+- Improve travis script
+- Fix xcpretty with travis exit code
+- Support macOS app development and update iOS deployment target
+- Expose SKYAccessControl constructor in public headers
+
 ## 1.3.1 (2018-01-16)
 
 ### Features
