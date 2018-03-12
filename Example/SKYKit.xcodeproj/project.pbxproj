@@ -79,6 +79,7 @@
 		606CB9941FB5991800046BCE /* SKYReferenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 606CB9931FB5991800046BCE /* SKYReferenceTests.m */; };
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */; };
+		9EC4F4B220528E1C00D62C73 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */; };
 		A3146DAC57A1BAB2F2B7C597 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8C71207B2B56D001272DBE /* libPods-Tests.a */; };
 		A9CC0CAB1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */; };
 		A9CC0CAD1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */; };
@@ -206,6 +207,7 @@
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		9136F714FAE006ED8E98CCCA /* Pods-Test Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test Runner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		989370CEBB946BC3C9C9FD0A /* libPods-Test Runner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Test Runner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		A49ABBFEE0FF5490C6515D33 /* Pods-Mac Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mac Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example.release.xcconfig"; sourceTree = "<group>"; };
 		A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssignUserRoleOperationTests.m; sourceTree = "<group>"; };
 		A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRevokeUserRoleOperation.m; sourceTree = "<group>"; };
@@ -356,6 +358,7 @@
 				38E8EB491D3F115D004AE52B /* UserAuthenticationViewController.swift */,
 				CC4B7F291FBDB590006D5317 /* OAuthViewController.swift */,
 				CC8016131FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift */,
+				9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -727,8 +730,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -945,8 +947,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1073,7 +1074,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1114,6 +1115,7 @@
 				38E8EB4F1D3F115D004AE52B /* RecordTypeViewController.swift in Sources */,
 				38E8EB501D3F115D004AE52B /* RecordViewController.swift in Sources */,
 				CC4B7F2A1FBDB590006D5317 /* OAuthViewController.swift in Sources */,
+				9EC4F4B220528E1C00D62C73 /* ResetPasswordViewController.swift in Sources */,
 				38E8EB4B1D3F115D004AE52B /* PredicateViewController.swift in Sources */,
 				38E8EB4A1D3F115D004AE52B /* MainViewController.swift in Sources */,
 			);
