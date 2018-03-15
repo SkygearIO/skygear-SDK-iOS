@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYAccessToken.h"
+#import "SKYAuthResponseDelegateProtocol.h"
 #import "SKYDatabase.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable user,
                                                           NSError *_Nullable error);
 
-@interface SKYAuthContainer : NSObject
+@interface SKYAuthContainer : NSObject <SKYAuthResponseDelegateProtocol>
 
 /// Undocumented
 @property (nonatomic, readonly) NSString *_Nullable currentUserRecordID;
