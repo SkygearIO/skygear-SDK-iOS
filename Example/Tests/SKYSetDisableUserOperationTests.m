@@ -1,5 +1,5 @@
 //
-//  SKYDisableUserOperation.m
+//  SKYSetDisableUserOperationTests.m
 //  SKYKit
 //
 //  Copyright 2017 Oursky Ltd.
