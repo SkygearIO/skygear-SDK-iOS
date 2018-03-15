@@ -1,5 +1,5 @@
 //
-//  SKYDisableUserOperation.h
+//  SKYSetDisableUserOperation.h
 //  SKYKit
 //
 //  Copyright 2017 Oursky Ltd.
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class SKYRecord;
 
 /**
- *  SKYDisableUserOperation is an operation for calling the API to disable a user account.
+ *  SKYSetDisableUserOperation is an operation for calling the API to disable a user account.
  */
 @interface SKYSetDisableUserOperation : SKYOperation
 
