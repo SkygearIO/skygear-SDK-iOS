@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-#import "SKYOperation.h"
+#import "SKYAuthOperation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  If you assign a block to `signupCompletionBlock`, it will be called when
  the operation is completed.
  */
-@interface SKYSignupUserOperation : SKYOperation
+@interface SKYSignupUserOperation : SKYAuthOperation
 
 /**
  Auth data of the user. The Auth data is a unique dictionary across the system.

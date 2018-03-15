@@ -18,7 +18,7 @@
 //
 
 #import "SKYGetCurrentUserOperation.h"
-#import "SKYOperationSubclass.h"
+#import "SKYAuthOperation_Private.h"
 #import "SKYRecordDeserializer.h"
 
 @interface SKYGetCurrentUserOperation ()
@@ -45,28 +45,10 @@
     self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
-- (void)handleResponse:(SKYResponse *)response
+- (void)handleAuthResponseWithUser:(SKYRecord *)user
+                       accessToken:(SKYAccessToken *)accessToken
+                             error:(NSError *)error
 {
-    NSDictionary *responseDictionary = response.responseDictionary;
-    SKYRecord *user = nil;
-    SKYAccessToken *accessToken = nil;
-    NSError *error = nil;
-
-    if ([responseDictionary[@"result"] isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *resultDictionary = responseDictionary[@"result"];
-        NSDictionary *profile = resultDictionary[@"profile"];
-        NSString *recordID = profile[@"_id"];
-        if ([recordID hasPrefix:@"user/"] && resultDictionary[@"access_token"]) {
-            accessToken =
-                [[SKYAccessToken alloc] initWithTokenString:resultDictionary[@"access_token"]];
-
-            user = [self.recordDeserializer recordWithDictionary:profile];
-        } else {
-            error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                             message:@"A non-user record is received."];
-        }
-    }
-
     if (self.getCurrentUserCompletionBlock) {
         self.getCurrentUserCompletionBlock(user, accessToken, error);
     }

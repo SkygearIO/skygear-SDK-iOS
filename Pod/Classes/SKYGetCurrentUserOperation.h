@@ -19,6 +19,8 @@
 
 #import "SKYOperation.h"
 
+#import "SKYAuthOperation.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
@@ -29,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * <SKYGetCurrentUserOperation> is a <SKYOperation> for getting current user from server
  */
-@interface SKYGetCurrentUserOperation : SKYOperation
+@interface SKYGetCurrentUserOperation : SKYAuthOperation
 
 /**
  *  Completiong Block of the Get Current User Operation
