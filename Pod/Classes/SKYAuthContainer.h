@@ -283,6 +283,10 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
             fromUsersWihtIDs:(NSArray<NSString *> *)userIDs
                   completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
+@end
+
+@interface SKYAuthContainer (UserDisable)
+
 /**
  *  Enable user account of a disabled user.
  *
