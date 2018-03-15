@@ -24,6 +24,8 @@
 #import "SKYAsset.h"
 #import "SKYAssignUserRoleOperation.h"
 #import "SKYAuthContainer.h"
+#import "SKYAuthOperation.h"
+#import "SKYAuthResponseDelegateProtocol.h"
 #import "SKYChangePasswordOperation.h"
 #import "SKYContainer.h"
 #import "SKYDataSerialization.h"
