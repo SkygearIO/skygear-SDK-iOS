@@ -41,6 +41,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
 @property (nonatomic, readonly) SKYAccessToken *_Nullable currentAccessToken;
 /// Undocumented
 @property (nonatomic, readonly) SKYRecord *_Nullable currentUser;
+/// Undocumented
+@property (nonatomic, readonly) BOOL currentUserVerified;
 
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
@@ -314,6 +316,27 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
                    completion:(void (^_Nullable)(NSString *userID,
                                                  NSError *_Nullable error))completionBlock;
 
+@end
+
+@interface SKYAuthContainer (UserVerify)
+
+/**
+ *  Request user data verification of the specified record key.
+ *
+ *  @param recordKey       The record key to be verified
+ *  @param completionBlock Completion Block
+ */
+- (void)requestVerification:(NSString *)recordKey
+                 completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
+
+/**
+ *  Mark a user account as verified by specifying a verification code.
+ *
+ *  @param code            Verification code
+ *  @param completionBlock Completion Block
+ */
+- (void)verifyUserWithCode:(NSString *)code
+                completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 @end
 
 NS_ASSUME_NONNULL_END

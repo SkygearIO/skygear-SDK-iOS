@@ -78,6 +78,16 @@ class UserAuthenticationViewController: UITableViewController {
         self.present(alert, animated: true, completion: completion)
     }
 
+    func showError(_ error: Error, completion: (() -> Void)?) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            if let c = completion {
+                c()
+            }
+        }))
+        self.present(alert, animated: true, completion: completion)
+    }
+
     func whoami() {
         SKYContainer.default().auth.getWhoAmI { (user, error) in
             if let error = error {
@@ -204,6 +214,61 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
+    func requestVerification() {
+        guard let user = SKYContainer.default().auth.currentUser else {
+            return
+        }
+
+        let alert = UIAlertController(title: "Request Verification", message: "Select the field for verification. This example only supports email and phone.", preferredStyle: .alert)
+
+        let verifyableRecordKeys = ["email", "phone"]
+        for recordKey in verifyableRecordKeys {
+            let enabled = (user[recordKey] as? String)?.isEmpty == false
+            let title = enabled ? recordKey : "\(recordKey) (missing)"
+            let action = UIAlertAction(title: title, style: .default, handler: { (_) in
+                SKYContainer.default().auth.requestVerification(recordKey, completion: { (error) in
+                    if let error = error {
+                        self.showError(error, completion: nil)
+                        return
+                    }
+                })
+            })
+            action.isEnabled = enabled
+            alert.addAction(action)
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.preferredAction = alert.actions.last
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func enterVerificationCode() {
+        guard SKYContainer.default().auth.currentUser != nil else {
+            return
+        }
+
+        let alert = UIAlertController(title: "Enter Verification Code", message: nil, preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Code"
+        }
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            let code = alert.textFields?.first?.text ?? ""
+
+            if code == "" {
+                return
+            }
+
+            SKYContainer.default().auth.verifyUser(withCode: code, completion: { (error) in
+                if let error = error {
+                    self.showError(error, completion: nil)
+                    return
+                }
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.preferredAction = alert.actions.first
+        self.present(alert, animated: true, completion: nil)
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -217,7 +282,7 @@ class UserAuthenticationViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case self.actionSectionIndex:
-            return self.isLoggedIn ? 3 : 2
+            return self.isLoggedIn ? 5 : 2
         case self.statusSectionIndex:
             return 4
         default:
@@ -236,7 +301,7 @@ class UserAuthenticationViewController: UITableViewController {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case self.actionSectionIndex:
@@ -247,7 +312,12 @@ class UserAuthenticationViewController: UITableViewController {
                 cell.textLabel?.text = "Signup"
             } else if indexPath.row == 2 {
                 cell.textLabel?.text = "Logout"
+            } else if indexPath.row == 3 {
+                cell.textLabel?.text = "Request Verification"
+            } else if indexPath.row == 4 {
+                cell.textLabel?.text = "Enter Verification Code"
             }
+
             return cell
         case self.statusSectionIndex:
             let cell = tableView.dequeueReusableCell(withIdentifier: "plain", for: indexPath)
@@ -294,6 +364,10 @@ class UserAuthenticationViewController: UITableViewController {
                 self.signup()
             } else if indexPath.row == 2 {
                 self.logout()
+            } else if indexPath.row == 3 {
+                self.requestVerification()
+            } else if indexPath.row == 4 {
+                self.enterVerificationCode()
             }
         default:
             break

@@ -502,6 +502,62 @@ describe(@"AuthenticationError callback", ^{
             OCMVerifyAll(container);
         });
     });
+
+    describe(@"Verify Code", ^{
+        it(@"should create and add operation", ^{
+            id container = OCMClassMock([SKYContainer class]);
+            SKYAuthContainer *auth =
+                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+
+            NSString *verificationCode = @"123456";
+
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
+                    expect(operation.action).to.equal(@"user:verify_code");
+                    expect(operation.arrayArguments).to.equal(@[ verificationCode ]);
+                    operation.lambdaCompletionBlock(@{}, nil);
+                    return YES;
+                }]]);
+
+            waitUntil(^(DoneCallback done) {
+                [auth verifyUserWithCode:verificationCode
+                              completion:^(NSError *error) {
+                                  expect(error).to.beNil();
+                                  done();
+                              }];
+            });
+
+            OCMVerifyAll(container);
+        });
+    });
+
+    describe(@"Verify Request", ^{
+        it(@"should create and add operation", ^{
+            id container = OCMClassMock([SKYContainer class]);
+            SKYAuthContainer *auth =
+                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+
+            NSString *recordKey = @"phone";
+
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
+                    expect(operation.action).to.equal(@"user:verify_request");
+                    expect(operation.arrayArguments).to.equal(@[ recordKey ]);
+                    operation.lambdaCompletionBlock(@{}, nil);
+                    return YES;
+                }]]);
+
+            waitUntil(^(DoneCallback done) {
+                [auth requestVerification:recordKey
+                               completion:^(NSError *error) {
+                                   expect(error).to.beNil();
+                                   done();
+                               }];
+            });
+
+            OCMVerifyAll(container);
+        });
+    });
 });
 
 SpecEnd

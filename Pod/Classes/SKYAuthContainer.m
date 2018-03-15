@@ -30,6 +30,7 @@
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYFetchUserRoleOperation.h"
 #import "SKYGetCurrentUserOperation.h"
+#import "SKYLambdaOperation.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
@@ -606,6 +607,39 @@
     }
 
     return roleNames;
+}
+
+- (void)verifyUserWithCode:(NSString *)code completion:(void (^)(NSError *))completionBlock
+{
+    SKYLambdaOperation *operation =
+        [[SKYLambdaOperation alloc] initWithAction:@"user:verify_code" arrayArguments:@[ code ]];
+
+    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionBlock) {
+                completionBlock(error);
+            }
+        });
+    };
+
+    [self.container addOperation:operation];
+}
+
+- (void)requestVerification:(NSString *)recordKey completion:(void (^)(NSError *))completionBlock
+{
+    SKYLambdaOperation *operation =
+        [[SKYLambdaOperation alloc] initWithAction:@"user:verify_request"
+                                    arrayArguments:@[ recordKey ]];
+
+    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionBlock) {
+                completionBlock(error);
+            }
+        });
+    };
+
+    [self.container addOperation:operation];
 }
 
 @end
