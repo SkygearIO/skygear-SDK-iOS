@@ -257,7 +257,7 @@ class UserAuthenticationViewController: UITableViewController {
                 return
             }
 
-            SKYContainer.default().auth.verifyUser(withCode: code, completion: { (error) in
+            SKYContainer.default().auth.verifyUser(withCode: code, completion: { (_, error) in
                 if let error = error {
                     self.showError(error, completion: nil)
                     return

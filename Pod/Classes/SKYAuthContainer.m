@@ -609,17 +609,25 @@
     return roleNames;
 }
 
-- (void)verifyUserWithCode:(NSString *)code completion:(void (^)(NSError *))completionBlock
+- (void)verifyUserWithCode:(NSString *)code
+                completion:(SKYContainerUserOperationActionCompletion _Nullable)completionBlock
 {
     SKYLambdaOperation *operation =
         [[SKYLambdaOperation alloc] initWithAction:@"user:verify_code" arrayArguments:@[ code ]];
 
     operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionBlock) {
-                completionBlock(error);
-            }
-        });
+        if (error != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completionBlock) {
+                    completionBlock(nil, error);
+                }
+            });
+            return;
+        }
+
+        // When sucessfully verifying user data, the user data should have changed. Call whoami to
+        // refresh the current user record.
+        [self getWhoAmIWithCompletionHandler:completionBlock];
     };
 
     [self.container addOperation:operation];

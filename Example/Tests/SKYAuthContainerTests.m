@@ -513,15 +513,26 @@ describe(@"AuthenticationError callback", ^{
 
             OCMExpect([container
                 addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
-                    expect(operation.action).to.equal(@"user:verify_code");
-                    expect(operation.arrayArguments).to.equal(@[ verificationCode ]);
-                    operation.lambdaCompletionBlock(@{}, nil);
-                    return YES;
+                    if ([operation isKindOfClass:[SKYLambdaOperation class]]) {
+                        expect(operation.action).to.equal(@"user:verify_code");
+                        expect(operation.arrayArguments).to.equal(@[ verificationCode ]);
+                        operation.lambdaCompletionBlock(@{}, nil);
+                        return YES;
+                    }
+                    return NO;
+                }]]);
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYGetCurrentUserOperation *operation) {
+                    if ([operation isKindOfClass:[SKYGetCurrentUserOperation class]]) {
+                        operation.getCurrentUserCompletionBlock(nil, nil, nil);
+                        return YES;
+                    }
+                    return NO;
                 }]]);
 
             waitUntil(^(DoneCallback done) {
                 [auth verifyUserWithCode:verificationCode
-                              completion:^(NSError *error) {
+                              completion:^(SKYRecord *_Nullable user, NSError *_Nullable error) {
                                   expect(error).to.beNil();
                                   done();
                               }];

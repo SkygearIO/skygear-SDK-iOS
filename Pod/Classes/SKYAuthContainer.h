@@ -336,7 +336,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
  *  @param completionBlock Completion Block
  */
 - (void)verifyUserWithCode:(NSString *)code
-                completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
+                completion:(SKYContainerUserOperationActionCompletion _Nullable)completionBlock;
 @end
 
 NS_ASSUME_NONNULL_END
