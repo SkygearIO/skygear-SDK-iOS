@@ -110,6 +110,7 @@
 		F413CD5C1ED6BBE2001EBFAB /* SKYAssetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */; };
 		F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */; };
 		F43389E21FE2816F00B7B317 /* SKYAuthContainerSSOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */; };
+		F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43CFB70205FBAF00059510C /* SKYAuthContainerForgotPasswordTests.m */; };
 		F4BACC8620221D79003E2FAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BACC8520221D79003E2FAA /* AppDelegate.m */; };
 		F4BACC8820221D79003E2FAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8720221D79003E2FAA /* Assets.xcassets */; };
 		F4BACC8B20221D79003E2FAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8920221D79003E2FAA /* MainMenu.xib */; };
@@ -240,6 +241,7 @@
 		F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssetTests.m; sourceTree = "<group>"; };
 		F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLoginCustomTokenOperationTests.m; sourceTree = "<group>"; };
 		F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerSSOTests.m; sourceTree = "<group>"; };
+		F43CFB70205FBAF00059510C /* SKYAuthContainerForgotPasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerForgotPasswordTests.m; sourceTree = "<group>"; };
 		F4BACC8220221D78003E2FAA /* Mac Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mac Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BACC8420221D79003E2FAA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F4BACC8520221D79003E2FAA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F43CFB73205FBB170059510C /* Forgot Password */,
 				F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */,
 				F43389DE1FE2809000B7B317 /* SSO */,
 				CD7FE26A1A9DB97B002C076E /* NSURLRequestSKYRequestTests.m */,
@@ -498,6 +501,14 @@
 				F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */,
 			);
 			path = SSO;
+			sourceTree = "<group>";
+		};
+		F43CFB73205FBB170059510C /* Forgot Password */ = {
+			isa = PBXGroup;
+			children = (
+				F43CFB70205FBAF00059510C /* SKYAuthContainerForgotPasswordTests.m */,
+			);
+			path = "Forgot Password";
 			sourceTree = "<group>";
 		};
 		F4BACC8320221D79003E2FAA /* Mac Example */ = {
@@ -1167,6 +1178,7 @@
 				CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */,
 				383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */,
 				38EAA71B1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m in Sources */,
+				F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */,
 				38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */,
 				F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */,
