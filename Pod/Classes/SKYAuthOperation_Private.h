@@ -1,8 +1,8 @@
 //
-//  SKYGetCurrentUserOperation.h
+//  SKYAuthOperation.h
 //  SKYKit
 //
-//  Copyright 2015 Oursky Ltd.
+//  Copyright 2018 Oursky Ltd.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,27 +17,20 @@
 //  limitations under the License.
 //
 
-#import "SKYOperation.h"
+#import <Foundation/Foundation.h>
 
-#import "SKYAuthOperation.h"
+#import "SKYAccessToken.h"
+#import "SKYOperationSubclass.h"
+#import "SKYOperation_Private.h"
+#import "SKYRecord.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Undocumented
-@class SKYRecord;
-/// Undocumented
-@class SKYAccessToken;
+@interface SKYAuthOperation ()
 
-/**
- * <SKYGetCurrentUserOperation> is a <SKYOperation> for getting current user from server
- */
-@interface SKYGetCurrentUserOperation : SKYAuthOperation
-
-/**
- *  Completiong Block of the Get Current User Operation
- */
-@property (nonatomic, copy) void (^_Nullable getCurrentUserCompletionBlock)
-    (SKYRecord *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
+- (void)handleAuthResponseWithUser:(SKYRecord *)user
+                       accessToken:(SKYAccessToken *)accessToken
+                             error:(NSError *)error;
 
 @end
 

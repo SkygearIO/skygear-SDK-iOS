@@ -1,5 +1,5 @@
 //
-//  SKYGetCurrentUserOperation.h
+//  SKYAuthResponseDelegateProtocol.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,27 +17,18 @@
 //  limitations under the License.
 //
 
-#import "SKYOperation.h"
-
-#import "SKYAuthOperation.h"
+@class SKYOperation;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
-@class SKYRecord;
+@protocol SKYAuthResponseDelegateProtocol
+
+@required
+
 /// Undocumented
-@class SKYAccessToken;
-
-/**
- * <SKYGetCurrentUserOperation> is a <SKYOperation> for getting current user from server
- */
-@interface SKYGetCurrentUserOperation : SKYAuthOperation
-
-/**
- *  Completiong Block of the Get Current User Operation
- */
-@property (nonatomic, copy) void (^_Nullable getCurrentUserCompletionBlock)
-    (SKYRecord *_Nullable user, SKYAccessToken *_Nullable accessToken, NSError *_Nullable error);
+- (void)operation:(SKYOperation *)operation
+    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse;
 
 @end
 

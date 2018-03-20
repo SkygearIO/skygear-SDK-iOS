@@ -17,14 +17,15 @@
 //  limitations under the License.
 //
 
-#import "SKYOperation.h"
+#import "SKYAuthOperation.h"
 
 #import "SKYAccessToken.h"
+#import "SKYAuthResponseDelegateProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
-@interface SKYLoginUserOperation : SKYOperation
+@interface SKYLoginUserOperation : SKYAuthOperation
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *_Nullable authData;

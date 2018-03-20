@@ -19,12 +19,14 @@
 
 #import "SKYOperation.h"
 
+#import "SKYAuthOperation.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class SKYAccessToken;
 
 /// Undocumented
-@interface SKYChangePasswordOperation : SKYOperation
+@interface SKYChangePasswordOperation : SKYAuthOperation
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *oldPassword;

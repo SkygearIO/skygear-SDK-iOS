@@ -33,6 +33,7 @@
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
+#import "SKYRecordDeserializer.h"
 #import "SKYRevokeUserRoleOperation.h"
 #import "SKYSetDisableUserOperation.h"
 #import "SKYSetUserDefaultRoleOperation.h"
@@ -83,34 +84,25 @@
     }
 }
 
-- (void)performUserAuthOperation:(SKYOperation *)operation
-               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
+- (void)operation:(id)operation
+    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
 {
-    __weak typeof(self) weakSelf = self;
-    void (^completionBock)(SKYRecord *, SKYAccessToken *, NSError *) =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (!error) {
-                [weakSelf updateWithUser:user accessToken:accessToken];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        };
-
-    if ([operation isKindOfClass:[SKYLoginUserOperation class]]) {
-        [(SKYLoginUserOperation *)operation setLoginCompletionBlock:completionBock];
-    } else if ([operation isKindOfClass:[SKYSignupUserOperation class]]) {
-        [(SKYSignupUserOperation *)operation setSignupCompletionBlock:completionBock];
-    } else if ([operation isKindOfClass:[SKYGetCurrentUserOperation class]]) {
-        [(SKYGetCurrentUserOperation *)operation setGetCurrentUserCompletionBlock:completionBock];
-    } else {
-        @throw [NSException
-            exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:@"Unexpected operation: %@",
-                                                         NSStringFromClass(operation.class)]
-                     userInfo:nil];
+    NSDictionary *profile = authResponse[@"profile"];
+    if (![profile isKindOfClass:[NSDictionary class]]) {
+        NSLog(@"didCompleteWithAuthResponse error: No profile dictionary.");
+        return;
     }
-    [self.container addOperation:operation];
+
+    NSString *tokenString = authResponse[@"access_token"];
+    if (![tokenString isKindOfClass:[NSString class]]) {
+        NSLog(@"didCompleteWithAuthResponse error: No access_token string.");
+        return;
+    }
+
+    SKYRecord *user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
+    SKYAccessToken *accessToken = [[SKYAccessToken alloc] initWithTokenString:tokenString];
+
+    [self updateWithUser:user accessToken:accessToken];
 }
 
 #pragma mark -
@@ -213,7 +205,16 @@
 {
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.signupCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 /**
@@ -226,27 +227,34 @@
 {
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.signupCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"username" : username};
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"username" : username}
+                    password:password
+           completionHandler:completionHandler];
 }
 
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"email" : email};
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"email" : email}
+                    password:password
+           completionHandler:completionHandler];
 }
 
 /**
@@ -257,10 +265,10 @@
          profileDictionary:(NSDictionary *)profile
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"username" : username};
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"username" : username}
+                    password:password
+           profileDictionary:profile
+           completionHandler:completionHandler];
 }
 
 /**
@@ -271,17 +279,26 @@
       profileDictionary:(NSDictionary *)profile
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"email" : email};
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"email" : email}
+                    password:password
+           profileDictionary:profile
+           completionHandler:completionHandler];
 }
 
 - (void)signupAnonymouslyWithCompletionHandler:
     (SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAnonymousUser];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.signupCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 - (void)loginWithAuthData:(NSDictionary *)authData
@@ -290,27 +307,34 @@
 {
     SKYLoginUserOperation *operation =
         [SKYLoginUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.loginCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"username" : username};
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self loginWithAuthData:@{@"username" : username}
+                   password:password
+          completionHandler:completionHandler];
 }
 
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSDictionary *authData = @{@"email" : email};
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithAuthData:authData password:password];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    [self loginWithAuthData:@{@"email" : email}
+                   password:password
+          completionHandler:completionHandler];
 }
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
@@ -357,7 +381,7 @@
 {
     SKYChangePasswordOperation *operation =
         [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
-
+    operation.authResponseDelegate = self;
     operation.changePasswordCompletionBlock =
         ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -371,7 +395,16 @@
 - (void)getWhoAmIWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.getCurrentUserCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 #pragma mark -

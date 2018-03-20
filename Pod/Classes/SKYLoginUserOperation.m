@@ -18,9 +18,7 @@
 //
 
 #import "SKYLoginUserOperation.h"
-#import "SKYOperationSubclass.h"
-#import "SKYOperation_Private.h"
-#import "SKYRecordDeserializer.h"
+#import "SKYAuthOperation_Private.h"
 #import "SKYRequest.h"
 
 @implementation SKYLoginUserOperation {
@@ -96,29 +94,12 @@
     }
 }
 
-- (void)handleResponse:(SKYResponse *)aResponse
+- (void)handleAuthResponseWithUser:(SKYRecord *)record
+                       accessToken:(SKYAccessToken *)accessToken
+                             error:(NSError *)error
 {
-    SKYRecord *user = nil;
-    SKYAccessToken *accessToken = nil;
-    NSError *error = nil;
-
-    NSDictionary *response = aResponse.responseDictionary[@"result"];
-    NSDictionary *profile = response[@"profile"];
-    NSString *recordID = profile[@"_id"];
-    if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
-        user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
-        accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
-    } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Returned data does not contain expected data."];
-    }
-
-    if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
-    }
-
     if (self.loginCompletionBlock) {
-        self.loginCompletionBlock(user, accessToken, error);
+        self.loginCompletionBlock(record, accessToken, error);
     }
 }
 

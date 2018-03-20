@@ -18,8 +18,8 @@
 //
 
 #import "SKYSignupUserOperation.h"
+#import "SKYAuthOperation_Private.h"
 #import "SKYDataSerialization.h"
-#import "SKYOperation_Private.h"
 #import "SKYRecordDeserializer.h"
 #import "SKYRequest.h"
 
@@ -113,32 +113,19 @@
     }
 }
 
-- (void)setSignupCompletionBlock:(void (^)(SKYRecord *, SKYAccessToken *,
-                                           NSError *))signupCompletionBlock
+- (void)handleRequestError:(NSError *)error
 {
-    if (signupCompletionBlock) {
-        __weak typeof(self) weakSelf = self;
-        self.completionBlock = ^{
-            if (!weakSelf.error) {
-                NSDictionary *response = weakSelf.response[@"result"];
-                NSDictionary *profile = response[@"profile"];
+    if (self.signupCompletionBlock) {
+        self.signupCompletionBlock(nil, nil, error);
+    }
+}
 
-                SKYRecord *user =
-                    [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
-
-                SKYAccessToken *accessToken =
-                    [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
-
-                NSLog(@"User created with UserRecordID %@ and AccessToken %@", response[@"user_id"],
-                      response[@"access_token"]);
-
-                signupCompletionBlock(user, accessToken, nil);
-            } else {
-                signupCompletionBlock(nil, nil, weakSelf.error);
-            }
-        };
-    } else {
-        self.completionBlock = nil;
+- (void)handleAuthResponseWithUser:(SKYRecord *)user
+                       accessToken:(SKYAccessToken *)accessToken
+                             error:(NSError *)error
+{
+    if (self.signupCompletionBlock) {
+        self.signupCompletionBlock(user, accessToken, error);
     }
 }
 
