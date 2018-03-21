@@ -19,9 +19,8 @@ class ResetPasswordViewController: UIViewController {
     @IBOutlet weak var confirmPasswordTextField: UITextField!
 
     @IBAction func forgotPassword() {
-        SKYContainer.default().auth.forgotPassword(withEmail: emailTextField.text ?? "") {
-            (_, error) in
-                self.showDialog(title: "Forgot Password", error: error)
+        SKYContainer.default().auth.forgotPassword(withEmail: emailTextField.text ?? "") { (_, error) in
+            self.showDialog(title: "Forgot Password", error: error)
         }
     }
 
@@ -29,9 +28,8 @@ class ResetPasswordViewController: UIViewController {
         SKYContainer.default().auth.resetPassword(withUserID: userIdTextField.text ?? "",
                                                   code: codeTextField.text ?? "",
                                                   expireAt: Int(expiredAtTextField.text ?? "0") ?? 0,
-                                                  password: newPasswordTextField.text ?? "") {
-            (_, error) in
-                self.showDialog(title: "Reset Password", error: error)
+                                                  password: newPasswordTextField.text ?? "") { (_, error) in
+            self.showDialog(title: "Reset Password", error: error)
 
         }
     }
