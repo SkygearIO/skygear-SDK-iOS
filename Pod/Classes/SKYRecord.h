@@ -37,9 +37,10 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 + (instancetype)recordWithRecordType:(NSString *)recordType
                                 name:(NSString *)recordName
-                                data:(NSDictionary *_Nullable)data;
+                                data:(NSDictionary<NSString *, id> *_Nullable)data;
 /// Undocumented
-+ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *_Nullable)data;
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordId
+                              data:(NSDictionary<NSString *, id> *_Nullable)data;
 
 /// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
@@ -59,14 +60,15 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                           recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary *_Nullable)data __deprecated;
+                              data:(NSDictionary<NSString *, id> *_Nullable)data __deprecated;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                               name:(NSString *)recordName
-                              data:(NSDictionary *_Nullable)data;
+                              data:(NSDictionary<NSString *, id> *_Nullable)data;
 /// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId
-                            data:(NSDictionary *_Nullable)data NS_DESIGNATED_INITIALIZER;
+                            data:(NSDictionary<NSString *, id> *_Nullable)data
+    NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 - (id _Nullable)objectForKey:(id)key;
@@ -79,7 +81,7 @@ extern NSString *const SKYRecordTypeUserRecord;
 - (void)setObject:(id)object forKeyedSubscript:(id<NSCopying> _Nullable)key;
 
 /// Undocumented
-- (SKYRecord *_Nullable)referencedRecordForKey:(id)key;
+- (SKYRecord *_Nullable)referencedRecordForKey:(NSString *)key;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) SKYRecordID *recordID;
@@ -102,7 +104,7 @@ extern NSString *const SKYRecordTypeUserRecord;
  */
 @property (nonatomic, readwrite, strong) SKYAccessControl *_Nullable accessControl;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *dictionary;
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, id> *dictionary;
 
 /**
  Returns an NSDictionary of transient fields.
@@ -110,7 +112,7 @@ extern NSString *const SKYRecordTypeUserRecord;
  Transient fields are attached to an instance of SKYRecord and it is never persisted on server,
  but they maybe returned as extra data about the record when fetched or queried from server.
  */
-@property (nonatomic, readonly, copy) NSMutableDictionary *transient;
+@property (nonatomic, readonly, copy) NSMutableDictionary<NSString *, id> *transient;
 
 @end
 
