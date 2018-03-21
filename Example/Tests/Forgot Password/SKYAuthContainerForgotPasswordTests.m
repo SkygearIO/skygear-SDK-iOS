@@ -37,7 +37,9 @@ SpecBegin(SKYAuthContainerForgotPassword)
                 addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
                     if ([operation isKindOfClass:[SKYLambdaOperation class]]) {
                         expect(operation.action).to.equal(@"user:verify_code");
-                        expect(operation.arrayArguments).to.equal(@[ verificationCode ]);
+                        expect(operation.dictionaryArguments).to.equal(@{
+                            @"code" : verificationCode
+                        });
                         operation.lambdaCompletionBlock(@{}, nil);
                         return YES;
                     }
@@ -72,13 +74,13 @@ describe(@"Verify Request", ^{
 
         NSString *recordKey = @"phone";
 
-        OCMExpect(
-            [container addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
-                           expect(operation.action).to.equal(@"user:verify_request");
-                           expect(operation.arrayArguments).to.equal(@[ recordKey ]);
-                           operation.lambdaCompletionBlock(@{}, nil);
-                           return YES;
-                       }]]);
+        OCMExpect([container
+            addOperation:[OCMArg checkWithBlock:^BOOL(SKYLambdaOperation *operation) {
+                expect(operation.action).to.equal(@"user:verify_request");
+                expect(operation.dictionaryArguments).to.equal(@{@"record_key" : recordKey});
+                operation.lambdaCompletionBlock(@{}, nil);
+                return YES;
+            }]]);
 
         waitUntil(^(DoneCallback done) {
             [auth requestVerification:recordKey
