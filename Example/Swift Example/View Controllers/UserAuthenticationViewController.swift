@@ -24,6 +24,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     let actionSectionIndex = 0
     let statusSectionIndex = 1
+    let recordSectionIndex = 2
 
     let dateFormatter = DateFormatter()
 
@@ -295,7 +296,7 @@ class UserAuthenticationViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if self.isLoggedIn {
-            return 2
+            return 3
         } else {
             return 1
         }
@@ -307,6 +308,11 @@ class UserAuthenticationViewController: UITableViewController {
             return self.isLoggedIn ? 5 : 2
         case self.statusSectionIndex:
             return 4
+        case self.recordSectionIndex:
+            if let user = SKYContainer.default().auth.currentUser {
+                return user.dictionary.count
+            }
+            return 0
         default:
             return 0
         }
@@ -318,6 +324,8 @@ class UserAuthenticationViewController: UITableViewController {
             return "Actions"
         case self.statusSectionIndex:
             return "Login Status"
+        case self.recordSectionIndex:
+            return "User Record Data"
         default:
             return ""
         }
@@ -370,6 +378,23 @@ class UserAuthenticationViewController: UITableViewController {
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
                 }
+            }
+            return cell
+        case self.recordSectionIndex:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "plain", for: indexPath)
+            guard let user = SKYContainer.default().auth.currentUser else {
+                return cell
+            }
+            guard let keys = Array(user.dictionary.keys) as? [String] else {
+                return cell
+            }
+            let sortedKeys = keys.sorted(by: <)
+            let key = sortedKeys[indexPath.row]
+            cell.textLabel?.text = key
+            if let obj = user.object(forKey: key) {
+                cell.detailTextLabel?.text = String(describing: obj)
+            } else {
+                cell.detailTextLabel?.text = "nil"
             }
             return cell
         default:
