@@ -75,7 +75,7 @@ class UserAuthenticationViewController: UITableViewController {
                 c()
             }
         }))
-        self.present(alert, animated: true, completion: completion)
+        self.present(alert, animated: true, completion: nil)
     }
 
     func showError(_ error: Error, completion: (() -> Void)?) {
@@ -85,7 +85,17 @@ class UserAuthenticationViewController: UITableViewController {
                 c()
             }
         }))
-        self.present(alert, animated: true, completion: completion)
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func showInvalidCodeError(completion: (() -> Void)?) {
+        let alert = UIAlertController(title: "Invalid Code", message: "You can try requesting another code.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+            if let c = completion {
+                c()
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
     func whoami() {
@@ -231,6 +241,10 @@ class UserAuthenticationViewController: UITableViewController {
                         self.showError(error, completion: nil)
                         return
                     }
+
+                    let alert = UIAlertController(title: "Requested", message: "You should receive verification code soon.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 })
             })
             action.isEnabled = enabled
@@ -258,10 +272,18 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.verifyUser(withCode: code, completion: { (_, error) in
-                if let error = error {
+                if let error = error as NSError? {
+                    if error.code == SKYErrorInvalidArgument.rawValue {
+                        self.showInvalidCodeError(completion: nil)
+                        return
+                    }
                     self.showError(error, completion: nil)
                     return
                 }
+
+                let alert = UIAlertController(title: "Verified", message: "User data is successfully verified.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             })
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
