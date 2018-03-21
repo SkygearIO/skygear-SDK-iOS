@@ -13,7 +13,7 @@ before_install:
 - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/2c2c4b8bfb93e3b409c1c9c51b8a76c3497e0ca0/Formula/clang-format.rb
 - brew upgrade --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/6dcd3c206681f02b267e4cf3d44ec9a8ded36b40/Formula/swiftlint.rb
 - clang-format --version
-- pip2 install lizard
+- sudo pip2 install lizard
 - pod install --repo-update --project-directory=Example
 script:
 - sh -eo pipefail -c "xcodebuild -scheme \"Test Runner\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build test | xcpretty"
@@ -27,7 +27,7 @@ before_deploy:
 - rvm install ruby-2.2.4 # jazzy doesn't work in old rubies
 - rvm use ruby-2.2.4
 - gem install jazzy
-- pip2 install awscli
+- sudo pip2 install awscli
 deploy:
   - provider: script
     script: scripts/deploy.sh
