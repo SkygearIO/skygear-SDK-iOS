@@ -41,6 +41,8 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
 @property (nonatomic, readonly) SKYAccessToken *_Nullable currentAccessToken;
 /// Undocumented
 @property (nonatomic, readonly) SKYRecord *_Nullable currentUser;
+/// Undocumented
+@property (nonatomic, readonly) BOOL currentUserVerified;
 
 /**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also

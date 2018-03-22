@@ -30,6 +30,7 @@
 #import "SKYDefineAdminRolesOperation.h"
 #import "SKYFetchUserRoleOperation.h"
 #import "SKYGetCurrentUserOperation.h"
+#import "SKYLambdaOperation.h"
 #import "SKYLoginUserOperation.h"
 #import "SKYLogoutUserOperation.h"
 #import "SKYQueryOperation.h"
