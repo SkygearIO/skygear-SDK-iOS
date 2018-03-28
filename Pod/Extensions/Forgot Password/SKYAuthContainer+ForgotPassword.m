@@ -31,12 +31,12 @@
 
 - (void)resetPasswordWithUserID:(NSString *)userID
                            code:(NSString *)code
-                       expireAt:(NSDate *)expireAt
+                       expireAt:(long)expireAt
                        password:(NSString *)password
               completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     [[self container] callLambda:@"user:reset-password"
-                       arguments:@[ userID, code, expireAt, password ]
+                       arguments:@[ userID, code, [NSNumber numberWithInt:expireAt], password ]
                completionHandler:completionHandler];
 }
 

@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetPasswordWithUserID:(NSString *)userID
                            code:(NSString *)code
-                       expireAt:(NSDate *)expireAt
+                       expireAt:(long)expireAt
                        password:(NSString *)password
               completionHandler:
                   (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
