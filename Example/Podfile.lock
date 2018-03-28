@@ -29,15 +29,18 @@ PODS:
   - SKYKit (1.4.0):
     - SKYKit/Core (= 1.4.0)
     - SKYKit/ForgotPassword (= 1.4.0)
+    - SKYKit/RecordStorage (= 1.4.0)
     - SKYKit/SSO (= 1.4.0)
   - SKYKit/Core (1.4.0):
-    - FMDB (~> 2.6.0)
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
   - SKYKit/Facebook (1.4.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
   - SKYKit/ForgotPassword (1.4.0):
+    - SKYKit/Core
+  - SKYKit/RecordStorage (1.4.0):
+    - FMDB (~> 2.6.0)
     - SKYKit/Core
   - SKYKit/SSO (1.4.0):
     - SKYKit/Core
@@ -65,7 +68,7 @@ SPEC CHECKSUMS:
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: 4d73fe679f8eb2d9ef60772e900f697d33e1ba70
+  SKYKit: 15826cebefc0022781c1a3212c0407dbabcb5268
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
