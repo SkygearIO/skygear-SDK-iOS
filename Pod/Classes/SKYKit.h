@@ -72,8 +72,6 @@
 #import "SKYRecordID.h"
 #import "SKYRecordSerialization.h"
 #import "SKYRecordSerializer.h"
-#import "SKYRecordStorage.h"
-#import "SKYRecordStorageCoordinator.h"
 #import "SKYReference.h"
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYRelation.h"
@@ -114,4 +112,8 @@
 #if __has_include("SKYKitSSOExtension.h")
 #include "SKYKitSSOExtension.h"
 #endif
+#endif
+
+#if __has_include("SKYKitRecordStorageExtension.h")
+#include "SKYKitRecordStorageExtension.h"
 #endif
