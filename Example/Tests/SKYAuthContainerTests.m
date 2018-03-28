@@ -458,6 +458,7 @@ describe(@"AuthenticationError callback", ^{
             OCMExpect([container
                 addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
                     expect(operation.userID).to.equal(currentUserID);
+                    expect(operation.disabled).to.equal(@NO);
                     operation.setCompletionBlock(currentUserID, nil);
                     return YES;
                 }]]);
@@ -486,17 +487,54 @@ describe(@"AuthenticationError callback", ^{
             OCMExpect([container
                 addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
                     expect(operation.userID).to.equal(currentUserID);
+                    expect(operation.disabled).to.equal(@YES);
                     operation.setCompletionBlock(currentUserID, nil);
                     return YES;
                 }]]);
 
             waitUntil(^(DoneCallback done) {
-                [auth enableUserWithUserID:currentUserID
-                                completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
-                                    expect(userID).to.equal(currentUserID);
-                                    expect(error).to.beNil();
-                                    done();
-                                }];
+                [auth disableUserWithUserID:currentUserID
+                                    message:nil
+                                     expiry:nil
+                                 completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
+                                     expect(userID).to.equal(currentUserID);
+                                     expect(error).to.beNil();
+                                     done();
+                                 }];
+            });
+
+            OCMVerifyAll(container);
+        });
+    });
+
+    describe(@"Disable User with optional fields", ^{
+        it(@"should create and add operation", ^{
+            id container = OCMClassMock([SKYContainer class]);
+            SKYAuthContainer *auth =
+                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+
+            NSString *currentUserID = @"some-uuid";
+            NSDate *expiry = [NSDate date];
+
+            OCMExpect([container
+                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                    expect(operation.userID).to.equal(currentUserID);
+                    expect(operation.disabled).to.equal(@YES);
+                    expect(operation.message).to.equal(@"reason");
+                    expect(operation.expiry).to.equal(expiry);
+                    operation.setCompletionBlock(currentUserID, nil);
+                    return YES;
+                }]]);
+
+            waitUntil(^(DoneCallback done) {
+                [auth disableUserWithUserID:currentUserID
+                                    message:@"reason"
+                                     expiry:expiry
+                                 completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
+                                     expect(userID).to.equal(currentUserID);
+                                     expect(error).to.beNil();
+                                     done();
+                                 }];
             });
 
             OCMVerifyAll(container);
