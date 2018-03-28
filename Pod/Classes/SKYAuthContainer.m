@@ -543,9 +543,9 @@
     [self.container addOperation:operation];
 }
 
-- (void)enableUserWithUserID:(NSString *)userID
-                  completion:
-                      (void (^_Nullable)(NSString *userID, NSError *_Nullable error))completionBlock
+- (void)adminEnableUserWithUserID:(NSString *)userID
+                       completion:(void (^_Nullable)(NSString *userID,
+                                                     NSError *_Nullable error))completionBlock
 {
     SKYSetDisableUserOperation *operation =
         [SKYSetDisableUserOperation enableOperationWithUserID:userID];
@@ -561,11 +561,11 @@
     [self.container addOperation:operation];
 }
 
-- (void)disableUserWithUserID:(NSString *)userID
-                      message:(NSString *_Nullable)message
-                       expiry:(NSDate *_Nullable)expiry
-                   completion:(void (^_Nullable)(NSString *userID,
-                                                 NSError *_Nullable error))completionBlock
+- (void)adminDisableUserWithUserID:(NSString *)userID
+                           message:(NSString *_Nullable)message
+                            expiry:(NSDate *_Nullable)expiry
+                        completion:(void (^_Nullable)(NSString *userID,
+                                                      NSError *_Nullable error))completionBlock
 {
     SKYSetDisableUserOperation *operation =
         [SKYSetDisableUserOperation disableOperationWithUserID:userID

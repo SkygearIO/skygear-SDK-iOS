@@ -464,12 +464,13 @@ describe(@"AuthenticationError callback", ^{
                 }]]);
 
             waitUntil(^(DoneCallback done) {
-                [auth enableUserWithUserID:currentUserID
-                                completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
-                                    expect(userID).to.equal(currentUserID);
-                                    expect(error).to.beNil();
-                                    done();
-                                }];
+                [auth adminEnableUserWithUserID:currentUserID
+                                     completion:^(NSString *_Nonnull userID,
+                                                  NSError *_Nullable error) {
+                                         expect(userID).to.equal(currentUserID);
+                                         expect(error).to.beNil();
+                                         done();
+                                     }];
             });
 
             OCMVerifyAll(container);
@@ -493,14 +494,15 @@ describe(@"AuthenticationError callback", ^{
                 }]]);
 
             waitUntil(^(DoneCallback done) {
-                [auth disableUserWithUserID:currentUserID
-                                    message:nil
-                                     expiry:nil
-                                 completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
-                                     expect(userID).to.equal(currentUserID);
-                                     expect(error).to.beNil();
-                                     done();
-                                 }];
+                [auth adminDisableUserWithUserID:currentUserID
+                                         message:nil
+                                          expiry:nil
+                                      completion:^(NSString *_Nonnull userID,
+                                                   NSError *_Nullable error) {
+                                          expect(userID).to.equal(currentUserID);
+                                          expect(error).to.beNil();
+                                          done();
+                                      }];
             });
 
             OCMVerifyAll(container);
@@ -527,14 +529,15 @@ describe(@"AuthenticationError callback", ^{
                 }]]);
 
             waitUntil(^(DoneCallback done) {
-                [auth disableUserWithUserID:currentUserID
-                                    message:@"reason"
-                                     expiry:expiry
-                                 completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
-                                     expect(userID).to.equal(currentUserID);
-                                     expect(error).to.beNil();
-                                     done();
-                                 }];
+                [auth adminDisableUserWithUserID:currentUserID
+                                         message:@"reason"
+                                          expiry:expiry
+                                      completion:^(NSString *_Nonnull userID,
+                                                   NSError *_Nullable error) {
+                                          expect(userID).to.equal(currentUserID);
+                                          expect(error).to.beNil();
+                                          done();
+                                      }];
             });
 
             OCMVerifyAll(container);
