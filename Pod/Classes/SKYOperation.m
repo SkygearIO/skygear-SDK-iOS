@@ -199,7 +199,7 @@
     return responseDictionary;
 }
 
-- (NSError *)erorrWithResponse:(NSHTTPURLResponse *)response data:(NSData *)data
+- (NSError *)errorWithResponse:(NSHTTPURLResponse *)response data:(NSData *)data
 {
     NSError *error = nil;
     NSDictionary *responseDictionary = [self parseResponse:data error:&error];
@@ -253,7 +253,7 @@
                                      forKey:SKYOperationErrorHTTPStatusCodeKey];
 
     if (httpResponse.statusCode >= 400) {
-        [self didEncounterError:[self erorrWithResponse:httpResponse data:data]];
+        [self didEncounterError:[self errorWithResponse:httpResponse data:data]];
         [self setFinished:YES];
         return;
     }
