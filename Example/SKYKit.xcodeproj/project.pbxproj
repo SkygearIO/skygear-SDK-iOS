@@ -116,6 +116,7 @@
 		F4BACC8B20221D79003E2FAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8920221D79003E2FAA /* MainMenu.xib */; };
 		F4BACC8E20221D79003E2FAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BACC8D20221D79003E2FAA /* main.m */; };
 		F4E355DC20343B120053E0A9 /* SKYSetDisableUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */; };
+		F4E553262074DE1D000E854A /* SKYContainer+Test.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E553252074DE1D000E854A /* SKYContainer+Test.m */; };
 		F72C1CD25FC5E7B211DE7002 /* libPods-Mac Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CFCD1EE493CB3F6B12642B /* libPods-Mac Example.a */; };
 /* End PBXBuildFile section */
 
@@ -250,6 +251,8 @@
 		F4BACC8D20221D79003E2FAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F4BACC8F20221D79003E2FAA /* Mac_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mac_Example.entitlements; sourceTree = "<group>"; };
 		F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSetDisableUserOperationTests.m; sourceTree = "<group>"; };
+		F4E553242074DE1D000E854A /* SKYContainer+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKYContainer+Test.h"; sourceTree = "<group>"; };
+		F4E553252074DE1D000E854A /* SKYContainer+Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SKYContainer+Test.m"; sourceTree = "<group>"; };
 		F9CFCD1EE493CB3F6B12642B /* libPods-Mac Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mac Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -469,6 +472,8 @@
 				37CDD6031B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m */,
 				37F26A081AF8E91E006A21A8 /* Commons */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
+				F4E553242074DE1D000E854A /* SKYContainer+Test.h */,
+				F4E553252074DE1D000E854A /* SKYContainer+Test.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1032,6 +1037,7 @@
 				38EAA71B1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m in Sources */,
 				F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */,
+				F4E553262074DE1D000E854A /* SKYContainer+Test.m in Sources */,
 				38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */,
 				F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */,
 				3745755A1B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m in Sources */,

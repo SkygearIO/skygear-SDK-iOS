@@ -33,7 +33,7 @@ SpecBegin(SKYPushContainer)
         __block bool notificationPosted = NO;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             notificationObserver = [[NSNotificationCenter defaultCenter]
                 addObserverForName:SKYContainerDidRegisterDeviceNotification
                             object:container
@@ -128,7 +128,7 @@ describe(@"unregister device", ^{
     });
 
     beforeEach(^{
-        container = [[SKYContainer alloc] init];
+        container = [SKYContainer testContainer];
         [container.auth
             updateWithUserRecordID:@"user_id_001"
                        accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];

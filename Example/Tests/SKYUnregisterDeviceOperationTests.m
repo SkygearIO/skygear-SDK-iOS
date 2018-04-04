@@ -27,7 +27,7 @@ SpecBegin(SKYUnregisterDeviceOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"user_id"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"access_token"]];

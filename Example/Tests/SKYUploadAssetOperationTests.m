@@ -30,9 +30,7 @@ SpecBegin(SKYUploadAssetOperation)
         __block SKYAsset *asset = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configAddress:@"http://skygear.test/"];
-            [container configureWithAPIKey:@"API_KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -52,7 +50,7 @@ SpecBegin(SKYUploadAssetOperation)
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
-                .to.equal([NSURL URLWithString:@"http://skygear.test/files/boy.txt"]);
+                .to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy.txt"]);
             expect(request.allHTTPHeaderFields).to.equal(@{
                 @"X-Skygear-API-Key" : @"API_KEY",
                 @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
@@ -72,7 +70,7 @@ SpecBegin(SKYUploadAssetOperation)
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
-                .to.equal([NSURL URLWithString:@"http://skygear.test/files/boy%25boy.txt"]);
+                .to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy%25boy.txt"]);
             expect(request.allHTTPHeaderFields).to.equal(@{
                 @"X-Skygear-API-Key" : @"API_KEY",
                 @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",

@@ -30,9 +30,7 @@ SpecBegin(SKYPostAssetOperation)
         __block SKYAsset *asset = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configAddress:@"http://skygear.dev/"];
-            [container configureWithAPIKey:@"API-KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"Test-User-ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"Test-Access-Token"]];
@@ -66,7 +64,7 @@ SpecBegin(SKYPostAssetOperation)
             expect(request.URL.absoluteString)
                 .to.equal(
                     @"http://asset.skygear.dev/dev/f8b9d47f-6188-46fa-b26f-0ac73fea2569-boy.txt");
-            expect(request.allHTTPHeaderFields[@"X-Skygear-API-Key"]).to.equal(@"API-KEY");
+            expect(request.allHTTPHeaderFields[@"X-Skygear-API-Key"]).to.equal(@"API_KEY");
             expect(request.allHTTPHeaderFields[@"X-Skygear-Access-Token"])
                 .to.equal(@"Test-Access-Token");
             expect(request.allHTTPHeaderFields[@"Content-Type"]).notTo.beNil();

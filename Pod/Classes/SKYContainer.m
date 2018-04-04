@@ -31,8 +31,6 @@
 
 NSString *const SKYVersion = SKY_VERSION;
 
-NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
-
 NSString *const SKYContainerDidChangeCurrentUserNotification =
     @"SKYContainerDidChangeCurrentUserNotification";
 
@@ -49,7 +47,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 {
     self = [super init];
     if (self) {
-        _endPointAddress = [NSURL URLWithString:SKYContainerRequestBaseURL];
+        _endPointAddress = nil;
         _APIKey = nil;
         _defaultTimeoutInterval = 60.0;
 

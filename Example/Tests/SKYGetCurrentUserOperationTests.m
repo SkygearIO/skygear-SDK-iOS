@@ -27,7 +27,7 @@ SpecBegin(SKYGetCurrentUserOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth
                 updateWithUserRecordID:@"user-1"
                            accessToken:[[SKYAccessToken alloc] initWithTokenString:@"token-1"]];

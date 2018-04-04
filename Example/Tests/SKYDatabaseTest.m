@@ -24,8 +24,15 @@
 SpecBegin(SKYDatabase)
 
     describe(@"database", ^{
+        __block SKYContainer *container;
+        __block SKYDatabase *database;
+
+        beforeEach(^{
+            container = [SKYContainer testContainer];
+            database = [container publicCloudDatabase];
+        });
+
         it(@"fetch record", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             NSString *bookTitle = @"A tale of two cities";
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -65,7 +72,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"fetch record with operation error", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -92,7 +98,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"fetch records", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
             NSString *bookTitle = @"A tale of two cities";
@@ -146,7 +151,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"modify record", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             NSString *bookTitle = @"A tale of two cities";
             SKYRecord *record = [[SKYRecord alloc]
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
@@ -189,7 +193,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"modify record with operation error", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             NSString *bookTitle = @"A tale of two cities";
             SKYRecord *record = [[SKYRecord alloc]
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
@@ -220,7 +223,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"modify records", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             NSString *bookTitle = @"A tale of two cities";
             SKYRecord *record1 = [[SKYRecord alloc]
                 initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
@@ -279,7 +281,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"delete record", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -312,7 +313,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"delete record with operation error", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -339,7 +339,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"delete records", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
 
@@ -387,7 +386,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"perform query", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -428,7 +426,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"perform query with operation error", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -454,7 +451,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"fetch all subscriptions", ^{
-            SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
