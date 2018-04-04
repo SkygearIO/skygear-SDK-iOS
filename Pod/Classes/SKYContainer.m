@@ -99,26 +99,8 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 - (void)configAddress:(NSString *)address
 {
     NSURL *url = [NSURL URLWithString:address];
-    NSString *schema = url.scheme;
-    if (![schema isEqualToString:@"http"] && ![schema isEqualToString:@"https"]) {
-        NSLog(@"Error: only http or https schema is accepted");
-        return;
-    }
-
-    NSString *host = url.host;
-    if (url.port) {
-        host = [host stringByAppendingFormat:@":%@", url.port];
-    }
-
-    NSString *webSocketSchema = [schema isEqualToString:@"https"] ? @"wss" : @"ws";
-
     _endPointAddress = url;
-
-    self.pubsub.pubsubClient.endPointAddress =
-        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
-    self.pubsub.internalPubsubClient.endPointAddress =
-        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
-    [self.pubsub configInternalPubsubClient];
+    [self.pubsub configAddress:address];
 }
 
 - (void)configureWithAPIKey:(NSString *)APIKey
@@ -134,9 +116,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     [self willChangeValueForKey:@"applicationIdentifier"];
     _APIKey = [APIKey copy];
     [self didChangeValueForKey:@"applicationIdentifier"];
-
-    self.pubsub.pubsubClient.APIKey = _APIKey;
-    self.pubsub.internalPubsubClient.APIKey = _APIKey;
+    [self.pubsub configureWithAPIKey:APIKey];
 }
 
 - (void)addOperation:(SKYOperation *)operation

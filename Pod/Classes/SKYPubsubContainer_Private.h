@@ -34,4 +34,7 @@
 
 - (void)configInternalPubsubClient;
 
+- (void)configAddress:(NSString *)address;
+- (void)configureWithAPIKey:(NSString *)APIKey;
+
 @end

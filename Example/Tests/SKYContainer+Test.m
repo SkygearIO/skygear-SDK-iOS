@@ -24,6 +24,7 @@
 + (SKYContainer *)testContainer
 {
     SKYContainer *container = [[SKYContainer alloc] init];
+    container.pubsub.autoInternalPubsub = NO;
     [container configAddress:@"http://skygear.localhost"];
     [container configureWithAPIKey:@"API_KEY"];
     return container;

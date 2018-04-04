@@ -40,7 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<SKYPubsubContainerDelegate> _Nullable delegate;
 
-@property (nonatomic, readonly) NSURL *_Nullable endPointAddress;
+@property (nonatomic, copy, readonly, nullable) NSURL *endPointAddress;
+
+/**
+ Gets or sets whether the internal pubsub connection is configured to connect automatically.
+ */
+@property (nonatomic, readwrite) BOOL autoInternalPubsub;
 
 /**
  Manually connect to the pubsub end-point without subscribing a channel. Normally, you can just

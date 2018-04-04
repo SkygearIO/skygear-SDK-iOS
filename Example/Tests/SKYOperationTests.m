@@ -275,19 +275,19 @@ SpecBegin(SKYOperation)
 
         it(@"error when container is not configured", ^{
             SKYContainer *container = [[SKYContainer alloc] init];
-            NSString *action = @"auth:login";
-            NSDictionary *payload = @{};
+            container.pubsub.autoInternalPubsub = NO;
 
-            SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
-            SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
+            SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
 
             waitUntil(^(DoneCallback done) {
                 __block typeof(operation) blockOp = operation;
-                operation.completionBlock = ^{
+                operation.logoutCompletionBlock = ^(NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
                         expect(blockOp.lastError).toNot.beNil();
                         expect(blockOp.lastError.code).to.equal(SKYErrorContainerNotConfigured);
+                        expect(error).toNot.beNil();
+                        expect(error.code).to.equal(SKYErrorContainerNotConfigured);
                         done();
                     });
                 };
