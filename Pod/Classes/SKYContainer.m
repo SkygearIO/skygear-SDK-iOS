@@ -148,6 +148,20 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     [self.operationQueue addOperation:operation];
 }
 
+- (NSURL *)endPointAddress
+{
+    static BOOL warnedOnce;
+
+    if (!_endPointAddress && !warnedOnce) {
+        NSLog(
+            @"Warning: Container is not configured with an endpoint address. Please call -[%@ %@].",
+            NSStringFromClass([SKYContainer class]),
+            NSStringFromSelector(@selector(configAddress:)));
+        warnedOnce = YES;
+    }
+    return _endPointAddress;
+}
+
 - (NSString *)APIKey
 {
     static BOOL warnedOnce;
