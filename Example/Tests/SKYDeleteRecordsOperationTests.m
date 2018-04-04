@@ -41,7 +41,7 @@ SpecBegin(SKYDeleteRecordsOperation)
                 [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID ]];
             operation.database = database;
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
@@ -57,7 +57,7 @@ SpecBegin(SKYDeleteRecordsOperation)
                 operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
             operation.database = database;
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
@@ -75,7 +75,7 @@ SpecBegin(SKYDeleteRecordsOperation)
 
             operation.database = database;
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.payload[@"atomic"]).to.equal(@YES);

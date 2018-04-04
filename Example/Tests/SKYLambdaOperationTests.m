@@ -38,7 +38,7 @@ SpecBegin(SKYLambdaOperation)
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:args];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"hello:world");
@@ -52,7 +52,7 @@ SpecBegin(SKYLambdaOperation)
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"hello:world");

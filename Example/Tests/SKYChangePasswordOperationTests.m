@@ -38,7 +38,7 @@ SpecBegin(SKYChangePasswordOperation)
                                                        passwordToSet:@"new_password"];
 
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"auth:password");

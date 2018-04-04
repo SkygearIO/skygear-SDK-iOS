@@ -50,7 +50,7 @@ SpecBegin(SKYDefineAdminRolesOperation)
                 [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:admin");

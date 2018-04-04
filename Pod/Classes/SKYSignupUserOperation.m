@@ -66,6 +66,11 @@
     return self;
 }
 
+- (BOOL)requiresAPIKey
+{
+    return YES;
+}
+
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
@@ -100,17 +105,6 @@
     }
 
     self.request = [[SKYRequest alloc] initWithAction:@"auth:signup" payload:payload];
-    self.request.APIKey = self.container.APIKey;
-}
-
-- (void)operationWillStart
-{
-    [super operationWillStart];
-    if (!self.container.APIKey) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"SKYContainer is not configured with an API key."
-                                     userInfo:nil];
-    }
 }
 
 - (void)handleRequestError:(NSError *)error

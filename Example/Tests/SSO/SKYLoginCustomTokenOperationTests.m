@@ -37,7 +37,7 @@ SpecBegin(SKYLoginCustomTokenOperation)
             SKYLoginCustomTokenOperation *operation =
                 [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"sso:custom_token:login");

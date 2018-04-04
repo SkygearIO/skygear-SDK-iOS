@@ -50,7 +50,7 @@ SpecBegin(SKYGetAssetPostRequestOperation)
             SKYGetAssetPostRequestOperation *operation =
                 [SKYGetAssetPostRequestOperation operationWithAsset:asset];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

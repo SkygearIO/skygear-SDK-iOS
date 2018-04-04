@@ -40,7 +40,7 @@ SpecBegin(SKYGetCurrentUserOperation)
         it(@"should prepare correct SKYRequest", ^{
             SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

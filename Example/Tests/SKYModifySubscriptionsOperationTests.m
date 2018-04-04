@@ -45,7 +45,7 @@ SpecBegin(SKYModifySubscriptionsOperation)
                   subscriptionsToSave:@[ subscription1, subscription2 ]];
             operation.container = container;
             operation.database = database;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"subscription:save");

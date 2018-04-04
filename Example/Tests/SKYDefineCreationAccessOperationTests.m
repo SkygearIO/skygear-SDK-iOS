@@ -49,7 +49,7 @@ SpecBegin(SKYDefineCreationAccessOperation)
                 operationWithRecordType:sourceCodeRecordType
                                   roles:@[ developerRole, testerRole ]];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"schema:access");

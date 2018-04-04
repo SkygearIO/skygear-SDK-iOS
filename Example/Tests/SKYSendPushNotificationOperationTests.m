@@ -52,7 +52,7 @@ SpecBegin(SKYSendPushNotificationOperation)
                 [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
                                                                 deviceIDsToSend:@[ @"johndoe" ]];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
@@ -69,7 +69,7 @@ SpecBegin(SKYSendPushNotificationOperation)
                 [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
                                                                   userIDsToSend:@[ @"johndoe" ]];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
@@ -86,7 +86,7 @@ SpecBegin(SKYSendPushNotificationOperation)
                 operationWithNotificationInfo:notificationInfo
                                 userIDsToSend:@[ @"johndoe", @"janedoe" ]];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
@@ -104,7 +104,7 @@ SpecBegin(SKYSendPushNotificationOperation)
                                 userIDsToSend:@[ @"johndoe" ]
                                         topic:@"io.skygear.example"];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

@@ -44,7 +44,7 @@ SpecBegin(SKYSetDisableUserOperation)
                 [SKYSetDisableUserOperation enableOperationWithUserID:currentUserID];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"auth:disable:set");
@@ -63,7 +63,7 @@ SpecBegin(SKYSetDisableUserOperation)
                                                                 expiry:disableExpiry];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"auth:disable:set");
@@ -83,7 +83,7 @@ SpecBegin(SKYSetDisableUserOperation)
                                                                 expiry:nil];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"auth:disable:set");

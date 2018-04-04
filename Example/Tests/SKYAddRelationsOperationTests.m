@@ -47,7 +47,7 @@ SpecBegin(SKYAddRelationsOperation)
                 [SKYAddRelationsOperation operationWithType:@"follow"
                                              usersToRelated:@[ follower1, follower2 ]];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"relation:add");

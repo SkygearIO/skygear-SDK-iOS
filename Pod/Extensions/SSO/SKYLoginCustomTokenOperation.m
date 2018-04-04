@@ -49,21 +49,15 @@
     return [[SKYLoginCustomTokenOperation alloc] initWithCustomToken:customToken];
 }
 
+- (BOOL)requiresAPIKey
+{
+    return YES;
+}
+
 - (void)prepareForRequest
 {
     NSDictionary *payload = @{@"token" : _customToken};
     self.request = [[SKYRequest alloc] initWithAction:@"sso:custom_token:login" payload:payload];
-    self.request.APIKey = self.container.APIKey;
-}
-
-- (void)operationWillStart
-{
-    [super operationWillStart];
-    if (!self.container.APIKey) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"SKYContainer is not configured with an API key."
-                                     userInfo:nil];
-    }
 }
 
 - (void)handleRequestError:(NSError *)error
