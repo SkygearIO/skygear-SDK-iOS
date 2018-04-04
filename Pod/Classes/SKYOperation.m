@@ -103,18 +103,67 @@
     return [_response copy];
 }
 
-- (NSURLRequest *)makeURLRequest
+- (NSURLRequest *)makeURLRequestWithError:(NSError **)error
 {
+    // -makeURLRequest is a deprecated name of this selector.
+    // If -makeURLRequest is implemented, call that method instead.
+    // Should be removed if confirming no subclasses implement -makeURLRequest.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    if ([self respondsToSelector:@selector(makeURLRequest)]) {
+        return [self performSelector:@selector(makeURLRequest)];
+    }
+#pragma clang diagnostic pop
+
     if (!self.request) {
         [self prepareForRequest];
-        self.request.baseURL = self.container.endPointAddress;
+        NSError *containerConfigError = [self addContainerConfigurationToRequest:self.request];
+        if (containerConfigError) {
+            if (error) {
+                *error = containerConfigError;
+            }
+            return nil;
+        }
     }
+
     NSMutableURLRequest *request = [NSMutableURLRequest mutableRequestWithSKYRequest:self.request];
     request.timeoutInterval = self.timeoutInterval;
 
     NSString *version = [NSString stringWithFormat:@"skygear-SDK-iOS/%@", SKYVersion];
     [request setValue:version forHTTPHeaderField:@"X-Skygear-SDK-Version"];
     return [request copy];
+}
+
+- (NSError *)addContainerConfigurationToRequest:(SKYRequest *)request
+{
+    if (!self.container.endPointAddress) {
+        return [_errorCreator
+            errorWithCode:SKYErrorContainerNotConfigured
+                 userInfo:@{SKYErrorMessageKey : @"Container endpoint is not configured."}];
+    }
+    request.baseURL = self.container.endPointAddress;
+
+    if (self.requiresAPIKey) {
+        if (!self.container.APIKey) {
+            return [_errorCreator
+                errorWithCode:SKYErrorContainerNotConfigured
+                     userInfo:@{SKYErrorMessageKey : @"Container API Key is not configured."}];
+        }
+        request.APIKey = self.container.APIKey;
+    }
+
+    if (self.requiresAccessToken) {
+        if (!self.container.auth.currentAccessToken) {
+            return [_errorCreator
+                errorWithCode:SKYErrorNotAuthenticated
+                     userInfo:@{
+                         SKYErrorMessageKey :
+                             @"Request requires access token but none is available."
+                     }];
+        }
+        request.accessToken = self.container.auth.currentAccessToken;
+    }
+    return nil;
 }
 
 - (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
@@ -164,9 +213,15 @@
 
     NSURLSessionConfiguration *myConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:myConfig];
-    NSURLSessionTask *task =
-        [self makeURLSessionTaskWithSession:session request:[self makeURLRequest]];
 
+    NSError *requestError;
+    NSURLRequest *request = [self makeURLRequestWithError:&requestError];
+    if (!request) {
+        [self handleRequestCompletionWithData:nil response:nil error:requestError];
+        return;
+    }
+
+    NSURLSessionTask *task = [self makeURLSessionTaskWithSession:session request:request];
     [task resume];
 }
 
@@ -235,10 +290,15 @@
                                   error:(NSError *)requestError
 {
     if (requestError) {
-        NSError *error = [_errorCreator errorWithCode:SKYErrorNetworkFailure
-                                             userInfo:@{
-                                                 NSUnderlyingErrorKey : requestError,
-                                             }];
+        NSError *error;
+        if ([requestError.domain isEqualToString:SKYOperationErrorDomain]) {
+            error = requestError;
+        } else {
+            error = [_errorCreator errorWithCode:SKYErrorNetworkFailure
+                                        userInfo:@{
+                                            NSUnderlyingErrorKey : requestError,
+                                        }];
+        }
         [self didEncounterError:error];
         [self setFinished:YES];
         return;

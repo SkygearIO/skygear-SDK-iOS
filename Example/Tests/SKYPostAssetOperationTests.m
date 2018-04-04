@@ -58,7 +58,7 @@ SpecBegin(SKYPostAssetOperation)
                        }];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeURLRequest];
+            NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"POST");
             expect(request.URL.absoluteString)

@@ -38,6 +38,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readwrite) NSTimeInterval timeoutInterval;
 
+/**
+ The request requires an access token.
+ */
+@property (nonatomic, readonly) BOOL requiresAPIKey;
+
+/**
+ The request requires an access token.
+ */
+@property (nonatomic, readonly) BOOL requiresAccessToken;
+
 /// Undocumented
 - (instancetype)initWithRequest:(SKYRequest *)request;
 
@@ -108,15 +118,17 @@ NS_ASSUME_NONNULL_BEGIN
  Creates a <NSURLRequest> with <SKYRequest> specified as the property of this class.
  <SKYOperation> calls this method to create a <NSURLRequest>.
 
+ If the request cannot be created, this method should return nil and the error should be supplied.
+
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLRequest *)makeURLRequest;
+- (NSURLRequest *_Nullable)makeURLRequestWithError:(NSError **)error;
 
 /// Undocumented
-- (void)handleRequestCompletionWithData:(NSData *)data
-                               response:(NSURLResponse *)response
-                                  error:(NSError *)requestError;
+- (void)handleRequestCompletionWithData:(NSData *_Nullable)data
+                               response:(NSURLResponse *_Nullable)response
+                                  error:(NSError *_Nullable)requestError;
 
 /// Undocumented
 - (void)operationWillStart;

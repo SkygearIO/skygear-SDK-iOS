@@ -273,6 +273,28 @@ SpecBegin(SKYOperation)
             });
         });
 
+        it(@"error when container is not configured", ^{
+            SKYContainer *container = [[SKYContainer alloc] init];
+            NSString *action = @"auth:login";
+            NSDictionary *payload = @{};
+
+            SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
+            SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
+
+            waitUntil(^(DoneCallback done) {
+                __block typeof(operation) blockOp = operation;
+                operation.completionBlock = ^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(blockOp.finished).to.equal(YES);
+                        expect(blockOp.lastError).toNot.beNil();
+                        expect(blockOp.lastError.code).to.equal(SKYErrorContainerNotConfigured);
+                        done();
+                    });
+                };
+                [container addOperation:operation];
+            });
+        });
+
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });

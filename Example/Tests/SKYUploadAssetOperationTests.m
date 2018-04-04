@@ -46,7 +46,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeURLRequest];
+            NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)
@@ -66,7 +66,7 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            NSURLRequest *request = [operation makeURLRequest];
+            NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
             expect(request.URL)

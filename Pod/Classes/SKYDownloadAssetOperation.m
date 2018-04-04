@@ -51,7 +51,7 @@
     return self.downloadAssetProgressBlock != nil;
 }
 
-- (NSURLRequest *)makeURLRequest
+- (NSURLRequest *)makeURLRequestWithError:(NSError **)error
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.asset.url];
     return request;
