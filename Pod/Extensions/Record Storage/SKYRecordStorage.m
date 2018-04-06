@@ -467,7 +467,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                 [_deletedRecordIDs addObject:recordToDelete.recordID];
             }
         }
-        void (^block)() = [_completionBlocks objectForKey:change.recordID];
+        void (^block)(void) = [_completionBlocks objectForKey:change.recordID];
         if (block) {
             block();
         }
