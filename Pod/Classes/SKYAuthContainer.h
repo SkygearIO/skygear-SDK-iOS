@@ -296,9 +296,9 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
  *  @param userID          User ID of a disabled user
  *  @param completionBlock Completion Block
  */
-- (void)enableUserWithUserID:(NSString *)userID
-                  completion:(void (^_Nullable)(NSString *userID,
-                                                NSError *_Nullable error))completionBlock;
+- (void)adminEnableUserWithUserID:(NSString *)userID
+                       completion:(void (^_Nullable)(NSString *userID,
+                                                     NSError *_Nullable error))completionBlock;
 
 /**
  *  Disable user account of a user.
@@ -310,11 +310,11 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
  * optional
  *  @param completionBlock Completion Block
  */
-- (void)disableUserWithUserID:(NSString *)userID
-                      message:(NSString *_Nullable)message
-                       expiry:(NSDate *_Nullable)expiry
-                   completion:(void (^_Nullable)(NSString *userID,
-                                                 NSError *_Nullable error))completionBlock;
+- (void)adminDisableUserWithUserID:(NSString *)userID
+                           message:(NSString *_Nullable)message
+                            expiry:(NSDate *_Nullable)expiry
+                        completion:(void (^_Nullable)(NSString *userID,
+                                                      NSError *_Nullable error))completionBlock;
 
 @end
 
