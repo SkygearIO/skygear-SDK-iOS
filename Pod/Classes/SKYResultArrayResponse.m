@@ -57,8 +57,9 @@
     [resultArrayInResponse enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSError *error;
         if (![obj isKindOfClass:[NSDictionary class]]) {
-            error = [errorCreator errorWithCode:SKYErrorInvalidData
-                                        message:@"Result does not conform with expected format."];
+            error =
+                [self->errorCreator errorWithCode:SKYErrorInvalidData
+                                          message:@"Result does not conform with expected format."];
             block(nil, nil, error, idx, stop);
             return;
         }
@@ -66,14 +67,14 @@
         NSDictionary *result = (NSDictionary *)obj;
         NSString *resultKey = result[@"_id"];
         if (![resultKey isKindOfClass:[NSString class]]) {
-            error = [errorCreator errorWithCode:SKYErrorInvalidData
-                                        message:@"Missing `_id` or not in correct format."];
+            error = [self->errorCreator errorWithCode:SKYErrorInvalidData
+                                              message:@"Missing `_id` or not in correct format."];
             block(nil, nil, error, idx, stop);
             return;
         }
 
         if ([result[@"_type"] isEqualToString:@"error"]) {
-            error = [errorCreator errorWithResponseDictionary:obj];
+            error = [self->errorCreator errorWithResponseDictionary:obj];
             block(resultKey, nil, error, idx, stop);
             return;
         }

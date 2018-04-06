@@ -125,7 +125,7 @@
     }
 
     [_records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([_localRecords objectForKey:key]) {
+        if ([self->_localRecords objectForKey:key]) {
             return;
         }
         block([obj copy], stop);

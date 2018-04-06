@@ -193,7 +193,9 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 - (void)saveRecords:(NSArray *)records
 {
     [records enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [self saveRecord:(SKYRecord *)obj whenConflict:_defaultResolveMethod completionHandler:nil];
+        [self saveRecord:(SKYRecord *)obj
+                 whenConflict:self->_defaultResolveMethod
+            completionHandler:nil];
     }];
 }
 
@@ -219,7 +221,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 {
     [records enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [self deleteRecord:(SKYRecord *)obj
-                 whenConflict:_defaultResolveMethod
+                 whenConflict:self->_defaultResolveMethod
             completionHandler:nil];
     }];
 }
@@ -437,16 +439,16 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     }];
 
     [records enumerateObjectsUsingBlock:^(SKYRecord *obj, NSUInteger idx, BOOL *stop) {
-        [_backingStore saveRecord:obj];
-        [_savedRecordIDs addObject:obj.recordID];
-        [_records setObject:obj forKey:obj.recordID];
+        [self->_backingStore saveRecord:obj];
+        [self->_savedRecordIDs addObject:obj.recordID];
+        [self->_records setObject:obj forKey:obj.recordID];
         [oldRecordIDs removeObject:obj.recordID];
     }];
 
     [oldRecordIDs enumerateObjectsUsingBlock:^(SKYRecordID *obj, NSUInteger idx, BOOL *stop) {
-        [_backingStore deleteRecordWithRecordID:obj];
-        [_deletedRecordIDs addObject:obj];
-        [_records removeObjectForKey:obj];
+        [self->_backingStore deleteRecordWithRecordID:obj];
+        [self->_deletedRecordIDs addObject:obj];
+        [self->_records removeObjectForKey:obj];
     }];
 }
 

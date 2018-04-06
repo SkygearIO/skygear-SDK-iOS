@@ -88,8 +88,10 @@
     }
 
     SKYQueryOperation *op = [[SKYQueryOperation alloc] initWithQuery:self.query];
+    __weak typeof(self) weakSelf = self;
     op.queryRecordsCompletionBlock =
         ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             [storage beginUpdating];
             if (!operationError) {
                 NSLog(@"%@: Updating record storage by replacing with %lu records.", self,
@@ -98,7 +100,9 @@
                 storage.hasUpdateAvailable = NO;
             }
             [storage finishUpdating];
-            _updating = NO;
+            if (strongSelf) {
+                strongSelf->_updating = NO;
+            }
 
             if (completionHandler) {
                 completionHandler(YES, nil);
@@ -146,7 +150,7 @@
     _updating = YES;
 
     __block NSInteger updateCount = 0;
-
+    __weak typeof(self) weakSelf = self;
     [changes enumerateObjectsUsingBlock:^(SKYRecordChange *change, NSUInteger idx, BOOL *stop) {
         if (change.action == SKYRecordChangeSave) {
             SKYRecord *recordToSave =
@@ -161,19 +165,22 @@
                 [storage updateByApplyingChange:change recordOnRemote:record error:error];
             };
             op.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
                 if (storage.updating) {
                     [storage finishUpdating];
                 }
-                [_changesUpdating removeObjectForKey:change.recordID];
+                if (strongSelf) {
+                    [strongSelf->_changesUpdating removeObjectForKey:change.recordID];
+                }
                 updateCount--;
                 if (updateCount <= 0) {
-                    _updating = NO;
+                    self->_updating = NO;
                     if (completionHandler) {
                         completionHandler(YES, nil);
                     }
                 }
             };
-            [_changesUpdating setObject:change forKey:change.recordID];
+            [self->_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == SKYRecordChangeDelete) {
@@ -187,19 +194,22 @@
             };
             op.deleteRecordsCompletionBlock =
                 ^(NSArray *deletedRecordIDs, NSError *operationError) {
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
                     if (storage.updating) {
                         [storage finishUpdating];
                     }
-                    [_changesUpdating removeObjectForKey:change.recordID];
+                    if (strongSelf) {
+                        [strongSelf->_changesUpdating removeObjectForKey:change.recordID];
+                    }
                     updateCount--;
                     if (updateCount <= 0) {
-                        _updating = NO;
+                        self->_updating = NO;
                         if (completionHandler) {
                             completionHandler(YES, nil);
                         }
                     }
                 };
-            [_changesUpdating setObject:change forKey:change.recordID];
+            [self->_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         }
