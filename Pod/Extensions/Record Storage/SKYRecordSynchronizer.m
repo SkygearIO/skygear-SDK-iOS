@@ -164,16 +164,16 @@
                 if (storage.updating) {
                     [storage finishUpdating];
                 }
-                [_changesUpdating removeObjectForKey:change.recordID];
+                [self->_changesUpdating removeObjectForKey:change.recordID];
                 updateCount--;
                 if (updateCount <= 0) {
-                    _updating = NO;
+                    self->_updating = NO;
                     if (completionHandler) {
                         completionHandler(YES, nil);
                     }
                 }
             };
-            [_changesUpdating setObject:change forKey:change.recordID];
+            [self->_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == SKYRecordChangeDelete) {
@@ -190,16 +190,16 @@
                     if (storage.updating) {
                         [storage finishUpdating];
                     }
-                    [_changesUpdating removeObjectForKey:change.recordID];
+                    [self->_changesUpdating removeObjectForKey:change.recordID];
                     updateCount--;
                     if (updateCount <= 0) {
-                        _updating = NO;
+                        self->_updating = NO;
                         if (completionHandler) {
                             completionHandler(YES, nil);
                         }
                     }
                 };
-            [_changesUpdating setObject:change forKey:change.recordID];
+            [self->_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         }
@@ -209,7 +209,7 @@
 
 - (BOOL)isProcessingChange:(SKYRecordChange *)change storage:(SKYRecordStorage *)storage
 {
-    return (BOOL)[_changesUpdating objectForKey:change.recordID];
+    return (BOOL)[self->_changesUpdating objectForKey:change.recordID];
 }
 
 @end

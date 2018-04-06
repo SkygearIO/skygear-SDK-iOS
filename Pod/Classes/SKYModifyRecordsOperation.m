@@ -52,7 +52,7 @@
     recordsByRecordID = [NSMutableDictionary dictionary];
     [self.recordsToSave enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [dictionariesToSave addObject:[serializer dictionaryWithRecord:obj]];
-        [recordsByRecordID setObject:obj forKey:[(SKYRecord *)obj recordID]];
+        [self->recordsByRecordID setObject:obj forKey:[(SKYRecord *)obj recordID]];
     }];
 
     NSMutableDictionary *payload = [@{
