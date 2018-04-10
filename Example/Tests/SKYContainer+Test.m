@@ -1,5 +1,5 @@
 //
-//  SKYPubsubContainer_Private.h
+//  SKYContainer+Test.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,24 +17,17 @@
 //  limitations under the License.
 //
 
-#import "SKYPubsubContainer.h"
+#import "SKYContainer+Test.h"
 
-#import "SKYContainer.h"
-#import "SKYPubsubClient.h"
+@implementation SKYContainer (Test)
 
-@interface SKYPubsubContainer ()
-
-@property (nonatomic, weak) SKYContainer *container;
-
-@property (nonatomic, strong) SKYPubsubClient *pubsubClient;
-
-@property (nonatomic, strong) SKYPubsubClient *internalPubsubClient;
-
-- (instancetype)initWithContainer:(SKYContainer *)container;
-
-- (void)configInternalPubsubClient;
-
-- (void)configAddress:(NSString *)address;
-- (void)configureWithAPIKey:(NSString *)APIKey;
++ (SKYContainer *)testContainer
+{
+    SKYContainer *container = [[SKYContainer alloc] init];
+    container.pubsub.autoInternalPubsub = NO;
+    [container configAddress:@"http://skygear.localhost"];
+    [container configureWithAPIKey:@"API_KEY"];
+    return container;
+}
 
 @end

@@ -27,8 +27,7 @@ SpecBegin(SKYSignupUserOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configureWithAPIKey:@"API_KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -40,7 +39,7 @@ SpecBegin(SKYSignupUserOperation)
                                                      password:@"password"];
 
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:signup");
@@ -53,7 +52,7 @@ SpecBegin(SKYSignupUserOperation)
         it(@"anonymous user request", ^{
             SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAnonymousUser];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:signup");

@@ -44,9 +44,7 @@ SpecBegin(SKYDownloadAssetOperation)
         __block SKYAsset *asset = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configAddress:@"http://skygear.test/"];
-            [container configureWithAPIKey:@"API_KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];

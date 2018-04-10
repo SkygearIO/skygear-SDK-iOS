@@ -99,7 +99,7 @@
     }
 }
 
-- (NSURLRequest *)makeURLRequest
+- (NSURLRequest *)makeURLRequestWithError:(NSError **)error
 {
     NSURL *baseURL = [NSURL URLWithString:@"files/" relativeToURL:self.container.endPointAddress];
     NSURL *url =

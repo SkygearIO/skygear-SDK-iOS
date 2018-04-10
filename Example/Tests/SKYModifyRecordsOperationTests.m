@@ -30,7 +30,7 @@ SpecBegin(SKYModifyRecordsOperation)
         __block SKYDatabase *database = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -48,7 +48,7 @@ SpecBegin(SKYModifyRecordsOperation)
                 [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
             operation.container = container;
             operation.database = database;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:save");
@@ -69,7 +69,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
             operation.container = container;
             operation.database = database;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.payload[@"atomic"]).to.equal(@YES);

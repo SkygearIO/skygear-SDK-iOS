@@ -28,7 +28,7 @@ SpecBegin(SKYOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -266,6 +266,28 @@ SpecBegin(SKYOperation)
                         expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"Unable to login.");
                         expect(error.userInfo[SKYOperationErrorHTTPStatusCodeKey]).to.equal(@(500));
                         expect(error.userInfo[@"username"]).to.equal(@"user@example.com");
+                        done();
+                    });
+                };
+                [container addOperation:operation];
+            });
+        });
+
+        it(@"error when container is not configured", ^{
+            SKYContainer *container = [[SKYContainer alloc] init];
+            container.pubsub.autoInternalPubsub = NO;
+
+            SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
+
+            waitUntil(^(DoneCallback done) {
+                __block typeof(operation) blockOp = operation;
+                operation.logoutCompletionBlock = ^(NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(blockOp.finished).to.equal(YES);
+                        expect(blockOp.lastError).toNot.beNil();
+                        expect(blockOp.lastError.code).to.equal(SKYErrorContainerNotConfigured);
+                        expect(error).toNot.beNil();
+                        expect(error.code).to.equal(SKYErrorContainerNotConfigured);
                         done();
                     });
                 };

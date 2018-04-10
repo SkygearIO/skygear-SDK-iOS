@@ -23,9 +23,6 @@
 #import "SKYPubsubContainer_Private.h"
 #import "SKYPushContainer_Private.h"
 
-NSString *const SKYContainerPubsubBaseURL = @"ws://localhost:5000/pubsub";
-NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubsub";
-
 @implementation SKYPubsubContainer
 
 - (instancetype)initWithContainer:(SKYContainer *)container
@@ -33,14 +30,49 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
     self = [super init];
     if (self) {
         self.container = container;
-        self.pubsubClient = [[SKYPubsubClient alloc]
-            initWithEndPoint:[NSURL URLWithString:SKYContainerPubsubBaseURL]
-                      APIKey:nil];
-        self.internalPubsubClient = [[SKYPubsubClient alloc]
-            initWithEndPoint:[NSURL URLWithString:SKYContainerInternalPubsubBaseURL]
-                      APIKey:nil];
+        self.pubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:nil APIKey:nil];
+        self.internalPubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:nil APIKey:nil];
+        self.autoInternalPubsub = true;
     }
     return self;
+}
+
+- (void)configAddress:(NSString *)address
+{
+    NSURL *url = [NSURL URLWithString:address];
+    NSString *schema = url.scheme;
+    if (![schema isEqualToString:@"http"] && ![schema isEqualToString:@"https"]) {
+        NSLog(@"Error: only http or https schema is accepted");
+        return;
+    }
+
+    NSString *host = url.host;
+    if (url.port) {
+        host = [host stringByAppendingFormat:@":%@", url.port];
+    }
+
+    NSString *webSocketSchema = [schema isEqualToString:@"https"] ? @"wss" : @"ws";
+
+    _endPointAddress = url;
+
+    self.pubsubClient.endPointAddress =
+        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
+    self.internalPubsubClient.endPointAddress =
+        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
+
+    if (self.autoInternalPubsub) {
+        [self configInternalPubsubClient];
+    }
+}
+
+- (void)configureWithAPIKey:(NSString *)APIKey
+{
+    self.pubsubClient.APIKey = APIKey;
+    self.internalPubsubClient.APIKey = APIKey;
+
+    if (self.autoInternalPubsub) {
+        [self configInternalPubsubClient];
+    }
 }
 
 - (void)configInternalPubsubClient
@@ -94,11 +126,6 @@ NSString *const SKYContainerInternalPubsubBaseURL = @"ws://localhost:5000/_/pubs
             [delegate pubsub:strongSelf didFailWithError:error];
         }
     }];
-}
-
-- (NSURL *)endPointAddress
-{
-    return self.pubsubClient.endPointAddress;
 }
 
 - (void)connect

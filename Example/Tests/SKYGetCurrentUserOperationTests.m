@@ -27,7 +27,7 @@ SpecBegin(SKYGetCurrentUserOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth
                 updateWithUserRecordID:@"user-1"
                            accessToken:[[SKYAccessToken alloc] initWithTokenString:@"token-1"]];
@@ -40,7 +40,7 @@ SpecBegin(SKYGetCurrentUserOperation)
         it(@"should prepare correct SKYRequest", ^{
             SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

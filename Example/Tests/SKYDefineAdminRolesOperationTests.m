@@ -39,8 +39,7 @@ SpecBegin(SKYDefineAdminRolesOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configureWithAPIKey:apiKey];
+            container = [SKYContainer testContainer];
             [container.auth
                 updateWithUserRecordID:currentUserID
                            accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
@@ -51,7 +50,7 @@ SpecBegin(SKYDefineAdminRolesOperation)
                 [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:admin");

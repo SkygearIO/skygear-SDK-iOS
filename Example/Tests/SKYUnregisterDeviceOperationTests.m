@@ -27,7 +27,7 @@ SpecBegin(SKYUnregisterDeviceOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"user_id"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"access_token"]];
@@ -41,7 +41,7 @@ SpecBegin(SKYUnregisterDeviceOperation)
             SKYUnregisterDeviceOperation *operation =
                 [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

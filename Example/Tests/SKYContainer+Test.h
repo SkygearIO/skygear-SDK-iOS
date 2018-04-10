@@ -1,5 +1,5 @@
 //
-//  SKYPubsubContainer_Private.h
+//  SKYContainer+Test.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,24 +17,11 @@
 //  limitations under the License.
 //
 
-#import "SKYPubsubContainer.h"
-
 #import "SKYContainer.h"
-#import "SKYPubsubClient.h"
+#import <Foundation/Foundation.h>
 
-@interface SKYPubsubContainer ()
+@interface SKYContainer (Test)
 
-@property (nonatomic, weak) SKYContainer *container;
-
-@property (nonatomic, strong) SKYPubsubClient *pubsubClient;
-
-@property (nonatomic, strong) SKYPubsubClient *internalPubsubClient;
-
-- (instancetype)initWithContainer:(SKYContainer *)container;
-
-- (void)configInternalPubsubClient;
-
-- (void)configAddress:(NSString *)address;
-- (void)configureWithAPIKey:(NSString *)APIKey;
++ (SKYContainer *_Nonnull)testContainer;
 
 @end

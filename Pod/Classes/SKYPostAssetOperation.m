@@ -137,7 +137,7 @@
 }
 
 #pragma mark - override methods
-- (NSURLRequest *)makeURLRequest
+- (NSURLRequest *)makeURLRequestWithError:(NSError **)error
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.url];
     [request setHTTPMethod:@"POST"];

@@ -39,6 +39,11 @@
     return [[self alloc] initWithOldPassword:oldPassword passwordToSet:newPassword];
 }
 
+- (BOOL)requiresAccessToken
+{
+    return YES;
+}
+
 - (void)prepareForRequest
 {
     NSDictionary *payload = @{
@@ -46,17 +51,6 @@
         @"password" : self.passwordToSet,
     };
     self.request = [[SKYRequest alloc] initWithAction:@"auth:password" payload:payload];
-    self.request.accessToken = self.container.auth.currentAccessToken;
-}
-
-- (void)operationWillStart
-{
-    [super operationWillStart];
-    if (!self.container.auth.currentAccessToken) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"SKYContainer has no currently logged-in user"
-                                     userInfo:nil];
-    }
 }
 
 - (void)handleRequestError:(NSError *)error

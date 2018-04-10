@@ -28,8 +28,7 @@ SpecBegin(SKYFetchSubscriptionsOperation)
         __block SKYDatabase *database = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configureWithAPIKey:@"API_KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -43,7 +42,7 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             operation.container = container;
             operation.database = database;
 
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
@@ -65,7 +64,7 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             operation.container = container;
             operation.database = database;
 
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);

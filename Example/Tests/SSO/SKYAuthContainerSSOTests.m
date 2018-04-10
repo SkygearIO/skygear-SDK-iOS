@@ -42,9 +42,8 @@ SpecBegin(SKYAuthContainerSSO)
             };
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             container.defaultTimeoutInterval = 1.0;
-            [container configureWithAPIKey:@"API_KEY"];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 NSString *path = [[request URL] path];
                 return [path isEqualToString:@"/sso/custom_token/login"];

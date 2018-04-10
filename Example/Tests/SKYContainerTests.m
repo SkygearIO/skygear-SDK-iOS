@@ -33,18 +33,18 @@ SpecBegin(SKYContainer)
 
     describe(@"config End Point address", ^{
         it(@"set the endPointAddress correctly", ^{
-            SKYContainer *container = [[SKYContainer alloc] init];
+            SKYContainer *container = [SKYContainer testContainer];
             [container configAddress:@"http://newpoint.com:4321/"];
             NSURL *expectEndPoint = [NSURL URLWithString:@"http://newpoint.com:4321/"];
             expect(container.endPointAddress).to.equal(expectEndPoint);
-            expect(container.pubsub.endPointAddress)
+            expect(container.pubsub.pubsubClient.endPointAddress)
                 .to.equal([NSURL URLWithString:@"ws://newpoint.com:4321/pubsub"]);
         });
     });
 
 describe(@"Default container", ^{
     it(@"give DB default ID", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYContainer *container = [SKYContainer testContainer];
         expect(container.publicCloudDatabase.databaseID).to.equal(@"_public");
         expect(container.privateCloudDatabase.databaseID).to.equal(@"_private");
     });
@@ -52,7 +52,7 @@ describe(@"Default container", ^{
 
 describe(@"calls lambda", ^{
     it(@"calls lambda no arguments", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYContainer *container = [SKYContainer testContainer];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -76,7 +76,7 @@ describe(@"calls lambda", ^{
     });
 
     it(@"calls lambda with arguments", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYContainer *container = [SKYContainer testContainer];
 
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -110,7 +110,7 @@ describe(@"calls lambda", ^{
     });
 
     it(@"calls lambda with array arguments", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYContainer *container = [SKYContainer testContainer];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         }
@@ -142,7 +142,7 @@ describe(@"calls lambda", ^{
     });
 
     it(@"calls lambda with dictionary arguments", ^{
-        SKYContainer *container = [[SKYContainer alloc] init];
+        SKYContainer *container = [SKYContainer testContainer];
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         }
@@ -192,8 +192,7 @@ describe(@"manage roles", ^{
     __block SKYContainer *container = nil;
 
     beforeEach(^{
-        container = [[SKYContainer alloc] init];
-        [container configureWithAPIKey:apiKey];
+        container = [SKYContainer testContainer];
         [container.auth updateWithUserRecordID:currentUserId
                                    accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
@@ -266,8 +265,7 @@ describe(@"record creation access", ^{
     __block SKYContainer *container = nil;
 
     beforeEach(^{
-        container = [[SKYContainer alloc] init];
-        [container configureWithAPIKey:apiKey];
+        container = [SKYContainer testContainer];
         [container.auth updateWithUserRecordID:currentUserId
                                    accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });
@@ -313,8 +311,7 @@ describe(@"record default access", ^{
     __block SKYContainer *container = nil;
 
     beforeEach(^{
-        container = [[SKYContainer alloc] init];
-        [container configureWithAPIKey:apiKey];
+        container = [SKYContainer testContainer];
         [container.auth updateWithUserRecordID:currentUserId
                                    accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
     });

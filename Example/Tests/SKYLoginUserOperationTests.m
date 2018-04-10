@@ -27,8 +27,7 @@ SpecBegin(SKYLoginUserOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configureWithAPIKey:@"API_KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -39,7 +38,7 @@ SpecBegin(SKYLoginUserOperation)
                 [SKYLoginUserOperation operationWithAuthData:@{@"username" : @"username"}
                                                     password:@"password"];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:login");
@@ -54,7 +53,7 @@ SpecBegin(SKYLoginUserOperation)
                 [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
                                                     password:@"password"];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:login");
@@ -71,7 +70,7 @@ SpecBegin(SKYLoginUserOperation)
                                                 @"access_token" : @"hello_world",
                                             }];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:login");

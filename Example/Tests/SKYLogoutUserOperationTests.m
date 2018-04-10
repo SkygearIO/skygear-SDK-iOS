@@ -27,7 +27,7 @@ SpecBegin(SKYLogoutUserOperation)
         __block SKYContainer *container = nil;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
@@ -36,7 +36,7 @@ SpecBegin(SKYLogoutUserOperation)
         it(@"make SKYRequest", ^{
             SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
             operation.container = container;
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"auth:logout");

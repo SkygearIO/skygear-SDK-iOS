@@ -34,8 +34,7 @@ SpecBegin(SKYFetchUserRoleOperation)
         __block SKYContainer *container;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configureWithAPIKey:apiKey];
+            container = [SKYContainer testContainer];
             [container.auth
                 updateWithUserRecordID:currentUserID
                            accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
@@ -46,7 +45,7 @@ SpecBegin(SKYFetchUserRoleOperation)
                 [SKYFetchUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]];
 
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:get");

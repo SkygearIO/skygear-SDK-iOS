@@ -31,8 +31,6 @@
 
 NSString *const SKYVersion = SKY_VERSION;
 
-NSString *const SKYContainerRequestBaseURL = @"http://localhost:5000/v1";
-
 NSString *const SKYContainerDidChangeCurrentUserNotification =
     @"SKYContainerDidChangeCurrentUserNotification";
 
@@ -49,7 +47,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 {
     self = [super init];
     if (self) {
-        _endPointAddress = [NSURL URLWithString:SKYContainerRequestBaseURL];
+        _endPointAddress = nil;
         _APIKey = nil;
         _defaultTimeoutInterval = 60.0;
 
@@ -101,26 +99,8 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 - (void)configAddress:(NSString *)address
 {
     NSURL *url = [NSURL URLWithString:address];
-    NSString *schema = url.scheme;
-    if (![schema isEqualToString:@"http"] && ![schema isEqualToString:@"https"]) {
-        NSLog(@"Error: only http or https schema is accepted");
-        return;
-    }
-
-    NSString *host = url.host;
-    if (url.port) {
-        host = [host stringByAppendingFormat:@":%@", url.port];
-    }
-
-    NSString *webSocketSchema = [schema isEqualToString:@"https"] ? @"wss" : @"ws";
-
     _endPointAddress = url;
-
-    self.pubsub.pubsubClient.endPointAddress =
-        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
-    self.pubsub.internalPubsubClient.endPointAddress =
-        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
-    [self.pubsub configInternalPubsubClient];
+    [self.pubsub configAddress:address];
 }
 
 - (void)configureWithAPIKey:(NSString *)APIKey
@@ -136,9 +116,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     [self willChangeValueForKey:@"applicationIdentifier"];
     _APIKey = [APIKey copy];
     [self didChangeValueForKey:@"applicationIdentifier"];
-
-    self.pubsub.pubsubClient.APIKey = _APIKey;
-    self.pubsub.internalPubsubClient.APIKey = _APIKey;
+    [self.pubsub configureWithAPIKey:APIKey];
 }
 
 - (void)addOperation:(SKYOperation *)operation
@@ -146,6 +124,20 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     operation.container = self;
     operation.timeoutInterval = self.defaultTimeoutInterval;
     [self.operationQueue addOperation:operation];
+}
+
+- (NSURL *)endPointAddress
+{
+    static BOOL warnedOnce;
+
+    if (!_endPointAddress && !warnedOnce) {
+        NSLog(
+            @"Warning: Container is not configured with an endpoint address. Please call -[%@ %@].",
+            NSStringFromClass([SKYContainer class]),
+            NSStringFromSelector(@selector(configAddress:)));
+        warnedOnce = YES;
+    }
+    return _endPointAddress;
 }
 
 - (NSString *)APIKey

@@ -43,6 +43,8 @@ NSString *SKYErrorNameWithCode(SKYErrorCode errorCode)
             return @"InvalidData";
         case SKYErrorRequestPayloadTooLarge:
             return @"RequestPayloadTooLarge";
+        case SKYErrorContainerNotConfigured:
+            return @"ContainerNotConfigured";
         case SKYErrorNotAuthenticated:
             return @"NotAuthenticated";
         case SKYErrorPermissionDenied:
@@ -124,6 +126,8 @@ NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
         case SKYErrorRequestPayloadTooLarge:
             return NSLocalizedString(@"The data trying to be sent to the server is too large.",
                                      nil);
+        case SKYErrorContainerNotConfigured:
+            return NSLocalizedString(@"The client app container is not properly configured.", nil);
         case SKYErrorNotAuthenticated:
             return NSLocalizedString(@"You have to be authenticated to perform this operation.",
                                      nil);

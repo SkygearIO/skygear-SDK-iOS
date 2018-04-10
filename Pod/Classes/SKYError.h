@@ -43,6 +43,7 @@ typedef enum : NSInteger {
     SKYErrorBadResponse = 8,
     SKYErrorInvalidData = 9,
     SKYErrorRequestPayloadTooLarge = 10,
+    SKYErrorContainerNotConfigured = 11,
 
     SKYErrorNotAuthenticated = 101,
     SKYErrorPermissionDenied = 102,

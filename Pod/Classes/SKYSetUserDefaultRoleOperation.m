@@ -36,6 +36,11 @@
     return self;
 }
 
+- (BOOL)requiresAccessToken
+{
+    return YES;
+}
+
 // override
 - (void)prepareForRequest
 {
@@ -47,18 +52,6 @@
 
     self.request =
         [[SKYRequest alloc] initWithAction:@"role:default" payload:@{@"roles" : roleNames}];
-    self.request.accessToken = self.container.auth.currentAccessToken;
-}
-
-// override
-- (void)operationWillStart
-{
-    [super operationWillStart];
-    if (!self.container.auth.currentAccessToken) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"SKYContainer has no currently logged-in user"
-                                     userInfo:nil];
-    }
 }
 
 // override

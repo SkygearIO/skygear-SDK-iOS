@@ -30,9 +30,7 @@ SpecBegin(SKYGetAssetPostRequestOperation)
         __block SKYAsset *asset;
 
         beforeEach(^{
-            container = [[SKYContainer alloc] init];
-            [container configAddress:@"http://skygear.dev/"];
-            [container configureWithAPIKey:@"API-KEY"];
+            container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"Test-User-ID"
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"Test-Access-Token"]];
@@ -52,12 +50,12 @@ SpecBegin(SKYGetAssetPostRequestOperation)
             SKYGetAssetPostRequestOperation *operation =
                 [SKYGetAssetPostRequestOperation operationWithAsset:asset];
             [operation setContainer:container];
-            [operation prepareForRequest];
+            [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"asset:put");
-            expect(request.APIKey).to.equal(@"API-KEY");
+            expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken.tokenString).to.equal(@"Test-Access-Token");
             expect(request.payload).to.equal(@{
                 @"filename" : asset.name,
