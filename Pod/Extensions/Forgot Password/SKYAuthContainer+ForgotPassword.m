@@ -36,7 +36,7 @@
               completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
 {
     [[self container] callLambda:@"user:reset-password"
-                       arguments:@[ userID, code, [NSNumber numberWithInt:expireAt], password ]
+                       arguments:@[ userID, code, [NSNumber numberWithLong:expireAt], password ]
                completionHandler:completionHandler];
 }
 

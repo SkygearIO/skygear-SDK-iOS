@@ -28,7 +28,7 @@
 // an empty SKYOperation subclass that does nothing but call its completion handler
 @interface MockOperation : SKYOperation
 
-@property (nonatomic, copy) void (^mockCompletion)();
+@property (nonatomic, copy) void (^mockCompletion)(void);
 
 @end
 

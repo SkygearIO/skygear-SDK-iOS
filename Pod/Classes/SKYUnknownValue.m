@@ -23,7 +23,13 @@
 
 - (instancetype)init
 {
-    return [super init];
+    @throw [NSException
+        exceptionWithName:NSInvalidArgumentException
+                   reason:[NSString stringWithFormat:@"%@ is unavailable. Call %@ instead.",
+                                                     NSStringFromSelector(@selector(init)),
+                                                     NSStringFromSelector(
+                                                         @selector(initWithUnderlyingType:))]
+                 userInfo:nil];
 }
 
 - (instancetype)initWithUnderlyingType:(NSString *)underlyingType
@@ -45,7 +51,7 @@
 {
     NSString *underlyingType =
         [decoder decodeObjectOfClass:[NSString class] forKey:@"underlyingType"];
-    return [SKYUnknownValue unknownValueWithUnderlyingType:underlyingType];
+    return [self initWithUnderlyingType:underlyingType];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder

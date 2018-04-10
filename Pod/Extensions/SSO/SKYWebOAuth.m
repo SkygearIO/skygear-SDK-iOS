@@ -64,6 +64,7 @@
 
     _callbackURL = callbackURL;
     _oauthCompletionHandler = completionHandler;
+    SKYErrorCreator *errorCreator = _errorCreator;
 
     if (@available(iOS 11.0, *)) {
         _inProgress = YES;
@@ -74,10 +75,10 @@
                 if (callbackURL) {
                     [self resumeAuthorizationFlowWithURL:callbackURL];
                 } else {
-                    if (_oauthCompletionHandler) {
-                        _oauthCompletionHandler(nil, [_errorCreator
-                                                         errorWithCode:SKYErrorNotAuthenticated
-                                                               message:@"User cancel oauth flow"]);
+                    if (completionHandler) {
+                        completionHandler(nil,
+                                          [errorCreator errorWithCode:SKYErrorNotAuthenticated
+                                                              message:@"User cancel oauth flow"]);
                     }
                     [self didCompleteOAuthFlow];
                 }
@@ -91,10 +92,9 @@
         _topVC = [self findTopViewController];
         [_topVC presentViewController:_safariVC animated:YES completion:nil];
     } else {
-        if (_oauthCompletionHandler) {
-            _oauthCompletionHandler(nil,
-                                    [_errorCreator errorWithCode:SKYErrorUnknownError
-                                                         message:@"Only support iOS 9 or above"]);
+        if (completionHandler) {
+            completionHandler(nil, [_errorCreator errorWithCode:SKYErrorUnknownError
+                                                        message:@"Only support iOS 9 or above"]);
         }
         [self didCompleteOAuthFlow];
     }

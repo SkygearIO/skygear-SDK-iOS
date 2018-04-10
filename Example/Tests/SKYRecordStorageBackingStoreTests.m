@@ -74,7 +74,7 @@ SharedExamplesBegin(SKYRecordStorageBackingStore)
 
         beforeEach(^{
             if (data[@"backingStoreFactory"]) {
-                id<SKYRecordStorageBackingStore> (^factory)() = data[@"backingStoreFactory"];
+                id<SKYRecordStorageBackingStore> (^factory)(void) = data[@"backingStoreFactory"];
                 backingStore = factory();
             } else {
                 backingStore = data[@"backingStore"];
@@ -188,7 +188,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
 
     beforeEach(^{
         if (data[@"backingStoreFactory"]) {
-            id<SKYRecordStorageBackingStore> (^factory)() = data[@"backingStoreFactory"];
+            id<SKYRecordStorageBackingStore> (^factory)(void) = data[@"backingStoreFactory"];
             backingStore = factory();
         } else {
             backingStore = data[@"backingStore"];
@@ -339,7 +339,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
 
     beforeEach(^{
         if (data[@"backingStoreFactory"]) {
-            id<SKYRecordStorageBackingStore> (^factory)() = data[@"backingStoreFactory"];
+            id<SKYRecordStorageBackingStore> (^factory)(void) = data[@"backingStoreFactory"];
             backingStore = factory();
         } else {
             backingStore = data[@"backingStore"];
@@ -466,7 +466,7 @@ SharedExamplesEnd
     SpecBegin(SKYRecordStorageMemoryStore)
 
         describe(@"SKYRecordStorageBackingStore-Changes", ^{
-            id<SKYRecordStorageBackingStore> (^factory)() = ^id<SKYRecordStorageBackingStore>()
+            id<SKYRecordStorageBackingStore> (^factory)(void) = ^id<SKYRecordStorageBackingStore>()
             {
                 return [[SKYRecordStorageMemoryStore alloc] init];
             };
@@ -482,7 +482,7 @@ SpecEnd
     SpecBegin(SKYRecordStorageFileBackedMemoryStore)
 
         describe(@"SKYRecordStorageBackingStore-Changes", ^{
-            id<SKYRecordStorageBackingStore> (^factory)() = ^id<SKYRecordStorageBackingStore>()
+            id<SKYRecordStorageBackingStore> (^factory)(void) = ^id<SKYRecordStorageBackingStore>()
             {
                 NSString *filePath = [SKYRecordStorageBackingStoreSpecTempFileProvider
                     temporaryFileWithSuffix:@"SKYRecordStorageTest.plist"];
@@ -500,7 +500,7 @@ SpecEnd
     SpecBegin(SKYRecordStorageSqliteStore)
 
         describe(@"SKYRecordStorageBackingStore-Changes", ^{
-            id<SKYRecordStorageBackingStore> (^factory)() = ^id<SKYRecordStorageBackingStore>()
+            id<SKYRecordStorageBackingStore> (^factory)(void) = ^id<SKYRecordStorageBackingStore>()
             {
                 NSString *filePath = [SKYRecordStorageBackingStoreSpecTempFileProvider
                     temporaryFileWithSuffix:@"SKYRecordStorageTest.db"];

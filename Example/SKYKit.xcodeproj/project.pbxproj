@@ -111,6 +111,7 @@
 		F43389E01FE280BF00B7B317 /* SKYLoginCustomTokenOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */; };
 		F43389E21FE2816F00B7B317 /* SKYAuthContainerSSOTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */; };
 		F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F43CFB70205FBAF00059510C /* SKYAuthContainerForgotPasswordTests.m */; };
+		F45088EE20775D2F001A34ED /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F45088ED20775D2F001A34ED /* Default-568h@2x.png */; };
 		F4BACC8620221D79003E2FAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BACC8520221D79003E2FAA /* AppDelegate.m */; };
 		F4BACC8820221D79003E2FAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8720221D79003E2FAA /* Assets.xcassets */; };
 		F4BACC8B20221D79003E2FAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = F4BACC8920221D79003E2FAA /* MainMenu.xib */; };
@@ -242,6 +243,7 @@
 		F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLoginCustomTokenOperationTests.m; sourceTree = "<group>"; };
 		F43389E11FE2816F00B7B317 /* SKYAuthContainerSSOTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerSSOTests.m; sourceTree = "<group>"; };
 		F43CFB70205FBAF00059510C /* SKYAuthContainerForgotPasswordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAuthContainerForgotPasswordTests.m; sourceTree = "<group>"; };
+		F45088ED20775D2F001A34ED /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F4BACC8220221D78003E2FAA /* Mac Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mac Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4BACC8420221D79003E2FAA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F4BACC8520221D79003E2FAA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				F45088ED20775D2F001A34ED /* Default-568h@2x.png */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F5B5195388D20070C39A /* Tests */,
 				38A48B411D34E41800988B84 /* Test Runner */,
@@ -637,7 +640,7 @@
 			attributes = {
 				CLASSPREFIX = SKY;
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Oursky Ltd.";
 				TargetAttributes = {
 					3813B6A41D35E62C004F4E14 = {
@@ -696,6 +699,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45088EE20775D2F001A34ED /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1216,14 +1220,22 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1261,14 +1273,22 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
