@@ -112,16 +112,14 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
  Calls a registered lambda function without arguments.
  */
 - (void)callLambda:(NSString *)action
-    completionHandler:
-        (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+    completionHandler:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completionHandler;
 
 /**
  Calls a registered lambda function with arguments.
  */
 - (void)callLambda:(NSString *)action
             arguments:(NSArray *_Nullable)arguments
-    completionHandler:
-        (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+    completionHandler:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completionHandler;
 
 /**
  Calls a registered lambda function with array arguments.
@@ -129,16 +127,14 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 
 - (void)callLambda:(NSString *)action
        arrayArguments:(NSArray *_Nullable)arguments
-    completionHandler:
-        (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+    completionHandler:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completionHandler;
 
 /**
  Calls a registered lambda function with dictionay arguments.
  */
 - (void)callLambda:(NSString *)action
     dictionaryArguments:(NSDictionary *_Nullable)arguments
-      completionHandler:
-          (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+      completionHandler:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completionHandler;
 
 @end
 

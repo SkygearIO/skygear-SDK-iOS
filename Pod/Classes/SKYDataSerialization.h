@@ -33,6 +33,10 @@ extern NSString *const SKYDataSerializationDateType;
 extern NSString *const SKYDataSerializationRelationType;
 /// Undocumented
 extern NSString *const SKYDataSerializationSequenceType;
+/// Undocumented
+extern NSString *const SKYDataSerializationUnknownValueType;
+/// Undocumented
+extern NSString *const SKYDataSerializationRecordType;
 
 /// Undocumented
 NSString *remoteFunctionName(NSString *localFunctionName);

@@ -23,6 +23,9 @@
 
 #import "SKYAsset_Private.h"
 #import "SKYError.h"
+#import "SKYRecord.h"
+#import "SKYRecordDeserializer.h"
+#import "SKYRecordSerializer.h"
 #import "SKYReference.h"
 #import "SKYSequence.h"
 #import "SKYUnknownValue.h"
@@ -35,6 +38,7 @@ NSString *const SKYDataSerializationLocationType = @"geo";
 NSString *const SKYDataSerializationRelationType = @"relation";
 NSString *const SKYDataSerializationSequenceType = @"seq";
 NSString *const SKYDataSerializationUnknownValueType = @"unknown";
+NSString *const SKYDataSerializationRecordType = @"record";
 
 static NSDictionary *remoteFunctionNameDict;
 static NSDictionary *localFunctionNameDict;
@@ -162,6 +166,11 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     return obj;
 }
 
++ (id)deserializeRecordValue:(NSDictionary *)data
+{
+    return [[SKYRecordDeserializer deserializer] recordWithDictionary:data[@"$record"]];
+}
+
 + (id)deserializeObjectWithValue:(id)value
 {
     id deserializeValue = nil;
@@ -176,7 +185,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         deserializeValue = newArray;
     } else if ([value isKindOfClass:[NSDictionary class]]) {
         NSString *type = [(NSDictionary *)value objectForKey:SKYDataSerializationCustomTypeKey];
-        if (type) {
+        if ([type isEqualToString:SKYDataSerializationRecordType]) {
+            deserializeValue = [self deserializeRecordValue:value];
+        } else if (type) {
             deserializeValue = [self deserializeSimpleObjectWithType:type value:value];
         } else {
             NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
@@ -308,12 +319,22 @@ NSString *localFunctionName(NSString *remoteFunctionName)
                 [newDictionary setObject:[self serializeObject:objInDictionary] forKey:key];
             }];
         return newDictionary;
+    } else if ([obj isKindOfClass:[SKYRecord class]]) {
+        return [self serializeRecord:(SKYRecord *)obj];
     } else {
         return [self serializeSimpleObject:obj];
     }
 }
 
-#pragma mark - Serialise simple object
+#pragma mark - Serialize simple object
+
++ (NSDictionary *)serializeRecord:(SKYRecord *)record
+{
+    return @{
+        SKYDataSerializationCustomTypeKey : SKYDataSerializationRecordType,
+        @"$record" : [[SKYRecordSerializer serializer] dictionaryWithRecord:record]
+    };
+}
 
 + (NSDictionary *)serializeAsset:(SKYAsset *)obj
 {

@@ -17,6 +17,7 @@
 //  limitations under the License.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
@@ -61,6 +62,39 @@ SpecBegin(SKYLambdaOperation)
             expect(request.payload[@"args"]).to.equal(args);
         });
 
+        it(@"calls lambda with custom types", ^{
+            NSDictionary *args = @{
+                @"location" : [[CLLocation alloc]
+                    initWithCoordinate:CLLocationCoordinate2DMake(1, 2)
+                              altitude:0
+                    horizontalAccuracy:0
+                      verticalAccuracy:0
+                             timestamp:[NSDate dateWithTimeIntervalSince1970:0]],
+                @"record" :
+                    [[SKYRecord alloc] initWithRecordType:@"note"
+                                                     name:@"AA0954F8-0481-456F-A347-41C55D47A301"]
+            };
+            SKYLambdaOperation *operation =
+                [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
+            operation.container = container;
+            [operation makeURLRequestWithError:nil];
+            SKYRequest *request = operation.request;
+            expect([request class]).to.beSubclassOf([SKYRequest class]);
+            expect(request.action).to.equal(@"hello:world");
+            expect(request.APIKey).to.equal(container.APIKey);
+            expect(request.accessToken).to.equal(container.auth.currentAccessToken);
+            expect(request.payload[@"args"]).to.equal(@{
+                @"location" : @{@"$lat" : @1, @"$lng" : @2, @"$type" : @"geo"},
+                @"record" : @{
+                    @"$record" : @{
+                        @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
+                        @"_type" : @"record"
+                    },
+                    @"$type" : @"record"
+                }
+            });
+        });
+
         it(@"make request", ^{
             NSDictionary *args = @{@"name" : @"bob"};
             SKYLambdaOperation *operation =
@@ -74,6 +108,14 @@ SpecBegin(SKYLambdaOperation)
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @{
                             @"message" : @"hello bob",
+                            @"location" : @{@"$lat" : @1, @"$lng" : @2, @"$type" : @"geo"},
+                            @"record" : @{
+                                @"$record" : @{
+                                    @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
+                                    @"_type" : @"record"
+                                },
+                                @"$type" : @"record"
+                            }
                         }
                     };
                     NSData *payload =
@@ -84,10 +126,41 @@ SpecBegin(SKYLambdaOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *operationError) {
+                operation.lambdaCompletionBlock = ^(id result, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect([result class]).to.beSubclassOf([NSDictionary class]);
                         expect(result[@"message"]).to.equal(@"hello bob");
+                        expect(((CLLocation *)result[@"location"]).coordinate)
+                            .to.equal(CLLocationCoordinate2DMake(1, 2));
+                        expect(((SKYRecord *)result[@"record"]).recordID.canonicalString)
+                            .to.equal(@"note/AA0954F8-0481-456F-A347-41C55D47A301");
+                        done();
+                    });
+                };
+
+                [container addOperation:operation];
+            });
+        });
+
+        it(@"pass null result", ^{
+            SKYLambdaOperation *operation =
+                [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:nil];
+
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
+                withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    NSData *payload =
+                        [@"{\"result\": null}" dataUsingEncoding:NSUTF8StringEncoding];
+
+                    return
+                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                }];
+
+            waitUntil(^(DoneCallback done) {
+                operation.lambdaCompletionBlock = ^(id result, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(result).to.equal([NSNull null]);
                         done();
                     });
                 };
