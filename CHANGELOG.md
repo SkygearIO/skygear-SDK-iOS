@@ -1,3 +1,23 @@
+## 1.5.0 (2018-04-23)
+
+### Features
+
+- Implement request verification and submit code
+
+### Bug Fixes
+
+- Fix reset password expireAt parameter
+
+### Other Notes
+
+- Improve auth container response handling
+- Pin lizard version because 1.14.9 cannot be installed
+- Add typing to SKYRecord
+- Move record storage to its own extension
+- Add admin prefix to disable/enable user functions
+- Return error if API endpoint is not configured
+- Fix assorted compiler warnings
+
 ## 1.4.0 (2018-03-07)
 
 ### Features
