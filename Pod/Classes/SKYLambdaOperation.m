@@ -18,6 +18,7 @@
 //
 
 #import "SKYLambdaOperation.h"
+#import "SKYDataSerialization.h"
 #import "SKYOperationSubclass.h"
 
 @implementation SKYLambdaOperation
@@ -54,7 +55,8 @@
 
 - (void)prepareForRequest
 {
-    NSDictionary *payload = @{@"args" : _arrayArguments ? _arrayArguments : _dictionaryArguments};
+    id arguments = _arrayArguments ? _arrayArguments : _dictionaryArguments;
+    NSDictionary *payload = @{@"args" : [SKYDataSerialization serializeObject:arguments]};
     self.request = [[SKYRequest alloc] initWithAction:self.action payload:payload];
 
     // Lambda request may not be user-authenticated. Therefore an API key
@@ -73,21 +75,10 @@
 - (void)handleResponse:(SKYResponse *)responseObject
 {
     NSDictionary *response = responseObject.responseDictionary;
-    NSDictionary *resultDictionary = nil;
-    NSError *error = nil;
 
-    NSDictionary *responseDictionary = response[@"result"];
-    if ([responseDictionary isKindOfClass:[NSDictionary class]]) {
-        resultDictionary = responseDictionary;
-    } else if ([responseDictionary isKindOfClass:[NSNull class]]) {
-        resultDictionary = nil;
-    } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not a dictionary."];
-    }
-
+    id result = [SKYDataSerialization deserializeObjectWithValue:response[@"result"]];
     if (self.lambdaCompletionBlock) {
-        self.lambdaCompletionBlock(resultDictionary, error);
+        self.lambdaCompletionBlock(result, nil);
     }
 }
 
