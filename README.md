@@ -71,7 +71,7 @@ The full documentation for Skygear is available on our docs site. The [iOS SDK g
 
 ## Support
 
-For implementation related questions or technical support, please refer to the [Stack Overflow](http://stackoverflow.com/questions/tagged/skygear) community.
+For implementation related questions or technical support, please find us on the [official forum](https://discuss.skygear.io) or [community chat](https://slack.skygear.io).
 
 If you believe you've found an issue with Skygear iOS SDK, please feel free to [report an issue](https://github.com/SkygearIO/skygear-SDK-iOS/issues).
 
