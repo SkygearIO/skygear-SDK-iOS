@@ -224,6 +224,9 @@
 
     dispatch_group_t upload_group = dispatch_group_create();
     for (SKYAsset *asset in assets) {
+        if (![asset.url isFileURL]) {
+            continue;
+        }
         dispatch_group_enter(upload_group);
         [self uploadAsset:asset
             completionHandler:^(SKYAsset *a, NSError *error) {
