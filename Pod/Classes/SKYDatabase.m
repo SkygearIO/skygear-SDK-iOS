@@ -220,32 +220,24 @@
 
     // Presave Asset
     NSArray<SKYAsset *> *assets = [self findObjectsOfClass:[SKYAsset class] inSKYObject:object];
-    NSMutableArray<NSError *> *errors = [[NSMutableArray alloc] init];
+    NSMutableArray<SKYAsset *> *assetsToSave = [NSMutableArray array];
 
-    dispatch_group_t upload_group = dispatch_group_create();
     for (SKYAsset *asset in assets) {
-        if (![asset.url isFileURL]) {
-            continue;
+        if (asset.url.isFileURL) {
+            [assetsToSave addObject:asset];
         }
-        dispatch_group_enter(upload_group);
-        [self uploadAsset:asset
-            completionHandler:^(SKYAsset *a, NSError *error) {
-                if (error) {
-                    [errors addObject:error];
-                }
-                dispatch_group_leave(upload_group);
-            }];
     }
 
-    dispatch_group_notify(upload_group, dispatch_get_main_queue(), ^{
-        if (completion) {
-            if ([errors count] > 0) {
-                completion([errors firstObject]);
-            } else {
-                completion(nil);
-            }
-        }
-    });
+    [self uploadAssets:assetsToSave
+            completion:^(NSArray<SKYAsset *> *savedAssets, NSArray<NSError *> *errors) {
+                if (completion) {
+                    if (errors.count) {
+                        completion([errors firstObject]);
+                    } else {
+                        completion(nil);
+                    }
+                }
+            }];
 }
 
 - (void)sky_saveRecords:(NSArray<SKYRecord *> *)records
@@ -568,6 +560,32 @@
     };
 
     [self.container addOperation:operation];
+}
+
+- (void)uploadAssets:(NSArray<SKYAsset *> *)assets
+          completion:(void (^)(NSArray<SKYAsset *> *, NSArray<NSError *> *))completion
+{
+    NSMutableArray<SKYAsset *> *uploadedAssets = [[NSMutableArray alloc] init];
+    NSMutableArray<NSError *> *errors = [[NSMutableArray alloc] init];
+
+    dispatch_group_t upload_group = dispatch_group_create();
+    for (SKYAsset *asset in assets) {
+        dispatch_group_enter(upload_group);
+        [self uploadAsset:asset
+            completionHandler:^(SKYAsset *a, NSError *error) {
+                if (error) {
+                    [errors addObject:error];
+                }
+                [uploadedAssets addObject:asset];
+                dispatch_group_leave(upload_group);
+            }];
+    }
+
+    dispatch_group_notify(upload_group, dispatch_get_main_queue(), ^{
+        if (completion) {
+            completion(uploadedAssets, errors);
+        }
+    });
 }
 
 @end
