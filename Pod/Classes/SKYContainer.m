@@ -153,22 +153,21 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     return _APIKey;
 }
 
-- (void)callLambda:(NSString *)action
-    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+- (void)callLambda:(NSString *)action completionHandler:(void (^)(id, NSError *))completionHandler
 {
     [self callLambda:action arguments:nil completionHandler:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
             arguments:(NSArray *)arguments
-    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+    completionHandler:(void (^)(id, NSError *))completionHandler
 {
     [self callLambda:action arrayArguments:arguments completionHandler:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
        arrayArguments:(NSArray *)arguments
-    completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+    completionHandler:(void (^)(id, NSError *))completionHandler
 {
     arguments = arguments ? arguments : @[];
     SKYLambdaOperation *operation =
@@ -187,7 +186,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
 - (void)callLambda:(NSString *)action
     dictionaryArguments:(NSDictionary *)arguments
-      completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
+      completionHandler:(void (^)(id, NSError *))completionHandler
 {
     arguments = arguments ? arguments : @{};
     SKYLambdaOperation *operation =
