@@ -155,52 +155,63 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
 - (void)callLambda:(NSString *)action completionHandler:(void (^)(id, NSError *))completionHandler
 {
-    [self callLambda:action arguments:nil completionHandler:completionHandler];
+    [self callLambda:action arguments:nil completion:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
             arguments:(NSArray *)arguments
     completionHandler:(void (^)(id, NSError *))completionHandler
 {
-    [self callLambda:action arrayArguments:arguments completionHandler:completionHandler];
+    [self callLambda:action arguments:arguments completion:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
        arrayArguments:(NSArray *)arguments
     completionHandler:(void (^)(id, NSError *))completionHandler
 {
-    arguments = arguments ? arguments : @[];
-    SKYLambdaOperation *operation =
-        [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:arguments];
-
-    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler) {
-                completionHandler(result, error);
-            }
-        });
-    };
-
-    [self addOperation:operation];
+    [self callLambda:action arguments:arguments completion:completionHandler];
 }
 
 - (void)callLambda:(NSString *)action
     dictionaryArguments:(NSDictionary *)arguments
       completionHandler:(void (^)(id, NSError *))completionHandler
 {
-    arguments = arguments ? arguments : @{};
-    SKYLambdaOperation *operation =
-        [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:arguments];
+    [self callLambda:action arguments:arguments completion:completionHandler];
+}
 
-    operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler) {
-                completionHandler(result, error);
+- (void)callLambda:(NSString *)action
+         arguments:(id)arguments
+        completion:(void (^)(id, NSError *))completion
+{
+    SKYLambdaOperation *operation;
+    if ([arguments isKindOfClass:[NSArray class]]) {
+        operation = [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:arguments];
+    } else if ([arguments isKindOfClass:[NSDictionary class]]) {
+        operation =
+            [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:arguments];
+    } else {
+        operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
+    }
+
+    dispatch_group_t lambda_group = dispatch_group_create();
+    __block NSError *lastError = nil;
+    dispatch_group_enter(lambda_group);
+    [self.publicCloudDatabase sky_presave:arguments
+                               completion:^(NSError *_Nullable error) {
+                                   lastError = error;
+                                   dispatch_group_leave(lambda_group);
+                               }];
+
+    dispatch_group_notify(lambda_group, dispatch_get_main_queue(), ^{
+        if (!lastError) {
+            if (completion) {
+                completion(nil, lastError);
             }
-        });
-    };
+            return;
+        }
 
-    [self addOperation:operation];
+        [self addOperation:operation];
+    });
 }
 
 @end

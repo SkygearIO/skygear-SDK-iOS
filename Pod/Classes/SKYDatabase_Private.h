@@ -24,4 +24,7 @@
 // TODO: look for a better way to override NS_UNAVAILABLE on init
 - (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID;
 
+- (void)sky_presave:(id _Nullable)object
+         completion:(void (^_Nullable)(NSError *_Nullable error))completion;
+
 @end
