@@ -200,12 +200,45 @@
     return wanted;
 }
 
+- (id _Nonnull)replaceSKYObject:(id _Nonnull)obj fromMap:(NSMapTable *_Nonnull)mapTable
+{
+    id replacedObj = [mapTable objectForKey:obj];
+    if (replacedObj != nil) {
+        return replacedObj;
+    }
+
+    if ([obj isKindOfClass:[SKYRecord class]]) {
+        SKYRecord *record = [(SKYRecord *)obj copy];
+        for (NSString *key in [[record dictionary] allKeys]) {
+            [record setObject:[self replaceSKYObject:[record objectForKey:key] fromMap:mapTable]
+                       forKey:key];
+        }
+        return record;
+    } else if ([obj isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *dict = [(NSDictionary *)obj mutableCopy];
+        for (NSString *key in [dict allKeys]) {
+            [dict setObject:[self replaceSKYObject:[dict objectForKey:key] fromMap:mapTable]
+                     forKey:key];
+        }
+        return dict;
+    } else if ([obj isKindOfClass:[NSArray class]]) {
+        NSMutableArray *array = [(NSArray *)obj mutableCopy];
+        for (NSUInteger i = 0; i < [array count]; i++) {
+            [array replaceObjectAtIndex:i
+                             withObject:[self replaceSKYObject:[array objectAtIndex:i]
+                                                       fromMap:mapTable]];
+        }
+        return array;
+    }
+    return obj;
+}
+
 - (void)sky_presave:(id _Nullable)object
-         completion:(void (^_Nullable)(NSError *_Nullable error))completion
+         completion:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completion
 {
     if (!object) {
         if (completion) {
-            completion(nil);
+            completion(nil, nil);
             return;
         }
     }
@@ -219,25 +252,41 @@
     }
 
     // Presave Asset
-    NSArray<SKYAsset *> *assets = [self findObjectsOfClass:[SKYAsset class] inSKYObject:object];
     NSMutableArray<SKYAsset *> *assetsToSave = [NSMutableArray array];
-
-    for (SKYAsset *asset in assets) {
+    for (SKYAsset *asset in [self findObjectsOfClass:[SKYAsset class] inSKYObject:object]) {
         if (asset.url.isFileURL) {
             [assetsToSave addObject:asset];
         }
     }
 
-    [self uploadAssets:assetsToSave
-            completion:^(NSArray<SKYAsset *> *savedAssets, NSArray<NSError *> *errors) {
-                if (completion) {
-                    if (errors.count) {
-                        completion([errors firstObject]);
-                    } else {
-                        completion(nil);
-                    }
+    NSMapTable<SKYAsset *, SKYAsset *> *uploadedAssets = [[NSMapTable alloc] init];
+    NSMutableArray<NSError *> *uploadErrors = [[NSMutableArray alloc] init];
+
+    dispatch_group_t upload_group = dispatch_group_create();
+    for (SKYAsset *asset in assetsToSave) {
+        dispatch_group_enter(upload_group);
+        [self uploadAsset:asset
+            completionHandler:^(SKYAsset *uploadedAsset, NSError *error) {
+                if (error) {
+                    [uploadErrors addObject:error];
+                    return;
                 }
+                [uploadedAssets setObject:uploadedAsset forKey:asset];
+                dispatch_group_leave(upload_group);
             }];
+    }
+
+    dispatch_group_notify(upload_group, dispatch_get_main_queue(), ^{
+        if (!completion) {
+            return;
+        }
+
+        if (uploadErrors.count) {
+            completion(nil, uploadErrors.firstObject);
+        } else {
+            completion([self replaceSKYObject:object fromMap:uploadedAssets], nil);
+        }
+    });
 }
 
 - (void)sky_saveRecords:(NSArray<SKYRecord *> *)records
@@ -248,30 +297,13 @@
     dispatch_group_t save_group = dispatch_group_create();
     dispatch_group_enter(save_group);
     __block NSError *lastError = nil;
+    __block NSArray *presavedRecords = nil;
     [self sky_presave:records
-           completion:^(NSError *error) {
+           completion:^(id _Nullable presavedObject, NSError *_Nullable error) {
                lastError = error;
+               presavedRecords = (NSArray *)presavedObject;
                dispatch_group_leave(save_group);
            }];
-
-    SKYModifyRecordsOperation *operation =
-        [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:records];
-    operation.atomic = atomically;
-    if (completion) {
-        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(savedRecords, operationError);
-            });
-        };
-    }
-
-    if (perRecord) {
-        operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                perRecord(record, error);
-            });
-        };
-    }
 
     dispatch_group_notify(save_group, dispatch_get_main_queue(), ^{
         if (lastError) {
@@ -281,6 +313,26 @@
                 });
             }
             return;
+        }
+
+        SKYModifyRecordsOperation *operation =
+            [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:presavedRecords];
+        operation.atomic = atomically;
+        if (completion) {
+            operation.modifyRecordsCompletionBlock =
+                ^(NSArray *savedRecords, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(savedRecords, operationError);
+                    });
+                };
+        }
+
+        if (perRecord) {
+            operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    perRecord(record, error);
+                });
+            };
         }
 
         [self executeOperation:operation];
@@ -560,32 +612,6 @@
     };
 
     [self.container addOperation:operation];
-}
-
-- (void)uploadAssets:(NSArray<SKYAsset *> *)assets
-          completion:(void (^)(NSArray<SKYAsset *> *, NSArray<NSError *> *))completion
-{
-    NSMutableArray<SKYAsset *> *uploadedAssets = [[NSMutableArray alloc] init];
-    NSMutableArray<NSError *> *errors = [[NSMutableArray alloc] init];
-
-    dispatch_group_t upload_group = dispatch_group_create();
-    for (SKYAsset *asset in assets) {
-        dispatch_group_enter(upload_group);
-        [self uploadAsset:asset
-            completionHandler:^(SKYAsset *a, NSError *error) {
-                if (error) {
-                    [errors addObject:error];
-                }
-                [uploadedAssets addObject:asset];
-                dispatch_group_leave(upload_group);
-            }];
-    }
-
-    dispatch_group_notify(upload_group, dispatch_get_main_queue(), ^{
-        if (completion) {
-            completion(uploadedAssets, errors);
-        }
-    });
 }
 
 @end

@@ -183,22 +183,14 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
          arguments:(id)arguments
         completion:(void (^)(id, NSError *))completion
 {
-    SKYLambdaOperation *operation;
-    if ([arguments isKindOfClass:[NSArray class]]) {
-        operation = [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:arguments];
-    } else if ([arguments isKindOfClass:[NSDictionary class]]) {
-        operation =
-            [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:arguments];
-    } else {
-        operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
-    }
-
     dispatch_group_t lambda_group = dispatch_group_create();
     __block NSError *lastError = nil;
+    __block id presavedArguments = nil;
     dispatch_group_enter(lambda_group);
     [self.publicCloudDatabase sky_presave:arguments
-                               completion:^(NSError *_Nullable error) {
+                               completion:^(id _Nullable presavedObject, NSError *_Nullable error) {
                                    lastError = error;
+                                   presavedArguments = presavedObject;
                                    dispatch_group_leave(lambda_group);
                                }];
 
@@ -208,6 +200,17 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
                 completion(nil, lastError);
             }
             return;
+        }
+
+        SKYLambdaOperation *operation;
+        if ([presavedArguments isKindOfClass:[NSArray class]]) {
+            operation =
+                [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:presavedArguments];
+        } else if ([presavedArguments isKindOfClass:[NSDictionary class]]) {
+            operation = [[SKYLambdaOperation alloc] initWithAction:action
+                                               dictionaryArguments:presavedArguments];
+        } else {
+            operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
         }
 
         [self addOperation:operation];
