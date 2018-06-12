@@ -78,7 +78,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
     }
 
     func performQuery(_ query: SKYQuery, handler: (() -> Void)?) {
-        SKYContainer.default().publicCloudDatabase.perform(query) { (objs, error) in
+        SKYContainer.default().publicCloudDatabase.perform(query) { (records, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to query", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -86,7 +86,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
                 return
             }
 
-            guard let records = objs as? [SKYRecord] else {
+            guard let records = records else {
                 NSException.raise(NSExceptionName.internalInconsistencyException, format: "Unable to cast to Records array", arguments: getVaList([]))
                 return
             }
