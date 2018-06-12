@@ -524,7 +524,7 @@
 }
 
 - (void)performQuery:(SKYQuery *)query
-    completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+    completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
 {
     SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 
@@ -541,7 +541,7 @@
 }
 
 - (void)performCachedQuery:(SKYQuery *)query
-         completionHandler:(void (^)(NSArray *, BOOL, NSError *))completionHandler
+         completionHandler:(void (^)(NSArray<SKYRecord *> *, BOOL, NSError *))completionHandler
 {
     SKYQueryCache *cache = [[SKYQueryCache alloc] initWithDatabase:self];
     NSArray *cachedResults = [cache cachedResultsWithQuery:query];
