@@ -539,25 +539,12 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
         let asset = SKYAsset(data: data)
         asset.mimeType = "image/png"
 
-        SKYContainer.default().publicCloudDatabase.uploadAsset(asset) { (asset, error) in
-            if error != nil {
-                let alert = UIAlertController(title: "Unable to upload", message: error!.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-
-            guard let record = self.record else {
-                return
-            }
-
-            guard let fieldName = self.selectedAttributeName else {
-                return
-            }
-
-            record.setObject(asset!, forKey: fieldName as NSCopying)
-            self.insertOrReloadAttribute(fieldName)
-            self.modified = true
+        guard let fieldName = self.selectedAttributeName else {
+            return
         }
+
+        record?.setObject(asset, forKey: fieldName as NSCopying)
+        self.insertOrReloadAttribute(fieldName)
+        self.modified = true
     }
 }

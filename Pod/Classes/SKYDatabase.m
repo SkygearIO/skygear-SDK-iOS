@@ -172,108 +172,213 @@
 
 #pragma mark - Convenient methods for record operations
 
-- (void)od_prepareRecordForSaving:(SKYRecord *)record
+- (NSArray *_Nonnull)findObjectsOfClass:(Class)klass inSKYObject:(id _Nonnull)obj
 {
-    if (![record isKindOfClass:[SKYRecord class]]) {
-        NSString *reason =
-            [NSString stringWithFormat:@"The given object %@ is not an SKYRecord.", record];
-        @throw
-            [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
+    if (!obj) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"obj cannot be nil"
+                                     userInfo:nil];
     }
 
-    if (!record.creationDate) {
-        record.creationDate = [NSDate date];
+    NSMutableArray *wanted = [[NSMutableArray alloc] init];
+    NSMutableArray<id> *stack = [[NSMutableArray alloc] initWithObjects:obj, nil];
+
+    while ([stack count]) {
+        id item = [stack lastObject];
+        [stack removeLastObject];
+
+        if ([item isKindOfClass:klass]) {
+            [wanted addObject:item];
+        } else if ([item isKindOfClass:[SKYRecord class]]) {
+            [stack addObject:[(SKYRecord *)item dictionary]];
+        } else if ([item isKindOfClass:[NSDictionary class]]) {
+            [stack addObjectsFromArray:[(NSDictionary *)item allValues]];
+        } else if ([item isKindOfClass:[NSArray class]]) {
+            [stack addObjectsFromArray:(NSArray *)item];
+        }
     }
+    return wanted;
+}
+
+- (id _Nonnull)replaceSKYObject:(id _Nonnull)obj fromMap:(NSMapTable *_Nonnull)mapTable
+{
+    id replacedObj = [mapTable objectForKey:obj];
+    if (replacedObj != nil) {
+        return replacedObj;
+    }
+
+    if ([obj isKindOfClass:[SKYRecord class]]) {
+        SKYRecord *record = [(SKYRecord *)obj copy];
+        for (NSString *key in [[record dictionary] allKeys]) {
+            [record setObject:[self replaceSKYObject:[record objectForKey:key] fromMap:mapTable]
+                       forKey:key];
+        }
+        return record;
+    } else if ([obj isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *dict = [(NSDictionary *)obj mutableCopy];
+        for (NSString *key in [dict allKeys]) {
+            [dict setObject:[self replaceSKYObject:[dict objectForKey:key] fromMap:mapTable]
+                     forKey:key];
+        }
+        return dict;
+    } else if ([obj isKindOfClass:[NSArray class]]) {
+        NSMutableArray *array = [(NSArray *)obj mutableCopy];
+        for (NSUInteger i = 0; i < [array count]; i++) {
+            [array replaceObjectAtIndex:i
+                             withObject:[self replaceSKYObject:[array objectAtIndex:i]
+                                                       fromMap:mapTable]];
+        }
+        return array;
+    }
+    return obj;
+}
+
+- (void)sky_presave:(id _Nullable)object
+         completion:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completion
+{
+    if (!object) {
+        if (completion) {
+            completion(nil, nil);
+            return;
+        }
+    }
+
+    // Presave Record
+    NSArray<SKYRecord *> *records = [self findObjectsOfClass:[SKYRecord class] inSKYObject:object];
+    for (SKYRecord *record in records) {
+        if (!record.creationDate) {
+            record.creationDate = [NSDate date];
+        }
+    }
+
+    // Presave Asset
+    NSMutableArray<SKYAsset *> *assetsToSave = [NSMutableArray array];
+    for (SKYAsset *asset in [self findObjectsOfClass:[SKYAsset class] inSKYObject:object]) {
+        if (asset.url.isFileURL) {
+            [assetsToSave addObject:asset];
+        }
+    }
+
+    NSMapTable<SKYAsset *, SKYAsset *> *uploadedAssets = [[NSMapTable alloc] init];
+    NSMutableArray<NSError *> *uploadErrors = [[NSMutableArray alloc] init];
+
+    dispatch_group_t upload_group = dispatch_group_create();
+    for (SKYAsset *asset in assetsToSave) {
+        dispatch_group_enter(upload_group);
+        [self uploadAsset:asset
+            completionHandler:^(SKYAsset *uploadedAsset, NSError *error) {
+                if (error) {
+                    [uploadErrors addObject:error];
+                    return;
+                }
+                [uploadedAssets setObject:uploadedAsset forKey:asset];
+                dispatch_group_leave(upload_group);
+            }];
+    }
+
+    dispatch_group_notify(upload_group, dispatch_get_main_queue(), ^{
+        if (!completion) {
+            return;
+        }
+
+        if (uploadErrors.count) {
+            completion(nil, uploadErrors.firstObject);
+        } else {
+            completion([self replaceSKYObject:object fromMap:uploadedAssets], nil);
+        }
+    });
+}
+
+- (void)sky_saveRecords:(NSArray<SKYRecord *> *)records
+             atomically:(BOOL)atomically
+             completion:(void (^)(NSArray *, NSError *))completion
+    perRecordCompletion:(void (^)(SKYRecord *, NSError *))perRecord
+{
+    dispatch_group_t save_group = dispatch_group_create();
+    dispatch_group_enter(save_group);
+    __block NSError *lastError = nil;
+    __block NSArray *presavedRecords = nil;
+    [self sky_presave:records
+           completion:^(id _Nullable presavedObject, NSError *_Nullable error) {
+               lastError = error;
+               presavedRecords = (NSArray *)presavedObject;
+               dispatch_group_leave(save_group);
+           }];
+
+    dispatch_group_notify(save_group, dispatch_get_main_queue(), ^{
+        if (lastError) {
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, lastError);
+                });
+            }
+            return;
+        }
+
+        SKYModifyRecordsOperation *operation =
+            [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:presavedRecords];
+        operation.atomic = atomically;
+        if (completion) {
+            operation.modifyRecordsCompletionBlock =
+                ^(NSArray *savedRecords, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion(savedRecords, operationError);
+                    });
+                };
+        }
+
+        if (perRecord) {
+            operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    perRecord(record, error);
+                });
+            };
+        }
+
+        [self executeOperation:operation];
+    });
 }
 
 - (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion)completion
 {
-    [self od_prepareRecordForSaving:record];
-
-    SKYModifyRecordsOperation *operation =
-        [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:@[ record ]];
-
-    if (completion) {
-        SKYRecordID *recordID = record.recordID;
-        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-            SKYRecord *record = nil;
-            NSError *error = nil;
-            if (operationError != nil) {
-                if (operationError.code == SKYErrorPartialOperationFailure) {
-                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
-                }
-
-                // If error is not a partial error, or if the error cannot be obtained
-                // from the info dictionary, set the returned error to the operationError.
-                if (!error) {
-                    error = operationError;
+    [self sky_saveRecords:@[ record ]
+        atomically:NO
+        completion:^(NSArray *records, NSError *error) {
+            if (error != nil && error.code != SKYErrorPartialOperationFailure) {
+                if (completion) {
+                    completion(nil, error);
                 }
             }
-            if ([savedRecords count] > 0) {
-                record = savedRecords[0];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
+        }
+        perRecordCompletion:^(SKYRecord *record, NSError *error) {
+            if (completion) {
                 completion(record, error);
-            });
-        };
-    }
-
-    [self executeOperation:operation];
+            }
+        }];
 }
 
 - (void)saveRecords:(NSArray *)records
         completionHandler:(void (^)(NSArray *, NSError *))completionHandler
     perRecordErrorHandler:(void (^)(SKYRecord *, NSError *))errorHandler
 {
-    [records enumerateObjectsUsingBlock:^(SKYRecord *obj, NSUInteger idx, BOOL *stop) {
-        [self od_prepareRecordForSaving:obj];
-    }];
-
-    SKYModifyRecordsOperation *operation =
-        [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:records];
-
-    if (completionHandler) {
-        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(savedRecords, operationError);
-            });
-        };
-    }
-
-    if (errorHandler) {
-        operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
-            if (error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    errorHandler(record, error);
-                });
+    [self sky_saveRecords:records
+                 atomically:NO
+                 completion:completionHandler
+        perRecordCompletion:^(SKYRecord *record, NSError *error) {
+            if (errorHandler && error) {
+                errorHandler(record, error);
             }
-        };
-    }
-
-    [self executeOperation:operation];
+        }];
 }
 
 - (void)saveRecordsAtomically:(NSArray *)records
             completionHandler:
                 (void (^)(NSArray *savedRecords, NSError *operationError))completionHandler
 {
-    [records enumerateObjectsUsingBlock:^(SKYRecord *obj, NSUInteger idx, BOOL *stop) {
-        [self od_prepareRecordForSaving:obj];
-    }];
-
-    SKYModifyRecordsOperation *operation =
-        [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:records];
-    operation.atomic = YES;
-
-    if (completionHandler) {
-        operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(savedRecords, operationError);
-            });
-        };
-    }
-
-    [self executeOperation:operation];
+    [self sky_saveRecords:records
+                 atomically:YES
+                 completion:completionHandler
+        perRecordCompletion:nil];
 }
 
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
