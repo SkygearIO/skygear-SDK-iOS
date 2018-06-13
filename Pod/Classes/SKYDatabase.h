@@ -52,11 +52,11 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 
 /// Undocumented
 - (void)performQuery:(SKYQuery *)query
-    completionHandler:
-        (void (^_Nullable)(NSArray *_Nullable results, NSError *_Nullable error))completionHandler;
+    completionHandler:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results,
+                                         NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)performCachedQuery:(SKYQuery *)query
-         completionHandler:(void (^_Nullable)(NSArray *_Nullable results, BOOL pending,
+         completionHandler:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results, BOOL pending,
                                               NSError *_Nullable error))completionHandler;
 
 /**
