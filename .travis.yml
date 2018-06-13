@@ -21,6 +21,7 @@ script:
 - sh -eo pipefail -c "xcodebuild -scheme \"Mac Example\" -workspace \"$WORKSPACE\" build | xcpretty"
 - pod lib lint --allow-warnings
 - ./clang-check.sh
+- ./objc-generics-check.sh
 - swiftlint --strict
 - lizard Pod/ -C 15 -W .lizard -w -i 0
 before_deploy:

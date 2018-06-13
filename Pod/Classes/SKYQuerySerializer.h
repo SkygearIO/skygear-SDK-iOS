@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 - (id)serializeWithPredicate:(NSPredicate *)predicate;
 /// Undocumented
-- (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors;
+- (id)serializeWithSortDescriptors:(NSArray<NSSortDescriptor *> *)sortDescriptors;
 
 @end
 

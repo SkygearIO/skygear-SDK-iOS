@@ -31,24 +31,25 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Instantiates an instance of <SKYLambdaOperation> with arguments specified as an array.
  */
-- (instancetype)initWithAction:(NSString *)action arrayArguments:(NSArray *_Nullable)arguments;
+- (instancetype)initWithAction:(NSString *)action arrayArguments:(NSArray<id> *_Nullable)arguments;
 
 /**
  Instantiates an instance of <SKYLambdaOperation> with arguments specified as a dictionary.
  */
 - (instancetype)initWithAction:(NSString *)action
-           dictionaryArguments:(NSDictionary *_Nullable)arguments;
+           dictionaryArguments:(NSDictionary<NSString *, id> *_Nullable)arguments;
 
 /**
  Creates and returns an instance of <SKYLambdaOperation> with arguments specified as an array.
  */
-+ (instancetype)operationWithAction:(NSString *)action arrayArguments:(NSArray *_Nullable)arguments;
++ (instancetype)operationWithAction:(NSString *)action
+                     arrayArguments:(NSArray<id> *_Nullable)arguments;
 
 /**
  Creates and returns an instance of <SKYLambdaOperation> with arguments specified as a dictionary.
  */
 + (instancetype)operationWithAction:(NSString *)action
-                dictionaryArguments:(NSDictionary *_Nullable)arguments;
+                dictionaryArguments:(NSDictionary<NSString *, id> *_Nullable)arguments;
 
 /**
  Sets or returns the action name of the labmda function.
@@ -61,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  If both arrayArguments and dictionaryArguments are set, only the object set to
  arrayArguments will be used.
  */
-@property (nonatomic, copy) NSArray *_Nullable arrayArguments;
+@property (nonatomic, copy) NSArray<id> *_Nullable arrayArguments;
 
 /**
  Sets or returns the dictionary arguments.
@@ -69,13 +70,13 @@ NS_ASSUME_NONNULL_BEGIN
  If both arrayArguments and dictionaryArguments are set, only the object set to
  arrayArguments will be used.
  */
-@property (nonatomic, copy) NSDictionary *_Nullable dictionaryArguments;
+@property (nonatomic, copy) NSDictionary<NSString *, id> *_Nullable dictionaryArguments;
 
 /**
  Sets or returns the block that is called when the operation completes.
  */
 @property (nonatomic, copy) void (^_Nullable lambdaCompletionBlock)
-    (NSDictionary *_Nullable result, NSError *_Nullable operationError);
+    (id _Nullable result, NSError *_Nullable operationError);
 
 @end
 

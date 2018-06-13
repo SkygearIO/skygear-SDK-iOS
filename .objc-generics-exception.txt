@@ -1,0 +1,84 @@
+ERROR: The following lines are changed but they lack lightweight generics on collection classes:
+Pod/Classes/NSError+SKYError.h:- (NSDictionary *_Nullable)SKYErrorInfo __deprecated;
+Pod/Classes/SKYAPSNotificationInfo.h:@property (nonatomic, copy) NSArray *_Nullable alertLocalizationArgs;
+Pod/Classes/SKYAccessControlDeserializer.h:- (SKYAccessControl *)accessControlWithArray:(NSArray<NSDictionary *> *)array;
+Pod/Classes/SKYAccessControlSerializer.h:- (NSArray<NSDictionary *> *)arrayWithAccessControl:(SKYAccessControl *)accessControl;
+Pod/Classes/SKYDataSerialization.h:+ (SKYAsset *_Nullable)deserializeAssetWithDictionary:(NSDictionary *)data;
+Pod/Classes/SKYDatabase.h:                         (void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+Pod/Classes/SKYDatabase.h:                (void (^_Nullable)(NSArray *_Nullable savedRecords,
+Pod/Classes/SKYDatabase.h:           completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+Pod/Classes/SKYDatabase.h:          completionHandler:(void (^_Nullable)(NSDictionary *_Nullable recordsByRecordID,
+Pod/Classes/SKYDatabase.h:        completionHandler:(void (^_Nullable)(NSArray *_Nullable savedRecords,
+Pod/Classes/SKYDatabase.h:    (void (^_Nullable)(NSArray *_Nullable subscriptions,
+Pod/Classes/SKYDeleteSubscriptionsOperation.h:    (NSArray *_Nullable deletedSubscriptionIDs, NSError *_Nullable operationError);
+Pod/Classes/SKYErrorCreator.h:- (NSError *)errorWithCode:(SKYErrorCode)code userInfo:(NSDictionary *_Nullable)userInfoToAdd;
+Pod/Classes/SKYErrorCreator.h:- (NSError *)errorWithResponseDictionary:(NSDictionary *)dictionary;
+Pod/Classes/SKYErrorCreator.h:- (NSError *)partialErrorWithPerItemDictionary:(NSDictionary *)perItemErrors;
+Pod/Classes/SKYErrorCreator.h:@property (nonatomic, readonly) NSDictionary *defaultUserInfo;
+Pod/Classes/SKYFetchRecordsOperation.h:    (NSDictionary *_Nullable recordsByRecordID, NSError *_Nullable operationError);
+Pod/Classes/SKYFetchSubscriptionsOperation.h:    (NSDictionary *_Nullable subscriptionsBySubscriptionID, NSError *_Nullable operationError);
+Pod/Classes/SKYGCMNotificationInfo.h:@property (nonatomic, copy) NSArray *_Nullable bodyLocArgs;
+Pod/Classes/SKYGCMNotificationInfo.h:@property (nonatomic, copy) NSArray *_Nullable titleLocArgs;
+Pod/Classes/SKYNotification.h:@property (nonatomic, readonly, copy) NSArray *_Nullable alertLocalizationArgs;
+Pod/Classes/SKYNotificationInfoDeserializer.h:    (NSDictionary *_Nullable)dictionary;
+Pod/Classes/SKYNotificationInfoSerializer.h:- (NSDictionary *)dictionaryWithNotificationInfo:(SKYNotificationInfo *)notificationInfo;
+Pod/Classes/SKYPostAssetOperation.h:@property (nonatomic, readonly) NSDictionary *_Nullable extraFields;
+Pod/Classes/SKYPubsubClient.h:                                                  handler:^(NSDictionary *msg) {
+Pod/Classes/SKYPubsubClient.h:- (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel;
+Pod/Classes/SKYPubsubClient.h:- (void)subscribeTo:(NSString *)channel handler:(void (^)(NSDictionary *))messageHandler;
+Pod/Classes/SKYPubsubContainer.h:- (void)publishMessage:(NSDictionary *)message toChannel:(NSString *)channel;
+Pod/Classes/SKYPubsubContainer.h:- (void)subscribeTo:(NSString *)channel handler:(void (^)(NSDictionary *))messageHandler;
+Pod/Classes/SKYPushContainer.h:- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)info;
+Pod/Classes/SKYQueryCache.h:- (NSArray *_Nullable)cachedResultsWithQuery:(SKYQuery *)query;
+Pod/Classes/SKYQueryCache.h:- (void)cacheQuery:(SKYQuery *)query results:(NSArray *)result;
+Pod/Classes/SKYQueryOperation.h:    (NSArray *_Nullable fetchedRecords, SKYQueryCursor *_Nullable cursor,
+Pod/Classes/SKYQueryOperation.h:@property (nonatomic, copy) NSArray *_Nullable results __deprecated;
+Pod/Classes/SKYRemoveRelationsOperation.h:    (NSArray *_Nullable deletedUserIDs, NSError *_Nullable operationError);
+Pod/Classes/SKYRemoveRelationsOperation.h:+ (instancetype)operationWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
+Pod/Classes/SKYRemoveRelationsOperation.h:- (instancetype)initWithType:(NSString *)relationType usersToRemove:(NSArray *)users;
+Pod/Classes/SKYRemoveRelationsOperation.h:@property (nonatomic, copy) NSArray *usersToRemove;
+Pod/Classes/SKYRequest.h:- (instancetype)initWithAction:(NSString *)action payload:(NSDictionary *_Nullable)payload;
+Pod/Classes/SKYRequest.h:@property (nonatomic, copy) NSDictionary *_Nullable payload;
+Pod/Classes/SKYResponse.h:+ (instancetype)responseWithDictionary:(NSDictionary *)response;
+Pod/Classes/SKYResponse.h:- (instancetype)initWithDictionary:(NSDictionary *)response;
+Pod/Classes/SKYResponse.h:@property (nonatomic, readonly) NSDictionary *responseDictionary;
+Pod/Classes/SKYResultArrayResponse.h:    (void (^_Nullable)(NSString *_Nullable resultKey, NSDictionary *_Nullable result,
+Pod/Classes/SKYSendPushNotificationOperation.h:                                userIDsToSend:(NSArray *)userIDsToSend
+Pod/Classes/SKYSendPushNotificationOperation.h:                                userIDsToSend:(NSArray *)userIDsToSend;
+Pod/Classes/SKYSendPushNotificationOperation.h:                               IDsToSend:(NSArray *)IDsToSend
+Pod/Classes/SKYSendPushNotificationOperation.h:                               IDsToSend:(NSArray *)IDsToSend;
+Pod/Classes/SKYSendPushNotificationOperation.h:                              deviceIDsToSend:(NSArray *)deviceIDsToSend
+Pod/Classes/SKYSendPushNotificationOperation.h:                              deviceIDsToSend:(NSArray *)deviceIDsToSend;
+Pod/Classes/SKYSendPushNotificationOperation.h:    (NSArray *_Nullable userIDs, NSError *_Nullable error);
+Pod/Classes/SKYSendPushNotificationOperation.h:@property (nonatomic, readwrite, copy) NSArray *IDsToSend;
+Pod/Classes/SKYSubscriptionDeserializer.h:- (SKYSubscription *)subscriptionWithDictionary:(NSDictionary *)dictionary;
+Pod/Classes/SKYSubscriptionSerializer.h:- (NSDictionary *)dictionaryWithSubscription:(SKYSubscription *)subscription;
+Pod/Extensions/Forgot Password/SKYAuthContainer+ForgotPassword.h:                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+Pod/Extensions/Forgot Password/SKYAuthContainer+ForgotPassword.h:                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+Pod/Extensions/Record Storage/SKYRecordChange.h:                attributesToSave:(NSDictionary *_Nullable)attributesToSave;
+Pod/Extensions/Record Storage/SKYRecordChange.h:              attributesToSave:(NSDictionary *_Nullable)attributesToSave;
+Pod/Extensions/Record Storage/SKYRecordChange.h:@property (nonatomic, readonly, copy) NSDictionary *attributesToSave;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:                 sortDescriptors:(NSArray *_Nullable)sortDescriptors
+Pod/Extensions/Record Storage/SKYRecordStorage.h:             sortDescriptors:(NSArray *_Nullable)sortDescriptors;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (NSArray *)failedChanges;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (NSArray *)pendingChanges;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (NSArray *)recordsWithType:(NSString *)recordType
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (NSArray *)recordsWithType:(NSString *)recordType;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (NSDictionary *)attributesToSaveWithRecord:(SKYRecord *)record;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (void)deleteRecords:(NSArray *)records;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (void)saveRecords:(NSArray *)records;
+Pod/Extensions/Record Storage/SKYRecordStorage.h:- (void)updateByReplacingWithRecords:(NSArray *)records;
+Pod/Extensions/Record Storage/SKYRecordStorageBackingStore.h:                 sortDescriptors:(NSArray *_Nullable)sortDescriptors
+Pod/Extensions/Record Storage/SKYRecordStorageBackingStore.h:- (NSArray *)failedChanges;
+Pod/Extensions/Record Storage/SKYRecordStorageBackingStore.h:- (NSArray *)pendingChanges;
+Pod/Extensions/Record Storage/SKYRecordStorageBackingStore.h:- (NSArray *)recordIDsWithRecordType:(NSString *)recordType;
+Pod/Extensions/Record Storage/SKYRecordStorageCoordinator.h:                                                 options:(NSDictionary *_Nullable)options
+Pod/Extensions/Record Storage/SKYRecordStorageCoordinator.h:                                                 options:(NSDictionary *_Nullable)options
+Pod/Extensions/Record Storage/SKYRecordStorageCoordinator.h:                                                 options:(NSDictionary *_Nullable)options
+Pod/Extensions/Record Storage/SKYRecordStorageCoordinator.h:                                                 options:(NSDictionary *_Nullable)options
+Pod/Extensions/Record Storage/SKYRecordStorageCoordinator.h:@property (nonatomic, readonly) NSArray *registeredRecordStorages;
+Pod/Extensions/Record Storage/SKYRecordSynchronizer.h:          saveChanges:(NSArray *)changes
+Pod/Extensions/SSO/SKYAuthContainer+SSO.h:                   options:(NSDictionary *)options
+Pod/Extensions/SSO/SKYAuthContainer+SSO.h:                  options:(NSDictionary *)options
+Pod/Extensions/SSO/SKYAuthContainer+SSO.h:    (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+Pod/Extensions/SSO/SKYWebOAuth.h:typedef void (^SKYWebOAuthCompletion)(NSDictionary *_Nullable result, NSError *_Nullable error);

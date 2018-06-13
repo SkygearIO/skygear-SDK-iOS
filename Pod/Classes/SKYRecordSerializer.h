@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype _Nullable)serializer;
 
 /// Undocumented
-- (NSDictionary *)dictionaryWithRecord:(SKYRecord *)record;
+- (NSDictionary<NSString *, id> *)dictionaryWithRecord:(SKYRecord *)record;
 /// Undocumented
 - (NSData *_Nullable)JSONDataWithRecord:(SKYRecord *)record error:(NSError **_Nullable)error;
 
