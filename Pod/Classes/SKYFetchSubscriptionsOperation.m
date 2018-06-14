@@ -134,7 +134,7 @@
 
     if (operationError && [errorsByID count] > 0) {
         *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
-    } else {
+    } else if (operationError) {
         *operationError = nil;
     }
 

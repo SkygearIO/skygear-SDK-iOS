@@ -29,7 +29,7 @@
 
 - (instancetype)initWithRelation:(SKYRelation *)relation keyPath:(NSString *)keyPath
 {
-    if (self == [super init]) {
+    if ((self = [super init])) {
         _relation = relation;
         _keyPath = [keyPath copy];
     }

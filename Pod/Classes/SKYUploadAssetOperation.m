@@ -143,8 +143,6 @@
         error = [self.errorCreator
             errorWithCode:SKYErrorInvalidData
                   message:@"Uploaded asset does not have a name associated with it."];
-
-        return;
     }
 
     if (self.uploadAssetCompletionBlock) {
