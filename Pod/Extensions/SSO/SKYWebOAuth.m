@@ -28,8 +28,8 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wpartial-availability"
     SFAuthenticationSession *_authVC;
-#pragma clang diagnostic pop
     SFSafariViewController *_safariVC;
+#pragma clang diagnostic pop
     UIViewController *_topVC;
     SKYWebOAuthCompletion _oauthCompletionHandler;
     SKYErrorCreator *_errorCreator;

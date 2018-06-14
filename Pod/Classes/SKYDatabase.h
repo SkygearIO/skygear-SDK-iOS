@@ -229,10 +229,6 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)uploadAsset:(SKYAsset *_Nonnull)asset
     completionHandler:(void (^_Nullable)(SKYAsset *_Nullable, NSError *_Nullable))completionHandler;
 
-/// Undocumented
-- (void)uploadAssets:(NSArray<SKYAsset *> *_Nonnull)assets
-          completion:(void (^)(NSArray<SKYAsset *> *, NSArray<NSError *> *))completion;
-
 @end
 
 @interface SKYDatabase (SKYUser)

@@ -40,7 +40,4 @@
  */
 - (void)loadCurrentUserAndAccessToken;
 
-- (void)performUserAuthOperation:(SKYOperation *)operation
-               completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler;
-
 @end

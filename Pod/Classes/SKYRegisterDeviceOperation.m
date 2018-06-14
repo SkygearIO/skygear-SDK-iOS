@@ -47,7 +47,7 @@
 
 + (instancetype)operation
 {
-    return [[self alloc] initWithDeviceToken:nil];
+    return [[self alloc] initWithDeviceToken:nil topic:nil];
 }
 
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
