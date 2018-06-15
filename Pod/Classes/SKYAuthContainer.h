@@ -103,16 +103,16 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
 /**
  Creates a user account with the specified auth data and password.
  */
-- (void)signupWithAuthData:(NSDictionary *)authData
+- (void)signupWithAuthData:(NSDictionary<NSString *, id> *)authData
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
  Creates a user account with the specified auth data, password and profile.
  */
-- (void)signupWithAuthData:(NSDictionary *)authData
+- (void)signupWithAuthData:(NSDictionary<NSString *, id> *)authData
                   password:(NSString *)password
-         profileDictionary:(NSDictionary *_Nullable)profile
+         profileDictionary:(NSDictionary<NSString *, id> *_Nullable)profile
          completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
@@ -134,7 +134,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
  */
 - (void)signupWithUsername:(NSString *)username
                   password:(NSString *)password
-         profileDictionary:(NSDictionary *_Nullable)profile
+         profileDictionary:(NSDictionary<NSString *, id> *_Nullable)profile
          completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 /**
@@ -142,7 +142,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
  */
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
-      profileDictionary:(NSDictionary *_Nullable)profile
+      profileDictionary:(NSDictionary<NSString *, id> *_Nullable)profile
       completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
@@ -152,7 +152,7 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
 /**
  Logs in to an existing user account with the specified auth data and password.
  */
-- (void)loginWithAuthData:(NSDictionary *)authData
+- (void)loginWithAuthData:(NSDictionary<NSString *, id> *)authData
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 

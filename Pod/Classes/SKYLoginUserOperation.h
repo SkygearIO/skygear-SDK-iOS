@@ -28,13 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYLoginUserOperation : SKYAuthOperation
 
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *_Nullable authData;
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, id> *_Nullable authData;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *_Nullable password;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *_Nullable provider;
 /// Undocumented
-@property (nonatomic, readonly, copy) NSDictionary *_Nullable providerAuthData;
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, id> *_Nullable providerAuthData;
 
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable loginCompletionBlock)
@@ -43,13 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and returns an instance of operation for logging in a user with auth data and password.
  */
-+ (instancetype)operationWithAuthData:(NSDictionary *)authData password:(NSString *)password;
++ (instancetype)operationWithAuthData:(NSDictionary<NSString *, id> *)authData password:(NSString *)password;
 
 /**
  Creates and returns an instance of operation for logging in a user with provider and its auth data.
  */
 + (instancetype)operationWithProvider:(NSString *)provider
-                     providerAuthData:(NSDictionary *)providerAuthData;
+                     providerAuthData:(NSDictionary<NSString *, id> *)providerAuthData;
 
 @end
 

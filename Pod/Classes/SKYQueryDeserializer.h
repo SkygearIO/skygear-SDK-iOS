@@ -29,13 +29,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)deserializer;
 
 /// Undocumented
-- (SKYQuery *_Nullable)queryWithDictionary:(NSDictionary *)dictionary;
+- (SKYQuery *_Nullable)queryWithDictionary:(NSDictionary<NSString *, id> *)dictionary;
 /// Undocumented
 - (NSExpression *)expressionWithObject:(id)obj;
 /// Undocumented
-- (NSPredicate *_Nullable)predicateWithArray:(NSArray *)array;
+- (NSPredicate *_Nullable)predicateWithArray:(NSArray<id> *)array;
 /// Undocumented
-- (NSArray *_Nullable)sortDescriptorsWithArray:(NSArray *)array;
+- (NSArray<NSSortDescriptor *> *_Nullable)sortDescriptorsWithArray:(NSArray<id> *)array;
 
 @end
 

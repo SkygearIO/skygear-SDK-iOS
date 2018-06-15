@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 @property (nonatomic, readonly, copy) NSPredicate *_Nullable predicate;
 /// Undocumented
-@property (nonatomic, copy) NSArray *_Nullable sortDescriptors;
+@property (nonatomic, copy) NSArray<NSSortDescriptor *> *_Nullable sortDescriptors;
 
 /**
  Gets or sets the number of records after which records will be returned.
@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
  An NSDictionary of expression to be evaluated on the server side and returned as transient
  dictionary in SKYRecord.
  */
-@property (strong, nonatomic) NSDictionary *_Nullable transientIncludes;
+@property (strong, nonatomic) NSDictionary<NSString *, NSExpression *> *_Nullable transientIncludes;
 
 @end
 
