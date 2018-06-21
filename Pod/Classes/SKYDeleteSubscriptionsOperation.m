@@ -92,9 +92,12 @@
     if (subscriptionIDs.count) {
         *deletedsubscriptionIDs = subscriptionIDs;
     }
-    if (errorBySubscriptionID.count) {
+
+    if (operationError && errorBySubscriptionID.count) {
         *operationError =
             [self.errorCreator partialErrorWithPerItemDictionary:errorBySubscriptionID];
+    } else if (operationError) {
+        *operationError = nil;
     }
 }
 

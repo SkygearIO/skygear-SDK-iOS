@@ -135,7 +135,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
         [self _setCacheRecord:record recordID:recordID];
         cachedRecord = record;
     }
-    return record;
+    return cachedRecord;
 }
 
 - (void)_setCacheRecord:(SKYRecord *)record recordID:(SKYRecordID *)recordID

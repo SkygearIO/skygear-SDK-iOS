@@ -85,8 +85,12 @@
         }
     }];
 
-    if (errorByUserID.count) {
-        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorByUserID];
+    if (operationError) {
+        if (errorByUserID.count) {
+            *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorByUserID];
+        }
+    } else {
+        *operationError = nil;
     }
     return deletedUserIDs;
 }

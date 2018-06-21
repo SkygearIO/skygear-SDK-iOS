@@ -47,12 +47,12 @@
 
 + (instancetype)operation
 {
-    return [[self alloc] initWithDeviceToken:nil];
+    return [[self alloc] initWithDeviceToken:nil topic:nil];
 }
 
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken
 {
-    return [[self alloc] initWithDeviceToken:deviceToken];
+    return [[self alloc] initWithDeviceToken:deviceToken topic:nil];
 }
 
 + (instancetype)operationWithDeviceToken:(NSData *)deviceToken topic:(NSString *)topic
@@ -128,7 +128,9 @@
 - (NSDictionary *)parseResponse:(NSError **)error
 {
     if (self.error) {
-        *error = self.error;
+        if (error) {
+            *error = self.error;
+        }
         return nil;
     }
 
@@ -136,9 +138,10 @@
 
     NSString *deviceID = self.response[@"result"][@"id"];
     if (!deviceID.length) {
-        if (error)
+        if (error) {
             *error = [self.errorCreator errorWithCode:SKYErrorInvalidData
                                               message:@"Response missing device id."];
+        }
     }
 
     dict[@"id"] = deviceID;
