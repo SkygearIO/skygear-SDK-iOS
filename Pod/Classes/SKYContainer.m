@@ -195,7 +195,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
                                }];
 
     dispatch_group_notify(lambda_group, dispatch_get_main_queue(), ^{
-        if (!lastError) {
+        if (lastError) {
             if (completion) {
                 completion(nil, lastError);
             }
@@ -212,6 +212,14 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
         } else {
             operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
         }
+
+        operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) {
+                    completion(result, error);
+                }
+            });
+        };
 
         [self addOperation:operation];
     });
