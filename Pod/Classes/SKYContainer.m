@@ -213,6 +213,14 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
             operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
         }
 
+        operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) {
+                    completion(result, error);
+                }
+            });
+        };
+
         [self addOperation:operation];
     });
 }
