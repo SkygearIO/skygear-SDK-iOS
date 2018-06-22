@@ -195,7 +195,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
                                }];
 
     dispatch_group_notify(lambda_group, dispatch_get_main_queue(), ^{
-        if (!lastError) {
+        if (lastError) {
             if (completion) {
                 completion(nil, lastError);
             }
