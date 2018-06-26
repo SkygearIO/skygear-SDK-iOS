@@ -1,3 +1,15 @@
+## 1.6.0 (2018-06-26)
+
+### Features
+
+- Add Lambda support for Skygear Data Type
+- Presave asset before saving record and lambda
+
+### Other Notes
+
+- Fix assorted problems reported by Analyze
+- Better type perform query completion handler
+
 ## 1.5.0 (2018-04-23)
 
 ### Features
