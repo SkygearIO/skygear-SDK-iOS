@@ -73,6 +73,7 @@ typedef enum : NSInteger {
     SKYErrorPasswordPolicyViolated = 126,
     SKYErrorUserDisabled = 127,
     SKYErrorVerificationRequired = 128,
+    SKYErrorAssetSizeTooLarge = 129,
 
     SKYErrorUnexpectedError = 10000,
 } SKYErrorCode;
