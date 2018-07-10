@@ -18,7 +18,6 @@
 //
 
 #import "SKYOperation.h"
-#import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
 #import "SKYAuthContainer_Private.h"
 #import "SKYDataSerialization.h"

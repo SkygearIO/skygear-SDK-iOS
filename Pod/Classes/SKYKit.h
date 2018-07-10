@@ -95,7 +95,6 @@
 #import "SKYUnregisterDeviceOperation.h"
 #import "SKYUploadAssetOperation.h"
 
-#import "NSError+SKYError.h"
 #import "NSURLRequest+SKYRequest.h"
 
 #if TARGET_OS_IOS

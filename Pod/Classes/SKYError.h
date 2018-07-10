@@ -33,7 +33,7 @@ extern NSString *const SKYOperationErrorDomain;
 extern NSString *const SKYOperationErrorHTTPStatusCodeKey;
 
 /// Undocumented
-typedef enum : NSInteger {
+typedef NS_ERROR_ENUM(SKYOperationErrorDomain, SKYErrorCode){
     SKYErrorUnknownError = 1,
     SKYErrorPartialFailure = 116,
 
@@ -76,7 +76,7 @@ typedef enum : NSInteger {
     SKYErrorAssetSizeTooLarge = 129,
 
     SKYErrorUnexpectedError = 10000,
-} SKYErrorCode;
+};
 
 /**
  Returns a localized description for the error code.

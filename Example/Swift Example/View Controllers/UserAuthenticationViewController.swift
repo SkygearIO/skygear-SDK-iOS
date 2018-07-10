@@ -273,12 +273,12 @@ class UserAuthenticationViewController: UITableViewController {
             }
 
             SKYContainer.default().auth.verifyUser(withCode: code, completion: { (_, error) in
-                if let error = error as NSError? {
-                    if error.code == SKYErrorInvalidArgument.rawValue {
+                if let err = error as? SKYError {
+                    if err.code == SKYError.invalidArgument {
                         self.showInvalidCodeError(completion: nil)
                         return
                     }
-                    self.showError(error, completion: nil)
+                    self.showError(err, completion: nil)
                     return
                 }
 
