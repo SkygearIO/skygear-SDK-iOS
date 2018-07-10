@@ -2,40 +2,6 @@
 # * http://www.objc.io/issue-6/travis-ci.html
 # * https://github.com/supermarin/xcpretty#usage
 
-language: objective-c
-os: osx
-osx_image: xcode9.2
-cache:
-- cocoapods
-- pip
-before_install:
-- gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
-- brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/2c2c4b8bfb93e3b409c1c9c51b8a76c3497e0ca0/Formula/clang-format.rb
-- brew upgrade --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/6dcd3c206681f02b267e4cf3d44ec9a8ded36b40/Formula/swiftlint.rb
-- clang-format --version
-- pip2 install lizard==1.14.5
-- pod install --repo-update --project-directory=Example
-script:
-- sh -eo pipefail -c "xcodebuild -scheme \"Test Runner\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build test | xcpretty"
-- sh -eo pipefail -c "xcodebuild -scheme \"Swift Example\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build | xcpretty"
-- sh -eo pipefail -c "xcodebuild -scheme \"Mac Example\" -workspace \"$WORKSPACE\" build | xcpretty"
-- pod lib lint --allow-warnings
-- ./clang-check.sh
-- swiftlint --strict
-- lizard Pod/ -C 15 -W .lizard -w -i 0
-before_deploy:
-- rvm install ruby-2.2.4 # jazzy doesn't work in old rubies
-- rvm use ruby-2.2.4
-- gem install jazzy
-- pip2 install awscli
-deploy:
-  - provider: script
-    script: scripts/deploy.sh
-    skip_cleanup: true
-    on:
-      repo: SkygearIO/skygear-SDK-iOS
-      all_branches: true
-
 env:
   global:
     - LC_CTYPE=en_US.UTF-8
@@ -43,6 +9,71 @@ env:
     - WORKSPACE=Example/SKYKit.xcworkspace
     - DESTINATION="OS=10.0,name=iPhone 6S"
     - SDK=iphonesimulator
+
+stages:
+  - test
+  - deploy
+
+refs:
+  - &pod_test_config
+    language: objective-c
+    os: osx
+    osx_image: xcode9.2
+    cache: cocoapods
+    before_install:
+      - gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
+      - pod install --repo-update --project-directory=Example
+jobs:
+  include:
+    # test
+    - <<: *pod_test_config
+      stage: test
+      script:
+        - sh -eo pipefail -c "xcodebuild -scheme \"Test Runner\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build test | xcpretty"
+    - <<: *pod_test_config
+      stage: test
+      script:
+        - sh -eo pipefail -c "xcodebuild -scheme \"Swift Example\" -workspace \"$WORKSPACE\" -sdk \"$SDK\" -destination \"$DESTINATION\" build | xcpretty"
+    - <<: *pod_test_config
+      stage: test
+      script:
+        - sh -eo pipefail -c "xcodebuild -scheme \"Mac Example\" -workspace \"$WORKSPACE\" build | xcpretty"
+    - <<: *pod_test_config
+      stage: test
+      script:
+        - pod lib lint --allow-warnings
+
+    - stage: test
+      language: objective-c
+      os: osx
+      osx_image: xcode9.2
+      cache: pip
+      install:
+        - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/2c2c4b8bfb93e3b409c1c9c51b8a76c3497e0ca0/Formula/clang-format.rb
+        - brew upgrade --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/6dcd3c206681f02b267e4cf3d44ec9a8ded36b40/Formula/swiftlint.rb
+        - clang-format --version
+        - pip2 install lizard==1.14.5
+      script:
+        - ./clang-check.sh
+        - swiftlint --strict
+        - lizard Pod/ -C 15 -W .lizard -w -i 0
+
+    # deploy
+    - if: type != pull_request
+      language: ruby
+      rvm: 2.2.4
+      install:
+        - gem install jazzy
+        - pip2 install awscli
+      script: /bin/true
+      deploy:
+        - provider: script
+          script: scripts/deploy.sh
+          skip_cleanup: true
+          on:
+            repo: SkygearIO/skygear-SDK-iOS
+            all_branches: true
+
 notifications:
   slack:
     secure: "hJwBS8givGXSkqUYFmfj3G6t30Dfdm45wAvD4zutnvYdGeKmbcp1H+er7/H3Gbk4k42zXupNIHuwJXzsDtrLwOYe29NXRi5SQMeR9rH9ONHBDFq5xO6mtx1ytthKaR1P37rrCh0MALFVrWaTtPpxAb53qJmMFeM0ifa2om+PEcG3eEUCsOJnABSrPStijCy5R3mhJYmUuOGuCn9sm5nh84CY6OaYU6nbJuW83JwsIR/vPBucdfHGHfM2SmUDYm4Ktpq6BcGaUYJtfyCErKG5eeWeTrfv8NjuwM/b/odscx4lS7+n6nV245GYDTroCnQ+yC9YEHWXoh1j/XghymM/iaZL5ZapXF7bjIkWKIgedvZ7yhYTHeEQKIRnzwBUZAK/Gj4a0tb4L7++oaCw4FODsJZ+rZSciJIDKo6/BQxGSNcgnnQnKJALZ/bmWFRoa35rWErb7qo2vrGsNdySs3WWxIjohvcofnuLWHKAliCWbkZhqYSm+c38r8/S72l0V8GepBXutPkmjUV/d/7EHjaluIxnc8A/Xej5yEl4/5w3/C4EOougOsoUpWgIhn8D2GaFzuqzWFmK9CDGV7Ga+zEzSAONW3RdEn829hJHJ4n9YChMzkGC0L/XhYtWmkS/9aaTyBSrloexHAYNlTZ+0SPXVNYkG4H/0Kvg6mit+bvyzNE="
