@@ -44,4 +44,16 @@ post_install do |installer|
       end
     end
   end
+
+  # Set "Treat Warnings as Errors" build settings.
+  # Only warnings in the SKYKit targets will be treated as errors.
+  # To disable, comment this section and run `pod install`.
+  installer.pods_project.targets.each do |target|
+    if target.name.start_with?("SKYKit")
+      puts "Updating #{target.name} GCC_TREAT_WARNINGS_AS_ERRORS"
+      target.build_configurations.each do |config|
+        config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
+      end
+    end
+  end
 end

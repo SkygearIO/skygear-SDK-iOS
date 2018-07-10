@@ -28,7 +28,16 @@
     SKYLoginUserOperation *operation =
         [SKYLoginUserOperation operationWithProvider:@"com.facebook"
                                     providerAuthData:@{@"access_token" : accessToken.tokenString}];
-    [self performUserAuthOperation:operation completionHandler:completionHandler];
+    operation.authResponseDelegate = self;
+    operation.loginCompletionBlock =
+        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+            if (completionHandler) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(user, error);
+                });
+            }
+        };
+    [self.container addOperation:operation];
 }
 
 @end

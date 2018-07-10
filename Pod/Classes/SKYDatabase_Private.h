@@ -19,6 +19,8 @@
 
 #import "SKYDatabase.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYDatabase ()
 
 // TODO: look for a better way to override NS_UNAVAILABLE on init
@@ -29,3 +31,5 @@
              (void (^_Nullable)(id _Nullable presavedObject, NSError *_Nullable error))completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

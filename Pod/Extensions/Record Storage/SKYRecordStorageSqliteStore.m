@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-#import <FMDB/FMDB.h>
+#import <fmdb/FMDB.h>
 
 #import "SKYDataSerialization.h"
 #import "SKYRecord.h"
