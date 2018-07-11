@@ -43,7 +43,8 @@ SpecBegin(SKYDatabase)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : bookTitle,
                             },
@@ -110,12 +111,14 @@ SpecBegin(SKYDatabase)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : bookTitle,
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"error",
                                 @"code" : @(SKYErrorUnexpectedError),
                                 @"message" : @"An error.",
@@ -166,7 +169,8 @@ SpecBegin(SKYDatabase)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"_revision" : @"revision1",
                             },
@@ -242,12 +246,14 @@ SpecBegin(SKYDatabase)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"_revision" : @"revision1",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"error",
                                 @"code" : @(SKYErrorUnexpectedError),
                                 @"message" : @"An error.",
@@ -350,7 +356,8 @@ SpecBegin(SKYDatabase)
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
                         @"result" : @[ @{
-                            @"_id" : @"book/book2",
+                            @"_recordType" : @"book",
+                            @"_recordID" : @"book2",
                             @"_type" : @"error",
                             @"code" : @(SKYErrorUnexpectedError),
                             @"message" : @"An error.",
@@ -395,7 +402,8 @@ SpecBegin(SKYDatabase)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },

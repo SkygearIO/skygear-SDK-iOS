@@ -95,7 +95,8 @@ SpecBegin(SKYLoginUserOperation)
                         @"user_id" : @"UUID",
                         @"access_token" : @"ACCESS_TOKEN",
                         @"profile" : @{
-                            @"_id" : @"user/UUID",
+                            @"_recordType" : @"user",
+                            @"_recordID" : @"UUID",
                             @"_access" : [NSNull null],
                         },
                     };

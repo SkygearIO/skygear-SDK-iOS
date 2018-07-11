@@ -54,7 +54,8 @@ SpecBegin(SKYAuthContainerSSO)
                         @"user_id" : @"UUID",
                         @"access_token" : @"ACCESS_TOKEN",
                         @"profile" : @{
-                            @"_id" : @"user/UUID",
+                            @"_recordType" : @"user",
+                            @"_recordID" : @"UUID",
                             @"_access" : [NSNull null],
                             @"username" : @"john.doe",
                             @"email" : @"john.doe@example.com",

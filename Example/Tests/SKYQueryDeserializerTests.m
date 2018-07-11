@@ -137,7 +137,7 @@ describe(@"deserialize predicate", ^{
     it(@"equal reference", ^{
         NSArray *predicateArray = @[
             @"eq", @{@"$type" : @"keypath", @"$val" : @"city"},
-            @{@"$type" : @"ref", @"$id" : @"city/hongkong"}
+            @{@"$type" : @"ref", @"$recordType" : @"city", @"$recordID" : @"hongkong"}
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];

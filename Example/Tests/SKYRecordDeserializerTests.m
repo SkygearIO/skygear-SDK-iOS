@@ -135,7 +135,8 @@ SpecBegin(SKYRecordDeserializer)
             NSMutableDictionary *data = [basicPayload mutableCopy];
             data[@"author"] = @{
                 SKYDataSerializationCustomTypeKey : SKYDataSerializationReferenceType,
-                @"$id" : @"author/author1",
+                @"$recordType" : @"author",
+                @"$recordID" : @"author1",
             };
             SKYRecord *record = [deserializer recordWithDictionary:data];
             SKYReference *authorRef = record[@"author"];

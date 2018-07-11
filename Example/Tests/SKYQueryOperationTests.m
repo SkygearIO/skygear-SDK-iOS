@@ -127,12 +127,14 @@ SpecBegin(SKYQueryOperation)
                         @"info" : @{@"count" : @2},
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"record",
                                 @"title" : @"Old man and the sea",
                             }
@@ -202,12 +204,14 @@ SpecBegin(SKYQueryOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"unknown",
                             },
                         ]
@@ -261,13 +265,20 @@ SpecBegin(SKYQueryOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
-                                @"category" : @{@"$type" : @"ref", @"$id" : @"category/important"},
+                                @"category" : @{
+                                    @"$type" : @"ref",
+                                    @"$id" : @"category/important",
+                                    @"$recordType" : @"category",
+                                    @"$recordID" : @"important"
+                                },
                                 @"_transient" : @{
                                     @"category" : @{
-                                        @"_id" : @"category/important",
+                                        @"_recordType" : @"category",
+                                        @"_recordID" : @"important",
                                         @"_type" : @"record",
                                         @"title" : @"Important",
                                     }
