@@ -49,8 +49,15 @@
         }
     }];
 
-    SKYRecordID *recordID =
-        [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+    SKYRecordID *recordID;
+    if (obj[SKYRecordSerializationRecordRecordTypeKey]) {
+        recordID =
+            [[SKYRecordID alloc] initWithRecordType:obj[SKYRecordSerializationRecordRecordTypeKey]
+                                               name:obj[SKYRecordSerializationRecordRecordIDKey]];
+    } else if (obj[SKYRecordSerializationRecordIDKey]) {
+        recordID =
+            [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+    }
     SKYRecord *record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];

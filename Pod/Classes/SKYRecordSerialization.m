@@ -19,7 +19,9 @@
 
 #import "SKYRecordSerialization.h"
 
-NSString *const SKYRecordSerializationRecordIDKey = @"_id";
+NSString *const SKYRecordSerializationRecordIDKey __deprecated = @"_id";
+NSString *const SKYRecordSerializationRecordRecordTypeKey = @"_recordType";
+NSString *const SKYRecordSerializationRecordRecordIDKey = @"_recordID";
 NSString *const SKYRecordSerializationRecordTypeKey = @"_type";
 NSString *const SKYRecordSerializationRecordOwnerIDKey = @"_ownerID";
 NSString *const SKYRecordSerializationRecordCreatedAtKey = @"_created_at";

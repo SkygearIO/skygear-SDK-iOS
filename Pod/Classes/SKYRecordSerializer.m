@@ -42,6 +42,8 @@
 
     payload[SKYRecordSerializationRecordIDKey] = record.recordID.canonicalString;
     payload[SKYRecordSerializationRecordTypeKey] = @"record";
+    payload[SKYRecordSerializationRecordRecordTypeKey] = record.recordID.recordType;
+    payload[SKYRecordSerializationRecordRecordIDKey] = record.recordID.recordName;
 
     if (record.creationDate) {
         payload[SKYRecordSerializationRecordCreatedAtKey] =

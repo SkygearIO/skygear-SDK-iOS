@@ -26,6 +26,10 @@ extern NSString *const SKYRecordSerializationRecordIDKey;
 /// Undocumented
 extern NSString *const SKYRecordSerializationRecordTypeKey;
 /// Undocumented
+extern NSString *const SKYRecordSerializationRecordRecordTypeKey;
+/// Undocumented
+extern NSString *const SKYRecordSerializationRecordRecordIDKey;
+/// Undocumented
 extern NSString *const SKYRecordSerializationRecordOwnerIDKey;
 /// Undocumented
 extern NSString *const SKYRecordSerializationRecordCreatedAtKey;
