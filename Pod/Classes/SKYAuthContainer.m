@@ -85,8 +85,7 @@
     }
 }
 
-- (void)operation:(id)operation
-    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
+- (void)handleAuthResponse:(NSDictionary<NSString *, id> *)authResponse
 {
     NSDictionary *profile = authResponse[@"profile"];
     if (![profile isKindOfClass:[NSDictionary class]]) {
@@ -104,6 +103,12 @@
     SKYAccessToken *accessToken = [[SKYAccessToken alloc] initWithTokenString:tokenString];
 
     [self updateWithUser:user accessToken:accessToken];
+}
+
+- (void)operation:(id)operation
+    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
+{
+    [self handleAuthResponse:authResponse];
 }
 
 #pragma mark -
@@ -177,6 +182,8 @@
     }
 
     [self saveCurrentUserAndAccessToken];
+
+    NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
 
     // register device when current user change
     if (needRegisterDevice) {
