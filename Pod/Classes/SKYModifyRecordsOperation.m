@@ -22,7 +22,7 @@
 #import "SKYError.h"
 #import "SKYOperationSubclass.h"
 #import "SKYOperation_Private.h"
-#import "SKYRecordDeserializer.h"
+#import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 #import "SKYRecordSerializer.h"
 
@@ -74,40 +74,6 @@
     }
 }
 
-- (SKYRecordID *)recordIDWithResultItem:(NSDictionary *)item error:(NSError **)error
-{
-    SKYRecordID *recordID =
-        [SKYRecordID recordIDWithCanonicalString:item[SKYRecordSerializationRecordIDKey]];
-
-    if (!recordID) {
-        if (error) {
-            *error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                              message:@"Missing `_id` or not in correct format."];
-            return nil;
-        }
-    }
-    return recordID;
-}
-
-- (SKYRecord *)handleResultItem:(NSDictionary *)item error:(NSError **)error
-{
-    SKYRecord *record = nil;
-
-    if ([item[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
-        SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
-        record = [deserializer recordWithDictionary:item];
-
-        if (!record) {
-            NSLog(@"Error with returned record.");
-        }
-    } else if ([item[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-        if (error) {
-            *error = [self.errorCreator errorWithResponseDictionary:item];
-        }
-    }
-    return record;
-}
-
 - (NSArray *)handleResponseArray:(NSArray *)responseArray error:(NSError **)error
 {
     if (!responseArray) {
@@ -120,27 +86,34 @@
 
     NSMutableDictionary *errorByID = [NSMutableDictionary dictionary];
     NSMutableArray *resultArray = [NSMutableArray array];
+    SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
     [responseArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        NSError *error = nil;
-        SKYRecordID *recordID = [self recordIDWithResultItem:obj error:&error];
-        if (!recordID) {
-            if (self.perRecordCompletionBlock) {
-                self.perRecordCompletionBlock(nil, error);
-            }
-            return;
-        }
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        SKYRecordID *deprecatedRecordID =
+                                            recordType && recordID
+                                                ? [SKYRecordID recordIDWithRecordType:recordType
+                                                                                 name:recordID]
+                                                : nil;
+                                        SKYRecord *rtnRecord = record;
 
-        SKYRecord *record = [self handleResultItem:obj error:&error];
-        if (record) {
-            [resultArray addObject:record];
-        } else if (error) {
-            record = self->recordsByRecordID[recordID];
-            errorByID[recordID] = error;
-        }
+                                        if (error) {
+                                            if (deprecatedRecordID) {
+                                                errorByID[deprecatedRecordID] = error;
+                                            }
+                                            rtnRecord = self->recordsByRecordID[deprecatedRecordID];
+                                        }
 
-        if ((record || error) && self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(record, error);
-        }
+                                        if (record) {
+                                            [resultArray addObject:record];
+                                        }
+
+                                        if ((rtnRecord || error) && self.perRecordCompletionBlock) {
+                                            self.perRecordCompletionBlock(rtnRecord, error);
+                                        }
+                                    }];
     }];
 
     if ([errorByID count] && error) {

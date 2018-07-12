@@ -23,6 +23,7 @@
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
 #import "SKYRecordDeserializer.h"
+#import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
 @implementation SKYFetchRecordsOperation
@@ -64,42 +65,38 @@
     NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     NSMutableDictionary *recordsByRecordID = [NSMutableDictionary dictionary];
 
+    SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
+
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        NSError *error = nil;
-        SKYRecord *record = nil;
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        SKYRecordID *deprecatedRecordID =
+                                            recordType && recordID
+                                                ? [SKYRecordID recordIDWithRecordType:recordType
+                                                                                 name:recordID]
+                                                : nil;
 
-        if (recordID) {
-            if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
-                SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
-                record = [deserializer recordWithDictionary:obj];
+                                        if (!deprecatedRecordID) {
+                                            NSLog(@"Record does not conform with expected format.");
+                                            return;
+                                        }
 
-                if (!record) {
-                    NSLog(@"Error with returned record.");
-                }
-            } else if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-                error = [self.errorCreator errorWithResponseDictionary:obj];
-                [errorsByID setObject:error forKey:recordID];
-            }
-        } else {
-            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                             message:@"Missing `_id` or not in correct format."];
-        }
+                                        if (error) {
+                                            [errorsByID setObject:error forKey:deprecatedRecordID];
+                                        }
 
-        if (!error && !record) {
-            error =
-                [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                         message:@"Record does not conform with expected format."];
-        }
+                                        if (record) {
+                                            [recordsByRecordID setObject:record
+                                                                  forKey:deprecatedRecordID];
+                                        }
 
-        if (recordID && self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(record, recordID, error);
-        }
-
-        if (record) {
-            [recordsByRecordID setObject:record forKey:recordID];
-        }
+                                        if ((record || error) && self.perRecordCompletionBlock) {
+                                            self.perRecordCompletionBlock(
+                                                record, deprecatedRecordID, error);
+                                        }
+                                    }];
     }];
 
     if (operationError && [errorsByID count] > 0) {
