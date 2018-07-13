@@ -42,7 +42,7 @@
                                                     NSLog(@"An error occurred: %@", error);
                                                     return;
                                                 }
-                                                NSLog(@"User logged in: %@", user.recordID.recordName);
+                                                NSLog(@"User logged in: %@", user.recordID);
                                             }];
 }
 

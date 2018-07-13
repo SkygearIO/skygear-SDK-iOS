@@ -1,5 +1,5 @@
 //
-//  SKYDeleteRecordsOperation.m
+//  SKYDeprecatedDeleteRecordsOperation.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,7 +17,7 @@
 //  limitations under the License.
 //
 
-#import "SKYDeleteRecordsOperation.h"
+#import "SKYDeprecatedDeleteRecordsOperation.h"
 #import "SKYOperationSubclass.h"
 
 #import "SKYDataSerialization.h"
@@ -25,36 +25,35 @@
 #import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
-@implementation SKYDeleteRecordsOperation
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                 recordIDsToDelete:(NSArray<NSString *> *)recordIDs
+@implementation SKYDeprecatedDeleteRecordsOperation
+
+- (instancetype)initWithRecordIDsToDelete:(NSArray *)recordIDs
 {
     self = [super init];
     if (self) {
-        self.recordType = recordType; // copy
-        self.recordIDs = recordIDs;   // copy
+        self.recordIDs = [recordIDs copy];
     }
     return self;
 }
 
-+ (instancetype)operationWithRecordType:(NSString *)recordType
-                      recordIDsToDelete:(NSArray<NSString *> *)recordIDs
++ (instancetype)operationWithRecordIDsToDelete:(NSArray *)recordIDs
 {
-    return [[self alloc] initWithRecordType:recordType recordIDsToDelete:recordIDs];
+    return [[self alloc] initWithRecordIDsToDelete:recordIDs];
 }
 
 - (void)prepareForRequest
 {
-    NSMutableArray *deprecatedIDs = [NSMutableArray array];
-    [self.recordIDs enumerateObjectsUsingBlock:^(NSString *recordID, NSUInteger idx, BOOL *stop) {
-        [deprecatedIDs addObject:SKYRecordConcatenatedID(self.recordType, recordID)];
+    NSMutableArray *stringIDs = [NSMutableArray array];
+    [self.recordIDs enumerateObjectsUsingBlock:^(SKYRecordID *obj, NSUInteger idx, BOOL *stop) {
+        [stringIDs addObject:[obj canonicalString]];
     }];
 
     NSMutableDictionary *payload = [@{
-        @"ids" : deprecatedIDs,
-        @"recordType" : self.recordType,
-        @"recordIDs" : self.recordIDs,
+        @"ids" : stringIDs,
         @"database_id" : self.database.databaseID,
     } mutableCopy];
     if (self.atomic) {
@@ -70,21 +69,28 @@
     __block BOOL erroneousResponse = NO;
 
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
-    NSMutableDictionary<NSString *, NSError *> *errorsByID = [NSMutableDictionary dictionary];
+    NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        [deserializer deserializeResponseDictionary:obj
-                                              block:^(NSString *recordType, NSString *recordID,
-                                                      SKYRecord *record, NSError *error) {
-                                                  if (!(recordType && recordID)) {
-                                                      erroneousResponse = YES;
-                                                      *stop = YES;
-                                                      return;
-                                                  }
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        SKYRecordID *deprecatedRecordID =
+                                            recordType && recordID
+                                                ? [SKYRecordID recordIDWithRecordType:recordType
+                                                                                 name:recordID]
+                                                : nil;
 
-                                                  if (error) {
-                                                      [errorsByID setObject:error forKey:recordID];
-                                                  }
-                                              }];
+                                        if (!deprecatedRecordID) {
+                                            erroneousResponse = YES;
+                                            *stop = YES;
+                                            return;
+                                        }
+
+                                        if (error) {
+                                            [errorsByID setObject:error forKey:deprecatedRecordID];
+                                        }
+                                    }];
     }];
 
     if (erroneousResponse) {
@@ -105,17 +111,18 @@
     }
 
     NSMutableArray *deletedRecordIDs = [NSMutableArray array];
-    [self.recordIDs enumerateObjectsUsingBlock:^(NSString *recordID, NSUInteger idx, BOOL *stop) {
-        NSError *error = errorsByID[recordID];
+    [self.recordIDs
+        enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
+            NSError *error = errorsByID[recordID];
 
-        if (!error) {
-            [deletedRecordIDs addObject:recordID];
-        }
+            if (!error) {
+                [deletedRecordIDs addObject:recordID];
+            }
 
-        if (self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(recordID, error);
-        }
-    }];
+            if (self.perRecordCompletionBlock) {
+                self.perRecordCompletionBlock(recordID, error);
+            }
+        }];
 
     return deletedRecordIDs;
 }
@@ -145,3 +152,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

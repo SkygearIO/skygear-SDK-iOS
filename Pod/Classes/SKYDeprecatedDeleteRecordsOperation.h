@@ -1,5 +1,5 @@
 //
-//  SKYDeleteRecordsOperation.h
+//  SKYDeprecatedDeleteRecordsOperation.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -19,24 +19,29 @@
 
 #import "SKYDatabaseOperation.h"
 #import "SKYRecord.h"
+#import "SKYRecordID.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
+// clang-format off
 
 /**
  <SKYDeleteRecordsOperation> is a subclass of <SKYDatabaseOperation> that implements records
  deletion in Skygear. Use this operation
  to delete multiple existing records from the database.
  */
-@interface SKYDeleteRecordsOperation : SKYDatabaseOperation
+__attribute__((deprecated)) @interface SKYDeprecatedDeleteRecordsOperation : SKYDatabaseOperation
 
 /**
- Instantiates an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted from
- database.
+ Instantiates an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted
+ from database.
 
  @param recordIDs An array of records to be deleted from database.
  */
-- (instancetype)initWithRecordType:(NSString *)recordType
-                 recordIDsToDelete:(NSArray<NSString *> *)recordIDs;
+- (instancetype)initWithRecordIDsToDelete : (NSArray<SKYRecordID *> *)recordIDs;
+
+// clang-format on
 
 /**
  Creates and returns an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted
@@ -44,18 +49,12 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param recordIDs An array of records to be deleted from database.
  */
-+ (instancetype)operationWithRecordType:(NSString *)recordType
-                      recordIDsToDelete:(NSArray<NSString *> *)recordIDs;
++ (instancetype)operationWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
 
 /**
- Sets or returns record type to be deleted from from database.
+ Sets or returns an array of records to be from from database.
  */
-@property (nonatomic, copy) NSString *recordType;
-
-/**
- Sets or returns an array of records to be deleted from from database.
- */
-@property (nonatomic, copy) NSArray<NSString *> *recordIDs;
+@property (nonatomic, copy) NSArray<SKYRecordID *> *recordIDs;
 
 /**
  Sets whether the operation should be treated as an atomic operation. An atomic operation saves all
@@ -73,22 +72,22 @@ NS_ASSUME_NONNULL_BEGIN
  record.
  */
 @property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (NSString *_Nullable recordID, double progress);
+    (SKYRecordID *_Nullable recordID, double progress);
 
 /**
  Sets or returns a block to be called when the delete operation for individual record is completed.
  If an error occurred during the deletion, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
-    (NSString *_Nullable deletedRecordID, NSError *_Nullable error);
+    (SKYRecordID *_Nullable deletedRecordID, NSError *_Nullable error);
 
 /**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable deleteRecordsCompletionBlock)
-    (NSArray<NSString *> *_Nullable deletedRecordIDs, NSError *_Nullable operationError);
+    (NSArray<SKYRecordID *> *_Nullable deletedRecordIDs, NSError *_Nullable operationError);
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

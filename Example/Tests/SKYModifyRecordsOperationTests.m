@@ -212,7 +212,9 @@ SpecBegin(SKYModifyRecordsOperation)
                         expect(operationError.code).to.equal(SKYErrorPartialFailure);
 
                         NSError *perRecordError =
-                            operationError.userInfo[SKYPartialErrorsByItemIDKey][record2.recordID];
+                            operationError
+                                .userInfo[SKYPartialErrorsByItemIDKey][SKYRecordConcatenatedID(
+                                    record2.recordType, record2.recordID)];
                         expect([perRecordError class]).to.beSubclassOf([NSError class]);
                         expect(perRecordError.userInfo[SKYErrorNameKey])
                             .to.equal(@"ResourceNotFound");

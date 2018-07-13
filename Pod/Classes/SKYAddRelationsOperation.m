@@ -25,17 +25,17 @@
 
 @implementation SKYAddRelationsOperation
 
-- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray *)users
+- (instancetype)initWithType:(NSString *)relationType usersToRelated:(NSArray<SKYRecord *> *)users
 {
     if ((self = [super init])) {
-        _relationType = relationType;
-        _usersToRelate = users;
+        _relationType = [relationType copy];
+        _usersToRelate = [users copy];
     }
     return self;
 }
 
 + (instancetype)operationWithType:(NSString *)relationType
-                   usersToRelated:(NSArray /* SKYRecord */ *)users
+                   usersToRelated:(NSArray<SKYRecord *> *)users
 {
     return [[self alloc] initWithType:relationType usersToRelated:users];
 }
@@ -43,7 +43,7 @@
 - (void)prepareForRequest
 {
     NSMutableDictionary *payload = [@{@"name" : self.relationType} mutableCopy];
-    NSMutableArray *targets = [NSMutableArray array];
+    NSMutableArray<NSString *> *targets = [NSMutableArray array];
     for (SKYRecord *user in self.usersToRelate) {
         if (![user.recordType isEqualToString:@"user"]) {
             @throw [NSException exceptionWithName:NSInvalidArgumentException
@@ -51,7 +51,7 @@
                                          userInfo:nil];
         }
 
-        [targets addObject:user.recordID.recordName];
+        [targets addObject:user.recordID];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:add" payload:payload];
@@ -80,10 +80,11 @@
 
     NSDictionary *itemsByID = [self.class itemsByIDFromResult:result];
 
-    NSMutableArray *savedUsers = [NSMutableArray arrayWithCapacity:itemsByID.count];
-    NSMutableDictionary *errorsByStringUserID = [NSMutableDictionary dictionary];
+    NSMutableArray<NSString *> *savedUsers = [NSMutableArray arrayWithCapacity:itemsByID.count];
+    NSMutableDictionary<NSString *, NSError *> *errorsByStringUserID =
+        [NSMutableDictionary dictionary];
     for (SKYRecord *user in self.usersToRelate) {
-        NSDictionary *itemDict = itemsByID[user.recordID.recordName];
+        NSDictionary *itemDict = itemsByID[user.recordID];
 
         NSString *returnedUserID = nil;
         NSError *error = nil;
@@ -91,7 +92,7 @@
         if (!itemDict.count) {
             error = [self.errorCreator errorWithCode:SKYErrorResourceNotFound
                                             userInfo:@{
-                                                @"id" : user.recordID.recordName,
+                                                @"id" : user.recordID,
                                                 SKYErrorMessageKey : @"User missing in response",
                                             }];
         } else {
@@ -99,7 +100,7 @@
             if ([itemType isEqualToString:@"error"]) {
                 error = [self.errorCreator errorWithResponseDictionary:itemDict[@"data"]];
             } else {
-                returnedUserID = user.recordID.recordName;
+                returnedUserID = user.recordID;
                 if (returnedUserID == nil) {
                     error = [self.errorCreator
                         errorWithCode:SKYErrorInvalidData
@@ -118,7 +119,7 @@
         if (returnedUserID != nil) {
             [savedUsers addObject:returnedUserID];
         } else {
-            errorsByStringUserID[user.recordID.recordName] = error;
+            errorsByStringUserID[user.recordID] = error;
         }
     }
 

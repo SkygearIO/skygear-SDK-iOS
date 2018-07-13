@@ -77,25 +77,22 @@
     NSMutableArray *fetchedRecords = [NSMutableArray array];
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
 
-    [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+    [deserializer
+        deserializeResponseArray:result
+                           block:^(NSString *recordType, NSString *recordID, SKYRecord *record,
+                                   NSError *error) {
+                               if (error) {
+                                   NSLog(@"Record does not conform with expected format.");
+                                   return;
+                               }
 
-        [deserializer
-            deserializeResponseDictionary:obj
-                                    block:^(NSString *recordType, NSString *recordID,
-                                            SKYRecord *record, NSError *error) {
-                                        if (error) {
-                                            NSLog(@"Record does not conform with expected format.");
-                                            return;
-                                        }
-
-                                        if (record) {
-                                            [fetchedRecords addObject:record];
-                                            if (perRecordBlock) {
-                                                perRecordBlock(record);
-                                            }
-                                        }
-                                    }];
-    }];
+                               if (record) {
+                                   [fetchedRecords addObject:record];
+                                   if (perRecordBlock) {
+                                       perRecordBlock(record);
+                                   }
+                               }
+                           }];
 
     return fetchedRecords;
 }
