@@ -21,6 +21,9 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYFetchRecordsOperation)
 
     describe(@"fetch", ^{
@@ -113,8 +116,10 @@ SpecBegin(SKYFetchRecordsOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([recordsByRecordID class]).to.beSubclassOf([NSDictionary class]);
                             expect(recordsByRecordID).to.haveCountOf(2);
-                            expect([recordsByRecordID[recordID1] recordID]).to.equal(recordID1);
-                            expect([recordsByRecordID[recordID2] recordID]).to.equal(recordID2);
+                            expect([recordsByRecordID[recordID1] recordID])
+                                .to.equal(recordID1.recordName);
+                            expect([recordsByRecordID[recordID2] recordID])
+                                .to.equal(recordID2.recordName);
                             expect(operationError).to.beNil();
                             done();
                         });
@@ -202,7 +207,7 @@ SpecBegin(SKYFetchRecordsOperation)
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([recordID isEqual:recordID1]) {
                             expect([record class]).to.beSubclassOf([SKYRecord class]);
-                            expect(record.recordID).to.equal(recordID1);
+                            expect(record.recordID).to.equal(recordID1.recordName);
                         } else if ([recordID isEqual:recordID2]) {
                             expect([error class]).to.beSubclassOf([NSError class]);
                             expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
@@ -238,3 +243,5 @@ SpecBegin(SKYFetchRecordsOperation)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

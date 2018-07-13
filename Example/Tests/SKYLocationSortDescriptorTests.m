@@ -27,33 +27,32 @@ SpecBegin(SKYLocationSortDescriptor)
 
     describe(@"location", ^{
         SKYRecord *city1 = [SKYRecord
-            recordWithRecordType:@"city"
-                            name:@"hongkong"
-                            data:@{
-                                @"latlng" :
-                                    [[CLLocation alloc] initWithLatitude:22.3 longitude:114.2]
-                            }];
+            recordWithType:@"city"
+                  recordID:@"hongkong"
+                      data:@{
+                          @"latlng" : [[CLLocation alloc] initWithLatitude:22.3 longitude:114.2]
+                      }];
         SKYRecord *city2 = [SKYRecord
-            recordWithRecordType:@"city"
-                            name:@"newyork"
-                            data:@{
-                                @"latlng" : [[CLLocation alloc] initWithLatitude:40.7127
-                                                                       longitude:-74.0059]
-                            }];
+            recordWithType:@"city"
+                  recordID:@"newyork"
+                      data:@{
+                          @"latlng" :
+                              [[CLLocation alloc] initWithLatitude:40.7127 longitude:-74.0059]
+                      }];
         SKYRecord *city3 = [SKYRecord
-            recordWithRecordType:@"city"
-                            name:@"london"
-                            data:@{
-                                @"latlng" : [[CLLocation alloc] initWithLatitude:51.507222
-                                                                       longitude:-0.1275]
-                            }];
-        SKYRecord *city4 =
-            [SKYRecord recordWithRecordType:@"city"
-                                       name:@"paris"
-                                       data:@{
-                                           @"latlng" : [[CLLocation alloc] initWithLatitude:48.8567
-                                                                                  longitude:2.3508]
-                                       }];
+            recordWithType:@"city"
+                  recordID:@"london"
+                      data:@{
+                          @"latlng" :
+                              [[CLLocation alloc] initWithLatitude:51.507222 longitude:-0.1275]
+                      }];
+        SKYRecord *city4 = [SKYRecord
+            recordWithType:@"city"
+                  recordID:@"paris"
+                      data:@{
+                          @"latlng" :
+                              [[CLLocation alloc] initWithLatitude:48.8567 longitude:2.3508]
+                      }];
         CLLocation *relativeLocation =
             [[CLLocation alloc] initWithLatitude:48.8567 longitude:2.3508];
 

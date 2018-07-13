@@ -21,6 +21,9 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYRecordID)
 
     describe(@"SKYRecordID", ^{
@@ -41,3 +44,5 @@ SpecBegin(SKYRecordID)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

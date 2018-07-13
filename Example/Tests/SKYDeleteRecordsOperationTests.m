@@ -36,9 +36,10 @@ SpecBegin(SKYDeleteRecordsOperation)
         });
 
         it(@"single record", ^{
-            SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
+            NSString *recordID = @"book1";
             SKYDeleteRecordsOperation *operation =
-                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID ]];
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book"
+                                                 recordIDsToDelete:@[ recordID ]];
             operation.database = database;
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -46,15 +47,18 @@ SpecBegin(SKYDeleteRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
             expect(request.accessToken).to.equal(container.auth.currentAccessToken);
-            expect(request.payload[@"ids"]).to.equal(@[ recordID.canonicalString ]);
+            expect(request.payload[@"ids"]).to.equal(@[ @"book/book1" ]);
+            expect(request.payload[@"recordType"]).to.equal(@"book");
+            expect(request.payload[@"recordIDs"]).to.equal(@[ recordID ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         });
 
         it(@"multiple record", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            NSString *recordID1 = @"book1";
+            NSString *recordID2 = @"book2";
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book"
+                                                 recordIDsToDelete:@[ recordID1, recordID2 ]];
             operation.database = database;
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -62,15 +66,15 @@ SpecBegin(SKYDeleteRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
             expect(request.accessToken).to.equal(container.auth.currentAccessToken);
-            expect(request.payload[@"ids"]).to.equal(@[
-                recordID1.canonicalString, recordID2.canonicalString
-            ]);
+            expect(request.payload[@"ids"]).to.equal(@[ @"book/book1", @"book/book2" ]);
+            expect(request.payload[@"recordType"]).to.equal(@"book");
+            expect(request.payload[@"recordIDs"]).to.equal(@[ recordID1, recordID2 ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         });
 
         it(@"set atomic", ^{
             SKYDeleteRecordsOperation *operation =
-                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[]];
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book" recordIDsToDelete:@[]];
             operation.atomic = YES;
 
             operation.database = database;
@@ -82,10 +86,11 @@ SpecBegin(SKYDeleteRecordsOperation)
         });
 
         it(@"make request", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            NSString *recordID1 = @"book1";
+            NSString *recordID2 = @"book2";
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book"
+                                                 recordIDsToDelete:@[ recordID1, recordID2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -129,10 +134,11 @@ SpecBegin(SKYDeleteRecordsOperation)
         });
 
         it(@"pass error", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            NSString *recordID1 = @"book1";
+            NSString *recordID2 = @"book2";
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book"
+                                                 recordIDsToDelete:@[ recordID1, recordID2 ]];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -156,10 +162,11 @@ SpecBegin(SKYDeleteRecordsOperation)
         });
 
         it(@"per block", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            NSString *recordID1 = @"book1";
+            NSString *recordID2 = @"book2";
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordType:@"book"
+                                                 recordIDsToDelete:@[ recordID1, recordID2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -186,7 +193,7 @@ SpecBegin(SKYDeleteRecordsOperation)
 
             waitUntil(^(DoneCallback done) {
                 NSMutableArray *remaingRecordIDs = [@[ recordID1, recordID2 ] mutableCopy];
-                operation.perRecordCompletionBlock = ^(SKYRecordID *recordID, NSError *error) {
+                operation.perRecordCompletionBlock = ^(NSString *recordID, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [remaingRecordIDs removeObject:recordID];
                     });

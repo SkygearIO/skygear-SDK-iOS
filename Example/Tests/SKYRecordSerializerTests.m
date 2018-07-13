@@ -34,9 +34,7 @@ SpecBegin(SKYRecordSerializer)
 
         beforeEach(^{
             serializer = [SKYRecordSerializer serializer];
-            record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            record = [[SKYRecord alloc] initWithType:@"book" recordID:@"book1" data:nil];
 
         });
 
@@ -88,9 +86,7 @@ SpecBegin(SKYRecordSerializer)
 
         it(@"serialize reference", ^{
             [record
-                setObject:[[SKYReference alloc]
-                              initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"author"
-                                                                                  name:@"author1"]]
+                setObject:[[SKYReference alloc] initWithRecordType:@"author" recordID:@"author1"]
                    forKey:@"author"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             NSDictionary *authorRef = dictionary[@"author"];

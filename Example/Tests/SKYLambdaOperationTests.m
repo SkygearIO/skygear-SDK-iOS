@@ -17,6 +17,7 @@
 //  limitations under the License.
 //
 
+#import "SKYRecord_Private.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
@@ -71,8 +72,8 @@ SpecBegin(SKYLambdaOperation)
                       verticalAccuracy:0
                              timestamp:[NSDate dateWithTimeIntervalSince1970:0]],
                 @"record" :
-                    [[SKYRecord alloc] initWithRecordType:@"note"
-                                                     name:@"AA0954F8-0481-456F-A347-41C55D47A301"]
+                    [[SKYRecord alloc] initWithType:@"note"
+                                           recordID:@"AA0954F8-0481-456F-A347-41C55D47A301"]
             };
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
@@ -135,8 +136,8 @@ SpecBegin(SKYLambdaOperation)
                         expect(result[@"message"]).to.equal(@"hello bob");
                         expect(((CLLocation *)result[@"location"]).coordinate)
                             .to.equal(CLLocationCoordinate2DMake(1, 2));
-                        expect(((SKYRecord *)result[@"record"]).recordID.canonicalString)
-                            .to.equal(@"note/AA0954F8-0481-456F-A347-41C55D47A301");
+                        expect(((SKYRecord *)result[@"record"]).recordID)
+                            .to.equal(@"AA0954F8-0481-456F-A347-41C55D47A301");
                         done();
                     });
                 };

@@ -47,7 +47,7 @@ SpecBegin(SKYRecordDeserializer)
             NSDictionary *data = [basicPayload copy];
             SKYRecord *record = [deserializer recordWithDictionary:data];
             expect([record class]).to.beSubclassOf([SKYRecord class]);
-            expect(record.recordID.recordName).to.equal(@"book1");
+            expect(record.recordID).to.equal(@"book1");
             expect(record.recordType).to.equal(@"book");
         });
 
@@ -141,8 +141,8 @@ SpecBegin(SKYRecordDeserializer)
             SKYRecord *record = [deserializer recordWithDictionary:data];
             SKYReference *authorRef = record[@"author"];
             expect([authorRef class]).to.beSubclassOf([SKYReference class]);
-            expect(authorRef.recordID.recordName).to.equal(@"author1");
-            expect(authorRef.recordID.recordType).to.equal(@"author");
+            expect(authorRef.recordID).to.equal(@"author1");
+            expect(authorRef.recordType).to.equal(@"author");
         });
 
         it(@"deserialize date in RFC3339Nano", ^{
