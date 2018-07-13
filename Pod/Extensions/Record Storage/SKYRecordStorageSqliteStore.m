@@ -26,6 +26,10 @@
 #import "SKYRecordSerializer.h"
 #import "SKYRecordStorageSqliteStore.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordStorageSqliteStore {
     NSString *_path;
     FMDatabase *_db;
@@ -272,13 +276,13 @@
 
 - (void)saveRecord:(SKYRecord *)record
 {
-    NSString *recordType = record.recordID.recordType;
+    NSString *recordType = record.recordType;
     [self checkTableWithRecordType:recordType autoCreate:YES];
 
     [self beginTransactionIfNotAlready];
 
-    [self _deleteAllRowsWithRecordID:record.recordID localOnly:YES error:nil];
-    [self _createOrUpdateRowWithRecordID:record.recordID
+    [self _deleteAllRowsWithRecordID:record.deprecatedID localOnly:YES error:nil];
+    [self _createOrUpdateRowWithRecordID:record.deprecatedID
                                   record:record
                                  deleted:NO
                                    local:NO
@@ -287,12 +291,12 @@
 
 - (void)saveRecordLocally:(SKYRecord *)record
 {
-    NSString *recordType = record.recordID.recordType;
+    NSString *recordType = record.recordType;
     [self checkTableWithRecordType:recordType autoCreate:YES];
 
     [self beginTransactionIfNotAlready];
 
-    [self _createOrUpdateRowWithRecordID:record.recordID
+    [self _createOrUpdateRowWithRecordID:record.deprecatedID
                                   record:record
                                  deleted:NO
                                    local:YES
@@ -301,7 +305,7 @@
 
 - (void)deleteRecord:(SKYRecord *)record
 {
-    [self deleteRecordWithRecordID:record.recordID];
+    [self deleteRecordWithRecordID:record.deprecatedID];
 }
 
 - (void)deleteRecordWithRecordID:(SKYRecordID *)recordID
@@ -317,7 +321,7 @@
 
 - (void)deleteRecordLocally:(SKYRecord *)record
 {
-    [self deleteRecordLocallyWithRecordID:record.recordID];
+    [self deleteRecordLocallyWithRecordID:record.deprecatedID];
 }
 
 - (void)deleteRecordLocallyWithRecordID:(SKYRecordID *)recordID
@@ -641,3 +645,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

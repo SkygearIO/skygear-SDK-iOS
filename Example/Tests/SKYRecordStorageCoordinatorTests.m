@@ -23,6 +23,9 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYRecordStorageCoordinator)
 
     describe(@"SKYRecordStorageCoordinator", ^{
@@ -67,3 +70,5 @@ SpecBegin(SKYRecordStorageCoordinator)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

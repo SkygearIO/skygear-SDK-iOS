@@ -44,13 +44,17 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 @end
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordStorage {
-    NSMapTable *_records;
+    NSMapTable<SKYRecordID *, SKYRecord *> *_records;
     SKYRecordResolveMethod _defaultResolveMethod;
-    NSMutableDictionary *_completionBlocks;
+    NSMutableDictionary<SKYRecordID *, id> *_completionBlocks;
     BOOL _updatingForChanges;
-    NSMutableArray *_savedRecordIDs;
-    NSMutableArray *_deletedRecordIDs;
+    NSMutableArray<SKYRecordID *> *_savedRecordIDs;
+    NSMutableArray<SKYRecordID *> *_deletedRecordIDs;
 }
 
 - (instancetype)initWithBackingStore:(id<SKYRecordStorageBackingStore>)backingStore
@@ -186,7 +190,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
         [record setOwnerUserRecordID:record.lastModifiedUserRecordID];
     }
 
-    [self _setCacheRecord:record recordID:record.recordID];
+    [self _setCacheRecord:record recordID:record.deprecatedID];
     [self _appendChange:change record:record completion:handler];
 }
 
@@ -213,7 +217,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                                                         resolveMethod:resolution
                                                      attributesToSave:nil];
 
-    [self _setCacheRecord:nil recordID:record.recordID];
+    [self _setCacheRecord:nil recordID:record.deprecatedID];
     [self _appendChange:change record:record completion:handler];
 }
 
@@ -283,7 +287,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
                             sortDescriptors:sortDescriptors
                                  usingBlock:^(SKYRecord *record, BOOL *stop) {
                                      SKYRecord *result =
-                                         [self _getCacheRecordWithRecordID:record.recordID
+                                         [self _getCacheRecordWithRecordID:record.deprecatedID
                                                           orSetCacheRecord:record];
                                      block(result, stop);
                                  }];
@@ -318,7 +322,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 - (NSDictionary *)attributesToSaveWithRecord:(SKYRecord *)record
 {
-    SKYRecord *oldRecord = [_backingStore fetchRecordWithRecordID:record.recordID];
+    SKYRecord *oldRecord = [_backingStore fetchRecordWithRecordID:record.deprecatedID];
     NSDictionary *oldDictionary = [oldRecord dictionary];
     NSMutableDictionary *difference = [NSMutableDictionary dictionary];
     [record.dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -347,7 +351,7 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 
 - (SKYRecordChange *)changeWithRecord:(SKYRecord *)record
 {
-    return [_backingStore changeWithRecordID:record.recordID];
+    return [_backingStore changeWithRecordID:record.deprecatedID];
 }
 
 - (void)_appendChange:(SKYRecordChange *)change record:(SKYRecord *)record completion:(id)handler
@@ -433,16 +437,16 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
 - (void)updateByReplacingWithRecords:(NSArray *)records
 {
     NSAssert([records isKindOfClass:[NSArray class]], @"records must be array.");
-    NSMutableArray *oldRecordIDs = [NSMutableArray array];
+    NSMutableArray<SKYRecordID *> *oldRecordIDs = [NSMutableArray array];
     [_backingStore enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
-        [oldRecordIDs addObject:record.recordID];
+        [oldRecordIDs addObject:record.deprecatedID];
     }];
 
     [records enumerateObjectsUsingBlock:^(SKYRecord *obj, NSUInteger idx, BOOL *stop) {
         [self->_backingStore saveRecord:obj];
-        [self->_savedRecordIDs addObject:obj.recordID];
-        [self->_records setObject:obj forKey:obj.recordID];
-        [oldRecordIDs removeObject:obj.recordID];
+        [self->_savedRecordIDs addObject:obj.deprecatedID];
+        [self->_records setObject:obj forKey:obj.deprecatedID];
+        [oldRecordIDs removeObject:obj.deprecatedID];
     }];
 
     [oldRecordIDs enumerateObjectsUsingBlock:^(SKYRecordID *obj, NSUInteger idx, BOOL *stop) {
@@ -461,12 +465,12 @@ NSString *const SKYRecordStorageDeletedRecordIDsKey = @"deletedRecordIDs";
     } else {
         if (change.action == SKYRecordChangeSave) {
             [_backingStore saveRecord:remoteRecord];
-            [_savedRecordIDs addObject:remoteRecord.recordID];
+            [_savedRecordIDs addObject:remoteRecord.deprecatedID];
         } else if (change.action == SKYRecordChangeDelete) {
             SKYRecord *recordToDelete = [_backingStore fetchRecordWithRecordID:change.recordID];
             if (recordToDelete) {
                 [_backingStore deleteRecord:recordToDelete];
-                [_deletedRecordIDs addObject:recordToDelete.recordID];
+                [_deletedRecordIDs addObject:recordToDelete.deprecatedID];
             }
         }
         void (^block)(void) = [_completionBlocks objectForKey:change.recordID];

@@ -49,6 +49,10 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
                                       base64urlEncodeUInteger(query.hash)];
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordStorageCoordinator {
     NSMutableArray *_registeredRecordStorages;
     NSMapTable *_cachedStorages;
@@ -309,3 +313,5 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 }
 
 @end
+
+#pragma GCC diagnostic pop

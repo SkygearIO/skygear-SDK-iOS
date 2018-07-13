@@ -23,6 +23,10 @@
 #import "SKYRecordID.h"
 #import "SKYRecordStorageMemoryStore_Private.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordStorageMemoryStore
 
 - (instancetype)init
@@ -54,14 +58,14 @@
 
 - (void)saveRecord:(SKYRecord *)record
 {
-    [_records setObject:[record copy] forKey:record.recordID];
-    [_localRecords removeObjectForKey:record.recordID];
+    [_records setObject:[record copy] forKey:record.deprecatedID];
+    [_localRecords removeObjectForKey:record.deprecatedID];
 }
 
 - (void)deleteRecord:(SKYRecord *)record
 {
-    [_records removeObjectForKey:record.recordID];
-    [_localRecords removeObjectForKey:record.recordID];
+    [_records removeObjectForKey:record.deprecatedID];
+    [_localRecords removeObjectForKey:record.deprecatedID];
 }
 
 - (void)deleteRecordWithRecordID:(SKYRecordID *)recordID
@@ -72,12 +76,12 @@
 
 - (void)saveRecordLocally:(SKYRecord *)record
 {
-    [_localRecords setObject:record forKey:record.recordID];
+    [_localRecords setObject:record forKey:record.deprecatedID];
 }
 
 - (void)deleteRecordLocally:(SKYRecord *)record
 {
-    [_localRecords setObject:[NSNull null] forKey:record.recordID];
+    [_localRecords setObject:[NSNull null] forKey:record.deprecatedID];
 }
 
 - (void)deleteRecordLocallyWithRecordID:(SKYRecordID *)recordID
@@ -111,8 +115,8 @@
 {
     NSMutableArray *wantedRecordIDs = [[NSMutableArray alloc] init];
     [self enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
-        if ([record.recordID.recordType isEqualToString:recordType]) {
-            [wantedRecordIDs addObject:record.recordID];
+        if ([record.recordType isEqualToString:recordType]) {
+            [wantedRecordIDs addObject:record.deprecatedID];
         }
     }];
     return wantedRecordIDs;
@@ -222,3 +226,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

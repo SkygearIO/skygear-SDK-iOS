@@ -22,6 +22,9 @@
 #import <Foundation/Foundation.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYRecordSynchronizer)
 
     describe(@"SKYRecordSynchronizer for query", ^{
@@ -41,7 +44,7 @@ SpecBegin(SKYRecordSynchronizer)
             id<SKYRecordStorageBackingStore> backingStore =
                 [[SKYRecordStorageMemoryStore alloc] init];
             storage = OCMPartialMock([[SKYRecordStorage alloc] initWithBackingStore:backingStore]);
-            existingRecord = [[SKYRecord alloc] initWithRecordType:@"book"];
+            existingRecord = [[SKYRecord alloc] initWithType:@"book"];
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ existingRecord ]];
             [storage finishUpdating];
@@ -57,7 +60,7 @@ SpecBegin(SKYRecordSynchronizer)
         });
 
         it(@"fetch updates", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             OCMStub([database executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
                                   expect([obj class]).to.beSubclassOf([SKYQueryOperation class]);
 
@@ -117,20 +120,21 @@ SpecBegin(SKYRecordSynchronizer)
         });
 
         it(@"apply change for delete", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
-            OCMStub([database
-                executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    expect([obj class]).to.beSubclassOf([SKYDeleteRecordsOperation class]);
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
+            OCMStub([database executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
+                                  expect([obj class])
+                                      .to.beSubclassOf([SKYDeprecatedDeleteRecordsOperation class]);
 
-                    SKYDeleteRecordsOperation *op = obj;
-                    if (op.perRecordCompletionBlock) {
-                        op.perRecordCompletionBlock(record.recordID, nil);
-                    }
-                    if (op.deleteRecordsCompletionBlock) {
-                        op.deleteRecordsCompletionBlock(@[ record.recordID ], nil);
-                    }
-                    return YES;
-                }]]);
+                                  SKYDeprecatedDeleteRecordsOperation *op = obj;
+                                  if (op.perRecordCompletionBlock) {
+                                      op.perRecordCompletionBlock(record.deprecatedID, nil);
+                                  }
+                                  if (op.deleteRecordsCompletionBlock) {
+                                      op.deleteRecordsCompletionBlock(@[ record.deprecatedID ],
+                                                                      nil);
+                                  }
+                                  return YES;
+                              }]]);
 
             [storage deleteRecord:existingRecord];
             SKYRecordChange *change = [[storage pendingChanges] firstObject];
@@ -148,3 +152,5 @@ SpecBegin(SKYRecordSynchronizer)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

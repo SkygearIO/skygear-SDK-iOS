@@ -22,6 +22,10 @@
 #import "SKYRecordSerializer.h"
 #import "SKYRecordStorageMemoryStore_Private.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordStorageFileBackedMemoryStore {
     NSString *_path;
 }
@@ -104,3 +108,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

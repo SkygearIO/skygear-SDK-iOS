@@ -18,7 +18,7 @@
 //
 
 #import "SKYRecordSynchronizer.h"
-#import "SKYDeleteRecordsOperation.h"
+#import "SKYDeprecatedDeleteRecordsOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYRecordChange.h"
@@ -184,8 +184,8 @@
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == SKYRecordChangeDelete) {
-            SKYDeleteRecordsOperation *op =
-                [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[ change.recordID ]];
+            SKYDeprecatedDeleteRecordsOperation *op = [[SKYDeprecatedDeleteRecordsOperation alloc]
+                initWithRecordIDsToDelete:@[ change.recordID ]];
             op.perRecordCompletionBlock = ^(SKYRecordID *recordID, NSError *error) {
                 if (!storage.updating) {
                     [storage beginUpdatingForChanges:YES];

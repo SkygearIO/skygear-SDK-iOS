@@ -45,10 +45,11 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
  so that <SKYRecordStorage> is associated with the same persistent
  storage on device.
  */
-@interface SKYRecordStorageCoordinator : NSObject
+__attribute((deprecated)) @interface SKYRecordStorageCoordinator
+    : NSObject
 
-/// Undocumented
-@property (nonatomic, readonly) SKYContainer *container;
+      /// Undocumented
+      @property(nonatomic, readonly) SKYContainer *container;
 
 /**
  Returns an array of registered <SKYRecordStorage>.
@@ -127,4 +128,4 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END
