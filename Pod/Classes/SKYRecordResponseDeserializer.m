@@ -59,10 +59,8 @@
                                                      message:@"`_id` not in correct format."];
                 block(nil, nil, nil, error);
             }
-            SKYRecordID *recordIDobj = [[SKYRecordID alloc]
-                initWithCanonicalString:dictionary[SKYRecordSerializationRecordIDKey]];
-            recordType = recordIDobj.recordType;
-            recordID = recordIDobj.recordName;
+            recordType = SKYRecordTypeFromConcatenatedID(deprecatedID);
+            recordID = SKYRecordIDFromConcatenatedID(deprecatedID);
         }
     }
 

@@ -21,13 +21,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
+// clang-format off
+
 /// Undocumented
-@interface SKYRecordID : NSObject <NSCopying, NSSecureCoding>
+__attribute__((deprecated)) @interface SKYRecordID : NSObject<NSCopying, NSSecureCoding>
 
 /**
  Instantiates an instance of SKYRecordID with a random record name.
  */
 - (instancetype)init NS_UNAVAILABLE;
+
+// clang-format on
 
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)type;
@@ -56,4 +61,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

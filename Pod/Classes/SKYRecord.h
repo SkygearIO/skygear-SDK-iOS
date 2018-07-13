@@ -24,51 +24,147 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *SKYRecordConcatenatedID(NSString *recordType, NSString *recordID);
+extern NSString *SKYRecordTypeFromConcatenatedID(NSString *concatenatedID);
+extern NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID);
+
 /// Undocumented
 extern NSString *const SKYRecordTypeUserRecord;
 
-/// Undocumented
+/**
+ * SKYRecord represents a collection of key-value data that can be fetched,
+ * saved, queried and deleted from the database.
+ *
+ * Record must have a record type, which is used by the database to group
+ * different kinds of records. Each kind of record has its own set of fields
+ * with matching data type. For example, a `book` record type will have a
+ * `title` field and a `year` field, while an `author` record type will have a
+ * `name` and `picture` field.
+ *
+ * Record is identified with a record ID, which must be unique among all
+ * records sharing the same type. If you creates an instance with the same
+ * record ID, the existing record with the same record ID will be overwritten
+ * when saving.
+ *
+ * You may use the convenient methods provided by SKYDatabase to operates on
+ * a record.
+ */
 @interface SKYRecord : NSObject <NSCopying, NSCoding>
 
-/// Undocumented
-+ (instancetype)recordWithRecordType:(NSString *)recordType;
-/// Undocumented
-+ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName;
-/// Undocumented
-+ (instancetype)recordWithRecordType:(NSString *)recordType
-                                name:(NSString *)recordName
-                                data:(NSDictionary<NSString *, id> *_Nullable)data;
-/// Undocumented
-+ (instancetype)recordWithRecordID:(SKYRecordID *)recordId
-                              data:(NSDictionary<NSString *, id> *_Nullable)data;
-
-/// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
 /**
- Instantiates an instance of <SKYRecord> with the specified record type with a randomly generated
- <SKYRecordID>.
-
- @param recordType Record type of the record.
- @return An instance of SKYRecord.
+ * This method is deprecated.
  */
-- (instancetype)initWithRecordType:(NSString *)recordType;
-/// Undocumented
-- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
-/// Undocumented
++ (instancetype)recordWithRecordType:(NSString *)recordType __attribute__((deprecated));
+
+/**
+ * Creates an instance of record with the specified type.
+ *
+ * @param recordType the record type
+ * @return an instance of SKYRecord
+ */
++ (instancetype)recordWithType:(NSString *)recordType;
+
+/**
+ * This method is deprecated.
+ */
++ (instancetype)recordWithRecordType:(NSString *)recordType
+                                name:(NSString *_Nullable)recordName __attribute__((deprecated));
+
+/**
+ * Creates an instance of record with the specified type and record ID.
+ *
+ * @param recordType the record type
+ * @param recordID the record ID
+ * @return an instance of SKYRecord
+ */
++ (instancetype)recordWithType:(NSString *)recordType recordID:(NSString *_Nullable)recordID;
+
+/**
+ * This method is deprecated.
+ */
++ (instancetype)recordWithRecordType:(NSString *)recordType
+                                name:(NSString *_Nullable)recordName
+                                data:(NSDictionary<NSString *, id> *_Nullable)data
+    __attribute__((deprecated));
+
+/**
+ * Creates an instance of record with the specified type and record ID and
+ * optional key-value data.
+ *
+ * @param recordType the record type
+ * @param recordID the record ID
+ * @param data the record data
+ * @return an instance of SKYRecord
+ */
++ (instancetype)recordWithType:(NSString *)recordType
+                      recordID:(NSString *_Nullable)recordID
+                          data:(NSDictionary<NSString *, id> *_Nullable)data;
+
+/**
+ * This method is deprecated.
+ */
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordId
+                              data:(NSDictionary<NSString *, id> *_Nullable)data
+    __attribute__((deprecated));
+
+/**
+ * This method is deprecated.
+ */
+- (instancetype)initWithRecordType:(NSString *)recordType __attribute__((deprecated));
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/**
+ * Creates an instance of record with the specified type.
+ *
+ * @param recordType the record type
+ * @return an instance of SKYRecord
+ */
+- (instancetype)initWithType:(NSString *)recordType;
+
+/**
+ * This method is deprecated.
+ */
 - (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId __deprecated;
-/// Undocumented
+                              name:(NSString *_Nullable)recordName __attribute__((deprecated));
+
+/**
+ * Creates an instance of record with the specified type and record ID.
+ *
+ * @param recordType the record type
+ * @param recordID the record ID
+ * @return an instance of SKYRecord
+ */
+- (instancetype)initWithType:(NSString *)recordType recordID:(NSString *_Nullable)recordID;
+
+/**
+ * This method is deprecated.
+ */
 - (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary<NSString *, id> *_Nullable)data __deprecated;
-/// Undocumented
-- (instancetype)initWithRecordType:(NSString *)recordType
-                              name:(NSString *)recordName
-                              data:(NSDictionary<NSString *, id> *_Nullable)data;
-/// Undocumented
-- (instancetype)initWithRecordID:(SKYRecordID *)recordId
-                            data:(NSDictionary<NSString *, id> *_Nullable)data
+                              name:(NSString *_Nullable)recordName
+                              data:(NSDictionary<NSString *, id> *_Nullable)data
+    __attribute__((deprecated));
+
+/**
+ * Creates an instance of record with the specified type and record ID and
+ * optional key-value data.
+ *
+ * @param recordType the record type
+ * @param recordID the record ID
+ * @param data the record data
+ * @return an instance of SKYRecord
+ */
+- (instancetype)initWithType:(NSString *)recordType
+                    recordID:(NSString *_Nullable)recordID
+                        data:(NSDictionary<NSString *, id> *_Nullable)data
     NS_DESIGNATED_INITIALIZER;
+
+/**
+ * This method is deprecated.
+ */
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+                            data:(NSDictionary<NSString *, id> *_Nullable)data
+    __attribute__((deprecated));
 
 /// Undocumented
 - (id _Nullable)objectForKey:(id)key;
@@ -83,10 +179,32 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 - (SKYRecord *_Nullable)referencedRecordForKey:(NSString *)key;
 
-/// Undocumented
-@property (nonatomic, readonly, copy) SKYRecordID *recordID;
-/// Undocumented
+/**
+ Returns the record type of the record.
+
+ Record type is used to identify different types of records. Records with the same record type
+ should share the same set of fields with matching data type. If your application need a new record
+ that has different set of fields, you should use a different record type.
+ */
 @property (nonatomic, readonly, copy) NSString *recordType;
+/**
+ Returns the record ID of the record.
+
+ The record ID can be used by application to identify a record by using a string. The value of the
+ ID should be unique among all records with the same record type. Saving a record with the same
+ record ID will result in the same record in the database being overwritten.
+ */
+@property (nonatomic, readonly, copy) NSString *recordID;
+
+/**
+ Returns deprecated SKYRecordID of this record.
+
+ This property aims to provide a quickfix for older applications which use SKYRecordID
+ to represent record identifier. This property has the same value as the `recordID`
+ property in previous versions.
+ */
+@property (nonatomic, readonly, copy) SKYRecordID *deprecatedID __attribute((deprecated));
+
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *_Nullable ownerUserRecordID;
 /// Undocumented

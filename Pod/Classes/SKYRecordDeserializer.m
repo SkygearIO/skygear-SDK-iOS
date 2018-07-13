@@ -49,16 +49,15 @@
         }
     }];
 
-    SKYRecordID *recordID;
-    if (obj[SKYRecordSerializationRecordRecordTypeKey]) {
-        recordID =
-            [[SKYRecordID alloc] initWithRecordType:obj[SKYRecordSerializationRecordRecordTypeKey]
-                                               name:obj[SKYRecordSerializationRecordRecordIDKey]];
-    } else if (obj[SKYRecordSerializationRecordIDKey]) {
-        recordID =
-            [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+    NSString *recordType = obj[SKYRecordSerializationRecordRecordTypeKey];
+    NSString *recordID = obj[SKYRecordSerializationRecordRecordIDKey];
+    if (!recordType) {
+        NSString *deprecatedID = obj[SKYRecordSerializationRecordIDKey];
+        recordType = SKYRecordTypeFromConcatenatedID(deprecatedID);
+        recordID = SKYRecordIDFromConcatenatedID(deprecatedID);
     }
-    SKYRecord *record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
+    SKYRecord *record =
+        [[SKYRecord alloc] initWithType:recordType recordID:recordID data:recordData];
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];
     if (ownerID.length) {
@@ -109,9 +108,10 @@
             [record.transient setObject:deserializedObject forKey:key];
         }];
     } else if (transient != nil) {
-        NSLog(@"Ignored transient field when deserializing record %@ because of unexpected object "
+        NSLog(@"Ignored transient field when deserializing record %@ (type: %@) because of "
+              @"unexpected object "
               @"%@.",
-              recordID.canonicalString, NSStringFromClass([transient class]));
+              recordID, recordType, NSStringFromClass([transient class]));
     }
 
     return record;

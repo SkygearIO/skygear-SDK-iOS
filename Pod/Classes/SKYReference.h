@@ -24,44 +24,124 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Undocumented
-typedef enum SKYReferenceAction : NSInteger {
+__attribute__((deprecated)) typedef enum SKYReferenceAction : NSInteger {
     SKYReferenceActionNone = 0,
     SKYReferenceActionDeleteSelf = 1,
 } SKYReferenceAction;
 
-/// Undocumented
+/**
+ * SKYReference represents the value of referencing another record.
+ *
+ * While it is not possible to put a record in another record, it is possible
+ * to put a reference to a record in another record. Doing so allows
+ * the two references to be modified independently from each other. When
+ * querying data from database, it is possible to include data of a referenced
+ * record together in a single request.
+ */
 @interface SKYReference : NSObject <NSCopying, NSCoding>
 
-/// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
-/// Undocumented
+
+/**
+ * Creates an instance of reference with the specified record.
+ *
+ * @note The specified record should be saved before this record is saved.
+ *
+ * @param record the record to set reference to
+ * @return a record reference
+ */
 - (instancetype)initWithRecord:(SKYRecord *)record;
-/// Undocumented
-- (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
-/// Undocumented
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID;
-/// Undocumented
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
-/// Undocumented
+/**
+ * This method is deprecated.
+ */
+- (instancetype)initWithRecord:(SKYRecord *)record
+                        action:(SKYReferenceAction)action __attribute__((deprecated));
+
+/**
+ * Creates an instance of reference with record type and record ID.
+ *
+ * @param recordType record type
+ * @param recordID record ID
+ * @return a record reference
+ */
+- (instancetype)initWithRecordType:(NSString *)recordType
+                          recordID:(NSString *)recordID NS_DESIGNATED_INITIALIZER;
+
+/**
+ * This method is deprecated.
+ */
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID __attribute__((deprecated));
+
+/**
+ * This method is deprecated.
+ */
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID
+                          action:(SKYReferenceAction)action __attribute__((deprecated));
+
+/**
+ * Creates an instance of reference with the specified record.
+ *
+ * @note The specified record should be saved before this record is saved.
+ *
+ * @param record the record to set reference to
+ * @return a record reference
+ */
 + (instancetype)referenceWithRecord:(SKYRecord *)record;
-/// Undocumented
-+ (instancetype)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action;
-/// Undocumented
-+ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID;
-/// Undocumented
-+ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action;
 
-/// Undocumented
+/**
+ * This method is deprecated.
+ */
++ (instancetype)referenceWithRecord:(SKYRecord *)record
+                             action:(SKYReferenceAction)action __attribute__((deprecated));
+
+/**
+ * Creates an instance of reference with record type and record ID.
+ *
+ * @param recordType record type
+ * @param recordID record ID
+ * @return a record reference
+ */
++ (instancetype)referenceWithRecordType:(NSString *)recordType recordID:(NSString *)recordID;
+
+/**
+ * This method is deprecated.
+ */
++ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID __attribute__((deprecated));
+
+/**
+ * This method is deprecated.
+ */
++ (instancetype)referenceWithRecordID:(SKYRecordID *)recordID
+                               action:(SKYReferenceAction)action __attribute__((deprecated));
+
+/**
+ * Compares if two references are equal.
+ */
 - (BOOL)isEqualToReference:(SKYReference *_Nullable)reference;
 
-/// Undocumented
-@property (nonatomic, readonly, assign) SKYReferenceAction referenceAction;
-/// Undocumented
-@property (nonatomic, readonly, copy) SKYRecordID *recordID;
+/**
+ * This property is deprecated.
+ */
+@property (nonatomic, readonly, assign) SKYReferenceAction referenceAction
+    __attribute__((deprecated));
 
-/// Undocumented
+/**
+ * Gets the record type of the reference.
+ */
+@property (nonatomic, readonly, copy) NSString *recordType;
+
+/**
+ * Gets the record ID of the reference.
+ */
+@property (nonatomic, readonly, copy) NSString *recordID;
+
+/**
+ * Returns the record used to create this reference.
+ *
+ * If the reference is fetched from the database, this property
+ * will return null.
+ */
 @property (strong, nonatomic, readonly) SKYRecord *_Nullable record;
 
 @end

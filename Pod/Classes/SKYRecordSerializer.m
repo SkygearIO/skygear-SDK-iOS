@@ -40,10 +40,11 @@
         [payload setObject:[SKYDataSerialization serializeObject:obj] forKey:key];
     }];
 
-    payload[SKYRecordSerializationRecordIDKey] = record.recordID.canonicalString;
+    payload[SKYRecordSerializationRecordIDKey] =
+        SKYRecordConcatenatedID(record.recordType, record.recordID);
     payload[SKYRecordSerializationRecordTypeKey] = @"record";
-    payload[SKYRecordSerializationRecordRecordTypeKey] = record.recordID.recordType;
-    payload[SKYRecordSerializationRecordRecordIDKey] = record.recordID.recordName;
+    payload[SKYRecordSerializationRecordRecordTypeKey] = record.recordType;
+    payload[SKYRecordSerializationRecordRecordIDKey] = record.recordID;
 
     if (record.creationDate) {
         payload[SKYRecordSerializationRecordCreatedAtKey] =
