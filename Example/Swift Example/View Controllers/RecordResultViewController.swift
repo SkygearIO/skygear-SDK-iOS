@@ -51,7 +51,7 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
 
     // MARK: - Misc
 
-    func indexOfRecord(_ recordID: SKYRecordID) -> Int? {
+    func indexOfRecord(_ recordID: String) -> Int? {
         for (index, element) in self.records.enumerated() {
             if element.recordID.isEqual(recordID) {
                 return index
@@ -75,7 +75,7 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
         self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
-    func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID) {
+    func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: String) {
         guard let index = self.indexOfRecord(recordID) else {
             return
         }
@@ -100,7 +100,7 @@ class RecordResultViewController: UITableViewController, RecordViewControllerDel
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "record", for: indexPath)
-        cell.textLabel?.text = self.records[indexPath.row].recordID.recordName
+        cell.textLabel?.text = self.records[indexPath.row].recordID
         return cell
     }
 

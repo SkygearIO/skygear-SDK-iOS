@@ -22,7 +22,7 @@ import SKYKit
 
 protocol RecordViewControllerDelegate: class {
     func recordViewController(_ controller: RecordViewController, didSaveRecord record: SKYRecord)
-    func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: SKYRecordID)
+    func recordViewController(_ controller: RecordViewController, didDeleteRecordID recordID: String)
 }
 
 class RecordViewController: UITableViewController, RecordTypeViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -66,7 +66,8 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             }
 
             var metadata: [(String, AnyObject)] = []
-            metadata.append(("ID", record.recordID))
+            metadata.append(("Type", record.recordType as AnyObject))
+            metadata.append(("ID", record.recordID as AnyObject))
 
             if record.creatorUserRecordID != nil {
                 metadata.append(("Created by", record.creatorUserRecordID as AnyObject))
@@ -163,7 +164,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return
         }
 
-        SKYContainer.default().publicCloudDatabase.deleteRecord(with: record.recordID) { (recordID, error) in
+        SKYContainer.default().publicCloudDatabase.deleteRecord(withType: record.recordType, recordID: record.recordID) { (recordID, error) in
             guard error == nil else {
                 let alert = UIAlertController(title: "Unable to delete", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -210,7 +211,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
     }
 
     @IBAction func triggerDeleteRecord(_ sender: AnyObject) {
-        let alert = UIAlertController(title: "Delete Record", message: String(format: "Record %@ will be deleted", (record?.recordID.recordName)!), preferredStyle: .alert)
+        let alert = UIAlertController(title: "Delete Record", message: String(format: "Record %@ will be deleted", (record?.recordID)!), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (_) in
             self.deleteCurrentRecord()
         }))
@@ -260,7 +261,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
 
     func replaceCurrentRecordWithType(_ recordType: String) {
         let data = self.record?.dictionary
-        let record = SKYRecord(recordID: SKYRecordID(recordType: recordType), data: data)
+        let record = SKYRecord(type: recordType, recordID: nil, data: data)
         self.record = record
 
         self.tableView.reloadData()
@@ -432,8 +433,6 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return value
         } else if let value = attributeValue as? Date {
             return dateFormatter!.string(from: value)
-        } else if let value = attributeValue as? SKYRecordID {
-            return value.canonicalString
         } else {
             return attributeValue!.description
         }
