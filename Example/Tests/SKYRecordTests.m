@@ -31,21 +31,18 @@ SpecBegin(SKYRecord)
         });
 
         it(@"set attribute to nil", ^{
-            SKYRecord *record = [SKYRecord recordWithRecordType:@"book"
-                                                           name:@"HelloWorld"
-                                                           data:@{@"title" : @"Hello World"}];
+            SKYRecord *record =
+                [SKYRecord recordWithRecordType:@"book" name:@"HelloWorld" data:@{@"title" : @"Hello World"}];
             record[@"title"] = nil;
             expect(record[@"title"]).to.beNil();
         });
 
         it(@"set attribute to NSNull", ^{
-            SKYRecord *record = [SKYRecord recordWithRecordType:@"book"
-                                                           name:@"HelloWorld"
-                                                           data:@{@"title" : @"Hello World"}];
+            SKYRecord *record =
+                [SKYRecord recordWithRecordType:@"book" name:@"HelloWorld" data:@{@"title" : @"Hello World"}];
             record[@"title"] = [NSNull null];
             expect(record[@"title"]).to.beNil();
         });
-
     });
 
 SpecEnd

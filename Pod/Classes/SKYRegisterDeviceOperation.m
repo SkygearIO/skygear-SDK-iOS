@@ -68,14 +68,12 @@
 
     NSMutableString *token = [NSMutableString stringWithCapacity:2 * self.deviceToken.length];
 
-    [self.deviceToken
-        enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
-            const unsigned char *bytePtr = bytes + byteRange.location,
-                                *endPtr = bytePtr + byteRange.length;
-            for (; bytePtr < endPtr; ++bytePtr) {
-                [token appendFormat:@"%02x", *bytePtr];
-            }
-        }];
+    [self.deviceToken enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
+        const unsigned char *bytePtr = bytes + byteRange.location, *endPtr = bytePtr + byteRange.length;
+        for (; bytePtr < endPtr; ++bytePtr) {
+            [token appendFormat:@"%02x", *bytePtr];
+        }
+    }];
 
     return token;
 }
@@ -139,8 +137,7 @@
     NSString *deviceID = self.response[@"result"][@"id"];
     if (!deviceID.length) {
         if (error) {
-            *error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                              message:@"Response missing device id."];
+            *error = [self.errorCreator errorWithCode:SKYErrorInvalidData message:@"Response missing device id."];
         }
     }
 

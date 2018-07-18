@@ -28,8 +28,7 @@
     NSMutableDictionary *subscriptionsByID;
 }
 
-- (instancetype)initWithDeviceID:(NSString *)deviceID
-             subscriptionsToSave:(NSArray *)subscriptionsToSave
+- (instancetype)initWithDeviceID:(NSString *)deviceID subscriptionsToSave:(NSArray *)subscriptionsToSave
 {
     self = [super init];
     if (self) {
@@ -39,8 +38,7 @@
     return self;
 }
 
-+ (instancetype)operationWithDeviceID:(NSString *)deviceID
-                  subscriptionsToSave:(NSArray *)subscriptionsToSave
++ (instancetype)operationWithDeviceID:(NSString *)deviceID subscriptionsToSave:(NSArray *)subscriptionsToSave
 {
     return [[self alloc] initWithDeviceID:deviceID subscriptionsToSave:subscriptionsToSave];
 }
@@ -83,8 +81,7 @@
         SKYSubscription *subscription = nil;
         NSString *subscriptionID = dict[SKYSubscriptionSerializationSubscriptionIDKey];
         if (subscriptionID.length == 0) {
-            subscriptionID =
-                dict[@"_id"]; // this is for per item error, which has a different key for ID
+            subscriptionID = dict[@"_id"]; // this is for per item error, which has a different key for ID
         }
 
         if (subscriptionID) {
@@ -135,8 +132,7 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray error:&error];
     } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
 
     if (self.modifySubscriptionsCompletionBlock) {

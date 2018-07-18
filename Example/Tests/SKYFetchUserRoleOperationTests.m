@@ -35,9 +35,8 @@ SpecBegin(SKYFetchUserRoleOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
@@ -55,9 +54,10 @@ SpecBegin(SKYFetchUserRoleOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{
                         @"result" : @{
@@ -66,9 +66,7 @@ SpecBegin(SKYFetchUserRoleOperation)
                             @"user3" : @[],
                         },
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
             SKYFetchUserRoleOperation *operation =

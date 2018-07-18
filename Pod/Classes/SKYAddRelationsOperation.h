@@ -38,8 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param users An array of users to be related.
  */
-+ (instancetype)operationWithType:(NSString *)relationType
-                   usersToRelated:(NSArray<SKYRecord *> *)users;
++ (instancetype)operationWithType:(NSString *)relationType usersToRelated:(NSArray<SKYRecord *> *)users;
 
 /**
  Type of the relation, default provide `follow` and `friend`.

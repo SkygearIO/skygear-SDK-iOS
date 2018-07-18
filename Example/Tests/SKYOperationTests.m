@@ -30,8 +30,7 @@ SpecBegin(SKYOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make http request", ^{
@@ -41,16 +40,16 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{} options:0 error:nil];
 
-                    return
-                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:@{}];
+                    return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -73,9 +72,10 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
@@ -83,8 +83,8 @@ SpecBegin(SKYOperation)
                         [NSError errorWithDomain:NSURLErrorDomain
                                             code:-1001
                                         userInfo:@{
-                                            NSLocalizedDescriptionKey : NSLocalizedString(
-                                                @"The operation couldn’t be completed.", nil),
+                                            NSLocalizedDescriptionKey :
+                                                NSLocalizedString(@"The operation couldn’t be completed.", nil),
                                             NSURLErrorFailingURLStringErrorKey : request.URL
                                         }];
                     return [[OHHTTPStubsResponse alloc] initWithError:networkError];
@@ -115,9 +115,10 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
@@ -133,8 +134,7 @@ SpecBegin(SKYOperation)
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(blockOp.finished).to.equal(YES);
                         expect([blockOp.lastError class]).to.beSubclassOf([NSError class]);
-                        expect([(NSError *)[blockOp.lastError userInfo][NSUnderlyingErrorKey] code])
-                            .to.equal(3840);
+                        expect([(NSError *)[blockOp.lastError userInfo][NSUnderlyingErrorKey] code]).to.equal(3840);
                         done();
                     });
                 };
@@ -149,16 +149,16 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@[] options:0 error:nil];
 
-                    return
-                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:@{}];
+                    return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -182,9 +182,10 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
@@ -201,8 +202,7 @@ SpecBegin(SKYOperation)
                                                                    options:0
                                                                      error:nil];
 
-                    return
-                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:401 headers:@{}];
+                    return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:401 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -231,9 +231,10 @@ SpecBegin(SKYOperation)
             SKYRequest *request = [[SKYRequest alloc] initWithAction:action payload:payload];
             SKYOperation *operation = [[SKYOperation alloc] initWithRequest:request];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(operation.executing).to.equal(YES);
 
@@ -250,8 +251,7 @@ SpecBegin(SKYOperation)
                                                                    options:0
                                                                      error:nil];
 
-                    return
-                        [[OHHTTPStubsResponse alloc] initWithData:data statusCode:500 headers:@{}];
+                    return [[OHHTTPStubsResponse alloc] initWithData:data statusCode:500 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {

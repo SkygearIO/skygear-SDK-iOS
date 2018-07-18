@@ -28,14 +28,12 @@ SpecBegin(SKYChangePasswordOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make SKYRequest with old password and new password", ^{
             SKYChangePasswordOperation *operation =
-                [SKYChangePasswordOperation operationWithOldPassword:@"old_password"
-                                                       passwordToSet:@"new_password"];
+                [SKYChangePasswordOperation operationWithOldPassword:@"old_password" passwordToSet:@"new_password"];
 
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -51,12 +49,12 @@ SpecBegin(SKYChangePasswordOperation)
 
         it(@"make request", ^{
             SKYChangePasswordOperation *operation =
-                [SKYChangePasswordOperation operationWithOldPassword:@"old_password"
-                                                       passwordToSet:@"new_password"];
+                [SKYChangePasswordOperation operationWithOldPassword:@"old_password" passwordToSet:@"new_password"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *resp = @{
                         @"result" : @{
@@ -68,9 +66,7 @@ SpecBegin(SKYChangePasswordOperation)
                             },
                         },
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:resp
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:resp statusCode:200 headers:nil];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -91,12 +87,12 @@ SpecBegin(SKYChangePasswordOperation)
 
         it(@"pass error", ^{
             SKYChangePasswordOperation *operation =
-                [SKYChangePasswordOperation operationWithOldPassword:@"old_password"
-                                                       passwordToSet:@"new_password"];
+                [SKYChangePasswordOperation operationWithOldPassword:@"old_password" passwordToSet:@"new_password"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *resp = @{
                         @"error" : @{
@@ -105,9 +101,7 @@ SpecBegin(SKYChangePasswordOperation)
                             @"message" : @"Incorrect Old Password",
                         },
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:resp
-                                                            statusCode:400
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:resp statusCode:400 headers:nil];
                 }];
 
             waitUntil(^(DoneCallback done) {

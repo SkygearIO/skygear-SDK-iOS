@@ -216,15 +216,13 @@ double const SKYPubsubReconnectWait = 1.0;
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message
 {
     if (![message isKindOfClass:[NSString class]]) {
-        NSLog(@"%@ only support websocket message of class NSData. Got %@.",
-              NSStringFromClass([self class]), message);
+        NSLog(@"%@ only support websocket message of class NSData. Got %@.", NSStringFromClass([self class]), message);
         return;
     }
 
     NSData *objectData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
-    NSDictionary *jsonData =
-        [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
+    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
     if (jsonData && jsonData[@"channel"]) {
         void (^cb)(NSDictionary *message) = [_channelHandlers objectForKey:jsonData[@"channel"]];
         if (cb) {

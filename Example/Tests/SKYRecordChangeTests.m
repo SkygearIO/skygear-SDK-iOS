@@ -39,9 +39,7 @@ SpecBegin(SKYRecordChange)
             expect(change.recordID).to.equal(record.recordID);
             expect(change.action).to.equal(SKYRecordChangeSave);
             expect(change.resolveMethod).to.equal(SKYRecordResolveByUpdatingDelta);
-            expect(change.attributesToSave).to.equal(@{
-                @"title" : @[ [NSNull null], @"Hello World" ]
-            });
+            expect(change.attributesToSave).to.equal(@{@"title" : @[ [NSNull null], @"Hello World" ]});
         });
 
         it(@"set error", ^{

@@ -26,9 +26,7 @@
 @interface SKYUploadAssetOperation ()
 
 - (NSURLRequest *)makeRequest;
-- (void)handleCompletionWithData:(NSData *)data
-                        response:(NSURLResponse *)response
-                           error:(NSError *)error;
+- (void)handleCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)error;
 
 @property (nonatomic, readwrite) NSURLSession *session;
 @property (nonatomic, readwrite) NSURLSessionUploadTask *task;
@@ -46,40 +44,34 @@ SpecBegin(SKYDownloadAssetOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
 
-            asset = [SKYAsset
-                assetWithName:@"prefixed-boy.txt"
-                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                                  options:0]];
+            asset =
+                [SKYAsset assetWithName:@"prefixed-boy.txt"
+                                   data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]];
             asset.url = [NSURL URLWithString:@"http://skygear.test/files/prefixed-body.txt"];
         });
 
         it(@"downloads remote file with completion", ^{
-            SKYDownloadAssetOperation *operation =
-                [SKYDownloadAssetOperation operationWithAsset:asset];
+            SKYDownloadAssetOperation *operation = [SKYDownloadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSData *data =
-                        [[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                            options:0];
-                    return [OHHTTPStubsResponse responseWithData:data
-                                                      statusCode:200
-                                                         headers:@{@"Content-Length" : @"11"}];
+                    NSData *data = [[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0];
+                    return
+                        [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:@{@"Content-Length" : @"11"}];
                 }];
 
             waitUntil(^(DoneCallback done) {
                 operation.downloadAssetCompletionBlock =
                     ^(SKYAsset *returningAsset, NSData *data, NSError *operationError) {
                         expect(returningAsset).to.beIdenticalTo(asset);
-                        expect(data).to.equal([[NSData alloc]
-                            initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                options:0]);
+                        expect(data).to.equal(
+                            [[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]);
                         expect(operationError).to.beNil();
                         done();
                     };
@@ -89,30 +81,26 @@ SpecBegin(SKYDownloadAssetOperation)
         });
 
         it(@"downloads remote file with progress", ^{
-            SKYDownloadAssetOperation *operation =
-                [SKYDownloadAssetOperation operationWithAsset:asset];
+            SKYDownloadAssetOperation *operation = [SKYDownloadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSData *data =
-                        [[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                            options:0];
-                    return [OHHTTPStubsResponse responseWithData:data
-                                                      statusCode:200
-                                                         headers:@{@"Content-Length" : @"11"}];
+                    NSData *data = [[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0];
+                    return
+                        [OHHTTPStubsResponse responseWithData:data statusCode:200 headers:@{@"Content-Length" : @"11"}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.downloadAssetProgressBlock =
-                    ^(SKYAsset *returningAsset, double progress) {
-                        expect(returningAsset).to.beIdenticalTo(asset);
-                        expect(progress).beGreaterThanOrEqualTo(0);
-                        expect(progress).beLessThanOrEqualTo(1);
-                        done();
-                    };
+                operation.downloadAssetProgressBlock = ^(SKYAsset *returningAsset, double progress) {
+                    expect(returningAsset).to.beIdenticalTo(asset);
+                    expect(progress).beGreaterThanOrEqualTo(0);
+                    expect(progress).beLessThanOrEqualTo(1);
+                    done();
+                };
 
                 [operation start];
             });

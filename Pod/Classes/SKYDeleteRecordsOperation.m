@@ -65,8 +65,7 @@
 
     NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
         if (!recordID) {
             erroneousResponse = YES;
@@ -84,9 +83,8 @@
 
     if (erroneousResponse) {
         if (operationError) {
-            *operationError =
-                [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                         message:@"Missing `_id` or not in correct format."];
+            *operationError = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                                       message:@"Missing `_id` or not in correct format."];
         }
         return nil;
     }
@@ -100,18 +98,17 @@
     }
 
     NSMutableArray *deletedRecordIDs = [NSMutableArray array];
-    [self.recordIDs
-        enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
-            NSError *error = errorsByID[recordID];
+    [self.recordIDs enumerateObjectsUsingBlock:^(SKYRecordID *recordID, NSUInteger idx, BOOL *stop) {
+        NSError *error = errorsByID[recordID];
 
-            if (!error) {
-                [deletedRecordIDs addObject:recordID];
-            }
+        if (!error) {
+            [deletedRecordIDs addObject:recordID];
+        }
 
-            if (self.perRecordCompletionBlock) {
-                self.perRecordCompletionBlock(recordID, error);
-            }
-        }];
+        if (self.perRecordCompletionBlock) {
+            self.perRecordCompletionBlock(recordID, error);
+        }
+    }];
 
     return deletedRecordIDs;
 }
@@ -131,8 +128,7 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray error:&error];
     } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
 
     if (self.deleteRecordsCompletionBlock) {

@@ -23,7 +23,6 @@
 SpecBegin(NSURLRequestSKYRequest)
 
     describe(@"request", ^{
-
         it(@"make url request", ^{
             NSString *action = @"auth:login";
             NSDictionary *payload = @{@"email" : @"user@example.com"};
@@ -33,8 +32,7 @@ SpecBegin(NSURLRequestSKYRequest)
             NSURLRequest *urlRequest = [NSURLRequest requestWithSKYRequest:request];
             expect(urlRequest).notTo.beNil();
             expect([urlRequest.URL path]).to.endWith(@"auth/login");
-            expect([urlRequest valueForHTTPHeaderField:@"Content-Type"])
-                .to.equal(@"application/json");
+            expect([urlRequest valueForHTTPHeaderField:@"Content-Type"]).to.equal(@"application/json");
 
             NSError *error = nil;
             NSDictionary *parameters =

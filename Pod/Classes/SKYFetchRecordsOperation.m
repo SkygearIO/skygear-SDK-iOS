@@ -67,8 +67,7 @@
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
         SKYRecord *record = nil;
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
         if (recordID) {
             if ([obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"record"]) {
@@ -88,9 +87,8 @@
         }
 
         if (!error && !record) {
-            error =
-                [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                         message:@"Record does not conform with expected format."];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                             message:@"Record does not conform with expected format."];
         }
 
         if (recordID && self.perRecordCompletionBlock) {
@@ -127,8 +125,7 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultDictionary = [self processResultArray:responseArray error:&error];
     } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
 
     if (self.fetchRecordsCompletionBlock) {

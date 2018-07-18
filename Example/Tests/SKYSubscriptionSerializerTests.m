@@ -48,9 +48,9 @@ SpecBegin(SKYSubscriptionSerializer)
         });
 
         it(@"serialize query subscription with id", ^{
-            SKYSubscription *subscription = [[SKYSubscription alloc]
-                 initWithQuery:[[SKYQuery alloc] initWithRecordType:@"recordType" predicate:nil]
-                subscriptionID:@"somesubscriptionid"];
+            SKYSubscription *subscription =
+                [[SKYSubscription alloc] initWithQuery:[[SKYQuery alloc] initWithRecordType:@"recordType" predicate:nil]
+                                        subscriptionID:@"somesubscriptionid"];
             NSDictionary *result = [serializer dictionaryWithSubscription:subscription];
             expect([result class]).to.beSubclassOf([NSDictionary class]);
             expect(result).to.equal(@{

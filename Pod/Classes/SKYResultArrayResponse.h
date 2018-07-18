@@ -39,9 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Enumerate result dictionary in result array.
  */
-- (void)enumerateResultsUsingBlock:
-    (void (^_Nullable)(NSString *_Nullable resultKey, NSDictionary *_Nullable result,
-                       NSError *_Nullable error, NSUInteger idx, BOOL *stop))block;
+- (void)enumerateResultsUsingBlock:(void (^_Nullable)(NSString *_Nullable resultKey, NSDictionary *_Nullable result,
+                                                      NSError *_Nullable error, NSUInteger idx, BOOL *stop))block;
 
 @end
 

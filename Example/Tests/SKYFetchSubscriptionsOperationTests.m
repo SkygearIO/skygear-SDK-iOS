@@ -30,15 +30,13 @@ SpecBegin(SKYFetchSubscriptionsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
         it(@"single subscription", ^{
             SKYFetchSubscriptionsOperation *operation =
-                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
-                                                      subscriptionIDs:@[ @"sub1" ]];
+                [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID" subscriptionIDs:@[ @"sub1" ]];
             operation.container = container;
             operation.database = database;
 
@@ -54,7 +52,6 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                 @"ids" : @[ @"sub1" ],
                 @"device_id" : @"DEVICE_ID",
             });
-
         });
 
         it(@"multiple subscriptions", ^{
@@ -85,9 +82,10 @@ SpecBegin(SKYFetchSubscriptionsOperation)
             operation.container = container;
             operation.database = database;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -109,11 +107,9 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -145,14 +141,13 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                                                       subscriptionIDs:@[ @"sub1", @"sub2" ]];
             operation.container = container;
             operation.database = database;
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -172,9 +167,10 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                 [SKYFetchSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
                                                       subscriptionIDs:@[ @"sub1", @"sub2" ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -196,38 +192,35 @@ SpecBegin(SKYFetchSubscriptionsOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
                 NSMutableArray *remainingSubscriptionIDs = [@[ @"sub1", @"sub2" ] mutableCopy];
-                operation.perSubscriptionCompletionBlock = ^(
-                    SKYSubscription *subscription, NSString *subscriptionID, NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if ([subscriptionID isEqual:@"sub1"]) {
-                            expect([subscription class]).to.beSubclassOf([SKYSubscription class]);
-                            expect(subscription.subscriptionID).to.equal(@"sub1");
-                        } else if ([subscriptionID isEqual:@"sub2"]) {
-                            expect([error class]).to.beSubclassOf([NSError class]);
-                            expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
-                            expect(error.code).to.equal(SKYErrorResourceNotFound);
-                            expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
-                        }
-                        [remainingSubscriptionIDs removeObject:subscriptionID];
-                    });
-                };
+                operation.perSubscriptionCompletionBlock =
+                    ^(SKYSubscription *subscription, NSString *subscriptionID, NSError *error) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if ([subscriptionID isEqual:@"sub1"]) {
+                                expect([subscription class]).to.beSubclassOf([SKYSubscription class]);
+                                expect(subscription.subscriptionID).to.equal(@"sub1");
+                            } else if ([subscriptionID isEqual:@"sub2"]) {
+                                expect([error class]).to.beSubclassOf([NSError class]);
+                                expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
+                                expect(error.code).to.equal(SKYErrorResourceNotFound);
+                                expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
+                            }
+                            [remainingSubscriptionIDs removeObject:subscriptionID];
+                        });
+                    };
 
                 operation.fetchSubscriptionsCompletionBlock =
                     ^(NSDictionary *subscriptionsByID, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(remainingSubscriptionIDs).to.haveCountOf(0);
                             expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                            NSDictionary *errorsByID =
-                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                            NSDictionary *errorsByID = operationError.userInfo[SKYPartialErrorsByItemIDKey];
                             expect(errorsByID).to.haveCountOf(1);
                             expect([errorsByID[@"sub2"] class]).to.beSubclassOf([NSError class]);
                             done();

@@ -30,8 +30,7 @@ SpecBegin(SKYDeleteRecordsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
@@ -53,8 +52,8 @@ SpecBegin(SKYDeleteRecordsOperation)
         it(@"multiple record", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
             operation.database = database;
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -62,15 +61,12 @@ SpecBegin(SKYDeleteRecordsOperation)
             expect([request class]).to.beSubclassOf([SKYRequest class]);
             expect(request.action).to.equal(@"record:delete");
             expect(request.accessToken).to.equal(container.auth.currentAccessToken);
-            expect(request.payload[@"ids"]).to.equal(@[
-                recordID1.canonicalString, recordID2.canonicalString
-            ]);
+            expect(request.payload[@"ids"]).to.equal(@[ recordID1.canonicalString, recordID2.canonicalString ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
         });
 
         it(@"set atomic", ^{
-            SKYDeleteRecordsOperation *operation =
-                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[]];
+            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[]];
             operation.atomic = YES;
 
             operation.database = database;
@@ -84,12 +80,13 @@ SpecBegin(SKYDeleteRecordsOperation)
         it(@"make request", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -105,22 +102,19 @@ SpecBegin(SKYDeleteRecordsOperation)
                             },
                         ],
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.deleteRecordsCompletionBlock =
-                    ^(NSArray *recordIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordIDs).to.equal(@[ recordID1, recordID2 ]);
-                            expect(operationError).to.beNil();
-                            done();
-                        });
-                    };
+                operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(recordIDs).to.equal(@[ recordID1, recordID2 ]);
+                        expect(operationError).to.beNil();
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
@@ -129,26 +123,24 @@ SpecBegin(SKYDeleteRecordsOperation)
         it(@"pass error", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.deleteRecordsCompletionBlock =
-                    ^(NSArray *recordIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
                 [database executeOperation:operation];
             });
         });
@@ -156,12 +148,13 @@ SpecBegin(SKYDeleteRecordsOperation)
         it(@"per block", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
-            SKYDeleteRecordsOperation *operation = [SKYDeleteRecordsOperation
-                operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
+            SKYDeleteRecordsOperation *operation =
+                [SKYDeleteRecordsOperation operationWithRecordIDsToDelete:@[ recordID1, recordID2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -174,11 +167,9 @@ SpecBegin(SKYDeleteRecordsOperation)
                             @"name" : @"UnexpectedError",
                         } ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -189,19 +180,17 @@ SpecBegin(SKYDeleteRecordsOperation)
                     });
                 };
 
-                operation.deleteRecordsCompletionBlock =
-                    ^(NSArray *recordIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordIDs).to.haveCountOf(1);
-                            expect(remaingRecordIDs).to.haveCountOf(0);
-                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                            NSDictionary *errorsByID =
-                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
-                            expect(errorsByID).to.haveCountOf(1);
-                            expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
-                            done();
-                        });
-                    };
+                operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(recordIDs).to.haveCountOf(1);
+                        expect(remaingRecordIDs).to.haveCountOf(0);
+                        expect(operationError.code).to.equal(SKYErrorPartialFailure);
+                        NSDictionary *errorsByID = operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                        expect(errorsByID).to.haveCountOf(1);
+                        expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });

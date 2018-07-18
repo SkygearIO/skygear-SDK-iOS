@@ -34,8 +34,7 @@
     return self;
 }
 
-+ (instancetype)operationWithType:(NSString *)relationType
-                   usersToRelated:(NSArray /* SKYRecord */ *)users
++ (instancetype)operationWithType:(NSString *)relationType usersToRelated:(NSArray /* SKYRecord */ *)users
 {
     return [[self alloc] initWithType:relationType usersToRelated:users];
 }
@@ -70,8 +69,8 @@
     NSDictionary *response = responseObject.responseDictionary;
     NSArray *result = response[@"result"];
     if (![result isKindOfClass:[NSArray class]]) {
-        NSError *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                                  message:@"Result is not an array or not exists."];
+        NSError *error =
+            [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
         if (self.addRelationsCompletionBlock) {
             self.addRelationsCompletionBlock(nil, error);
         }
@@ -101,9 +100,8 @@
             } else {
                 returnedUserID = user.recordID.recordName;
                 if (returnedUserID == nil) {
-                    error = [self.errorCreator
-                        errorWithCode:SKYErrorInvalidData
-                              message:@"User does not conform with expected format."];
+                    error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                                     message:@"User does not conform with expected format."];
                 }
             }
         }
@@ -125,8 +123,7 @@
     if (self.addRelationsCompletionBlock) {
         NSError *operationError = nil;
         if (errorsByStringUserID.count) {
-            operationError =
-                [self.errorCreator partialErrorWithPerItemDictionary:errorsByStringUserID];
+            operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByStringUserID];
         }
 
         self.addRelationsCompletionBlock(savedUsers, operationError);

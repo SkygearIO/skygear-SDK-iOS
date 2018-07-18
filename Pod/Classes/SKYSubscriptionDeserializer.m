@@ -42,8 +42,7 @@
     }
 
     SKYSubscription *subscription;
-    if ([subscriptionType
-            isEqualToString:(NSString *)SKYSubscriptionSerializationSubscriptionTypeQuery]) {
+    if ([subscriptionType isEqualToString:(NSString *)SKYSubscriptionSerializationSubscriptionTypeQuery]) {
         NSDictionary *queryDict = dictionary[@"query"];
 
         SKYQueryDeserializer *queryDeserializer = [SKYQueryDeserializer deserializer];
@@ -54,11 +53,10 @@
         NSLog(@"Unrecgonized subscription type = %@", subscriptionType);
     }
 
-    SKYNotificationInfoDeserializer *notificationInfoDeserializer =
-        [SKYNotificationInfoDeserializer deserializer];
+    SKYNotificationInfoDeserializer *notificationInfoDeserializer = [SKYNotificationInfoDeserializer deserializer];
 
-    SKYNotificationInfo *notificationInfo = [notificationInfoDeserializer
-        notificationInfoWithDictionary:dictionary[@"notification_info"]];
+    SKYNotificationInfo *notificationInfo =
+        [notificationInfoDeserializer notificationInfoWithDictionary:dictionary[@"notification_info"]];
     subscription.notificationInfo = notificationInfo;
 
     return subscription;

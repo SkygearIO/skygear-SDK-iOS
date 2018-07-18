@@ -66,8 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  Sets or returns a block to be called when progress information is available for deleting each
  record.
  */
-@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (SKYRecordID *_Nullable recordID, double progress);
+@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)(SKYRecordID *_Nullable recordID, double progress);
 
 /**
  Sets or returns a block to be called when the delete operation for individual record is completed.

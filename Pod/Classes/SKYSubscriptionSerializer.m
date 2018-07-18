@@ -42,8 +42,7 @@
             payload[SKYSubscriptionSerializationSubscriptionTypeKey] =
                 SKYSubscriptionSerializationSubscriptionTypeQuery;
             if (subscription.query) {
-                payload[@"query"] =
-                    [[SKYQuerySerializer serializer] serializeWithQuery:subscription.query];
+                payload[@"query"] = [[SKYQuerySerializer serializer] serializeWithQuery:subscription.query];
             }
 
             notificationInfoDict = [[SKYNotificationInfoSerializer serializer]
@@ -53,11 +52,10 @@
             }
             break;
         default:
-            @throw [NSException
-                exceptionWithName:@"UnrecgonizedSubscriptionType"
-                           reason:[NSString stringWithFormat:@"Unrecgonized SubscriptionType: %@",
-                                                             @(subscription.subscriptionType)]
-                         userInfo:nil];
+            @throw [NSException exceptionWithName:@"UnrecgonizedSubscriptionType"
+                                           reason:[NSString stringWithFormat:@"Unrecgonized SubscriptionType: %@",
+                                                                             @(subscription.subscriptionType)]
+                                         userInfo:nil];
     }
     return payload;
 }

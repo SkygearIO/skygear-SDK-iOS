@@ -137,17 +137,15 @@
 - (NSError *)addContainerConfigurationToRequest:(SKYRequest *)request
 {
     if (!self.container.endPointAddress) {
-        return [_errorCreator
-            errorWithCode:SKYErrorContainerNotConfigured
-                 userInfo:@{SKYErrorMessageKey : @"Container endpoint is not configured."}];
+        return [_errorCreator errorWithCode:SKYErrorContainerNotConfigured
+                                   userInfo:@{SKYErrorMessageKey : @"Container endpoint is not configured."}];
     }
     request.baseURL = self.container.endPointAddress;
 
     if (self.requiresAPIKey) {
         if (!self.container.APIKey) {
-            return [_errorCreator
-                errorWithCode:SKYErrorContainerNotConfigured
-                     userInfo:@{SKYErrorMessageKey : @"Container API Key is not configured."}];
+            return [_errorCreator errorWithCode:SKYErrorContainerNotConfigured
+                                       userInfo:@{SKYErrorMessageKey : @"Container API Key is not configured."}];
         }
         request.APIKey = self.container.APIKey;
     }
@@ -156,18 +154,14 @@
         if (!self.container.auth.currentAccessToken) {
             return [_errorCreator
                 errorWithCode:SKYErrorNotAuthenticated
-                     userInfo:@{
-                         SKYErrorMessageKey :
-                             @"Request requires access token but none is available."
-                     }];
+                     userInfo:@{SKYErrorMessageKey : @"Request requires access token but none is available."}];
         }
         request.accessToken = self.container.auth.currentAccessToken;
     }
     return nil;
 }
 
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session request:(NSURLRequest *)request
 {
     NSURLSessionTask *task;
     task = [session dataTaskWithRequest:request
@@ -181,8 +175,7 @@
 {
     @throw [NSException
         exceptionWithName:NSInternalInconsistencyException
-                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass",
-                                                     NSStringFromSelector(_cmd)]
+                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                  userInfo:nil];
 }
 
@@ -228,26 +221,22 @@
 - (NSDictionary *)parseResponse:(NSData *)data error:(NSError **)error
 {
     NSError *jsonError = nil;
-    NSDictionary *responseDictionary =
-        [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
     if (jsonError) {
         if (error) {
-            *error = [_errorCreator errorWithCode:SKYErrorBadResponse
-                                         userInfo:@{
-                                             SKYErrorMessageKey : @"Unable to parse JSON data.",
-                                             NSUnderlyingErrorKey : jsonError
-                                         }];
+            *error = [_errorCreator
+                errorWithCode:SKYErrorBadResponse
+                     userInfo:@{SKYErrorMessageKey : @"Unable to parse JSON data.", NSUnderlyingErrorKey : jsonError}];
         }
         return nil;
     }
 
     if (![responseDictionary isKindOfClass:[NSDictionary class]]) {
         if (error) {
-            *error =
-                [_errorCreator errorWithCode:SKYErrorBadResponse
-                                    userInfo:@{
-                                        SKYErrorMessageKey : @"Response is not a JSON dictionary.",
-                                    }];
+            *error = [_errorCreator errorWithCode:SKYErrorBadResponse
+                                         userInfo:@{
+                                             SKYErrorMessageKey : @"Response is not a JSON dictionary.",
+                                         }];
         }
         return nil;
     }
@@ -274,10 +263,9 @@
     if ([errorDictionary isKindOfClass:[NSDictionary class]]) {
         return [_errorCreator errorWithResponseDictionary:errorDictionary];
     } else {
-        NSString *message =
-            [NSString stringWithFormat:@"HTTP Status Code \"%ld\" indicates that an error "
-                                       @"occurred, but no \"error\" dictionary exists.",
-                                       (long)response.statusCode];
+        NSString *message = [NSString stringWithFormat:@"HTTP Status Code \"%ld\" indicates that an error "
+                                                       @"occurred, but no \"error\" dictionary exists.",
+                                                       (long)response.statusCode];
         return [_errorCreator errorWithCode:SKYErrorBadResponse
                                    userInfo:@{
                                        SKYErrorMessageKey : message,
@@ -285,9 +273,7 @@
     }
 }
 
-- (void)handleRequestCompletionWithData:(NSData *)data
-                               response:(NSURLResponse *)response
-                                  error:(NSError *)requestError
+- (void)handleRequestCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)requestError
 {
     if (requestError) {
         NSError *error;
@@ -304,13 +290,10 @@
         return;
     }
 
-    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]],
-             @"Returned response is not NSHTTPURLResponse");
+    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"Returned response is not NSHTTPURLResponse");
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    [_errorCreator setDefaultUserInfoObject:[response.URL copy]
-                                     forKey:NSURLErrorFailingURLErrorKey];
-    [_errorCreator setDefaultUserInfoObject:@(httpResponse.statusCode)
-                                     forKey:SKYOperationErrorHTTPStatusCodeKey];
+    [_errorCreator setDefaultUserInfoObject:[response.URL copy] forKey:NSURLErrorFailingURLErrorKey];
+    [_errorCreator setDefaultUserInfoObject:@(httpResponse.statusCode) forKey:SKYOperationErrorHTTPStatusCodeKey];
 
     if (httpResponse.statusCode >= 400) {
         [self didEncounterError:[self errorWithResponse:httpResponse data:data]];
@@ -359,8 +342,7 @@
 
 - (BOOL)isAuthFailureError:(NSError *)error
 {
-    return [error.domain isEqualToString:SKYOperationErrorDomain] &&
-           error.code == SKYErrorAccessTokenNotAccepted;
+    return [error.domain isEqualToString:SKYOperationErrorDomain] && error.code == SKYErrorAccessTokenNotAccepted;
 }
 
 - (SKYResponse *)createResponseWithDictionary:(NSDictionary *)responseDictionary

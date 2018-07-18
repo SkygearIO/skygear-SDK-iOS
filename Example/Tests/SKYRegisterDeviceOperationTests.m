@@ -30,14 +30,13 @@ SpecBegin(SKYRegisterDeviceOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"new device request", ^{
-            SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                   topic:@"com.example.app"];
+            SKYRegisterDeviceOperation *operation =
+                [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                                               topic:@"com.example.app"];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
 
@@ -68,9 +67,9 @@ SpecBegin(SKYRegisterDeviceOperation)
         });
 
         it(@"update device request", ^{
-            SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                   topic:@"com.example.app"];
+            SKYRegisterDeviceOperation *operation =
+                [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                                               topic:@"com.example.app"];
             operation.deviceID = @"DEVICE_ID";
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -86,24 +85,23 @@ SpecBegin(SKYRegisterDeviceOperation)
         });
 
         it(@"new device response", ^{
-            SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                   topic:@"com.example.app"];
+            SKYRegisterDeviceOperation *operation =
+                [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                                               topic:@"com.example.app"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"result" : @{
                             @"id" : @"DEVICE_ID",
                         },
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -118,22 +116,21 @@ SpecBegin(SKYRegisterDeviceOperation)
         });
 
         it(@"error with response without id", ^{
-            SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                   topic:@"com.example.app"];
+            SKYRegisterDeviceOperation *operation =
+                [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                                               topic:@"com.example.app"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"result" : @{},
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -148,17 +145,16 @@ SpecBegin(SKYRegisterDeviceOperation)
         });
 
         it(@"pass error", ^{
-            SKYRegisterDeviceOperation *operation = [SKYRegisterDeviceOperation
-                operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                   topic:@"com.example.app"];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            SKYRegisterDeviceOperation *operation =
+                [SKYRegisterDeviceOperation operationWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                                               topic:@"com.example.app"];
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {

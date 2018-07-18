@@ -23,9 +23,7 @@
 
 - (instancetype)init
 {
-    @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                   reason:@"Missing Record type."
-                                 userInfo:nil];
+    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Missing Record type." userInfo:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)type
@@ -37,9 +35,8 @@
 {
     NSArray *components = [canonicalString componentsSeparatedByString:@"/"];
     if ([components count] != 2) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"Invalid Record ID string."
-                                     userInfo:nil];
+        @throw
+            [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid Record ID string." userInfo:nil];
     }
 
     return [self initWithRecordType:components[0] name:components[1]];
@@ -50,9 +47,8 @@
     self = [super init];
     if (self) {
         if (!type) {
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:@"Missing Record type."
-                                         userInfo:nil];
+            @throw
+                [NSException exceptionWithName:NSInvalidArgumentException reason:@"Missing Record type." userInfo:nil];
         }
         _recordType = [type copy];
         _recordName = recordName ? [recordName copy] : [[NSUUID UUID] UUIDString];
@@ -93,9 +89,8 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    SKYRecordID *recordID =
-        [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
-                                                       name:[_recordName copyWithZone:zone]];
+    SKYRecordID *recordID = [[self.class allocWithZone:zone] initWithRecordType:[_recordType copyWithZone:zone]
+                                                                           name:[_recordName copyWithZone:zone]];
     return recordID;
 }
 
@@ -124,10 +119,8 @@
         return NO;
     }
 
-    return (((recordID.recordName == nil && self.recordName == nil) ||
-             [recordID.recordName isEqual:self.recordName]) &&
-            ((recordID.recordType == nil && self.recordType == nil) ||
-             [recordID.recordType isEqual:self.recordType]));
+    return (((recordID.recordName == nil && self.recordName == nil) || [recordID.recordName isEqual:self.recordName]) &&
+            ((recordID.recordType == nil && self.recordType == nil) || [recordID.recordType isEqual:self.recordType]));
 }
 
 - (NSUInteger)hash
@@ -137,9 +130,8 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; recordType = %@, recordName = %@>",
-                                      NSStringFromClass([self class]), self, self.recordType,
-                                      self.recordName];
+    return [NSString stringWithFormat:@"<%@: %p; recordType = %@, recordName = %@>", NSStringFromClass([self class]),
+                                      self, self.recordType, self.recordName];
 }
 
 - (NSString *)canonicalString

@@ -41,8 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  Resume current oauth flow with url, need to be called by application:openURL:options: in
  appDelegate
  */
-- (BOOL)resumeOAuthFlow:(NSURL *)url
-                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *_Nullable)options;
+- (BOOL)resumeOAuthFlow:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *_Nullable)options;
 
 /**
  Login user with given provider by access token.
@@ -68,8 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
  Get oauth provider user profiles, the result dictionary key is provider id and value is profile
  dictionary.
 */
-- (void)getOAuthProviderProfilesWithCompletionHandler:
-    (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+- (void)getOAuthProviderProfilesWithCompletionHandler:(void (^_Nullable)(NSDictionary *_Nullable,
+                                                                         NSError *_Nullable))completionHandler;
 
 /**
  Login the user with a custom token.

@@ -29,8 +29,7 @@ SpecBegin(SKYRecordStorage)
         __block SKYRecordStorage *storage = nil;
 
         beforeEach(^{
-            storage = [[SKYRecordStorage alloc]
-                initWithBackingStore:[[SKYRecordStorageMemoryStore alloc] init]];
+            storage = [[SKYRecordStorage alloc] initWithBackingStore:[[SKYRecordStorageMemoryStore alloc] init]];
         });
 
         it(@"init", ^{
@@ -78,8 +77,7 @@ SpecBegin(SKYRecordStorage)
 
             [storage deleteRecord:record];
 
-            SKYRecord *anotherRecord =
-                [[SKYRecord alloc] initWithRecordID:record.recordID data:record.dictionary];
+            SKYRecord *anotherRecord = [[SKYRecord alloc] initWithRecordID:record.recordID data:record.dictionary];
             [storage saveRecord:anotherRecord];
             expect([storage pendingChanges]).to.haveCountOf(1);
             SKYRecordChange *change = [[storage pendingChanges] firstObject];
@@ -123,8 +121,7 @@ SpecBegin(SKYRecordStorage)
 
             storage.enabled = YES;
 
-            OCMVerify(
-                [mockSyncher recordStorageFetchUpdates:storage completionHandler:[OCMArg any]]);
+            OCMVerify([mockSyncher recordStorageFetchUpdates:storage completionHandler:[OCMArg any]]);
         });
 
         it(@"call synchronizer when saving", ^{
@@ -136,20 +133,18 @@ SpecBegin(SKYRecordStorage)
             SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
             [storage saveRecord:record];
 
-            OCMStub([mockSyncher
-                    recordStorage:storage
-                      saveChanges:[OCMArg checkWithBlock:^BOOL(id obj) {
-                          expect([obj class]).to.beSubclassOf([NSArray class]);
-                          expect(obj).to.haveCountOf(1);
-                          SKYRecordChange *change = [obj objectAtIndex:0];
-                          expect([change class]).to.beSubclassOf([SKYRecordChange class]);
-                          expect(change.recordID).to.equal(record.recordID);
-                          return YES;
-                      }]
-                completionHandler:nil]);
+            OCMStub([mockSyncher recordStorage:storage
+                                   saveChanges:[OCMArg checkWithBlock:^BOOL(id obj) {
+                                       expect([obj class]).to.beSubclassOf([NSArray class]);
+                                       expect(obj).to.haveCountOf(1);
+                                       SKYRecordChange *change = [obj objectAtIndex:0];
+                                       expect([change class]).to.beSubclassOf([SKYRecordChange class]);
+                                       expect(change.recordID).to.equal(record.recordID);
+                                       return YES;
+                                   }]
+                             completionHandler:nil]);
 
-            OCMVerify(
-                [mockSyncher recordStorage:storage saveChanges:[OCMArg any] completionHandler:nil]);
+            OCMVerify([mockSyncher recordStorage:storage saveChanges:[OCMArg any] completionHandler:nil]);
         });
 
         it(@"update by replacing", ^{

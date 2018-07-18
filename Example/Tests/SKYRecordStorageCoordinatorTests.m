@@ -32,8 +32,7 @@ SpecBegin(SKYRecordStorageCoordinator)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USERNAME"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             coordinator = [[SKYRecordStorageCoordinator alloc] initWithContainer:container];
             [coordinator forgetAllRecordStorages];
         });
@@ -63,7 +62,6 @@ SpecBegin(SKYRecordStorageCoordinator)
             SKYRecordStorage *storage2 = [coordinator recordStorageForPrivateDatabase];
             expect(storage1).to.equal(storage2);
         });
-
     });
 
 SpecEnd

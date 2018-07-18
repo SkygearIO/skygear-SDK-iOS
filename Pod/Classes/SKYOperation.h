@@ -111,8 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
  This method is expected to be overriden by subclass of <SKYOperation>. You are not expected
  to call this method directly.
  */
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request;
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session request:(NSURLRequest *)request;
 
 /**
  Creates a <NSURLRequest> with <SKYRequest> specified as the property of this class.

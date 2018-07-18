@@ -70,11 +70,9 @@
         [finalUserInfo addEntriesFromDictionary:userInfoToAdd];
     }
 
-    finalUserInfo[NSLocalizedDescriptionKey] =
-        SKYErrorLocalizedDescriptionWithCodeAndInfo(code, userInfoToAdd);
+    finalUserInfo[NSLocalizedDescriptionKey] = SKYErrorLocalizedDescriptionWithCodeAndInfo(code, userInfoToAdd);
     finalUserInfo[SKYErrorNameKey] = SKYErrorNameWithCode(code);
-    return
-        [NSError errorWithDomain:SKYOperationErrorDomain code:code userInfo:[finalUserInfo copy]];
+    return [NSError errorWithDomain:SKYOperationErrorDomain code:code userInfo:[finalUserInfo copy]];
 }
 
 - (NSError *)errorWithResponseDictionary:(NSDictionary *)dict

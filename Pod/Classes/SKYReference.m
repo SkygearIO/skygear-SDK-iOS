@@ -98,8 +98,7 @@
 
 - (BOOL)isEqualToReference:(SKYReference *)reference
 {
-    return [_recordID isEqualToRecordID:reference.recordID] &&
-           _referenceAction == reference.referenceAction;
+    return [_recordID isEqualToRecordID:reference.recordID] && _referenceAction == reference.referenceAction;
 }
 
 - (NSUInteger)hash

@@ -38,15 +38,14 @@ SpecBegin(SKYAssignUserRoleOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYAssignUserRoleOperation *operation = [SKYAssignUserRoleOperation
-                operationWithUserIDs:@[ user1, user2, user3 ]
-                           roleNames:@[ developerRoleName, testerRoleName ]];
+            SKYAssignUserRoleOperation *operation =
+                [SKYAssignUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]
+                                                       roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
@@ -60,33 +59,31 @@ SpecBegin(SKYAssignUserRoleOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{@"result" : @"OK"};
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
-            SKYAssignUserRoleOperation *operation = [SKYAssignUserRoleOperation
-                operationWithUserIDs:@[ user1, user2, user3 ]
-                           roleNames:@[ developerRoleName, testerRoleName ]];
+            SKYAssignUserRoleOperation *operation =
+                [SKYAssignUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]
+                                                       roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
-                operation.assignUserRoleCompletionBlock =
-                    ^(NSArray<NSString *> *users, NSError *error) {
-                        expect(error).to.beNil();
-                        expect(users).to.haveCountOf(3);
-                        expect(users).to.contain(user1);
-                        expect(users).to.contain(user2);
-                        expect(users).to.contain(user3);
+                operation.assignUserRoleCompletionBlock = ^(NSArray<NSString *> *users, NSError *error) {
+                    expect(error).to.beNil();
+                    expect(users).to.haveCountOf(3);
+                    expect(users).to.contain(user1);
+                    expect(users).to.contain(user2);
+                    expect(users).to.contain(user3);
 
-                        done();
-                    };
+                    done();
+                };
 
                 [container addOperation:operation];
             });

@@ -41,8 +41,7 @@ typedef enum : NSInteger {
 /// Undocumented
 + (instancetype)subscriptionWithQuery:(SKYQuery *)query;
 /// Undocumented
-+ (instancetype)subscriptionWithQuery:(SKYQuery *)query
-                       subscriptionID:(NSString *_Nullable)subscriptionID;
++ (instancetype)subscriptionWithQuery:(SKYQuery *)query subscriptionID:(NSString *_Nullable)subscriptionID;
 
 /// Undocumented
 @property (nonatomic, readonly, assign) SKYSubscriptionType subscriptionType;

@@ -34,8 +34,7 @@
 
 @implementation SKYFetchSubscriptionsOperation
 
-- (instancetype)initWithDeviceID:(NSString *)deviceID
-                 subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs
+- (instancetype)initWithDeviceID:(NSString *)deviceID subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs
 {
     self = [super init];
     if (self) {
@@ -55,8 +54,7 @@
     return self;
 }
 
-+ (instancetype)operationWithDeviceID:(NSString *)deviceID
-                      subscriptionIDs:(NSArray *)subscriptionIDs
++ (instancetype)operationWithDeviceID:(NSString *)deviceID subscriptionIDs:(NSArray *)subscriptionIDs
 {
     return [[self alloc] initWithDeviceID:deviceID subscriptionIDs:subscriptionIDs];
 }
@@ -82,8 +80,7 @@
     }
 
     if (self.isFetchAll) {
-        self.request =
-            [[SKYRequest alloc] initWithAction:@"subscription:fetch_all" payload:payload];
+        self.request = [[SKYRequest alloc] initWithAction:@"subscription:fetch_all" payload:payload];
     } else {
         if (subscriptionIDs.count) {
             payload[@"ids"] = subscriptionIDs;
@@ -105,8 +102,7 @@
         NSError *error = nil;
         NSString *subscriptionID = dict[SKYSubscriptionSerializationSubscriptionIDKey];
         if (subscriptionID.length == 0) {
-            subscriptionID =
-                dict[@"_id"]; // this is for per item error, which has a different key for ID
+            subscriptionID = dict[@"_id"]; // this is for per item error, which has a different key for ID
         }
 
         if (subscriptionID.length) {
@@ -156,8 +152,7 @@
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultDictionary = [self processResultArray:responseArray error:&error];
     } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
 
     if (self.fetchSubscriptionsCompletionBlock) {

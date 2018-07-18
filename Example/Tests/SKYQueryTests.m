@@ -25,23 +25,17 @@
 SpecBegin(SKYQuery)
 
     describe(@"SKYQuery", ^{
-
         beforeAll(^{
-            [NSKeyedUnarchiver setClass:[SKYQuery class]
-                           forClassName:NSStringFromClass([SKYQuery class])];
+            [NSKeyedUnarchiver setClass:[SKYQuery class] forClassName:NSStringFromClass([SKYQuery class])];
         });
 
         it(@"equals", ^{
             NSString *recordType = @"book";
-            NSPredicate *predicate =
-                [NSPredicate predicateWithFormat:@"title = %@", @"A tale of two cities"];
-            SKYQuery *query1 =
-                [SKYQuery queryWithRecordType:[recordType copy] predicate:[predicate copy]];
-            query1.sortDescriptors =
-                @[ [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES] ];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title = %@", @"A tale of two cities"];
+            SKYQuery *query1 = [SKYQuery queryWithRecordType:[recordType copy] predicate:[predicate copy]];
+            query1.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES] ];
             query1.transientIncludes = @{@"city" : [NSExpression expressionForKeyPath:@"city"]};
-            SKYQuery *query2 =
-                [[SKYQuery alloc] initWithRecordType:[recordType copy] predicate:[predicate copy]];
+            SKYQuery *query2 = [[SKYQuery alloc] initWithRecordType:[recordType copy] predicate:[predicate copy]];
             query2.sortDescriptors = [query1.sortDescriptors copy];
             query2.transientIncludes = [query1.transientIncludes copy];
             query1.limit = query2.limit;
@@ -50,22 +44,19 @@ SpecBegin(SKYQuery)
         });
 
         it(@"not equals", ^{
-            SKYQuery *query1 = [SKYQuery
-                queryWithRecordType:@"book"
-                          predicate:[NSPredicate
-                                        predicateWithFormat:@"title = %@", @"A tale of one city"]];
+            SKYQuery *query1 =
+                [SKYQuery queryWithRecordType:@"book"
+                                    predicate:[NSPredicate predicateWithFormat:@"title = %@", @"A tale of one city"]];
             SKYQuery *query2 = [[SKYQuery alloc]
                 initWithRecordType:@"book"
-                         predicate:[NSPredicate
-                                       predicateWithFormat:@"title = %@", @"A tale of two cities"]];
+                         predicate:[NSPredicate predicateWithFormat:@"title = %@", @"A tale of two cities"]];
             expect(query1).toNot.equal(query2);
         });
 
         it(@"coding", ^{
-            SKYQuery *query = [SKYQuery
-                queryWithRecordType:@"book"
-                          predicate:[NSPredicate predicateWithFormat:@"title = %@",
-                                                                     @"A tale of two cities"]];
+            SKYQuery *query =
+                [SKYQuery queryWithRecordType:@"book"
+                                    predicate:[NSPredicate predicateWithFormat:@"title = %@", @"A tale of two cities"]];
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject:query];
             SKYQuery *decodedQuery = [NSKeyedUnarchiver unarchiveObjectWithData:data];
             expect(decodedQuery).to.equal(query);
@@ -74,10 +65,9 @@ SpecBegin(SKYQuery)
 
 describe(@"SKYQueryCaching", ^{
     it(@"cache key", ^{
-        SKYQuery *query = [SKYQuery
-            queryWithRecordType:@"book"
-                      predicate:[NSPredicate
-                                    predicateWithFormat:@"title = %@", @"A tale of two cities"]];
+        SKYQuery *query =
+            [SKYQuery queryWithRecordType:@"book"
+                                predicate:[NSPredicate predicateWithFormat:@"title = %@", @"A tale of two cities"]];
         expect([[query cacheKey] class]).to.beSubclassOf([NSString class]);
     });
 });

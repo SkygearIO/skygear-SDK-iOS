@@ -38,15 +38,14 @@ SpecBegin(SKYRevokeUserRoleOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYRevokeUserRoleOperation *operation = [SKYRevokeUserRoleOperation
-                operationWithUserIDs:@[ user1, user2, user3 ]
-                           roleNames:@[ developerRoleName, testerRoleName ]];
+            SKYRevokeUserRoleOperation *operation =
+                [SKYRevokeUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]
+                                                       roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
@@ -60,33 +59,31 @@ SpecBegin(SKYRevokeUserRoleOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{@"result" : @"OK"};
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
-            SKYRevokeUserRoleOperation *operation = [SKYRevokeUserRoleOperation
-                operationWithUserIDs:@[ user1, user2, user3 ]
-                           roleNames:@[ developerRoleName, testerRoleName ]];
+            SKYRevokeUserRoleOperation *operation =
+                [SKYRevokeUserRoleOperation operationWithUserIDs:@[ user1, user2, user3 ]
+                                                       roleNames:@[ developerRoleName, testerRoleName ]];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
-                operation.revokeUserRoleCompletionBlock =
-                    ^(NSArray<NSString *> *userIDs, NSError *error) {
-                        expect(error).to.beNil();
-                        expect(userIDs).to.haveCountOf(3);
-                        expect(userIDs).to.contain(@"user1");
-                        expect(userIDs).to.contain(@"user2");
-                        expect(userIDs).to.contain(@"user3");
+                operation.revokeUserRoleCompletionBlock = ^(NSArray<NSString *> *userIDs, NSError *error) {
+                    expect(error).to.beNil();
+                    expect(userIDs).to.haveCountOf(3);
+                    expect(userIDs).to.contain(@"user1");
+                    expect(userIDs).to.contain(@"user2");
+                    expect(userIDs).to.contain(@"user3");
 
-                        done();
-                    };
+                    done();
+                };
 
                 [container addOperation:operation];
             });

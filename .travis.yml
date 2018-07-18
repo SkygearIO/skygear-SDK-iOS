@@ -49,7 +49,7 @@ jobs:
       osx_image: xcode9.2
       cache: pip
       install:
-        - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/2c2c4b8bfb93e3b409c1c9c51b8a76c3497e0ca0/Formula/clang-format.rb
+        - brew install --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/1d04f2240001f0edcd8c89be4c9268658d452de4/Formula/clang-format.rb
         - brew upgrade --force-bottle https://raw.githubusercontent.com/Homebrew/homebrew-core/6dcd3c206681f02b267e4cf3d44ec9a8ded36b40/Formula/swiftlint.rb
         - clang-format --version
         - pip2 install lizard==1.14.5

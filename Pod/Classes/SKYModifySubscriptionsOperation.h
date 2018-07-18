@@ -40,8 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable perSubscriptionCompletionBlock)
-    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID,
-     NSError *_Nullable operationError);
+    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID, NSError *_Nullable operationError);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable modifySubscriptionsCompletionBlock)
     (NSArray<SKYSubscription *> *_Nullable savedSubscriptions, NSError *_Nullable operationError);

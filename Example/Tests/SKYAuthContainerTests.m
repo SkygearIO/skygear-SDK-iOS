@@ -59,25 +59,23 @@ SpecBegin(SKYAuthContainer)
 
     describe(@"user login and signup", ^{
         __block SKYContainer *container = nil;
-        __block void (^assertLoggedIn)(NSString *, NSError *) =
-            ^(NSString *userRecordID, NSError *error) {
-                expect(container.auth.currentUserRecordID).to.equal(userRecordID);
-                expect(container.auth.currentUser.dictionary[@"username"]).to.equal(@"john.doe");
-                expect(container.auth.currentUser.dictionary[@"email"])
-                    .to.equal(@"john.doe@example.com");
-                expect(error).to.beNil();
-                expect(userRecordID).to.equal(@"UUID");
-                expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-            };
+        __block void (^assertLoggedIn)(NSString *, NSError *) = ^(NSString *userRecordID, NSError *error) {
+            expect(container.auth.currentUserRecordID).to.equal(userRecordID);
+            expect(container.auth.currentUser.dictionary[@"username"]).to.equal(@"john.doe");
+            expect(container.auth.currentUser.dictionary[@"email"]).to.equal(@"john.doe@example.com");
+            expect(error).to.beNil();
+            expect(userRecordID).to.equal(@"UUID");
+            expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+        };
 
         beforeEach(^{
             container = [SKYContainer testContainer];
             container.defaultTimeoutInterval = 1.0;
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                NSString *path = [[request URL] path];
-                return
-                    [path isEqualToString:@"/auth/login"] || [path isEqualToString:@"/auth/signup"];
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    NSString *path = [[request URL] path];
+                    return [path isEqualToString:@"/auth/login"] || [path isEqualToString:@"/auth/signup"];
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(request.timeoutInterval).to.equal(1.0);
                     NSDictionary *parameters = @{
@@ -91,18 +89,16 @@ SpecBegin(SKYAuthContainer)
                         },
                     };
                     NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
-                                                        options:0
-                                                          error:nil];
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters} options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             SKYDatabase *database = [[SKYContainer testContainer] publicCloudDatabase];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return [[[request URL] path] isEqualToString:@"/record/save"];
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return [[[request URL] path] isEqualToString:@"/record/save"];
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -115,11 +111,9 @@ SpecBegin(SKYAuthContainer)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
         });
 
@@ -207,9 +201,10 @@ describe(@"get current user from server", ^{
     });
 
     it(@"can handle success response", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                 NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                     @"result" : @{
@@ -244,9 +239,10 @@ describe(@"get current user from server", ^{
     });
 
     it(@"can handle error response", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                 NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                     @"error" : @{
@@ -282,13 +278,13 @@ describe(@"save current user", ^{
     it(@"logout user", ^{
         SKYContainer *container = [SKYContainer testContainer];
 
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *parameters = @{ @"request_id" : @"REQUEST_ID", @"result" : @[] };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                NSDictionary *parameters = @{@"request_id" : @"REQUEST_ID", @"result" : @[]};
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
@@ -302,9 +298,8 @@ describe(@"save current user", ^{
 
     it(@"fetch user with ID", ^{
         SKYContainer *container = [SKYContainer testContainer];
-        [container.auth
-            updateWithUserRecordID:@"user1"
-                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
+        [container.auth updateWithUserRecordID:@"user1"
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [SKYContainer testContainer];
         expect(container.auth.currentUserRecordID).to.equal(@"user1");
@@ -315,9 +310,7 @@ describe(@"save current user", ^{
         SKYContainer *container = [SKYContainer testContainer];
         SKYRecord *user = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
         user[@"username"] = @"username1";
-        [container.auth
-            updateWithUser:user
-               accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
+        [container.auth updateWithUser:user accessToken:[[SKYAccessToken alloc] initWithTokenString:@"accesstoken1"]];
 
         container = [SKYContainer testContainer];
         expect(container.auth.currentUserRecordID).to.equal(@"user1");
@@ -362,9 +355,10 @@ describe(@"AuthenticationError callback", ^{
     });
 
     it(@"calls authentication error handler", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
@@ -378,18 +372,19 @@ describe(@"AuthenticationError callback", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.auth setAuthenticationErrorHandler:^(SKYContainer *container,
-                                                            SKYAccessToken *token, NSError *error) {
-                done();
-            }];
+            [container.auth
+                setAuthenticationErrorHandler:^(SKYContainer *container, SKYAccessToken *token, NSError *error) {
+                    done();
+                }];
             [container addOperation:[[MockOperation alloc] init]];
         });
     });
 
     it(@"operation works without setting authentication error handler", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
@@ -412,9 +407,10 @@ describe(@"AuthenticationError callback", ^{
     });
 
     it(@"doesn't call authentication error handler on unmatched error", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithJSONObject:@{
                     @"error" : @{
@@ -428,12 +424,12 @@ describe(@"AuthenticationError callback", ^{
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.auth setAuthenticationErrorHandler:^(SKYContainer *container,
-                                                            SKYAccessToken *token, NSError *error) {
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                               reason:@"Thou shalt not call"
-                                             userInfo:nil];
-            }];
+            [container.auth
+                setAuthenticationErrorHandler:^(SKYContainer *container, SKYAccessToken *token, NSError *error) {
+                    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                                   reason:@"Thou shalt not call"
+                                                 userInfo:nil];
+                }];
             MockOperation *op = [[MockOperation alloc] init];
             op.mockCompletion = ^{
                 done();
@@ -449,23 +445,20 @@ describe(@"AuthenticationError callback", ^{
     describe(@"Enable User", ^{
         it(@"should create and add operation", ^{
             id container = OCMClassMock([SKYContainer class]);
-            SKYAuthContainer *auth =
-                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+            SKYAuthContainer *auth = [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
 
             NSString *currentUserID = @"some-uuid";
 
-            OCMExpect([container
-                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
-                    expect(operation.userID).to.equal(currentUserID);
-                    expect(operation.disabled).to.equal(@NO);
-                    operation.setCompletionBlock(currentUserID, nil);
-                    return YES;
-                }]]);
+            OCMExpect([container addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                                     expect(operation.userID).to.equal(currentUserID);
+                                     expect(operation.disabled).to.equal(@NO);
+                                     operation.setCompletionBlock(currentUserID, nil);
+                                     return YES;
+                                 }]]);
 
             waitUntil(^(DoneCallback done) {
                 [auth adminEnableUserWithUserID:currentUserID
-                                     completion:^(NSString *_Nonnull userID,
-                                                  NSError *_Nullable error) {
+                                     completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
                                          expect(userID).to.equal(currentUserID);
                                          expect(error).to.beNil();
                                          done();
@@ -479,25 +472,22 @@ describe(@"AuthenticationError callback", ^{
     describe(@"Disable User", ^{
         it(@"should create and add operation", ^{
             id container = OCMClassMock([SKYContainer class]);
-            SKYAuthContainer *auth =
-                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+            SKYAuthContainer *auth = [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
 
             NSString *currentUserID = @"some-uuid";
 
-            OCMExpect([container
-                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
-                    expect(operation.userID).to.equal(currentUserID);
-                    expect(operation.disabled).to.equal(@YES);
-                    operation.setCompletionBlock(currentUserID, nil);
-                    return YES;
-                }]]);
+            OCMExpect([container addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                                     expect(operation.userID).to.equal(currentUserID);
+                                     expect(operation.disabled).to.equal(@YES);
+                                     operation.setCompletionBlock(currentUserID, nil);
+                                     return YES;
+                                 }]]);
 
             waitUntil(^(DoneCallback done) {
                 [auth adminDisableUserWithUserID:currentUserID
                                          message:nil
                                           expiry:nil
-                                      completion:^(NSString *_Nonnull userID,
-                                                   NSError *_Nullable error) {
+                                      completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
                                           expect(userID).to.equal(currentUserID);
                                           expect(error).to.beNil();
                                           done();
@@ -511,28 +501,25 @@ describe(@"AuthenticationError callback", ^{
     describe(@"Disable User with optional fields", ^{
         it(@"should create and add operation", ^{
             id container = OCMClassMock([SKYContainer class]);
-            SKYAuthContainer *auth =
-                [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
+            SKYAuthContainer *auth = [[SKYAuthContainer alloc] initWithContainer:(SKYContainer *)container];
 
             NSString *currentUserID = @"some-uuid";
             NSDate *expiry = [NSDate date];
 
-            OCMExpect([container
-                addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
-                    expect(operation.userID).to.equal(currentUserID);
-                    expect(operation.disabled).to.equal(@YES);
-                    expect(operation.message).to.equal(@"reason");
-                    expect(operation.expiry).to.equal(expiry);
-                    operation.setCompletionBlock(currentUserID, nil);
-                    return YES;
-                }]]);
+            OCMExpect([container addOperation:[OCMArg checkWithBlock:^BOOL(SKYSetDisableUserOperation *operation) {
+                                     expect(operation.userID).to.equal(currentUserID);
+                                     expect(operation.disabled).to.equal(@YES);
+                                     expect(operation.message).to.equal(@"reason");
+                                     expect(operation.expiry).to.equal(expiry);
+                                     operation.setCompletionBlock(currentUserID, nil);
+                                     return YES;
+                                 }]]);
 
             waitUntil(^(DoneCallback done) {
                 [auth adminDisableUserWithUserID:currentUserID
                                          message:@"reason"
                                           expiry:expiry
-                                      completion:^(NSString *_Nonnull userID,
-                                                   NSError *_Nullable error) {
+                                      completion:^(NSString *_Nonnull userID, NSError *_Nullable error) {
                                           expect(userID).to.equal(currentUserID);
                                           expect(error).to.beNil();
                                           done();

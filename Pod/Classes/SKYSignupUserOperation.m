@@ -42,9 +42,7 @@
     return [[self alloc] initWithAnonymousUser];
 }
 
-- (instancetype)initWithAuthData:(NSDictionary *)authData
-                        password:(NSString *)password
-                         profile:(NSDictionary *)profile
+- (instancetype)initWithAuthData:(NSDictionary *)authData password:(NSString *)password profile:(NSDictionary *)profile
 {
     if ((self = [super init])) {
         self.authData = authData;
@@ -114,9 +112,7 @@
     }
 }
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)user
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error
+- (void)handleAuthResponseWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken error:(NSError *)error
 {
     if (self.signupCompletionBlock) {
         self.signupCompletionBlock(user, accessToken, error);

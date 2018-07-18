@@ -71,11 +71,9 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 
 - (NSString *)description
 {
-    return
-        [NSString stringWithFormat:
-                      @"%@ <apsNotificationInfo = %@, gcmNotificationInfo = %@, desiredKeys = %@>",
-                      NSStringFromClass(self.class), self.apsNotificationInfo,
-                      self.gcmNotificationInfo, self.desiredKeys];
+    return [NSString stringWithFormat:@"%@ <apsNotificationInfo = %@, gcmNotificationInfo = %@, desiredKeys = %@>",
+                                      NSStringFromClass(self.class), self.apsNotificationInfo, self.gcmNotificationInfo,
+                                      self.desiredKeys];
 }
 
 @end

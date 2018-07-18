@@ -32,15 +32,12 @@ SpecBegin(SKYModifyRecordsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
-            record1 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
-            record2 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
-                            data:nil];
+            record1 = [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                                                     data:nil];
+            record2 = [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
+                                                     data:nil];
         });
 
         it(@"multiple record", ^{
@@ -79,9 +76,10 @@ SpecBegin(SKYModifyRecordsOperation)
             SKYModifyRecordsOperation *operation =
                 [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -99,24 +97,21 @@ SpecBegin(SKYModifyRecordsOperation)
                             }
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.modifyRecordsCompletionBlock =
-                    ^(NSArray *savedRecords, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([savedRecords class]).to.beSubclassOf([NSArray class]);
-                            expect(savedRecords).to.haveCountOf(2);
-                            expect([savedRecords[0] recordID]).to.equal(record1.recordID);
-                            expect([savedRecords[1] recordID]).to.equal(record2.recordID);
-                            done();
-                        });
-                    };
+                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect([savedRecords class]).to.beSubclassOf([NSArray class]);
+                        expect(savedRecords).to.haveCountOf(2);
+                        expect([savedRecords[0] recordID]).to.equal(record1.recordID);
+                        expect([savedRecords[1] recordID]).to.equal(record2.recordID);
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
@@ -125,24 +120,22 @@ SpecBegin(SKYModifyRecordsOperation)
         it(@"pass error", ^{
             SKYModifyRecordsOperation *operation =
                 [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.modifyRecordsCompletionBlock =
-                    ^(NSArray *savedRecords, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
                 [database executeOperation:operation];
             });
         });
@@ -151,9 +144,10 @@ SpecBegin(SKYModifyRecordsOperation)
             SKYModifyRecordsOperation *operation =
                 [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -174,16 +168,13 @@ SpecBegin(SKYModifyRecordsOperation)
                             }
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remainingRecordIDs =
-                    [@[ record1.recordID, record2.recordID ] mutableCopy];
+                NSMutableArray *remainingRecordIDs = [@[ record1.recordID, record2.recordID ] mutableCopy];
 
                 operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
                     if ([record.recordID isEqual:record1.recordID]) {
@@ -199,8 +190,7 @@ SpecBegin(SKYModifyRecordsOperation)
                     [remainingRecordIDs removeObject:record.recordID];
                 };
 
-                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords,
-                                                           NSError *operationError) {
+                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(savedRecords).to.haveCountOf(1);
                         expect(remainingRecordIDs).to.haveCountOf(0);
@@ -210,8 +200,7 @@ SpecBegin(SKYModifyRecordsOperation)
                         NSError *perRecordError =
                             operationError.userInfo[SKYPartialErrorsByItemIDKey][record2.recordID];
                         expect([perRecordError class]).to.beSubclassOf([NSError class]);
-                        expect(perRecordError.userInfo[SKYErrorNameKey])
-                            .to.equal(@"ResourceNotFound");
+                        expect(perRecordError.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
                         expect(perRecordError.code).to.equal(SKYErrorResourceNotFound);
                         expect(perRecordError.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
                         done();
@@ -225,9 +214,10 @@ SpecBegin(SKYModifyRecordsOperation)
         it(@"bug: server return write not allowed", ^{
             SKYModifyRecordsOperation *operation =
                 [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *data = @{
                         @"result" : @{
@@ -235,19 +225,16 @@ SpecBegin(SKYModifyRecordsOperation)
                             @"message" : @"invalid request: write is not allowed",
                         }
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:data
-                                                            statusCode:401
-                                                               headers:@{}];
+                    return [OHHTTPStubsResponse responseWithJSONObject:data statusCode:401 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.modifyRecordsCompletionBlock =
-                    ^(NSArray *savedRecords, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
                 [database executeOperation:operation];
             });
         });

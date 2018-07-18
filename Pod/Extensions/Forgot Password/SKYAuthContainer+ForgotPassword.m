@@ -43,8 +43,8 @@
 - (void)verifyUserWithCode:(NSString *)code
                 completion:(SKYContainerUserOperationActionCompletion _Nullable)completionBlock
 {
-    SKYLambdaOperation *operation = [[SKYLambdaOperation alloc] initWithAction:@"user:verify_code"
-                                                           dictionaryArguments:@{@"code" : code}];
+    SKYLambdaOperation *operation =
+        [[SKYLambdaOperation alloc] initWithAction:@"user:verify_code" dictionaryArguments:@{@"code" : code}];
 
     operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
         if (error != nil) {
@@ -66,9 +66,8 @@
 
 - (void)requestVerification:(NSString *)recordKey completion:(void (^)(NSError *))completionBlock
 {
-    SKYLambdaOperation *operation =
-        [[SKYLambdaOperation alloc] initWithAction:@"user:verify_request"
-                               dictionaryArguments:@{@"record_key" : recordKey}];
+    SKYLambdaOperation *operation = [[SKYLambdaOperation alloc] initWithAction:@"user:verify_request"
+                                                           dictionaryArguments:@{@"record_key" : recordKey}];
 
     operation.lambdaCompletionBlock = ^(NSDictionary *result, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

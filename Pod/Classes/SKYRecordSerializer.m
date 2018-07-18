@@ -44,8 +44,7 @@
     payload[SKYRecordSerializationRecordTypeKey] = @"record";
 
     if (record.creationDate) {
-        payload[SKYRecordSerializationRecordCreatedAtKey] =
-            [SKYDataSerialization stringFromDate:record.creationDate];
+        payload[SKYRecordSerializationRecordCreatedAtKey] = [SKYDataSerialization stringFromDate:record.creationDate];
     }
 
     if (record.creatorUserRecordID.length) {
@@ -97,9 +96,7 @@
 
 - (NSData *)JSONDataWithRecord:(SKYRecord *)record error:(NSError *__autoreleasing *)error
 {
-    return [NSJSONSerialization dataWithJSONObject:[self dictionaryWithRecord:record]
-                                           options:0
-                                             error:error];
+    return [NSJSONSerialization dataWithJSONObject:[self dictionaryWithRecord:record] options:0 error:error];
 }
 
 @end

@@ -76,8 +76,7 @@
 
 - (SKYRecordID *)recordIDWithResultItem:(NSDictionary *)item error:(NSError **)error
 {
-    SKYRecordID *recordID =
-        [SKYRecordID recordIDWithCanonicalString:item[SKYRecordSerializationRecordIDKey]];
+    SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:item[SKYRecordSerializationRecordIDKey]];
 
     if (!recordID) {
         if (error) {
@@ -112,8 +111,8 @@
 {
     if (!responseArray) {
         if (error) {
-            *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                              message:@"Result is not an array or not exists."];
+            *error =
+                [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
         }
         return nil;
     }

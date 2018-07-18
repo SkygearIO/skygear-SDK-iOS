@@ -44,14 +44,12 @@
 // override
 - (void)prepareForRequest
 {
-    NSMutableArray<NSString *> *roleNames =
-        [[NSMutableArray alloc] initWithCapacity:self.roles.count];
+    NSMutableArray<NSString *> *roleNames = [[NSMutableArray alloc] initWithCapacity:self.roles.count];
     [self.roles enumerateObjectsUsingBlock:^(SKYRole *obj, NSUInteger idx, BOOL *stop) {
         [roleNames addObject:obj.name];
     }];
 
-    self.request =
-        [[SKYRequest alloc] initWithAction:@"role:admin" payload:@{@"roles" : roleNames}];
+    self.request = [[SKYRequest alloc] initWithAction:@"role:admin" payload:@{@"roles" : roleNames}];
 }
 
 // override

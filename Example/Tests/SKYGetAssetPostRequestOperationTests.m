@@ -32,13 +32,11 @@ SpecBegin(SKYGetAssetPostRequestOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"Test-User-ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"Test-Access-Token"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"Test-Access-Token"]];
 
-            asset = [SKYAsset
-                assetWithName:@"boy.txt"
-                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                                  options:0]];
+            asset =
+                [SKYAsset assetWithName:@"boy.txt"
+                                   data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]];
             asset.mimeType = @"text/plain";
         });
 
@@ -47,8 +45,7 @@ SpecBegin(SKYGetAssetPostRequestOperation)
         });
 
         it(@"makes request correctly", ^{
-            SKYGetAssetPostRequestOperation *operation =
-                [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+            SKYGetAssetPostRequestOperation *operation = [SKYGetAssetPostRequestOperation operationWithAsset:asset];
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
 
@@ -65,9 +62,10 @@ SpecBegin(SKYGetAssetPostRequestOperation)
         });
 
         it(@"handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                     NSMutableDictionary *responseDict = [[NSMutableDictionary alloc] init];
                     responseDict[@"result"] = @{
@@ -81,30 +79,24 @@ SpecBegin(SKYGetAssetPostRequestOperation)
                         @"post-request" : @{
                             @"action" : @"http://asset.skygear.dev/dev/"
                                         @"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt",
-                            @"extra-fields" : @{
-                                @"X-Extra-Field-1" : @"extra-value-1",
-                                @"X-Extra-Field-2" : @"extra-value-2"
-                            }
+                            @"extra-fields" :
+                                @{@"X-Extra-Field-1" : @"extra-value-1", @"X-Extra-Field-2" : @"extra-value-2"}
                         }
                     };
 
-                    return [OHHTTPStubsResponse responseWithJSONObject:responseDict
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:responseDict statusCode:200 headers:nil];
                 }];
 
-            SKYGetAssetPostRequestOperation *operation =
-                [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+            SKYGetAssetPostRequestOperation *operation = [SKYGetAssetPostRequestOperation operationWithAsset:asset];
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
                 operation.getAssetPostRequestCompletionBlock =
-                    ^(SKYAsset *asset, NSURL *postURL,
-                      NSDictionary<NSString *, NSObject *> *extraFields, NSError *operationError) {
+                    ^(SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+                      NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(asset).notTo.beNil();
-                            expect(asset.name)
-                                .to.equal(@"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt");
+                            expect(asset.name).to.equal(@"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt");
 
                             expect(postURL).notTo.beNil();
                             expect(postURL.absoluteString)
@@ -125,24 +117,22 @@ SpecBegin(SKYGetAssetPostRequestOperation)
         });
 
         it(@"handle error response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
-            SKYGetAssetPostRequestOperation *operation =
-                [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+            SKYGetAssetPostRequestOperation *operation = [SKYGetAssetPostRequestOperation operationWithAsset:asset];
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
                 operation.getAssetPostRequestCompletionBlock =
-                    ^(SKYAsset *asset, NSURL *postURL,
-                      NSDictionary<NSString *, NSObject *> *extraFields, NSError *operationError) {
+                    ^(SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
+                      NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(operationError).notTo.beNil();
                             done();

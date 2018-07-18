@@ -66,8 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  called
  when progress information is available.
  */
-@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (SKYRecordID *_Nullable recordID, double progress);
+@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)(SKYRecordID *_Nullable recordID, double progress);
 
 /**
  Sets or returns a block to be called when a record fetch operation completes for a <SKYRecordID>.

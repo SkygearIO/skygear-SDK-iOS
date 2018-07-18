@@ -43,8 +43,7 @@ SpecBegin(SKYSendPushNotificationOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"send to device", ^{
@@ -82,9 +81,9 @@ SpecBegin(SKYSendPushNotificationOperation)
         });
 
         it(@"send multiple", ^{
-            SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
-                operationWithNotificationInfo:notificationInfo
-                                userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+            SKYSendPushNotificationOperation *operation =
+                [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
+                                                                  userIDsToSend:@[ @"johndoe", @"janedoe" ]];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
 
@@ -99,10 +98,10 @@ SpecBegin(SKYSendPushNotificationOperation)
         });
 
         it(@"topic", ^{
-            SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
-                operationWithNotificationInfo:notificationInfo
-                                userIDsToSend:@[ @"johndoe" ]
-                                        topic:@"io.skygear.example"];
+            SKYSendPushNotificationOperation *operation =
+                [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
+                                                                  userIDsToSend:@[ @"johndoe" ]
+                                                                          topic:@"io.skygear.example"];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
 
@@ -118,14 +117,15 @@ SpecBegin(SKYSendPushNotificationOperation)
         });
 
         it(@"make request", ^{
-            SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
-                operationWithNotificationInfo:notificationInfo
-                                userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+            SKYSendPushNotificationOperation *operation =
+                [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
+                                                                  userIDsToSend:@[ @"johndoe", @"janedoe" ]];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -139,11 +139,9 @@ SpecBegin(SKYSendPushNotificationOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -171,18 +169,17 @@ SpecBegin(SKYSendPushNotificationOperation)
         });
 
         it(@"pass error", ^{
-            SKYSendPushNotificationOperation *operation = [SKYSendPushNotificationOperation
-                operationWithNotificationInfo:notificationInfo
-                                userIDsToSend:@[ @"johndoe", @"janedoe" ]];
+            SKYSendPushNotificationOperation *operation =
+                [SKYSendPushNotificationOperation operationWithNotificationInfo:notificationInfo
+                                                                  userIDsToSend:@[ @"johndoe", @"janedoe" ]];
             operation.container = container;
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {

@@ -29,13 +29,11 @@ SpecBegin(SKYLoginCustomTokenOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make SKYRequest with custom token", ^{
-            SKYLoginCustomTokenOperation *operation =
-                [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
+            SKYLoginCustomTokenOperation *operation = [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -47,12 +45,12 @@ SpecBegin(SKYLoginCustomTokenOperation)
         });
 
         it(@"make request", ^{
-            SKYLoginCustomTokenOperation *operation =
-                [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
+            SKYLoginCustomTokenOperation *operation = [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"user_id" : @"UUID",
@@ -63,51 +61,44 @@ SpecBegin(SKYLoginCustomTokenOperation)
                         },
                     };
                     NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
-                                                        options:0
-                                                          error:nil];
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters} options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.loginCompletionBlock =
-                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.recordID.recordType).to.equal(@"user");
-                            expect(user.recordID.recordName).to.equal(@"UUID");
-                            expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-                            expect(error).to.beNil();
-                            done();
-                        });
-                    };
+                operation.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(user.recordID.recordType).to.equal(@"user");
+                        expect(user.recordID.recordName).to.equal(@"UUID");
+                        expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+                        expect(error).to.beNil();
+                        done();
+                    });
+                };
 
                 [container addOperation:operation];
             });
         });
 
         it(@"pass error", ^{
-            SKYLoginCustomTokenOperation *operation =
-                [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            SKYLoginCustomTokenOperation *operation = [SKYLoginCustomTokenOperation operationWithCustomToken:@"eyXXX"];
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.loginCompletionBlock =
-                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(error).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(error).toNot.beNil();
+                        done();
+                    });
+                };
                 [container addOperation:operation];
             });
         });
@@ -115,7 +106,6 @@ SpecBegin(SKYLoginCustomTokenOperation)
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });
-
     });
 
 SpecEnd

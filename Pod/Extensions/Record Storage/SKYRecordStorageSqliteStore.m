@@ -73,8 +73,7 @@
             return;
         }
 
-        NSLog(
-            @"RecordStorage backing store will purge changes that have successfully synchronized.");
+        NSLog(@"RecordStorage backing store will purge changes that have successfully synchronized.");
         success = [self _purgeFinishedChangesWithError:&error];
         if (!success) {
             NSLog(@"There was an error purging finished changes: %@", error);
@@ -188,13 +187,10 @@
 
 #pragma mark -
 
-- (BOOL)_updatePermanentRowWithRecordID:(SKYRecordID *)recordID
-                           overlayRowID:(int64_t)newRowID
-                                  error:(NSError **)error
+- (BOOL)_updatePermanentRowWithRecordID:(SKYRecordID *)recordID overlayRowID:(int64_t)newRowID error:(NSError **)error
 {
     NSString *recordType = recordID.recordType;
-    NSString *stmt = [NSString
-        stringWithFormat:@"UPDATE %@ SET overlay_id=? WHERE name=? AND local=0", recordType];
+    NSString *stmt = [NSString stringWithFormat:@"UPDATE %@ SET overlay_id=? WHERE name=? AND local=0", recordType];
     BOOL success = [_db executeUpdate:stmt, newRowID ? @(newRowID) : 0, recordID.recordName];
     if (!success && error) {
         *error = [_db lastError];
@@ -202,15 +198,12 @@
     return success;
 }
 
-- (BOOL)_deleteAllRowsWithRecordID:(SKYRecordID *)recordID
-                         localOnly:(BOOL)localOnly
-                             error:(NSError **)error
+- (BOOL)_deleteAllRowsWithRecordID:(SKYRecordID *)recordID localOnly:(BOOL)localOnly error:(NSError **)error
 {
     NSString *recordType = recordID.recordType;
     BOOL success;
     if (localOnly) {
-        NSString *stmt =
-            [NSString stringWithFormat:@"DELETE FROM %@ WHERE name=? AND local=?;", recordType];
+        NSString *stmt = [NSString stringWithFormat:@"DELETE FROM %@ WHERE name=? AND local=?;", recordType];
 
         success = [_db executeUpdate:stmt, recordID.recordName, @(localOnly)];
     } else {
@@ -234,19 +227,15 @@
     NSAssert(record || deleted, @"Must supply either record object or set deleted to YES.");
 
     NSString *recordType = recordID.recordType;
-    NSString *stmt =
-        [NSString stringWithFormat:@"SELECT * from %@ WHERE name = ? AND local = ?", recordType];
+    NSString *stmt = [NSString stringWithFormat:@"SELECT * from %@ WHERE name = ? AND local = ?", recordType];
     FMResultSet *s = [_db executeQuery:stmt, recordID.recordName, @(local)];
     BOOL success;
     if ([s next]) {
-        NSString *updateStmt =
-            [NSString stringWithFormat:@"UPDATE %@ SET json=?, deleted=?, local=?, overlay_id=?"
-                                        "WHERE id=?",
-                                       recordType];
-        success =
-            [_db executeUpdate:updateStmt,
-                               record ? [_serializer JSONDataWithRecord:record error:nil] : nil,
-                               @(deleted), @(local), nil, @([s intForColumn:@"id"])];
+        NSString *updateStmt = [NSString stringWithFormat:@"UPDATE %@ SET json=?, deleted=?, local=?, overlay_id=?"
+                                                           "WHERE id=?",
+                                                          recordType];
+        success = [_db executeUpdate:updateStmt, record ? [_serializer JSONDataWithRecord:record error:nil] : nil,
+                                     @(deleted), @(local), nil, @([s intForColumn:@"id"])];
         if (!success && error) {
             *error = [_db lastError];
         }
@@ -257,12 +246,9 @@
                                                           recordType];
         success =
             [_db executeUpdate:insertStmt, recordID.recordName,
-                               record ? [_serializer JSONDataWithRecord:record error:nil] : nil,
-                               @(deleted), @(local)];
+                               record ? [_serializer JSONDataWithRecord:record error:nil] : nil, @(deleted), @(local)];
         if (success && local) {
-            success = [self _updatePermanentRowWithRecordID:recordID
-                                               overlayRowID:[_db lastInsertRowId]
-                                                      error:error];
+            success = [self _updatePermanentRowWithRecordID:recordID overlayRowID:[_db lastInsertRowId] error:error];
         } else if (!success && error) {
             *error = [_db lastError];
         }
@@ -278,11 +264,7 @@
     [self beginTransactionIfNotAlready];
 
     [self _deleteAllRowsWithRecordID:record.recordID localOnly:YES error:nil];
-    [self _createOrUpdateRowWithRecordID:record.recordID
-                                  record:record
-                                 deleted:NO
-                                   local:NO
-                                   error:nil];
+    [self _createOrUpdateRowWithRecordID:record.recordID record:record deleted:NO local:NO error:nil];
 }
 
 - (void)saveRecordLocally:(SKYRecord *)record
@@ -292,11 +274,7 @@
 
     [self beginTransactionIfNotAlready];
 
-    [self _createOrUpdateRowWithRecordID:record.recordID
-                                  record:record
-                                 deleted:NO
-                                   local:YES
-                                   error:nil];
+    [self _createOrUpdateRowWithRecordID:record.recordID record:record deleted:NO local:YES error:nil];
 }
 
 - (void)deleteRecord:(SKYRecord *)record
@@ -345,10 +323,9 @@
         return nil;
     }
 
-    NSString *stmt =
-        [NSString stringWithFormat:@"SELECT id, json FROM %@ "
-                                    "WHERE name=? AND overlay_id IS NULL AND deleted=0;",
-                                   recordType];
+    NSString *stmt = [NSString stringWithFormat:@"SELECT id, json FROM %@ "
+                                                 "WHERE name=? AND overlay_id IS NULL AND deleted=0;",
+                                                recordType];
 
     FMResultSet *s = [_db executeQuery:stmt, recordID.recordName];
     if ([s next]) {
@@ -358,8 +335,8 @@
             SKYRecord *record = [_deserializer recordWithDictionary:json];
             return record;
         } else {
-            NSLog(@"%@: Record row %d (Record ID: %@) has empty json data.", self,
-                  [s intForColumn:@"id"], recordID.canonicalString);
+            NSLog(@"%@: Record row %d (Record ID: %@) has empty json data.", self, [s intForColumn:@"id"],
+                  recordID.canonicalString);
             return nil;
         }
     } else {
@@ -374,10 +351,9 @@
         return NO;
     }
 
-    NSString *stmt =
-        [NSString stringWithFormat:@"SELECT count(*) FROM %@ "
-                                    "WHERE name=? AND overlay_id IS NULL AND deleted=0;",
-                                   recordType];
+    NSString *stmt = [NSString stringWithFormat:@"SELECT count(*) FROM %@ "
+                                                 "WHERE name=? AND overlay_id IS NULL AND deleted=0;",
+                                                recordType];
 
     FMResultSet *s = [_db executeQuery:stmt, recordType, recordID.recordName];
     if ([s next]) {
@@ -400,8 +376,7 @@
     FMResultSet *s = [_db executeQuery:stmt];
     NSMutableArray *result = [[NSMutableArray alloc] init];
     while ([s next]) {
-        SKYRecordID *recordID =
-            [[SKYRecordID alloc] initWithRecordType:recordType name:[s stringForColumnIndex:0]];
+        SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:recordType name:[s stringForColumnIndex:0]];
         [result addObject:recordID];
     }
     return result;
@@ -413,13 +388,9 @@
         return;
     }
 
-    [[self allRecordTypes]
-        enumerateObjectsUsingBlock:^(NSString *recordType, NSUInteger idx, BOOL *stop) {
-            [self enumerateRecordsWithType:recordType
-                                 predicate:nil
-                           sortDescriptors:nil
-                                usingBlock:block];
-        }];
+    [[self allRecordTypes] enumerateObjectsUsingBlock:^(NSString *recordType, NSUInteger idx, BOOL *stop) {
+        [self enumerateRecordsWithType:recordType predicate:nil sortDescriptors:nil usingBlock:block];
+    }];
 }
 
 - (void)enumerateRecordsWithType:(NSString *)recordType
@@ -458,8 +429,8 @@
                 return;
             }
         } else {
-            NSLog(@"%@: Record row %d (Record ID: %@/%@) has empty json data.", self,
-                  [s intForColumn:@"id"], recordType, [s stringForColumn:@"name"]);
+            NSLog(@"%@: Record row %d (Record ID: %@/%@) has empty json data.", self, [s intForColumn:@"id"],
+                  recordType, [s stringForColumn:@"name"]);
         }
     }
 
@@ -499,19 +470,16 @@
 
     NSData *attributesData = nil;
     if (change.attributesToSave) {
-        attributesData = [NSJSONSerialization
-            dataWithJSONObject:[SKYDataSerialization serializeObject:change.attributesToSave]
-                       options:0
-                         error:nil];
+        attributesData =
+            [NSJSONSerialization dataWithJSONObject:[SKYDataSerialization serializeObject:change.attributesToSave]
+                                            options:0
+                                              error:nil];
     }
 
-    BOOL success __attribute__((unused)) =
-        [_db executeUpdate:stmt, change.recordID.canonicalString, attributesData,
-                           [NSNumber numberWithInt:change.action],
-                           [NSNumber numberWithBool:change.finished],
-                           [NSNumber numberWithInt:change.resolveMethod],
-                           change.error ? [NSKeyedArchiver archivedDataWithRootObject:change.error]
-                                        : nil];
+    BOOL success __attribute__((unused)) = [_db
+        executeUpdate:stmt, change.recordID.canonicalString, attributesData, [NSNumber numberWithInt:change.action],
+                      [NSNumber numberWithBool:change.finished], [NSNumber numberWithInt:change.resolveMethod],
+                      change.error ? [NSKeyedArchiver archivedDataWithRootObject:change.error] : nil];
     NSAssert(success, @"handle insert failure not implemented");
 
     [self synchronize];
@@ -523,8 +491,7 @@
 
     NSString *stmt = @"DELETE FROM _pendingChanges WHERE recordID = ?";
 
-    BOOL success __attribute__((unused)) =
-        [_db executeUpdate:stmt, change.recordID.canonicalString];
+    BOOL success __attribute__((unused)) = [_db executeUpdate:stmt, change.recordID.canonicalString];
     NSAssert(success, @"handle delete failure not implemented");
 
     [self synchronize];
@@ -549,8 +516,7 @@
     NSString *stmt = @"UPDATE _pendingChanges SET finished=?, error=? WHERE recordID = ?";
 
     BOOL success =
-        [_db executeUpdate:stmt, @(finished),
-                           error ? [NSKeyedArchiver archivedDataWithRootObject:error] : nil,
+        [_db executeUpdate:stmt, @(finished), error ? [NSKeyedArchiver archivedDataWithRootObject:error] : nil,
                            change.recordID.canonicalString];
     if (!success && databaseError) {
         *databaseError = [_db lastError];
@@ -573,19 +539,16 @@
     NSDictionary *attributesToSave = [NSDictionary dictionary];
     NSData *attributesToSaveData = [s dataForColumn:@"attributesToSave"];
     if (attributesToSaveData) {
-        id deserializedValue =
-            [NSJSONSerialization JSONObjectWithData:attributesToSaveData options:0 error:nil];
+        id deserializedValue = [NSJSONSerialization JSONObjectWithData:attributesToSaveData options:0 error:nil];
         attributesToSave = [SKYDataSerialization deserializeObjectWithValue:deserializedValue];
     }
 
     // Create SKYRecordChange from columns
-    SKYRecordID *recordID =
-        [[SKYRecordID alloc] initWithCanonicalString:[s stringForColumn:@"recordID"]];
-    SKYRecordChange *change =
-        [[SKYRecordChange alloc] initWithRecordID:recordID
-                                           action:[s intForColumn:@"action"]
-                                    resolveMethod:[s intForColumn:@"resolveMethod"]
-                                 attributesToSave:attributesToSave];
+    SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:[s stringForColumn:@"recordID"]];
+    SKYRecordChange *change = [[SKYRecordChange alloc] initWithRecordID:recordID
+                                                                 action:[s intForColumn:@"action"]
+                                                          resolveMethod:[s intForColumn:@"resolveMethod"]
+                                                       attributesToSave:attributesToSave];
     change.finished = [s boolForColumn:@"finished"];
     if ([s dataForColumn:@"error"]) {
         change.error = [NSKeyedUnarchiver unarchiveObjectWithData:[s dataForColumn:@"error"]];

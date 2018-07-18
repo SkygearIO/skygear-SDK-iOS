@@ -38,8 +38,7 @@
 
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload =
-        [[NSMutableDictionary alloc] initWithDictionary:@{@"filename" : self.asset.name}];
+    NSMutableDictionary *payload = [[NSMutableDictionary alloc] initWithDictionary:@{@"filename" : self.asset.name}];
 
     if (self.asset.mimeType.length > 0) {
         [payload setObject:self.asset.mimeType forKey:@"content-type"];
@@ -79,8 +78,7 @@
     NSURL *postURL = [NSURL URLWithString:rawPostRequest[@"action"]];
 
     if (postURL.scheme == nil) {
-        postURL = [NSURL URLWithString:rawPostRequest[@"action"]
-                         relativeToURL:self.container.endPointAddress];
+        postURL = [NSURL URLWithString:rawPostRequest[@"action"] relativeToURL:self.container.endPointAddress];
     }
 
     if (self.getAssetPostRequestCompletionBlock) {

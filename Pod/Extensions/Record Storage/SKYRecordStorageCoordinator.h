@@ -58,8 +58,7 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
 /**
  Sets or returns whether registered <SKYRecordStorage> are auto-purged on user login or logout.
  */
-@property (nonatomic, readwrite, getter=isPurgeStoragesOnCurrentUserChanges)
-    BOOL purgeStoragesOnCurrentUserChanges;
+@property (nonatomic, readwrite, getter=isPurgeStoragesOnCurrentUserChanges) BOOL purgeStoragesOnCurrentUserChanges;
 
 /**
  Returns the singleton instance of <SKYRecordStorageCoordinator>.
@@ -82,8 +81,7 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
  */
 - (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
                                                    query:(SKYQuery *_Nullable)query
-                                                 options:(NSDictionary *_Nullable)options
-    __deprecated;
+                                                 options:(NSDictionary *_Nullable)options __deprecated;
 /// Undocumented
 - (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
                                                    query:(SKYQuery *_Nullable)query
@@ -91,8 +89,7 @@ extern NSString *const SKYRecordStorageCoordinatorFilePath;
                                                    error:(NSError **_Nullable)error;
 /// Undocumented
 - (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
-                                                 options:(NSDictionary *_Nullable)options
-    __deprecated;
+                                                 options:(NSDictionary *_Nullable)options __deprecated;
 /// Undocumented
 - (SKYRecordStorage *_Nullable)recordStorageWithDatabase:(SKYDatabase *)database
                                                  options:(NSDictionary *_Nullable)options

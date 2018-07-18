@@ -36,8 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readwrite) SKYAsset *asset;
 
 /// Undocumented
-@property (nonatomic, copy) void (^_Nullable uploadAssetProgressBlock)
-    (SKYAsset *asset, double progress);
+@property (nonatomic, copy) void (^_Nullable uploadAssetProgressBlock)(SKYAsset *asset, double progress);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable uploadAssetCompletionBlock)
     (SKYAsset *_Nullable asset, NSError *_Nullable operationError);

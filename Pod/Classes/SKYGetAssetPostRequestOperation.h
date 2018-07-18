@@ -37,9 +37,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable getAssetPostRequestCompletionBlock)
-    (SKYAsset *_Nullable asset, NSURL *_Nullable postURL,
-     NSDictionary<NSString *, NSObject *> *_Nullable extraFields, NSError *_Nullable operationError)
-        ;
+    (SKYAsset *_Nullable asset, NSURL *_Nullable postURL, NSDictionary<NSString *, NSObject *> *_Nullable extraFields,
+     NSError *_Nullable operationError);
 
 @end
 

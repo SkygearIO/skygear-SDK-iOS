@@ -21,16 +21,14 @@
 
 @implementation SKYRevokeUserRoleOperation
 
-+ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs
-                           roleNames:(NSArray<NSString *> *)roleNames
++ (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs roleNames:(NSArray<NSString *> *)roleNames
 {
     return [[self alloc] initWithUserIDs:userIDs roleNames:roleNames completionBlock:nil];
 }
 
 - (instancetype)initWithUserIDs:(NSArray<NSString *> *)userIDs
                       roleNames:(NSArray<NSString *> *)roleNames
-                completionBlock:
-                    (void (^)(NSArray<NSString *> *users, NSError *error))completionBlock
+                completionBlock:(void (^)(NSArray<NSString *> *users, NSError *error))completionBlock
 {
     self = [super init];
     if (self) {

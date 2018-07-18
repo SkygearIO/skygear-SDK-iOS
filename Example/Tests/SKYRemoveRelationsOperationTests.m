@@ -31,8 +31,7 @@ SpecBegin(SKYRemoveRelationsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID = @"user1001";
             follower1 = [SKYRecord recordWithRecordType:@"user" name:userRecordID];
             userRecordID = @"user1002";
@@ -41,8 +40,7 @@ SpecBegin(SKYRemoveRelationsOperation)
 
         it(@"multiple relations", ^{
             SKYRemoveRelationsOperation *operation =
-                [SKYRemoveRelationsOperation operationWithType:@"follow"
-                                                 usersToRemove:@[ follower1, follower2 ]];
+                [SKYRemoveRelationsOperation operationWithType:@"follow" usersToRemove:@[ follower1, follower2 ]];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -58,12 +56,12 @@ SpecBegin(SKYRemoveRelationsOperation)
 
         it(@"make request", ^{
             SKYRemoveRelationsOperation *operation =
-                [SKYRemoveRelationsOperation operationWithType:@"follow"
-                                                 usersToRemove:@[ follower1, follower2 ]];
+                [SKYRemoveRelationsOperation operationWithType:@"follow" usersToRemove:@[ follower1, follower2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -81,24 +79,21 @@ SpecBegin(SKYRemoveRelationsOperation)
                             }
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.removeRelationsCompletionBlock =
-                    ^(NSArray *deletedUserIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([deletedUserIDs class]).to.beSubclassOf([NSArray class]);
-                            expect(deletedUserIDs).to.haveCountOf(1);
-                            expect(deletedUserIDs[0]).to.equal(follower1.recordID.recordName);
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.removeRelationsCompletionBlock = ^(NSArray *deletedUserIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect([deletedUserIDs class]).to.beSubclassOf([NSArray class]);
+                        expect(deletedUserIDs).to.haveCountOf(1);
+                        expect(deletedUserIDs[0]).to.equal(follower1.recordID.recordName);
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
 
                 [container addOperation:operation];
             });

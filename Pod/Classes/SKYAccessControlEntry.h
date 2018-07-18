@@ -76,8 +76,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel);
 - (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
                                role:(SKYRole *)role NS_DESIGNATED_INITIALIZER;
 /// Undocumented
-- (instancetype)initWithPublicAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithPublicAccessLevel:(SKYAccessControlEntryLevel)accessLevel NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 @property (nonatomic, readonly, assign) SKYAccessControlEntryType entryType;

@@ -63,8 +63,8 @@
 // override
 - (void)prepareForRequest
 {
-    NSMutableDictionary *payload = [NSMutableDictionary
-        dictionaryWithObjectsAndKeys:self.userID, @"auth_id", @(self.disabled), @"disabled", nil];
+    NSMutableDictionary *payload =
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:self.userID, @"auth_id", @(self.disabled), @"disabled", nil];
     if (self.message) {
         [payload setObject:self.message forKey:@"message"];
     }

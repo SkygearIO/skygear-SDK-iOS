@@ -31,8 +31,7 @@
 
 NSString *const SKYVersion = SKY_VERSION;
 
-NSString *const SKYContainerDidChangeCurrentUserNotification =
-    @"SKYContainerDidChangeCurrentUserNotification";
+NSString *const SKYContainerDidChangeCurrentUserNotification = @"SKYContainerDidChangeCurrentUserNotification";
 
 @implementation SKYContainer {
     SKYPublicDatabase *_publicCloudDatabase;
@@ -55,8 +54,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
         _operationQueue.name = @"SKYContainerOperationQueue";
 
         _auth = [[SKYAuthContainer alloc] initWithContainer:self];
-        _publicCloudDatabase =
-            [[SKYPublicDatabase alloc] initWithContainer:self databaseID:@"_public"];
+        _publicCloudDatabase = [[SKYPublicDatabase alloc] initWithContainer:self databaseID:@"_public"];
         _privateCloudDatabase = [[SKYDatabase alloc] initWithContainer:self databaseID:@"_private"];
         _pubsub = [[SKYPubsubContainer alloc] initWithContainer:self];
         _push = [[SKYPushContainer alloc] initWithContainer:self];
@@ -108,9 +106,8 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     if (APIKey != nil && ![APIKey isKindOfClass:[NSString class]]) {
         @throw [NSException
             exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:
-                                            @"APIKey must be a subclass of NSString. %@ given.",
-                                            NSStringFromClass([APIKey class])]
+                       reason:[NSString stringWithFormat:@"APIKey must be a subclass of NSString. %@ given.",
+                                                         NSStringFromClass([APIKey class])]
                      userInfo:nil];
     }
     [self willChangeValueForKey:@"applicationIdentifier"];
@@ -131,10 +128,8 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     static BOOL warnedOnce;
 
     if (!_endPointAddress && !warnedOnce) {
-        NSLog(
-            @"Warning: Container is not configured with an endpoint address. Please call -[%@ %@].",
-            NSStringFromClass([SKYContainer class]),
-            NSStringFromSelector(@selector(configAddress:)));
+        NSLog(@"Warning: Container is not configured with an endpoint address. Please call -[%@ %@].",
+              NSStringFromClass([SKYContainer class]), NSStringFromSelector(@selector(configAddress:)));
         warnedOnce = YES;
     }
     return _endPointAddress;
@@ -146,8 +141,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
     if (!_APIKey && !warnedOnce) {
         NSLog(@"Warning: Container is not configured with an API key. Please call -[%@ %@].",
-              NSStringFromClass([SKYContainer class]),
-              NSStringFromSelector(@selector(configureWithAPIKey:)));
+              NSStringFromClass([SKYContainer class]), NSStringFromSelector(@selector(configureWithAPIKey:)));
         warnedOnce = YES;
     }
     return _APIKey;
@@ -179,9 +173,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     [self callLambda:action arguments:arguments completion:completionHandler];
 }
 
-- (void)callLambda:(NSString *)action
-         arguments:(id)arguments
-        completion:(void (^)(id, NSError *))completion
+- (void)callLambda:(NSString *)action arguments:(id)arguments completion:(void (^)(id, NSError *))completion
 {
     dispatch_group_t lambda_group = dispatch_group_create();
     __block NSError *lastError = nil;
@@ -204,11 +196,9 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
         SKYLambdaOperation *operation;
         if ([presavedArguments isKindOfClass:[NSArray class]]) {
-            operation =
-                [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:presavedArguments];
+            operation = [[SKYLambdaOperation alloc] initWithAction:action arrayArguments:presavedArguments];
         } else if ([presavedArguments isKindOfClass:[NSDictionary class]]) {
-            operation = [[SKYLambdaOperation alloc] initWithAction:action
-                                               dictionaryArguments:presavedArguments];
+            operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:presavedArguments];
         } else {
             operation = [[SKYLambdaOperation alloc] initWithAction:action dictionaryArguments:@{}];
         }

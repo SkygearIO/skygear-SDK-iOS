@@ -34,8 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 - (instancetype)initWithCanonicalString:(NSString *)canonicalString;
 /// Undocumented
-- (instancetype)initWithRecordType:(NSString *)type
-                              name:(NSString *_Nullable)recordName NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithRecordType:(NSString *)type name:(NSString *_Nullable)recordName NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 + (instancetype)recordIDWithRecordType:(NSString *)type;

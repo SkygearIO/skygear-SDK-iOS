@@ -84,8 +84,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return (self.entryType << 1 + self.accessLevel) ^ self.relation.hash ^ self.userID.hash;
 }
 
-- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                             userID:(NSString *)userID
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel userID:(NSString *)userID
 {
     self = [super init];
     if (self) {
@@ -98,8 +97,7 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     return self;
 }
 
-- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel
-                           relation:(SKYRelation *)relation
+- (instancetype)initWithAccessLevel:(SKYAccessControlEntryLevel)accessLevel relation:(SKYRelation *)relation
 {
     self = [super init];
     if (self) {
@@ -206,16 +204,13 @@ NSString *NSStringFromAccessControlEntryLevel(SKYAccessControlEntryLevel level)
     switch (entryType) {
         case SKYAccessControlEntryTypeRelation:
             return [self initWithAccessLevel:accessLevel
-                                    relation:[aDecoder decodeObjectOfClass:[SKYRelation class]
-                                                                    forKey:@"relation"]];
+                                    relation:[aDecoder decodeObjectOfClass:[SKYRelation class] forKey:@"relation"]];
         case SKYAccessControlEntryTypeDirect:
             return [self initWithAccessLevel:accessLevel
-                                      userID:[aDecoder decodeObjectOfClass:[NSString class]
-                                                                    forKey:@"userID"]];
+                                      userID:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"userID"]];
         case SKYAccessControlEntryTypeRole:
-            return [self
-                initWithAccessLevel:accessLevel
-                               role:[aDecoder decodeObjectOfClass:[SKYRole class] forKey:@"role"]];
+            return [self initWithAccessLevel:accessLevel
+                                        role:[aDecoder decodeObjectOfClass:[SKYRole class] forKey:@"role"]];
         case SKYAccessControlEntryTypePublic:
             return [self initWithPublicAccessLevel:accessLevel];
     }

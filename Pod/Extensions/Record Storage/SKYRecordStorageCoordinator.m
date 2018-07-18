@@ -45,8 +45,8 @@ NSString *base64urlEncodeUInteger(NSUInteger i)
 
 NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 {
-    return [NSString stringWithFormat:@"%@:%@", base64urlEncodeUInteger(userID.hash),
-                                      base64urlEncodeUInteger(query.hash)];
+    return
+        [NSString stringWithFormat:@"%@:%@", base64urlEncodeUInteger(userID.hash), base64urlEncodeUInteger(query.hash)];
 }
 
 @implementation SKYRecordStorageCoordinator {
@@ -82,11 +82,10 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
                                                  selector:@selector(containerDidRegisterDevice:)
                                                      name:SKYContainerDidRegisterDeviceNotification
                                                    object:container];
-        [[NSNotificationCenter defaultCenter]
-            addObserver:self
-               selector:@selector(containerDidChangeCurrentUser:)
-                   name:SKYContainerDidChangeCurrentUserNotification
-                 object:container];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(containerDidChangeCurrentUser:)
+                                                     name:SKYContainerDidChangeCurrentUserNotification
+                                                   object:container];
     }
     return self;
 }
@@ -100,8 +99,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 
 - (NSString *)storageCacheKeyWithRecordStorage:(SKYRecordStorage *)storage
 {
-    return [self storageCacheKeyWithDatabase:storage.synchronizer.database
-                                       query:storage.synchronizer.query];
+    return [self storageCacheKeyWithDatabase:storage.synchronizer.database query:storage.synchronizer.query];
 }
 
 - (NSArray *)registeredRecordStorages
@@ -112,8 +110,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 - (void)registerRecordStorage:(SKYRecordStorage *)recordStorage
 {
     [_registeredRecordStorages addObject:recordStorage];
-    [_cachedStorages setObject:recordStorage
-                        forKey:[self storageCacheKeyWithRecordStorage:recordStorage]];
+    [_cachedStorages setObject:recordStorage forKey:[self storageCacheKeyWithRecordStorage:recordStorage]];
     [self createSubscriptionWithRecordStorage:recordStorage];
 }
 
@@ -125,10 +122,9 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 
 - (void)forgetAllRecordStorages
 {
-    [_registeredRecordStorages
-        enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
-            [self forgetRecordStorage:obj];
-        }];
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+        [self forgetRecordStorage:obj];
+    }];
 }
 
 - (void)purgeRecordStorage:(SKYRecordStorage *)recordStorage
@@ -139,10 +135,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 
 - (SKYRecordStorage *)recordStorageForPrivateDatabase
 {
-    return [self recordStorageWithDatabase:_container.privateCloudDatabase
-                                     query:nil
-                                   options:nil
-                                     error:nil];
+    return [self recordStorageWithDatabase:_container.privateCloudDatabase query:nil options:nil error:nil];
 }
 
 - (id<SKYRecordStorageBackingStore>)_backingStoreWith:(SKYDatabase *)database
@@ -154,19 +147,16 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
     if (!storeName || [storeName isEqual:SKYRecordStorageCoordinatorSqliteStore]) {
         NSString *path = options[SKYRecordStorageCoordinatorFilePath];
         if (!path) {
-            NSString *cachePath =
-                NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+            NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
             NSString *dbName = [NSString
-                stringWithFormat:@"%@.db", storageFileBaseName(
-                                               database.container.auth.currentUserRecordID, query)];
+                stringWithFormat:@"%@.db", storageFileBaseName(database.container.auth.currentUserRecordID, query)];
             path = [cachePath stringByAppendingPathComponent:dbName];
         }
         backingStore = [[SKYRecordStorageSqliteStore alloc] initWithFile:path];
     } else if (!storeName || [storeName isEqual:SKYRecordStorageCoordinatorFileBackedMemoryStore]) {
         NSString *path = options[SKYRecordStorageCoordinatorFilePath];
         if (!path) {
-            NSString *cachePath =
-                NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+            NSString *cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
             // TODO: Change file name for different database and query
             path = [cachePath stringByAppendingPathComponent:@"SKYRecordStorage.plist"];
         }
@@ -174,16 +164,13 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
     } else if ([storeName isEqual:SKYRecordStorageCoordinatorMemoryStore]) {
         backingStore = [[SKYRecordStorageMemoryStore alloc] init];
     } else {
-        NSString *reason =
-            [NSString stringWithFormat:@"Backing Store Name `%@` is not recognized.", storeName];
-        @throw
-            [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
+        NSString *reason = [NSString stringWithFormat:@"Backing Store Name `%@` is not recognized.", storeName];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
     }
     return backingStore;
 }
 
-- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database
-                                        options:(NSDictionary *)options
+- (SKYRecordStorage *)recordStorageWithDatabase:(SKYDatabase *)database options:(NSDictionary *)options
 {
     return [self recordStorageWithDatabase:database options:options error:nil];
 }
@@ -212,10 +199,10 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
             *error = [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
                                          code:0
                                      userInfo:@{
-                                         NSLocalizedDescriptionKey : NSLocalizedString(
-                                             @"Unable to create record storage as the database is "
-                                             @"not associated with a current user.",
-                                             nil)
+                                         NSLocalizedDescriptionKey :
+                                             NSLocalizedString(@"Unable to create record storage as the database is "
+                                                               @"not associated with a current user.",
+                                                               nil)
                                      }];
         }
         return nil;
@@ -227,9 +214,8 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
         id<SKYRecordStorageBackingStore> backingStore;
         backingStore = [self _backingStoreWith:database query:query options:options];
         storage = [[SKYRecordStorage alloc] initWithBackingStore:backingStore];
-        storage.synchronizer = [[SKYRecordSynchronizer alloc] initWithContainer:self.container
-                                                                       database:database
-                                                                          query:query];
+        storage.synchronizer =
+            [[SKYRecordSynchronizer alloc] initWithContainer:self.container database:database query:query];
     }
 
     [self registerRecordStorage:storage];
@@ -252,8 +238,7 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
     SKYDatabase *database = storage.synchronizer.database;
     if (query) {
         NSString *subscriptionID = [@"SKYRecordStorage-" stringByAppendingString:query.cacheKey];
-        SKYSubscription *subscription =
-            [[SKYSubscription alloc] initWithQuery:query subscriptionID:subscriptionID];
+        SKYSubscription *subscription = [[SKYSubscription alloc] initWithQuery:query subscriptionID:subscriptionID];
 
         [database saveSubscription:subscription
                  completionHandler:^(SKYSubscription *subscription, NSError *error) {
@@ -283,10 +268,9 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 
 - (void)containerDidRegisterDevice:(NSNotification *)note
 {
-    [_registeredRecordStorages
-        enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
-            [self createSubscriptionWithRecordStorage:obj];
-        }];
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+        [self createSubscriptionWithRecordStorage:obj];
+    }];
 }
 
 - (BOOL)notification:(SKYNotification *)note shouldUpdateRecordStorage:(SKYRecordStorage *)storage
@@ -298,13 +282,12 @@ NSString *storageFileBaseName(NSString *userID, SKYQuery *query)
 {
     __block BOOL handled = NO;
 
-    [_registeredRecordStorages
-        enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
-            if ([self notification:note shouldUpdateRecordStorage:obj]) {
-                [obj.synchronizer setUpdateAvailableWithRecordStorage:obj notification:note];
-                handled = YES;
-            }
-        }];
+    [_registeredRecordStorages enumerateObjectsUsingBlock:^(SKYRecordStorage *obj, NSUInteger idx, BOOL *stop) {
+        if ([self notification:note shouldUpdateRecordStorage:obj]) {
+            [obj.synchronizer setUpdateAvailableWithRecordStorage:obj notification:note];
+            handled = YES;
+        }
+    }];
     return handled;
 }
 

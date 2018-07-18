@@ -30,15 +30,13 @@ SpecBegin(SKYFetchRecordsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
         it(@"single record", ^{
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYFetchRecordsOperation *operation =
-                [SKYFetchRecordsOperation operationWithRecordIDs:@[ recordID ]];
+            SKYFetchRecordsOperation *operation = [SKYFetchRecordsOperation operationWithRecordIDs:@[ recordID ]];
             operation.container = container;
             operation.database = database;
             [operation makeURLRequestWithError:nil];
@@ -65,9 +63,7 @@ SpecBegin(SKYFetchRecordsOperation)
             expect(request.action).to.equal(@"record:fetch");
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.accessToken).to.equal(container.auth.currentAccessToken);
-            expect(request.payload[@"ids"]).to.equal(@[
-                recordID1.canonicalString, recordID2.canonicalString
-            ]);
+            expect(request.payload[@"ids"]).to.equal(@[ recordID1.canonicalString, recordID2.canonicalString ]);
             expect(request.payload[@"database_id"]).to.equal(database.databaseID);
             expect(request.payload).toNot.contain(@"desired_keys");
         });
@@ -78,9 +74,10 @@ SpecBegin(SKYFetchRecordsOperation)
             SKYFetchRecordsOperation *operation =
                 [SKYFetchRecordsOperation operationWithRecordIDs:@[ recordID1, recordID2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -98,25 +95,22 @@ SpecBegin(SKYFetchRecordsOperation)
                             }
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.fetchRecordsCompletionBlock =
-                    ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([recordsByRecordID class]).to.beSubclassOf([NSDictionary class]);
-                            expect(recordsByRecordID).to.haveCountOf(2);
-                            expect([recordsByRecordID[recordID1] recordID]).to.equal(recordID1);
-                            expect([recordsByRecordID[recordID2] recordID]).to.equal(recordID2);
-                            expect(operationError).to.beNil();
-                            done();
-                        });
-                    };
+                operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect([recordsByRecordID class]).to.beSubclassOf([NSDictionary class]);
+                        expect(recordsByRecordID).to.haveCountOf(2);
+                        expect([recordsByRecordID[recordID1] recordID]).to.equal(recordID1);
+                        expect([recordsByRecordID[recordID2] recordID]).to.equal(recordID2);
+                        expect(operationError).to.beNil();
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
@@ -127,24 +121,22 @@ SpecBegin(SKYFetchRecordsOperation)
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
             SKYFetchRecordsOperation *operation =
                 [SKYFetchRecordsOperation operationWithRecordIDs:@[ recordID1, recordID2 ]];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.fetchRecordsCompletionBlock =
-                    ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
                 [database executeOperation:operation];
             });
         });
@@ -156,9 +148,10 @@ SpecBegin(SKYFetchRecordsOperation)
             SKYFetchRecordsOperation *operation =
                 [SKYFetchRecordsOperation operationWithRecordIDs:@[ recordID1, recordID2 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -182,18 +175,14 @@ SpecBegin(SKYFetchRecordsOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remainingRecordIDs =
-                    [@[ recordID1, recordID2, recordID3 ] mutableCopy];
-                operation.perRecordCompletionBlock = ^(SKYRecord *record, SKYRecordID *recordID,
-                                                       NSError *error) {
+                NSMutableArray *remainingRecordIDs = [@[ recordID1, recordID2, recordID3 ] mutableCopy];
+                operation.perRecordCompletionBlock = ^(SKYRecord *record, SKYRecordID *recordID, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if ([recordID isEqual:recordID1]) {
                             expect([record class]).to.beSubclassOf([SKYRecord class]);
@@ -210,18 +199,16 @@ SpecBegin(SKYFetchRecordsOperation)
                     });
                 };
 
-                operation.fetchRecordsCompletionBlock =
-                    ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(remainingRecordIDs).to.haveCountOf(0);
-                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                            NSDictionary *errorsByID =
-                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
-                            expect(errorsByID).to.haveCountOf(1);
-                            expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
-                            done();
-                        });
-                    };
+                operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(remainingRecordIDs).to.haveCountOf(0);
+                        expect(operationError.code).to.equal(SKYErrorPartialFailure);
+                        NSDictionary *errorsByID = operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                        expect(errorsByID).to.haveCountOf(1);
+                        expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });

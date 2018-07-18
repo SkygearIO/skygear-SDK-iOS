@@ -76,9 +76,8 @@
                     [self resumeAuthorizationFlowWithURL:callbackURL];
                 } else {
                     if (completionHandler) {
-                        completionHandler(nil,
-                                          [errorCreator errorWithCode:SKYErrorNotAuthenticated
-                                                              message:@"User cancel oauth flow"]);
+                        completionHandler(nil, [errorCreator errorWithCode:SKYErrorNotAuthenticated
+                                                                   message:@"User cancel oauth flow"]);
                     }
                     [self didCompleteOAuthFlow];
                 }
@@ -86,15 +85,14 @@
         _authVC = authenticationVC;
         [authenticationVC start];
     } else if (@available(iOS 9.0, *)) {
-        _safariVC =
-            [[SFSafariViewController alloc] initWithURL:requestURL entersReaderIfAvailable:NO];
+        _safariVC = [[SFSafariViewController alloc] initWithURL:requestURL entersReaderIfAvailable:NO];
         _safariVC.delegate = self;
         _topVC = [self findTopViewController];
         [_topVC presentViewController:_safariVC animated:YES completion:nil];
     } else {
         if (completionHandler) {
-            completionHandler(nil, [_errorCreator errorWithCode:SKYErrorUnknownError
-                                                        message:@"Only support iOS 9 or above"]);
+            completionHandler(
+                nil, [_errorCreator errorWithCode:SKYErrorUnknownError message:@"Only support iOS 9 or above"]);
         }
         [self didCompleteOAuthFlow];
     }
@@ -116,8 +114,7 @@
         return false;
     }
 
-    if (![_callbackURL.scheme isEqualToString:url.scheme] ||
-        ![_callbackURL.host isEqualToString:url.host] ||
+    if (![_callbackURL.scheme isEqualToString:url.scheme] || ![_callbackURL.host isEqualToString:url.host] ||
         ![_callbackURL.path isEqualToString:url.path]) {
         return false;
     }
@@ -126,23 +123,18 @@
     if (_oauthCompletionHandler) {
         NSDictionary *result = nil;
         NSError *error = nil;
-        NSURLComponents *components =
-            [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+        NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
         NSArray<NSURLQueryItem *> *queryItems = components.queryItems;
         for (NSURLQueryItem *queryItem in queryItems) {
             if ([queryItem.name isEqualToString:@"result"]) {
-                NSString *encodedJSON = [queryItem.value
-                    stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                encodedJSON =
-                    [encodedJSON stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-                NSData *decodedData =
-                    [[NSData alloc] initWithBase64EncodedString:encodedJSON options:0];
-                NSString *json =
-                    [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+                NSString *encodedJSON =
+                    [queryItem.value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                encodedJSON = [encodedJSON stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+                NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:encodedJSON options:0];
+                NSString *json = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
 
                 NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
-                result =
-                    [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                 break;
             }
         }
@@ -150,15 +142,13 @@
         if (result && result[@"result"]) {
             _oauthCompletionHandler(result, nil);
         } else if (result && result[@"error"]) {
-            _oauthCompletionHandler(nil,
-                                    [_errorCreator errorWithResponseDictionary:result[@"error"]]);
+            _oauthCompletionHandler(nil, [_errorCreator errorWithResponseDictionary:result[@"error"]]);
         } else {
-            NSError *error =
-                [_errorCreator errorWithCode:SKYErrorUnknownError
-                                    userInfo:@{
-                                        SKYErrorMessageKey : @"Fail to parse callback url",
-                                        @"callbackURL" : url.absoluteString
-                                    }];
+            NSError *error = [_errorCreator errorWithCode:SKYErrorUnknownError
+                                                 userInfo:@{
+                                                     SKYErrorMessageKey : @"Fail to parse callback url",
+                                                     @"callbackURL" : url.absoluteString
+                                                 }];
             _oauthCompletionHandler(nil, error);
         }
     }
@@ -208,8 +198,8 @@
         return;
     }
     if (_oauthCompletionHandler) {
-        _oauthCompletionHandler(nil, [_errorCreator errorWithCode:SKYErrorNotAuthenticated
-                                                          message:@"User cancel oauth flow"]);
+        _oauthCompletionHandler(
+            nil, [_errorCreator errorWithCode:SKYErrorNotAuthenticated message:@"User cancel oauth flow"]);
     }
     [self didCompleteOAuthFlow];
 }

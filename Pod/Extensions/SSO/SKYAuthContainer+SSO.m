@@ -36,9 +36,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                             options:options
                              action:SKYOAuthActionLogin
                   completionHandler:^(NSDictionary *result, NSError *error) {
-                      [weakSelf sso_handleLoginOAuthResult:result
-                                                     error:error
-                                         completionHandler:completionHandler];
+                      [weakSelf sso_handleLoginOAuthResult:result error:error completionHandler:completionHandler];
                   }];
 }
 
@@ -56,8 +54,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                   }];
 }
 
-- (BOOL)resumeOAuthFlow:(NSURL *)url
-                options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
+- (BOOL)resumeOAuthFlow:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
     return [[SKYWebOAuth shared] resumeAuthorizationFlowWithURL:url];
 }
@@ -67,13 +64,10 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     __weak typeof(self) weakSelf = self;
-    [self.container callLambda:[self sso_authWithAccessTokenURL:SKYOAuthActionLogin
-                                                       provider:providerID]
+    [self.container callLambda:[self sso_authWithAccessTokenURL:SKYOAuthActionLogin provider:providerID]
            dictionaryArguments:@{@"access_token" : accessToken}
              completionHandler:^(NSDictionary *result, NSError *error) {
-                 [weakSelf sso_handleLoginOAuthResult:result
-                                                error:error
-                                    completionHandler:completionHandler];
+                 [weakSelf sso_handleLoginOAuthResult:result error:error completionHandler:completionHandler];
              }];
 }
 
@@ -81,18 +75,16 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
               accessToken:(NSString *)accessToken
         completionHandler:(void (^)(NSError *))completionHandler
 {
-    [self.container
-                 callLambda:[self sso_authWithAccessTokenURL:SKYOAuthActionLink provider:providerID]
-        dictionaryArguments:@{@"access_token" : accessToken}
-          completionHandler:^(NSDictionary *result, NSError *error) {
-              if (completionHandler) {
-                  completionHandler(error);
-              }
-          }];
+    [self.container callLambda:[self sso_authWithAccessTokenURL:SKYOAuthActionLink provider:providerID]
+           dictionaryArguments:@{@"access_token" : accessToken}
+             completionHandler:^(NSDictionary *result, NSError *error) {
+                 if (completionHandler) {
+                     completionHandler(error);
+                 }
+             }];
 }
 
-- (void)unlinkOAuthProvider:(NSString *)providerID
-          completionHandler:(void (^)(NSError *))completionHandler
+- (void)unlinkOAuthProvider:(NSString *)providerID completionHandler:(void (^)(NSError *))completionHandler
 {
     [self.container callLambda:[self sso_unlinkURLWithProvider:providerID]
              completionHandler:^(NSDictionary *result, NSError *error) {
@@ -102,8 +94,8 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
              }];
 }
 
-- (void)getOAuthProviderProfilesWithCompletionHandler:
-    (void (^)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler
+- (void)getOAuthProviderProfilesWithCompletionHandler:(void (^)(NSDictionary *_Nullable,
+                                                                NSError *_Nullable))completionHandler
 {
     [self.container callLambda:@"sso/provider_profiles" completionHandler:completionHandler];
 }
@@ -155,9 +147,9 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 
             [self updateWithUser:user accessToken:accessToken];
         } else {
-            loginError = [[[SKYErrorCreator alloc] init]
-                errorWithCode:SKYErrorBadResponse
-                      message:@"Returned data does not contain expected data."];
+            loginError =
+                [[[SKYErrorCreator alloc] init] errorWithCode:SKYErrorBadResponse
+                                                      message:@"Returned data does not contain expected data."];
         }
     }
     if (completionHandler) {
@@ -197,8 +189,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 - (NSError *)sso_validateGetAuthURLParams:(NSDictionary *)params
 {
     if (!params[@"scheme"]) {
-        return [[[SKYErrorCreator alloc] init] errorWithCode:SKYErrorInvalidData
-                                                     message:@"Scheme is required"];
+        return [[[SKYErrorCreator alloc] init] errorWithCode:SKYErrorInvalidData message:@"Scheme is required"];
     }
 
     return nil;
@@ -231,8 +222,7 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 - (void)loginWithCustomToken:(NSString *)customToken
            completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYLoginCustomTokenOperation *op =
-        [SKYLoginCustomTokenOperation operationWithCustomToken:customToken];
+    SKYLoginCustomTokenOperation *op = [SKYLoginCustomTokenOperation operationWithCustomToken:customToken];
     op.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
         if (!error) {
             [self.container.auth updateWithUser:user accessToken:accessToken];

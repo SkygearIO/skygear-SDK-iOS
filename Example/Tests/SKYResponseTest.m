@@ -33,14 +33,14 @@ SpecBegin(SKYResponse)
         });
 
         it(@"with dictionary", ^{
-            NSDictionary *data = @{ @"result" : @[] };
+            NSDictionary *data = @{@"result" : @[]};
             SKYResponse *response = [[SKYResponse alloc] initWithDictionary:data];
             expect([response class]).to.beSubclassOf([SKYResponse class]);
             expect(response.responseDictionary).to.equal(data);
         });
 
         it(@"with class method", ^{
-            NSDictionary *data = @{ @"result" : @[] };
+            NSDictionary *data = @{@"result" : @[]};
             SKYResponse *response = [SKYResponse responseWithDictionary:data];
             expect([response class]).to.beSubclassOf([SKYResponse class]);
             expect(response.responseDictionary).to.equal(data);

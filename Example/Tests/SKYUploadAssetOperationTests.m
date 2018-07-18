@@ -32,13 +32,11 @@ SpecBegin(SKYUploadAssetOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
 
-            asset = [SKYAsset
-                assetWithName:@"boy.txt"
-                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                                  options:0]];
+            asset =
+                [SKYAsset assetWithName:@"boy.txt"
+                                   data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]];
             asset.mimeType = @"text/plain";
         });
 
@@ -49,8 +47,7 @@ SpecBegin(SKYUploadAssetOperation)
             NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
-            expect(request.URL)
-                .to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy.txt"]);
+            expect(request.URL).to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy.txt"]);
             expect(request.allHTTPHeaderFields).to.equal(@{
                 @"X-Skygear-API-Key" : @"API_KEY",
                 @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
@@ -59,18 +56,16 @@ SpecBegin(SKYUploadAssetOperation)
         });
 
         it(@"makes request with escape character", ^{
-            asset = [SKYAsset
-                assetWithName:@"boy%boy.txt"
-                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                                  options:0]];
+            asset =
+                [SKYAsset assetWithName:@"boy%boy.txt"
+                                   data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]];
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
             NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"PUT");
-            expect(request.URL)
-                .to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy%25boy.txt"]);
+            expect(request.URL).to.equal([NSURL URLWithString:@"http://skygear.localhost/files/boy%25boy.txt"]);
             expect(request.allHTTPHeaderFields).to.equal(@{
                 @"X-Skygear-API-Key" : @"API_KEY",
                 @"X-Skygear-Access-Token" : @"ACCESS_TOKEN",
@@ -82,27 +77,25 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *data = @{
                         @"result" : @{
                             @"$name" : @"prefixed-body.txt",
                         }
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:data
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:data statusCode:200 headers:nil];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.uploadAssetCompletionBlock =
-                    ^(SKYAsset *returningAsset, NSError *operationError) {
-                        expect(returningAsset).to.beIdenticalTo(asset);
-                        expect(returningAsset.name).to.equal(@"prefixed-body.txt");
-                        done();
-                    };
+                operation.uploadAssetCompletionBlock = ^(SKYAsset *returningAsset, NSError *operationError) {
+                    expect(returningAsset).to.beIdenticalTo(asset);
+                    expect(returningAsset.name).to.equal(@"prefixed-body.txt");
+                    done();
+                };
 
                 [operation start];
             });
@@ -112,22 +105,22 @@ SpecBegin(SKYUploadAssetOperation)
             SKYUploadAssetOperation *operation = [SKYUploadAssetOperation operationWithAsset:asset];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSData *data = [@"Entity too large" dataUsingEncoding:NSUTF8StringEncoding];
                     return [OHHTTPStubsResponse responseWithData:data statusCode:413 headers:nil];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.uploadAssetCompletionBlock =
-                    ^(SKYAsset *returningAsset, NSError *operationError) {
-                        expect(returningAsset).to.beIdenticalTo(asset);
-                        expect(operationError).notTo.beNil();
-                        expect(operationError.code).to.equal(SKYErrorRequestPayloadTooLarge);
-                        done();
-                    };
+                operation.uploadAssetCompletionBlock = ^(SKYAsset *returningAsset, NSError *operationError) {
+                    expect(returningAsset).to.beIdenticalTo(asset);
+                    expect(operationError).notTo.beNil();
+                    expect(operationError.code).to.equal(SKYErrorRequestPayloadTooLarge);
+                    done();
+                };
 
                 [operation start];
             });

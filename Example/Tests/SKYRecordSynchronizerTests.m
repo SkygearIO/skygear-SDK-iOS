@@ -35,11 +35,8 @@ SpecBegin(SKYRecordSynchronizer)
             container = [SKYContainer defaultContainer];
             database = OCMPartialMock([container privateCloudDatabase]);
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-            synchronizer = [[SKYRecordSynchronizer alloc] initWithContainer:container
-                                                                   database:database
-                                                                      query:query];
-            id<SKYRecordStorageBackingStore> backingStore =
-                [[SKYRecordStorageMemoryStore alloc] init];
+            synchronizer = [[SKYRecordSynchronizer alloc] initWithContainer:container database:database query:query];
+            id<SKYRecordStorageBackingStore> backingStore = [[SKYRecordStorageMemoryStore alloc] init];
             storage = OCMPartialMock([[SKYRecordStorage alloc] initWithBackingStore:backingStore]);
             existingRecord = [[SKYRecord alloc] initWithRecordType:@"book"];
             [storage beginUpdating];
@@ -88,19 +85,18 @@ SpecBegin(SKYRecordSynchronizer)
         it(@"apply change for save", ^{
             SKYRecord *record = [existingRecord copy];
             record[@"title"] = @"Hello World";
-            OCMStub([database
-                executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    expect([obj class]).to.beSubclassOf([SKYModifyRecordsOperation class]);
+            OCMStub([database executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
+                                  expect([obj class]).to.beSubclassOf([SKYModifyRecordsOperation class]);
 
-                    SKYModifyRecordsOperation *op = obj;
-                    if (op.perRecordCompletionBlock) {
-                        op.perRecordCompletionBlock(record, nil);
-                    }
-                    if (op.modifyRecordsCompletionBlock) {
-                        op.modifyRecordsCompletionBlock(@[ record ], nil);
-                    }
-                    return YES;
-                }]]);
+                                  SKYModifyRecordsOperation *op = obj;
+                                  if (op.perRecordCompletionBlock) {
+                                      op.perRecordCompletionBlock(record, nil);
+                                  }
+                                  if (op.modifyRecordsCompletionBlock) {
+                                      op.modifyRecordsCompletionBlock(@[ record ], nil);
+                                  }
+                                  return YES;
+                              }]]);
 
             [storage saveRecord:record];
             SKYRecordChange *change = [[storage pendingChanges] firstObject];
@@ -118,19 +114,18 @@ SpecBegin(SKYRecordSynchronizer)
 
         it(@"apply change for delete", ^{
             SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
-            OCMStub([database
-                executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    expect([obj class]).to.beSubclassOf([SKYDeleteRecordsOperation class]);
+            OCMStub([database executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
+                                  expect([obj class]).to.beSubclassOf([SKYDeleteRecordsOperation class]);
 
-                    SKYDeleteRecordsOperation *op = obj;
-                    if (op.perRecordCompletionBlock) {
-                        op.perRecordCompletionBlock(record.recordID, nil);
-                    }
-                    if (op.deleteRecordsCompletionBlock) {
-                        op.deleteRecordsCompletionBlock(@[ record.recordID ], nil);
-                    }
-                    return YES;
-                }]]);
+                                  SKYDeleteRecordsOperation *op = obj;
+                                  if (op.perRecordCompletionBlock) {
+                                      op.perRecordCompletionBlock(record.recordID, nil);
+                                  }
+                                  if (op.deleteRecordsCompletionBlock) {
+                                      op.deleteRecordsCompletionBlock(@[ record.recordID ], nil);
+                                  }
+                                  return YES;
+                              }]]);
 
             [storage deleteRecord:existingRecord];
             SKYRecordChange *change = [[storage pendingChanges] firstObject];

@@ -61,8 +61,7 @@
     }];
 }
 
-+ (instancetype)operationWithProvider:(NSString *)provider
-                     providerAuthData:(NSDictionary *)providerAuthData
++ (instancetype)operationWithProvider:(NSString *)provider providerAuthData:(NSDictionary *)providerAuthData
 {
     return [[SKYLoginUserOperation alloc] initWithAuthenticationPayload:@{
         @"provider" : provider,
@@ -88,9 +87,7 @@
     }
 }
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)record
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error
+- (void)handleAuthResponseWithUser:(SKYRecord *)record accessToken:(SKYAccessToken *)accessToken error:(NSError *)error
 {
     if (self.loginCompletionBlock) {
         self.loginCompletionBlock(record, accessToken, error);

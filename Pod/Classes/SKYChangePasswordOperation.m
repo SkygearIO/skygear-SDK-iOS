@@ -33,8 +33,7 @@
     return self;
 }
 
-+ (instancetype)operationWithOldPassword:(NSString *)oldPassword
-                           passwordToSet:(NSString *)newPassword
++ (instancetype)operationWithOldPassword:(NSString *)oldPassword passwordToSet:(NSString *)newPassword
 {
     return [[self alloc] initWithOldPassword:oldPassword passwordToSet:newPassword];
 }
@@ -60,9 +59,7 @@
     }
 }
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)user
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error
+- (void)handleAuthResponseWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken error:(NSError *)error
 {
     if (self.changePasswordCompletionBlock) {
         self.changePasswordCompletionBlock(user, accessToken, error);

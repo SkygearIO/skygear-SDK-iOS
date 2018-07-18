@@ -24,8 +24,7 @@ SpecBegin(SKYAsset)
 
     describe(@"SKYAsset", ^{
         it(@"copy creates a copy", ^{
-            SKYAsset *asset =
-                [SKYAsset assetWithData:[@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
+            SKYAsset *asset = [SKYAsset assetWithData:[@"hello-world" dataUsingEncoding:NSUTF8StringEncoding]];
             SKYAsset *copiedAsset = [asset copy];
 
             expect(asset.name).to.equal(copiedAsset.name);
@@ -35,8 +34,7 @@ SpecBegin(SKYAsset)
         });
 
         it(@"derive correct mimeType", ^{
-            NSString *base64String =
-                @"data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+            NSString *base64String = @"data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
             NSURL *url = [NSURL URLWithString:base64String];
             NSData *gifData = [NSData dataWithContentsOfURL:url];
             UIImage *ret = [UIImage imageWithData:gifData];

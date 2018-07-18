@@ -77,8 +77,7 @@
         } else if ([rawRelation isEqualToString:@"friend"]) {
             relation = [SKYRelation friendRelation];
         } else {
-            NSLog(@"Failed to deserialize access control entry: unrecgonized relation %@",
-                  rawRelation);
+            NSLog(@"Failed to deserialize access control entry: unrecgonized relation %@", rawRelation);
             return nil;
         }
 

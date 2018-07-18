@@ -31,8 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Undocumented
 + (instancetype)fetchAllSubscriptionsOperationWithDeviceID:(NSString *)deviceID;
 /// Undocumented
-+ (instancetype)operationWithDeviceID:(NSString *)deviceID
-                      subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
++ (instancetype)operationWithDeviceID:(NSString *)deviceID subscriptionIDs:(NSArray<NSString *> *)subscriptionIDs;
 
 /// Undocumented
 @property (nonatomic, copy) NSString *deviceID;
@@ -42,8 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable perSubscriptionCompletionBlock)
-    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID,
-     NSError *_Nullable error);
+    (SKYSubscription *_Nullable subscription, NSString *_Nullable subscriptionID, NSError *_Nullable error);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable fetchSubscriptionsCompletionBlock)
     (NSDictionary *_Nullable subscriptionsBySubscriptionID, NSError *_Nullable operationError);

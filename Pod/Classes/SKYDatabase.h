@@ -52,8 +52,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 
 /// Undocumented
 - (void)performQuery:(SKYQuery *)query
-    completionHandler:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results,
-                                         NSError *_Nullable error))completionHandler;
+    completionHandler:
+        (void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results, NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)performCachedQuery:(SKYQuery *)query
          completionHandler:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results, BOOL pending,
@@ -72,8 +72,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  @param completionHandler the block to be called when operation completes.
  */
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
-        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable record,
-                                             NSError *_Nullable error))completionHandler;
+        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))completionHandler;
 
 /**
  Fetches multiple records from Skygear.
@@ -92,8 +91,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)fetchRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
           completionHandler:(void (^_Nullable)(NSDictionary *_Nullable recordsByRecordID,
                                                NSError *_Nullable operationError))completionHandler
-      perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                               NSError *_Nullable error))errorHandler;
+      perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID, NSError *_Nullable error))errorHandler;
 
 /**
  Saves a single record to Skygear.
@@ -132,8 +130,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)saveRecords:(NSArray<SKYRecord *> *)records
         completionHandler:(void (^_Nullable)(NSArray *_Nullable savedRecords,
                                              NSError *_Nullable operationError))completionHandler
-    perRecordErrorHandler:
-        (void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))errorHandler;
+    perRecordErrorHandler:(void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))errorHandler;
 
 /**
  Saves multiple records atomically to Skygear.
@@ -148,9 +145,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  also called when an operation error occurred.
  */
 - (void)saveRecordsAtomically:(NSArray<SKYRecord *> *)records
-            completionHandler:
-                (void (^_Nullable)(NSArray *_Nullable savedRecords,
-                                   NSError *_Nullable operationError))completionHandler;
+            completionHandler:(void (^_Nullable)(NSArray *_Nullable savedRecords,
+                                                 NSError *_Nullable operationError))completionHandler;
 
 /**
  Deletes a single record from Skygear.
@@ -167,8 +163,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  also called when an operation error occurred.
  */
 - (void)deleteRecordWithID:(SKYRecordID *)recordID
-         completionHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                              NSError *_Nullable error))completionHandler;
+         completionHandler:
+             (void (^_Nullable)(SKYRecordID *_Nullable recordID, NSError *_Nullable error))completionHandler;
 
 /**
  Deletes multiple records from Skygear.
@@ -187,8 +183,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
            completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
                                                 NSError *_Nullable error))completionHandler
-       perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                                NSError *_Nullable error))errorHandler;
+       perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID, NSError *_Nullable error))errorHandler;
 
 /**
  Deletes multiple records atomically to Skygear.
@@ -204,26 +199,24 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  also called when an operation error occurred.
  */
 - (void)deleteRecordsWithIDsAtomically:(NSArray<SKYRecordID *> *)recordIDs
-                     completionHandler:
-                         (void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
-                                            NSError *_Nullable error))completionHandler;
+                     completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+                                                          NSError *_Nullable error))completionHandler;
 
 /// Undocumented
-- (void)fetchAllSubscriptionsWithCompletionHandler:
-    (void (^_Nullable)(NSArray *_Nullable subscriptions,
-                       NSError *_Nullable error))completionHandler;
+- (void)fetchAllSubscriptionsWithCompletionHandler:(void (^_Nullable)(NSArray *_Nullable subscriptions,
+                                                                      NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)fetchSubscriptionWithID:(NSString *)subscriptionID
               completionHandler:(void (^_Nullable)(SKYSubscription *_Nullable subscription,
                                                    NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)saveSubscription:(SKYSubscription *)subscription
-       completionHandler:(void (^_Nullable)(SKYSubscription *_Nullable subscription,
-                                            NSError *_Nullable error))completionHandler;
+       completionHandler:
+           (void (^_Nullable)(SKYSubscription *_Nullable subscription, NSError *_Nullable error))completionHandler;
 /// Undocumented
 - (void)deleteSubscriptionWithID:(NSString *)subscriptionID
-               completionHandler:(void (^_Nullable)(NSString *_Nullable subscriptionID,
-                                                    NSError *_Nullable error))completionHandler;
+               completionHandler:
+                   (void (^_Nullable)(NSString *_Nullable subscriptionID, NSError *_Nullable error))completionHandler;
 
 /// Undocumented
 - (void)uploadAsset:(SKYAsset *_Nonnull)asset
@@ -242,8 +235,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 
 /// Undocumented
 - (void)fetchUserNewsFeed:(NSString *)newsfeedID
-        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable results,
-                                             NSError *_Nullable error))completionHandler;
+        completionHandler:(void (^_Nullable)(SKYRecord *_Nullable results, NSError *_Nullable error))completionHandler;
 
 @end
 

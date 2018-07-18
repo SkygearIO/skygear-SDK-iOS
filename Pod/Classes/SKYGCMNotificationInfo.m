@@ -66,30 +66,25 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 {
     return isNilOrEqualString(self.title, n.title) && isNilOrEqualString(self.body, n.body) &&
            isNilOrEqualString(self.icon, n.icon) && isNilOrEqualString(self.sound, n.sound) &&
-           isNilOrEqualString(self.tag, n.tag) &&
-           isNilOrEqualString(self.clickAction, n.clickAction) &&
-           isNilOrEqualString(self.bodyLocKey, n.bodyLocKey) &&
-           isNilOrEqualArray(self.bodyLocArgs, n.bodyLocArgs) &&
-           isNilOrEqualString(self.titleLocKey, n.titleLocKey) &&
-           isNilOrEqualArray(self.titleLocArgs, n.titleLocArgs);
+           isNilOrEqualString(self.tag, n.tag) && isNilOrEqualString(self.clickAction, n.clickAction) &&
+           isNilOrEqualString(self.bodyLocKey, n.bodyLocKey) && isNilOrEqualArray(self.bodyLocArgs, n.bodyLocArgs) &&
+           isNilOrEqualString(self.titleLocKey, n.titleLocKey) && isNilOrEqualArray(self.titleLocArgs, n.titleLocArgs);
 }
 
 - (NSUInteger)hash
 {
-    return self.title.hash ^ self.body.hash ^ self.icon.hash ^ self.sound.hash ^ self.tag.hash ^
-           self.clickAction.hash ^ self.bodyLocKey.hash ^ self.bodyLocArgs.hash ^
-           self.titleLocKey.hash ^ self.titleLocArgs.hash;
+    return self.title.hash ^ self.body.hash ^ self.icon.hash ^ self.sound.hash ^ self.tag.hash ^ self.clickAction.hash ^
+           self.bodyLocKey.hash ^ self.bodyLocArgs.hash ^ self.titleLocKey.hash ^ self.titleLocArgs.hash;
 }
 
 - (NSString *)description
 {
-    return
-        [NSString stringWithFormat:@"%@ <title = %@, body = %@, icon = %@, sound = %@, tag = %@, "
-                                   @"clickAction = %@, bodyLocKey = %@, bodyLocArgs = %@, "
-                                   @"titleLocKey = %@, titleLocArgs = %@>",
-                                   NSStringFromClass(self.class), self.title, self.body, self.icon,
-                                   self.sound, self.tag, self.clickAction, self.bodyLocKey,
-                                   self.bodyLocArgs, self.titleLocKey, self.titleLocArgs];
+    return [NSString stringWithFormat:@"%@ <title = %@, body = %@, icon = %@, sound = %@, tag = %@, "
+                                      @"clickAction = %@, bodyLocKey = %@, bodyLocArgs = %@, "
+                                      @"titleLocKey = %@, titleLocArgs = %@>",
+                                      NSStringFromClass(self.class), self.title, self.body, self.icon, self.sound,
+                                      self.tag, self.clickAction, self.bodyLocKey, self.bodyLocArgs, self.titleLocKey,
+                                      self.titleLocArgs];
 }
 
 @end
@@ -141,17 +136,16 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 - (BOOL)isEqualToNotificationInfo:(SKYGCMNotificationInfo *)n
 {
     return (isNilOrEqualString(self.collapseKey, n.collapseKey) && self.priority == n.priority &&
-            self.contentAvailable == n.contentAvailable &&
-            self.delayWhileIdle == n.delayWhileIdle && self.timeToLive == n.timeToLive &&
+            self.contentAvailable == n.contentAvailable && self.delayWhileIdle == n.delayWhileIdle &&
+            self.timeToLive == n.timeToLive &&
             isNilOrEqualString(self.restrictedPackageName, n.restrictedPackageName) &&
-            ((self.notification == nil && n.notification == nil) ||
-             [self.notification isEqual:n.notification]));
+            ((self.notification == nil && n.notification == nil) || [self.notification isEqual:n.notification]));
 }
 
 - (NSUInteger)hash
 {
-    return self.collapseKey.hash ^ self.priority ^ self.contentAvailable ^ self.delayWhileIdle ^
-           self.timeToLive ^ self.restrictedPackageName.hash ^ self.notification.hash;
+    return self.collapseKey.hash ^ self.priority ^ self.contentAvailable ^ self.delayWhileIdle ^ self.timeToLive ^
+           self.restrictedPackageName.hash ^ self.notification.hash;
 }
 
 - (NSString *)description
@@ -159,9 +153,8 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
     return [NSString stringWithFormat:@"%@ <collapseKey = %@, priority = %@, contentAvailable = "
                                       @"%@, delayWhileIdle = %@, timeToLive = %@, "
                                       @"restrictedPackageName = %@, notification = %@>",
-                                      NSStringFromClass(self.class), self.collapseKey,
-                                      @(self.priority), @(self.contentAvailable),
-                                      @(self.delayWhileIdle), @(self.timeToLive),
+                                      NSStringFromClass(self.class), self.collapseKey, @(self.priority),
+                                      @(self.contentAvailable), @(self.delayWhileIdle), @(self.timeToLive),
                                       self.restrictedPackageName, self.notification];
 }
 
