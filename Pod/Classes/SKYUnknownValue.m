@@ -27,8 +27,7 @@
         exceptionWithName:NSInvalidArgumentException
                    reason:[NSString stringWithFormat:@"%@ is unavailable. Call %@ instead.",
                                                      NSStringFromSelector(@selector(init)),
-                                                     NSStringFromSelector(
-                                                         @selector(initWithUnderlyingType:))]
+                                                     NSStringFromSelector(@selector(initWithUnderlyingType:))]
                  userInfo:nil];
 }
 
@@ -49,8 +48,7 @@
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
-    NSString *underlyingType =
-        [decoder decodeObjectOfClass:[NSString class] forKey:@"underlyingType"];
+    NSString *underlyingType = [decoder decodeObjectOfClass:[NSString class] forKey:@"underlyingType"];
     return [self initWithUnderlyingType:underlyingType];
 }
 

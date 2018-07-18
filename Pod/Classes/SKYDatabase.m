@@ -126,45 +126,42 @@
 - (void)saveSubscription:(SKYSubscription *)subscription
        completionHandler:(void (^)(SKYSubscription *subscription, NSError *error))completionHandler
 {
-    SKYModifySubscriptionsOperation *operation = [SKYModifySubscriptionsOperation
-        operationWithDeviceID:self.container.push.registeredDeviceID
-          subscriptionsToSave:@[ subscription ]];
+    SKYModifySubscriptionsOperation *operation =
+        [SKYModifySubscriptionsOperation operationWithDeviceID:self.container.push.registeredDeviceID
+                                           subscriptionsToSave:@[ subscription ]];
     if (completionHandler) {
-        operation.modifySubscriptionsCompletionBlock =
-            ^(NSArray *savedSubscriptions, NSError *operationError) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    SKYSubscription *subscription = nil;
-                    if (!operationError) {
-                        subscription = savedSubscriptions[0];
-                    }
+        operation.modifySubscriptionsCompletionBlock = ^(NSArray *savedSubscriptions, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                SKYSubscription *subscription = nil;
+                if (!operationError) {
+                    subscription = savedSubscriptions[0];
+                }
 
-                    completionHandler(subscription, operationError);
-                });
-            };
+                completionHandler(subscription, operationError);
+            });
+        };
     }
 
     [self executeOperation:operation];
 }
 
 - (void)deleteSubscriptionWithID:(NSString *)subscriptionID
-               completionHandler:
-                   (void (^)(NSString *subscriptionID, NSError *error))completionHandler
+               completionHandler:(void (^)(NSString *subscriptionID, NSError *error))completionHandler
 {
-    SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-          operationWithDeviceID:self.container.push.registeredDeviceID
-        subscriptionIDsToDelete:@[ subscriptionID ]];
+    SKYDeleteSubscriptionsOperation *operation =
+        [SKYDeleteSubscriptionsOperation operationWithDeviceID:self.container.push.registeredDeviceID
+                                       subscriptionIDsToDelete:@[ subscriptionID ]];
     if (completionHandler) {
-        operation.deleteSubscriptionsCompletionBlock =
-            ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSString *subscriptionID = nil;
-                    if (!operationError) {
-                        subscriptionID = deletedSubscriptionIDs[0];
-                    }
+        operation.deleteSubscriptionsCompletionBlock = ^(NSArray *deletedSubscriptionIDs, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSString *subscriptionID = nil;
+                if (!operationError) {
+                    subscriptionID = deletedSubscriptionIDs[0];
+                }
 
-                    completionHandler(subscriptionID, operationError);
-                });
-            };
+                completionHandler(subscriptionID, operationError);
+            });
+        };
     }
 
     [self executeOperation:operation];
@@ -175,9 +172,7 @@
 - (NSArray *_Nonnull)findObjectsOfClass:(Class)klass inSKYObject:(id _Nonnull)obj
 {
     if (!obj) {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                       reason:@"obj cannot be nil"
-                                     userInfo:nil];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"obj cannot be nil" userInfo:nil];
     }
 
     NSMutableArray *wanted = [[NSMutableArray alloc] init];
@@ -210,31 +205,26 @@
     if ([obj isKindOfClass:[SKYRecord class]]) {
         SKYRecord *record = [(SKYRecord *)obj copy];
         for (NSString *key in [[record dictionary] allKeys]) {
-            [record setObject:[self replaceSKYObject:[record objectForKey:key] fromMap:mapTable]
-                       forKey:key];
+            [record setObject:[self replaceSKYObject:[record objectForKey:key] fromMap:mapTable] forKey:key];
         }
         return record;
     } else if ([obj isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *dict = [(NSDictionary *)obj mutableCopy];
         for (NSString *key in [dict allKeys]) {
-            [dict setObject:[self replaceSKYObject:[dict objectForKey:key] fromMap:mapTable]
-                     forKey:key];
+            [dict setObject:[self replaceSKYObject:[dict objectForKey:key] fromMap:mapTable] forKey:key];
         }
         return dict;
     } else if ([obj isKindOfClass:[NSArray class]]) {
         NSMutableArray *array = [(NSArray *)obj mutableCopy];
         for (NSUInteger i = 0; i < [array count]; i++) {
-            [array replaceObjectAtIndex:i
-                             withObject:[self replaceSKYObject:[array objectAtIndex:i]
-                                                       fromMap:mapTable]];
+            [array replaceObjectAtIndex:i withObject:[self replaceSKYObject:[array objectAtIndex:i] fromMap:mapTable]];
         }
         return array;
     }
     return obj;
 }
 
-- (void)sky_presave:(id _Nullable)object
-         completion:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completion
+- (void)sky_presave:(id _Nullable)object completion:(void (^_Nullable)(id _Nullable, NSError *_Nullable))completion
 {
     if (!object) {
         if (completion) {
@@ -319,12 +309,11 @@
             [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:presavedRecords];
         operation.atomic = atomically;
         if (completion) {
-            operation.modifyRecordsCompletionBlock =
-                ^(NSArray *savedRecords, NSError *operationError) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(savedRecords, operationError);
-                    });
-                };
+            operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords, NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(savedRecords, operationError);
+                });
+            };
         }
 
         if (perRecord) {
@@ -372,41 +361,35 @@
 }
 
 - (void)saveRecordsAtomically:(NSArray *)records
-            completionHandler:
-                (void (^)(NSArray *savedRecords, NSError *operationError))completionHandler
+            completionHandler:(void (^)(NSArray *savedRecords, NSError *operationError))completionHandler
 {
-    [self sky_saveRecords:records
-                 atomically:YES
-                 completion:completionHandler
-        perRecordCompletion:nil];
+    [self sky_saveRecords:records atomically:YES completion:completionHandler perRecordCompletion:nil];
 }
 
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
         completionHandler:(void (^)(SKYRecord *record, NSError *error))completionHandler
 {
-    SKYFetchRecordsOperation *operation =
-        [[SKYFetchRecordsOperation alloc] initWithRecordIDs:@[ recordID ]];
+    SKYFetchRecordsOperation *operation = [[SKYFetchRecordsOperation alloc] initWithRecordIDs:@[ recordID ]];
 
     if (completionHandler) {
-        operation.fetchRecordsCompletionBlock =
-            ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                SKYRecord *record = recordsByRecordID[recordID];
-                NSError *error = nil;
-                if (operationError != nil) {
-                    if (operationError.code == SKYErrorPartialOperationFailure) {
-                        error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
-                    }
-
-                    // If error is not a partial error, or if the error cannot be obtained
-                    // from the info dictionary, set the returned error to the operationError.
-                    if (!error) {
-                        error = operationError;
-                    }
+        operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+            SKYRecord *record = recordsByRecordID[recordID];
+            NSError *error = nil;
+            if (operationError != nil) {
+                if (operationError.code == SKYErrorPartialOperationFailure) {
+                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
                 }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(record, error);
-                });
-            };
+
+                // If error is not a partial error, or if the error cannot be obtained
+                // from the info dictionary, set the returned error to the operationError.
+                if (!error) {
+                    error = operationError;
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(record, error);
+            });
+        };
     }
 
     [self executeOperation:operation];
@@ -416,28 +399,24 @@
           completionHandler:(void (^)(NSDictionary *, NSError *))completionHandler
       perRecordErrorHandler:(void (^)(SKYRecordID *, NSError *))errorHandler
 {
-    SKYFetchRecordsOperation *operation =
-        [[SKYFetchRecordsOperation alloc] initWithRecordIDs:recordIDs];
+    SKYFetchRecordsOperation *operation = [[SKYFetchRecordsOperation alloc] initWithRecordIDs:recordIDs];
 
     if (completionHandler) {
-        operation.fetchRecordsCompletionBlock =
-            ^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(recordsByRecordID, operationError);
-                });
-            };
+        operation.fetchRecordsCompletionBlock = ^(NSDictionary *recordsByRecordID, NSError *operationError) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(recordsByRecordID, operationError);
+            });
+        };
     }
 
     if (errorHandler) {
-        operation.perRecordCompletionBlock =
-            ^(SKYRecord *record, SKYRecordID *recordID, NSError *error) {
-                if (error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        errorHandler(recordID, error);
-
-                    });
-                }
-            };
+        operation.perRecordCompletionBlock = ^(SKYRecord *record, SKYRecordID *recordID, NSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    errorHandler(recordID, error);
+                });
+            }
+        };
     }
 
     [self executeOperation:operation];
@@ -446,8 +425,7 @@
 - (void)deleteRecordWithID:(SKYRecordID *)recordID
          completionHandler:(void (^)(SKYRecordID *recordID, NSError *error))completionHandler
 {
-    SKYDeleteRecordsOperation *operation =
-        [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[ recordID ]];
+    SKYDeleteRecordsOperation *operation = [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[ recordID ]];
 
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
@@ -480,8 +458,7 @@
            completionHandler:(void (^)(NSArray *, NSError *))completionHandler
        perRecordErrorHandler:(void (^)(SKYRecordID *, NSError *))errorHandler
 {
-    SKYDeleteRecordsOperation *operation =
-        [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
+    SKYDeleteRecordsOperation *operation = [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
 
     if (completionHandler) {
         operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
@@ -505,11 +482,9 @@
 }
 
 - (void)deleteRecordsWithIDsAtomically:(NSArray *)recordIDs
-                     completionHandler:
-                         (void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler
+                     completionHandler:(void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler
 {
-    SKYDeleteRecordsOperation *operation =
-        [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
+    SKYDeleteRecordsOperation *operation = [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
     operation.atomic = YES;
 
     if (completionHandler) {
@@ -523,8 +498,7 @@
     [self executeOperation:operation];
 }
 
-- (void)performQuery:(SKYQuery *)query
-    completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
+- (void)performQuery:(SKYQuery *)query completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler
 {
     SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 
@@ -564,52 +538,48 @@
         }];
 }
 
-- (void)uploadAsset:(SKYAsset *)asset
-    completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
+- (void)uploadAsset:(SKYAsset *)asset completionHandler:(void (^)(SKYAsset *, NSError *))completionHandler
 {
     __weak typeof(self) wself = self;
 
     if ([asset.fileSize integerValue] == 0) {
         if (completionHandler) {
-            completionHandler(
-                nil, [NSError errorWithDomain:SKYOperationErrorDomain
-                                         code:SKYErrorInvalidArgument
-                                     userInfo:@{
-                                         SKYErrorMessageKey : @"File size is invalid (filesize=0).",
-                                         NSLocalizedDescriptionKey : NSLocalizedString(
-                                             @"Unable to open file or file is not found.", nil)
-                                     }]);
+            completionHandler(nil, [NSError errorWithDomain:SKYOperationErrorDomain
+                                                       code:SKYErrorInvalidArgument
+                                                   userInfo:@{
+                                                       SKYErrorMessageKey : @"File size is invalid (filesize=0).",
+                                                       NSLocalizedDescriptionKey : NSLocalizedString(
+                                                           @"Unable to open file or file is not found.", nil)
+                                                   }]);
         }
         return;
     }
 
-    SKYGetAssetPostRequestOperation *operation =
-        [SKYGetAssetPostRequestOperation operationWithAsset:asset];
-    operation.getAssetPostRequestCompletionBlock = ^(
-        SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields,
-        NSError *operationError) {
-        if (operationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(asset, operationError);
-                });
+    SKYGetAssetPostRequestOperation *operation = [SKYGetAssetPostRequestOperation operationWithAsset:asset];
+    operation.getAssetPostRequestCompletionBlock =
+        ^(SKYAsset *asset, NSURL *postURL, NSDictionary<NSString *, NSObject *> *extraFields, NSError *operationError) {
+            if (operationError) {
+                if (completionHandler) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completionHandler(asset, operationError);
+                    });
+                }
+
+                return;
             }
 
-            return;
-        }
+            SKYPostAssetOperation *postOperation =
+                [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
+            postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
+                if (completionHandler) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completionHandler(asset, postOperationError);
+                    });
+                }
+            };
 
-        SKYPostAssetOperation *postOperation =
-            [SKYPostAssetOperation operationWithAsset:asset url:postURL extraFields:extraFields];
-        postOperation.postAssetCompletionBlock = ^(SKYAsset *asset, NSError *postOperationError) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(asset, postOperationError);
-                });
-            }
+            [wself.container addOperation:postOperation];
         };
-
-        [wself.container addOperation:postOperation];
-    };
 
     [self.container addOperation:operation];
 }

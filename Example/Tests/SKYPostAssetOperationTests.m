@@ -32,13 +32,11 @@ SpecBegin(SKYPostAssetOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"Test-User-ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"Test-Access-Token"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"Test-Access-Token"]];
 
-            asset = [SKYAsset
-                assetWithName:@"boy.txt"
-                         data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT
-                                                                  options:0]];
+            asset =
+                [SKYAsset assetWithName:@"boy.txt"
+                                   data:[[NSData alloc] initWithBase64EncodedString:BASE64_ENCODED_CONTENT options:0]];
             asset.mimeType = @"text/plain";
         });
 
@@ -47,29 +45,26 @@ SpecBegin(SKYPostAssetOperation)
         });
 
         it(@"makes request correctly", ^{
-            SKYPostAssetOperation *operation = [SKYPostAssetOperation
-                operationWithAsset:asset
-                               url:[NSURL URLWithString:@"http://asset.skygear.dev/dev/"
-                                                        @"f8b9d47f-6188-46fa-b26f-0ac73fea2569-"
-                                                        @"boy.txt"]
-                       extraFields:@{
-                           @"X-Extra-Field-1" : @"extra-value-1",
-                           @"X-Extra-Field-2" : @123
-                       }];
+            SKYPostAssetOperation *operation =
+                [SKYPostAssetOperation operationWithAsset:asset
+                                                      url:[NSURL URLWithString:@"http://asset.skygear.dev/dev/"
+                                                                               @"f8b9d47f-6188-46fa-b26f-0ac73fea2569-"
+                                                                               @"boy.txt"]
+                                              extraFields:@{
+                                                  @"X-Extra-Field-1" : @"extra-value-1",
+                                                  @"X-Extra-Field-2" : @123
+                                              }];
             operation.container = container;
 
             NSURLRequest *request = [operation makeURLRequestWithError:nil];
 
             expect(request.HTTPMethod).to.equal(@"POST");
             expect(request.URL.absoluteString)
-                .to.equal(
-                    @"http://asset.skygear.dev/dev/f8b9d47f-6188-46fa-b26f-0ac73fea2569-boy.txt");
+                .to.equal(@"http://asset.skygear.dev/dev/f8b9d47f-6188-46fa-b26f-0ac73fea2569-boy.txt");
             expect(request.allHTTPHeaderFields[@"X-Skygear-API-Key"]).to.equal(@"API_KEY");
-            expect(request.allHTTPHeaderFields[@"X-Skygear-Access-Token"])
-                .to.equal(@"Test-Access-Token");
+            expect(request.allHTTPHeaderFields[@"X-Skygear-Access-Token"]).to.equal(@"Test-Access-Token");
             expect(request.allHTTPHeaderFields[@"Content-Type"]).notTo.beNil();
         });
-
     });
 
 SpecEnd

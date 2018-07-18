@@ -28,9 +28,8 @@ SpecBegin(SKYGetCurrentUserOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:@"user-1"
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:@"token-1"]];
+            [container.auth updateWithUserRecordID:@"user-1"
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"token-1"]];
         });
 
         afterEach(^{
@@ -52,9 +51,10 @@ SpecBegin(SKYGetCurrentUserOperation)
             SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                         @"result" : @{
@@ -95,16 +95,16 @@ SpecBegin(SKYGetCurrentUserOperation)
 
                 [container addOperation:operation];
             });
-
         });
 
         it(@"should handle error properly", ^{
             SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
             operation.container = container;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *_Nonnull(NSURLRequest *_Nonnull request) {
                     NSData *data = [NSJSONSerialization dataWithJSONObject:@{
                         @"error" : @{
@@ -133,7 +133,6 @@ SpecBegin(SKYGetCurrentUserOperation)
                 [container addOperation:operation];
             });
         });
-
     });
 
 SpecEnd

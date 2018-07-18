@@ -32,8 +32,7 @@ SpecBegin(SKYAddRelationsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID1 = @"user1001";
             follower1 = [SKYRecord recordWithRecordType:@"user" name:userRecordID1];
             NSString *userRecordID2 = @"user1002";
@@ -44,8 +43,7 @@ SpecBegin(SKYAddRelationsOperation)
 
         it(@"multiple relations", ^{
             SKYAddRelationsOperation *operation =
-                [SKYAddRelationsOperation operationWithType:@"follow"
-                                             usersToRelated:@[ follower1, follower2 ]];
+                [SKYAddRelationsOperation operationWithType:@"follow" usersToRelated:@[ follower1, follower2 ]];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -64,9 +62,10 @@ SpecBegin(SKYAddRelationsOperation)
                 [SKYAddRelationsOperation operationWithType:@"follow"
                                              usersToRelated:@[ follower1, follower2, follower3 ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -92,28 +91,24 @@ SpecBegin(SKYAddRelationsOperation)
                             },
                         ],
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.addRelationsCompletionBlock =
-                    ^(NSArray *savedUsers, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([savedUsers class]).to.beSubclassOf([NSArray class]);
-                            expect(savedUsers).to.haveCountOf(1);
-                            expect(savedUsers[0]).to.equal(@"user1001");
-                            expect(operationError).toNot.beNil();
-                            NSArray *errorKeys =
-                                [operationError.userInfo[SKYPartialErrorsByItemIDKey] allKeys];
-                            expect(errorKeys).to.contain(@"user1002");
-                            expect(errorKeys).to.contain(@"user1003");
-                            done();
-                        });
-                    };
+                operation.addRelationsCompletionBlock = ^(NSArray *savedUsers, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect([savedUsers class]).to.beSubclassOf([NSArray class]);
+                        expect(savedUsers).to.haveCountOf(1);
+                        expect(savedUsers[0]).to.equal(@"user1001");
+                        expect(operationError).toNot.beNil();
+                        NSArray *errorKeys = [operationError.userInfo[SKYPartialErrorsByItemIDKey] allKeys];
+                        expect(errorKeys).to.contain(@"user1002");
+                        expect(errorKeys).to.contain(@"user1003");
+                        done();
+                    });
+                };
 
                 [container addOperation:operation];
             });

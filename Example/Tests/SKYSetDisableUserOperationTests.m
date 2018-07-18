@@ -34,9 +34,8 @@ SpecBegin(SKYSetDisableUserOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly for enable user", ^{
@@ -72,15 +71,12 @@ SpecBegin(SKYSetDisableUserOperation)
             expect(request.payload[@"auth_id"]).to.equal(currentUserID);
             expect(request.payload[@"disabled"]).to.beTruthy();
             expect(request.payload[@"message"]).to.equal(disableMessage);
-            expect(request.payload[@"expiry"])
-                .to.equal([SKYDataSerialization stringFromDate:disableExpiry]);
+            expect(request.payload[@"expiry"]).to.equal([SKYDataSerialization stringFromDate:disableExpiry]);
         });
 
         it(@"should create SKYRequest correctly for disable user without optional fields", ^{
             SKYSetDisableUserOperation *operation =
-                [SKYSetDisableUserOperation disableOperationWithUserID:currentUserID
-                                                               message:nil
-                                                                expiry:nil];
+                [SKYSetDisableUserOperation disableOperationWithUserID:currentUserID message:nil expiry:nil];
 
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
@@ -96,14 +92,13 @@ SpecBegin(SKYSetDisableUserOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{@"result" : @"OK"};
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
             SKYSetDisableUserOperation *operation =
@@ -125,14 +120,13 @@ SpecBegin(SKYSetDisableUserOperation)
         });
 
         it(@"should handle error response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             SKYSetDisableUserOperation *operation =

@@ -32,8 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)operationWithAsset:(SKYAsset *)asset;
 
 /// Undocumented
-@property (nonatomic, copy) void (^_Nullable downloadAssetProgressBlock)
-    (SKYAsset *_Nullable asset, double progress);
+@property (nonatomic, copy) void (^_Nullable downloadAssetProgressBlock)(SKYAsset *_Nullable asset, double progress);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable downloadAssetCompletionBlock)
     (SKYAsset *_Nullable asset, NSData *_Nullable data, NSError *_Nullable operationError);

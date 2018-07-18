@@ -54,9 +54,7 @@
     [self handleAuthResponseWithUser:user accessToken:accessToken error:error];
 }
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)record
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error
+- (void)handleAuthResponseWithUser:(SKYRecord *)record accessToken:(SKYAccessToken *)accessToken error:(NSError *)error
 {
     // Should be overridden by subclasses
 }

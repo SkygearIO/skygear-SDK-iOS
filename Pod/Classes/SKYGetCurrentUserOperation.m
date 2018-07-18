@@ -45,9 +45,7 @@
     self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)user
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error
+- (void)handleAuthResponseWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken error:(NSError *)error
 {
     if (self.getCurrentUserCompletionBlock) {
         self.getCurrentUserCompletionBlock(user, accessToken, error);

@@ -127,8 +127,8 @@ typedef enum : NSInteger {
  Update are performed asynchronously. If there are pending changes, the record storage
  cannot be updated. This method returns <NO> when the receiver cannot perform update.
  */
-- (void)performUpdateWithCompletionHandler:
-    (void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
+- (void)performUpdateWithCompletionHandler:(void (^_Nullable)(BOOL finished,
+                                                              NSError *_Nullable error))completionHandler;
 
 #pragma mark - Saving and removing
 
@@ -264,8 +264,7 @@ typedef enum : NSInteger {
 
  <SKYRecordStorage> will call the specified block for each failed record.
  */
-- (void)dismissFailedChangesWithBlock:(BOOL (^_Nullable)(SKYRecordChange *item,
-                                                         SKYRecord *record))block;
+- (void)dismissFailedChangesWithBlock:(BOOL (^_Nullable)(SKYRecordChange *item, SKYRecord *record))block;
 
 #pragma mark - Applying updates
 

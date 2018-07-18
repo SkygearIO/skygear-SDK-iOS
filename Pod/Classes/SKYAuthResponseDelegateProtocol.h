@@ -27,8 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 
 /// Undocumented
-- (void)operation:(SKYOperation *)operation
-    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse;
+- (void)operation:(SKYOperation *)operation didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse;
 
 @end
 

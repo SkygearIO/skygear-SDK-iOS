@@ -34,10 +34,8 @@ SpecBegin(SKYRecordSerializer)
 
         beforeEach(^{
             serializer = [SKYRecordSerializer serializer];
-            record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
-
+            record = [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                                                    data:nil];
         });
 
         it(@"init", ^{
@@ -72,9 +70,8 @@ SpecBegin(SKYRecordSerializer)
         });
 
         it(@"serialize asset", ^{
-            SKYAsset *asset = [SKYAsset
-                assetWithName:@"asset-name"
-                          url:[NSURL URLWithString:@"http://skygear.test/files/asset-name"]];
+            SKYAsset *asset = [SKYAsset assetWithName:@"asset-name"
+                                                  url:[NSURL URLWithString:@"http://skygear.test/files/asset-name"]];
             asset.mimeType = @"image/png";
             [record setObject:asset forKey:@"asset"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
@@ -87,28 +84,23 @@ SpecBegin(SKYRecordSerializer)
         });
 
         it(@"serialize reference", ^{
-            [record
-                setObject:[[SKYReference alloc]
-                              initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"author"
-                                                                                  name:@"author1"]]
-                   forKey:@"author"];
+            [record setObject:[[SKYReference alloc]
+                                  initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"author" name:@"author1"]]
+                       forKey:@"author"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             NSDictionary *authorRef = dictionary[@"author"];
             expect([authorRef class]).to.beSubclassOf([NSDictionary class]);
-            expect(authorRef[SKYDataSerializationCustomTypeKey])
-                .to.equal(SKYDataSerializationReferenceType);
+            expect(authorRef[SKYDataSerializationCustomTypeKey]).to.equal(SKYDataSerializationReferenceType);
             expect(authorRef[@"$id"]).to.equal(@"author/author1");
         });
 
         it(@"serialize date", ^{
-            [record setObject:[NSDate dateWithTimeIntervalSinceReferenceDate:0]
-                       forKey:@"published"];
+            [record setObject:[NSDate dateWithTimeIntervalSinceReferenceDate:0] forKey:@"published"];
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
             NSDictionary *publishDate = dictionary[@"published"];
             expect([publishDate class]).to.beSubclassOf([NSDictionary class]);
             NSLog(@"%@", publishDate);
-            expect(publishDate[SKYDataSerializationCustomTypeKey])
-                .to.equal(SKYDataSerializationDateType);
+            expect(publishDate[SKYDataSerializationCustomTypeKey]).to.equal(SKYDataSerializationDateType);
 
             expect(publishDate[@"$date"]).to.equal(@"2001-01-01T00:00:00.000000Z");
         });
@@ -126,7 +118,7 @@ SpecBegin(SKYRecordSerializer)
             record.accessControl = [SKYAccessControl publicReadableAccessControl];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"_access"]).to.equal(@[ @{ @"public" : @YES, @"level" : @"read" } ]);
+            expect(dictionary[@"_access"]).to.equal(@[ @{@"public" : @YES, @"level" : @"read"} ]);
         });
 
         it(@"serialize empty access control", ^{
@@ -137,14 +129,11 @@ SpecBegin(SKYRecordSerializer)
         });
 
         it(@"serialize access control", ^{
-            SKYAccessControlEntry *entry =
-                [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
+            SKYAccessControlEntry *entry = [SKYAccessControlEntry writeEntryForRelation:[SKYRelation followedRelation]];
             record.accessControl = [SKYAccessControl accessControlWithEntries:@[ entry ]];
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect(dictionary[@"_access"]).to.equal(@[
-                @{@"relation" : @"follow", @"level" : @"write"}
-            ]);
+            expect(dictionary[@"_access"]).to.equal(@[ @{@"relation" : @"follow", @"level" : @"write"} ]);
         });
 
         it(@"serialize location", ^{
@@ -209,12 +198,10 @@ SpecBegin(SKYRecordSerializer)
             record.ownerUserRecordID = @"owner_id";
 
             NSDictionary *dictionary = [serializer dictionaryWithRecord:record];
-            expect([SKYDataSerialization
-                       dateFromString:dictionary[SKYRecordSerializationRecordCreatedAtKey]])
+            expect([SKYDataSerialization dateFromString:dictionary[SKYRecordSerializationRecordCreatedAtKey]])
                 .to.equal(record.creationDate);
             expect(dictionary[SKYRecordSerializationRecordCreatorIDKey]).to.equal(@"creator_id");
-            expect([SKYDataSerialization
-                       dateFromString:dictionary[SKYRecordSerializationRecordUpdatedAtKey]])
+            expect([SKYDataSerialization dateFromString:dictionary[SKYRecordSerializationRecordUpdatedAtKey]])
                 .to.equal(record.modificationDate);
             expect(dictionary[SKYRecordSerializationRecordUpdaterIDKey]).to.equal(@"modifier_id");
             expect(dictionary[SKYRecordSerializationRecordOwnerIDKey]).to.equal(@"owner_id");

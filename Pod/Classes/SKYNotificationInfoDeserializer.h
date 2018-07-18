@@ -30,8 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)deserializer;
 
 /// Undocumented
-- (SKYNotificationInfo *_Nullable)notificationInfoWithDictionary:
-    (NSDictionary *_Nullable)dictionary;
+- (SKYNotificationInfo *_Nullable)notificationInfoWithDictionary:(NSDictionary *_Nullable)dictionary;
 
 @end
 

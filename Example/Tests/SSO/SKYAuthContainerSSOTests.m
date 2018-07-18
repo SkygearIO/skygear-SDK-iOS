@@ -30,24 +30,23 @@ SpecBegin(SKYAuthContainerSSO)
 
     describe(@"user login with custom token", ^{
         __block SKYContainer *container = nil;
-        __block void (^assertLoggedIn)(NSString *, NSError *) =
-            ^(NSString *userRecordID, NSError *error) {
-                expect(container.auth.currentUserRecordID).to.equal(userRecordID);
-                expect(container.auth.currentUser.dictionary[@"username"]).to.equal(@"john.doe");
-                expect(container.auth.currentUser.dictionary[@"email"])
-                    .to.equal(@"john.doe@example.com");
-                expect(error).to.beNil();
-                expect(userRecordID).to.equal(@"UUID");
-                expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-            };
+        __block void (^assertLoggedIn)(NSString *, NSError *) = ^(NSString *userRecordID, NSError *error) {
+            expect(container.auth.currentUserRecordID).to.equal(userRecordID);
+            expect(container.auth.currentUser.dictionary[@"username"]).to.equal(@"john.doe");
+            expect(container.auth.currentUser.dictionary[@"email"]).to.equal(@"john.doe@example.com");
+            expect(error).to.beNil();
+            expect(userRecordID).to.equal(@"UUID");
+            expect(container.auth.currentAccessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+        };
 
         beforeEach(^{
             container = [SKYContainer testContainer];
             container.defaultTimeoutInterval = 1.0;
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                NSString *path = [[request URL] path];
-                return [path isEqualToString:@"/sso/custom_token/login"];
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    NSString *path = [[request URL] path];
+                    return [path isEqualToString:@"/sso/custom_token/login"];
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     expect(request.timeoutInterval).to.equal(1.0);
                     NSDictionary *parameters = @{
@@ -61,12 +60,9 @@ SpecBegin(SKYAuthContainerSSO)
                         },
                     };
                     NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
-                                                        options:0
-                                                          error:nil];
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters} options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
         });
 

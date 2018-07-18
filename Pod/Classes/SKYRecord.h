@@ -39,8 +39,7 @@ extern NSString *const SKYRecordTypeUserRecord;
                                 name:(NSString *)recordName
                                 data:(NSDictionary<NSString *, id> *_Nullable)data;
 /// Undocumented
-+ (instancetype)recordWithRecordID:(SKYRecordID *)recordId
-                              data:(NSDictionary<NSString *, id> *_Nullable)data;
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary<NSString *, id> *_Nullable)data;
 
 /// Undocumented
 - (instancetype)init NS_UNAVAILABLE;
@@ -55,8 +54,7 @@ extern NSString *const SKYRecordTypeUserRecord;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName;
 /// Undocumented
-- (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId __deprecated;
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId __deprecated;
 /// Undocumented
 - (instancetype)initWithRecordType:(NSString *)recordType
                           recordID:(SKYRecordID *)recordId
@@ -67,8 +65,7 @@ extern NSString *const SKYRecordTypeUserRecord;
                               data:(NSDictionary<NSString *, id> *_Nullable)data;
 /// Undocumented
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId
-                            data:(NSDictionary<NSString *, id> *_Nullable)data
-    NS_DESIGNATED_INITIALIZER;
+                            data:(NSDictionary<NSString *, id> *_Nullable)data NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
 - (id _Nullable)objectForKey:(id)key;

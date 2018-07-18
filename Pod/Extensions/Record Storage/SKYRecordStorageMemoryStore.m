@@ -149,8 +149,7 @@
 
     NSMutableArray *result = [[NSMutableArray alloc] init];
     [self enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
-        if ([recordType isEqualToString:record.recordType] &&
-            (!predicate || [predicate evaluateWithObject:record])) {
+        if ([recordType isEqualToString:record.recordType] && (!predicate || [predicate evaluateWithObject:record])) {
             if ([sortDescriptors count]) {
                 [result addObject:record];
             } else {
@@ -210,15 +209,12 @@
 
 - (NSArray *)pendingChanges
 {
-    return
-        [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = NO"]];
+    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = NO"]];
 }
 
 - (NSArray *)failedChanges
 {
-    return [_changes
-        filteredArrayUsingPredicate:[NSPredicate
-                                        predicateWithFormat:@"finished = YES AND error != NULL"]];
+    return [_changes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"finished = YES AND error != NULL"]];
 }
 
 @end

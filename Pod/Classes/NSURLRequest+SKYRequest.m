@@ -38,8 +38,7 @@ NSString *const SKYRequestHeaderAccessTokenKey = @"X-Skygear-Access-Token";
     parameters[@"action"] = [request.action copy];
 
     NSError *error = nil;
-    NSData *requestContent =
-        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+    NSData *requestContent = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
 
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
     urlRequest.HTTPMethod = @"POST";

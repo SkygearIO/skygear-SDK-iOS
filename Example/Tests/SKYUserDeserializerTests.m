@@ -55,7 +55,7 @@ SpecBegin(SKYUserDeserializerTests)
             SKYUser *user = [deserializer userWithDictionary:data];
             expect(user.userID).to.equal(@"userid");
             expect(user.email).to.equal(@"john.doe@gmail.com");
-            expect(user.authData).to.equal(@{ @"authMethod" : @{@"key" : @"value"} });
+            expect(user.authData).to.equal(@{@"authMethod" : @{@"key" : @"value"}});
         });
 
         it(@"deserialize user with id only", ^{
@@ -83,7 +83,7 @@ SpecBegin(SKYUserDeserializerTests)
         });
 
         it(@"deserialize roles correctly", ^{
-            NSDictionary *data = @{ @"_id" : @"userid", @"roles" : @[ @"Tester", @"Developer" ] };
+            NSDictionary *data = @{@"_id" : @"userid", @"roles" : @[ @"Tester", @"Developer" ]};
 
             SKYUser *user = [deserializer userWithDictionary:data];
             expect(user.roles).notTo.beNil();
@@ -108,7 +108,6 @@ SpecBegin(SKYUserDeserializerTests)
             expect(user1.lastLoginAt).notTo.beNil();
             expect(user1.lastSeenAt).notTo.beNil();
         });
-
     });
 
 SpecEnd

@@ -23,15 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYAuthContainer (ForgotPassword)
 
 - (void)forgotPasswordWithEmail:(NSString *)emailAddress
-              completionHandler:
-                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+              completionHandler:(void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
 - (void)resetPasswordWithUserID:(NSString *)userID
                            code:(NSString *)code
                        expireAt:(long)expireAt
                        password:(NSString *)password
-              completionHandler:
-                  (void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
+              completionHandler:(void (^_Nullable)(NSDictionary *_Nullable, NSError *_Nullable))completionHandler;
 
 /**
  *  Request user data verification of the specified record key.

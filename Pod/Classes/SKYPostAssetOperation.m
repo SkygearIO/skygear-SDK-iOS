@@ -85,36 +85,31 @@
 
         // append data for form fields
         if (self.extraFields) {
-            [self.extraFields enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSObject *value,
-                                                                  BOOL *stop) {
+            [self.extraFields enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSObject *value, BOOL *stop) {
                 [httpData appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary]
                                          dataUsingEncoding:NSUTF8StringEncoding]];
-                [httpData appendData:[[NSString
-                                         stringWithFormat:
-                                             @"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",
-                                             key] dataUsingEncoding:NSUTF8StringEncoding]];
-                [httpData appendData:[[NSString stringWithFormat:@"%@\r\n", value]
-                                         dataUsingEncoding:NSUTF8StringEncoding]];
+                [httpData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n",
+                                                                 key] dataUsingEncoding:NSUTF8StringEncoding]];
+                [httpData
+                    appendData:[[NSString stringWithFormat:@"%@\r\n", value] dataUsingEncoding:NSUTF8StringEncoding]];
             }];
         }
 
         // append data for file
         NSData *fileData = [NSData dataWithContentsOfURL:self.asset.url];
 
-        [httpData appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary]
-                                 dataUsingEncoding:NSUTF8StringEncoding]];
+        [httpData
+            appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [httpData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; "
                                                          @"name=\"file\"; filename=\"%@\"\r\n",
-                                                         self.asset.name]
+                                                         self.asset.name] dataUsingEncoding:NSUTF8StringEncoding]];
+        [httpData appendData:[[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", self.asset.mimeType]
                                  dataUsingEncoding:NSUTF8StringEncoding]];
-        [httpData
-            appendData:[[NSString stringWithFormat:@"Content-Type: %@\r\n\r\n", self.asset.mimeType]
-                           dataUsingEncoding:NSUTF8StringEncoding]];
         [httpData appendData:fileData];
         [httpData appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 
-        [httpData appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary]
-                                 dataUsingEncoding:NSUTF8StringEncoding]];
+        [httpData
+            appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
 
         _postData = httpData;
     }
@@ -161,42 +156,32 @@
     return request;
 }
 
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session request:(NSURLRequest *)request
 {
     [self setTask:[session uploadTaskWithRequest:request
                                         fromData:self.postData
-                               completionHandler:^(NSData *_Nullable data,
-                                                   NSURLResponse *_Nullable response,
+                               completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response,
                                                    NSError *_Nullable error) {
                                    if (self.shouldObserveProgress) {
                                        [self.task removeObserver:self
-                                                      forKeyPath:NSStringFromSelector(
-                                                                     @selector(countOfBytesSent))];
+                                                      forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))];
                                    }
 
-                                   [self handleRequestCompletionWithData:data
-                                                                response:response
-                                                                   error:error];
+                                   [self handleRequestCompletionWithData:data response:response error:error];
                                }]];
 
     if (self.shouldObserveProgress) {
-        [self.task addObserver:self
-                    forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
-                       options:0
-                       context:nil];
+        [self.task addObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesSent)) options:0 context:nil];
     }
 
     return self.task;
 }
 
-- (void)handleRequestCompletionWithData:(NSData *)data
-                               response:(NSURLResponse *)response
-                                  error:(NSError *)requestError
+- (void)handleRequestCompletionWithData:(NSData *)data response:(NSURLResponse *)response error:(NSError *)requestError
 {
     if (requestError) {
-        NSError *error = [self.errorCreator errorWithCode:SKYErrorNetworkFailure
-                                                 userInfo:@{NSUnderlyingErrorKey : requestError}];
+        NSError *error =
+            [self.errorCreator errorWithCode:SKYErrorNetworkFailure userInfo:@{NSUnderlyingErrorKey : requestError}];
 
         [self didEncounterError:error];
         [self setFinished:YES];
@@ -207,16 +192,13 @@
     // directly call completion block instead of -handleResponseWithData: method
     // since some asset backing store (i.e. cloud asset) does not return any data
     // when the request succeed.
-    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]],
-             @"Returned response is not NSHTTPURLResponse");
+    NSAssert([response isKindOfClass:[NSHTTPURLResponse class]], @"Returned response is not NSHTTPURLResponse");
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 
     NSError *operationError;
     if (httpResponse.statusCode >= 400) {
-        NSLog(@"Asset Post Request Fails: %@",
-              [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        operationError = [self.errorCreator errorWithCode:SKYErrorUnknownError
-                                                  message:@"Asset Post Request Fails"];
+        NSLog(@"Asset Post Request Fails: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        operationError = [self.errorCreator errorWithCode:SKYErrorUnknownError message:@"Asset Post Request Fails"];
     }
 
     if (self.postAssetCompletionBlock) {
@@ -239,8 +221,7 @@
             // task.countOfBytesExpectedToSend sometimes returns zero for unknown reason
             // since we are saving asset data in file anyway, we access the value from asset
             // instead.
-            self.postAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 /
-                                                        self.asset.fileSize.integerValue);
+            self.postAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 / self.asset.fileSize.integerValue);
         }
     }
 }

@@ -29,8 +29,8 @@
 }
 
 - (instancetype)initWithUserIDs:(NSArray<NSString *> *)userIDs
-                completionBlock:(void (^)(NSDictionary<NSString *, NSString *> *userRoles,
-                                          NSError *error))completionBlock
+                completionBlock:
+                    (void (^)(NSDictionary<NSString *, NSString *> *userRoles, NSError *error))completionBlock
 {
     self = [super init];
     if (self) {
@@ -53,8 +53,7 @@
 // override
 - (void)prepareForRequest
 {
-    self.request =
-        [[SKYRequest alloc] initWithAction:@"role:get" payload:@{@"users" : self.userIDs}];
+    self.request = [[SKYRequest alloc] initWithAction:@"role:get" payload:@{@"users" : self.userIDs}];
 }
 
 // override
@@ -68,8 +67,7 @@
 // override
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    NSMutableDictionary<NSString *, NSArray<NSString *> *> *userRoles =
-        [NSMutableDictionary dictionary];
+    NSMutableDictionary<NSString *, NSArray<NSString *> *> *userRoles = [NSMutableDictionary dictionary];
     NSError *error;
 
     NSDictionary *result = aResponse.responseDictionary[@"result"];

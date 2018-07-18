@@ -61,10 +61,8 @@
         default:
             @throw [NSException
                 exceptionWithName:NSInvalidArgumentException
-                           reason:[NSString
-                                      stringWithFormat:
-                                          @"Given NSPredicateOperatorType `%u` is not supported.",
-                                          (unsigned int)operatorType]
+                           reason:[NSString stringWithFormat:@"Given NSPredicateOperatorType `%u` is not supported.",
+                                                             (unsigned int)operatorType]
                          userInfo:nil];
             break;
     }
@@ -82,10 +80,8 @@
         default:
             @throw [NSException
                 exceptionWithName:NSInvalidArgumentException
-                           reason:[NSString
-                                      stringWithFormat:
-                                          @"Given NSCompoundPredicateType `%u` is not supported.",
-                                          (unsigned int)predicateType]
+                           reason:[NSString stringWithFormat:@"Given NSCompoundPredicateType `%u` is not supported.",
+                                                             (unsigned int)predicateType]
                          userInfo:nil];
             break;
     }
@@ -154,9 +150,8 @@
         default:
             @throw [NSException
                 exceptionWithName:NSInvalidArgumentException
-                           reason:[NSString stringWithFormat:
-                                                @"Given NSExpressionType `%u` is not supported.",
-                                                (unsigned int)expression.expressionType]
+                           reason:[NSString stringWithFormat:@"Given NSExpressionType `%u` is not supported.",
+                                                             (unsigned int)expression.expressionType]
                          userInfo:nil];
             break;
     }
@@ -219,8 +214,8 @@
         ];
     } else if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
         NSCompoundPredicate *compound = (NSCompoundPredicate *)predicate;
-        NSMutableArray *result = [NSMutableArray
-            arrayWithObject:[self nameWithCompoundPredicateType:compound.compoundPredicateType]];
+        NSMutableArray *result =
+            [NSMutableArray arrayWithObject:[self nameWithCompoundPredicateType:compound.compoundPredicateType]];
         [[compound subpredicates] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [result addObject:[self serializeWithPredicate:(NSPredicate *)obj]];
         }];
@@ -236,39 +231,35 @@
     } else if (!predicate) {
         return [NSArray array];
     } else {
-        @throw [NSException
-            exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:@"The given predicate is neither a "
-                                                         @"NSComparisonPredicate or "
-                                                         @"NSCompoundPredicate. Given: %@",
-                                                         NSStringFromClass([predicate class])]
-                     userInfo:nil];
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:[NSString stringWithFormat:@"The given predicate is neither a "
+                                                                         @"NSComparisonPredicate or "
+                                                                         @"NSCompoundPredicate. Given: %@",
+                                                                         NSStringFromClass([predicate class])]
+                                     userInfo:nil];
     }
 }
 
 - (id)serializeWithSortDescriptors:(NSArray *)sortDescriptors
 {
     NSMutableArray *result = [NSMutableArray array];
-    [sortDescriptors
-        enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
-            if ([obj isKindOfClass:[SKYLocationSortDescriptor class]]) {
-                SKYLocationSortDescriptor *sd = (SKYLocationSortDescriptor *)obj;
-                NSExpression *expr = [NSExpression
-                    expressionForFunction:@"distanceToLocation:fromLocation:"
-                                arguments:@[
-                                    [NSExpression expressionForKeyPath:sd.key],
-                                    [NSExpression expressionForConstantValue:sd.relativeLocation]
-                                ]];
-                [result addObject:@[
-                    [self serializeWithExpression:expr], sd.ascending ? @"asc" : @"desc"
-                ]];
-            } else {
-                [result addObject:@[
-                    [self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
-                    obj.ascending ? @"asc" : @"desc"
-                ]];
-            }
-        }];
+    [sortDescriptors enumerateObjectsUsingBlock:^(NSSortDescriptor *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[SKYLocationSortDescriptor class]]) {
+            SKYLocationSortDescriptor *sd = (SKYLocationSortDescriptor *)obj;
+            NSExpression *expr =
+                [NSExpression expressionForFunction:@"distanceToLocation:fromLocation:"
+                                          arguments:@[
+                                              [NSExpression expressionForKeyPath:sd.key],
+                                              [NSExpression expressionForConstantValue:sd.relativeLocation]
+                                          ]];
+            [result addObject:@[ [self serializeWithExpression:expr], sd.ascending ? @"asc" : @"desc" ]];
+        } else {
+            [result addObject:@[
+                [self serializeWithExpression:[NSExpression expressionForKeyPath:obj.key]],
+                obj.ascending ? @"asc" : @"desc"
+            ]];
+        }
+    }];
     return [result copy];
 }
 

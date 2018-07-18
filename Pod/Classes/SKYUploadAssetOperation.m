@@ -53,28 +53,23 @@
     return self.uploadAssetProgressBlock != nil;
 }
 
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session request:(NSURLRequest *)request
 {
     NSURLSessionUploadTask *task;
-    task = [session
-        uploadTaskWithRequest:request
-                     fromFile:self.asset.url
-            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                if ([self shouldObserveProgress]) {
-                    [self.task removeObserver:self
-                                   forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
-                                      context:nil];
-                }
+    task = [session uploadTaskWithRequest:request
+                                 fromFile:self.asset.url
+                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                            if ([self shouldObserveProgress]) {
+                                [self.task removeObserver:self
+                                               forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
+                                                  context:nil];
+                            }
 
-                [self handleRequestCompletionWithData:data response:response error:error];
-            }];
+                            [self handleRequestCompletionWithData:data response:response error:error];
+                        }];
 
     if ([self shouldObserveProgress]) {
-        [task addObserver:self
-               forKeyPath:NSStringFromSelector(@selector(countOfBytesSent))
-                  options:0
-                  context:nil];
+        [task addObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesSent)) options:0 context:nil];
     }
 
     self.task = task;
@@ -93,8 +88,7 @@
             // task.countOfBytesExpectedToSend sometimes returns zero for unknown reason
             // since we are saving asset data in file anyway, we access the value from asset
             // instead.
-            self.uploadAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 /
-                                                          self.asset.fileSize.integerValue);
+            self.uploadAssetProgressBlock(self.asset, task.countOfBytesSent * 1.0 / self.asset.fileSize.integerValue);
         }
     }
 }
@@ -103,8 +97,9 @@
 {
     NSURL *baseURL = [NSURL URLWithString:@"files/" relativeToURL:self.container.endPointAddress];
     NSURL *url =
-        [NSURL URLWithString:[self.asset.name stringByAddingPercentEncodingWithAllowedCharacters:
-                                                  [NSCharacterSet URLPathAllowedCharacterSet]]
+        [NSURL URLWithString:[self.asset.name
+                                 stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet
+                                                                                        URLPathAllowedCharacterSet]]
                relativeToURL:baseURL];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -140,9 +135,8 @@
         _asset.mimeType = rawAsset[@"$content_type"];
         _asset.url = rawAsset[@"$url"];
     } else {
-        error = [self.errorCreator
-            errorWithCode:SKYErrorInvalidData
-                  message:@"Uploaded asset does not have a name associated with it."];
+        error = [self.errorCreator errorWithCode:SKYErrorInvalidData
+                                         message:@"Uploaded asset does not have a name associated with it."];
     }
 
     if (self.uploadAssetCompletionBlock) {

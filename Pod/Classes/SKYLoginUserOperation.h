@@ -48,8 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and returns an instance of operation for logging in a user with provider and its auth data.
  */
-+ (instancetype)operationWithProvider:(NSString *)provider
-                     providerAuthData:(NSDictionary *)providerAuthData;
++ (instancetype)operationWithProvider:(NSString *)provider providerAuthData:(NSDictionary *)providerAuthData;
 
 @end
 

@@ -30,14 +30,12 @@ SpecBegin(SKYLambdaOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"calls lambda with array args", ^{
             NSArray *args = @[ @"bob" ];
-            SKYLambdaOperation *operation =
-                [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:args];
+            SKYLambdaOperation *operation = [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:args];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -64,15 +62,13 @@ SpecBegin(SKYLambdaOperation)
 
         it(@"calls lambda with custom types", ^{
             NSDictionary *args = @{
-                @"location" : [[CLLocation alloc]
-                    initWithCoordinate:CLLocationCoordinate2DMake(1, 2)
-                              altitude:0
-                    horizontalAccuracy:0
-                      verticalAccuracy:0
-                             timestamp:[NSDate dateWithTimeIntervalSince1970:0]],
+                @"location" : [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 2)
+                                                            altitude:0
+                                                  horizontalAccuracy:0
+                                                    verticalAccuracy:0
+                                                           timestamp:[NSDate dateWithTimeIntervalSince1970:0]],
                 @"record" :
-                    [[SKYRecord alloc] initWithRecordType:@"note"
-                                                     name:@"AA0954F8-0481-456F-A347-41C55D47A301"]
+                    [[SKYRecord alloc] initWithRecordType:@"note" name:@"AA0954F8-0481-456F-A347-41C55D47A301"]
             };
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
@@ -86,10 +82,7 @@ SpecBegin(SKYLambdaOperation)
             expect(request.payload[@"args"]).to.equal(@{
                 @"location" : @{@"$lat" : @1, @"$lng" : @2, @"$type" : @"geo"},
                 @"record" : @{
-                    @"$record" : @{
-                        @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
-                        @"_type" : @"record"
-                    },
+                    @"$record" : @{@"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301", @"_type" : @"record"},
                     @"$type" : @"record"
                 }
             });
@@ -100,9 +93,10 @@ SpecBegin(SKYLambdaOperation)
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -110,19 +104,15 @@ SpecBegin(SKYLambdaOperation)
                             @"message" : @"hello bob",
                             @"location" : @{@"$lat" : @1, @"$lng" : @2, @"$type" : @"geo"},
                             @"record" : @{
-                                @"$record" : @{
-                                    @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
-                                    @"_type" : @"record"
-                                },
+                                @"$record" :
+                                    @{@"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301", @"_type" : @"record"},
                                 @"$type" : @"record"
                             }
                         }
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -143,18 +133,16 @@ SpecBegin(SKYLambdaOperation)
         });
 
         it(@"pass null result", ^{
-            SKYLambdaOperation *operation =
-                [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:nil];
+            SKYLambdaOperation *operation = [SKYLambdaOperation operationWithAction:@"hello:world" arrayArguments:nil];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSData *payload =
-                        [@"{\"result\": null}" dataUsingEncoding:NSUTF8StringEncoding];
+                    NSData *payload = [@"{\"result\": null}" dataUsingEncoding:NSUTF8StringEncoding];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -174,14 +162,13 @@ SpecBegin(SKYLambdaOperation)
             SKYLambdaOperation *operation =
                 [SKYLambdaOperation operationWithAction:@"hello:world" dictionaryArguments:args];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {

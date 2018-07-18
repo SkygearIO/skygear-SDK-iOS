@@ -62,8 +62,7 @@
 // override
 - (NSString *)description
 {
-    return
-        [NSString stringWithFormat:@"%@ { name = %@ }", NSStringFromClass(self.class), self.name];
+    return [NSString stringWithFormat:@"%@ { name = %@ }", NSStringFromClass(self.class), self.name];
 }
 
 // override
@@ -90,8 +89,7 @@
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    return
-        [[self class] roleWithName:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
+    return [[self class] roleWithName:[aDecoder decodeObjectOfClass:[NSString class] forKey:@"name"]];
 }
 
 @end

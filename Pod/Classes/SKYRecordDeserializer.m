@@ -49,8 +49,7 @@
         }
     }];
 
-    SKYRecordID *recordID =
-        [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+    SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
     SKYRecord *record = [[SKYRecord alloc] initWithRecordID:recordID data:recordData];
 
     NSString *ownerID = obj[SKYRecordSerializationRecordOwnerIDKey];

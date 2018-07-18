@@ -59,13 +59,10 @@
 
 - (void)loadCurrentUserAndAccessToken
 {
-    NSString *userRecordID =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
-    NSString *accessToken =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
+    NSString *userRecordID = [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
     SKYRecord *user = nil;
-    NSData *encodedUser =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecord"];
+    NSData *encodedUser = [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecord"];
     if ([encodedUser isKindOfClass:[NSData class]]) {
         user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
     }
@@ -85,8 +82,7 @@
     }
 }
 
-- (void)operation:(id)operation
-    didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
+- (void)operation:(id)operation didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
 {
     NSDictionary *profile = authResponse[@"profile"];
     if (![profile isKindOfClass:[NSDictionary class]]) {
@@ -122,20 +118,16 @@
 {
     if (_accessToken && (_userRecordID || _currentUser)) {
         if (_userRecordID) {
-            [[NSUserDefaults standardUserDefaults] setObject:_userRecordID
-                                                      forKey:@"SKYContainerCurrentUserRecordID"];
+            [[NSUserDefaults standardUserDefaults] setObject:_userRecordID forKey:@"SKYContainerCurrentUserRecordID"];
         }
         if (_currentUser) {
-            [[NSUserDefaults standardUserDefaults]
-                setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
-                   forKey:@"SKYContainerCurrentUserRecord"];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
+                                                      forKey:@"SKYContainerCurrentUserRecord"];
         }
-        [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString
-                                                  forKey:@"SKYContainerAccessToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString forKey:@"SKYContainerAccessToken"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [[NSUserDefaults standardUserDefaults]
-            removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUserRecord"];
     }
@@ -156,10 +148,9 @@
 
     [self saveCurrentUserAndAccessToken];
 
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                      object:self
-                    userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidChangeCurrentUserNotification
+                                                        object:self
+                                                      userInfo:nil];
 }
 
 - (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken
@@ -183,10 +174,9 @@
         [self.container.push registerDeviceCompletionHandler:nil];
     }
 
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SKYContainerDidChangeCurrentUserNotification
-                      object:self
-                    userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidChangeCurrentUserNotification
+                                                        object:self
+                                                      userInfo:nil];
 }
 
 - (void)setAuthenticationErrorHandler:(void (^)(SKYContainer *container, SKYAccessToken *token,
@@ -204,17 +194,15 @@
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYSignupUserOperation *operation =
-        [SKYSignupUserOperation operationWithAuthData:authData password:password];
+    SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAuthData:authData password:password];
     operation.authResponseDelegate = self;
-    operation.signupCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(user, error);
-                });
-            }
-        };
+    operation.signupCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
     [self.container addOperation:operation];
 }
 
@@ -229,14 +217,13 @@
     SKYSignupUserOperation *operation =
         [SKYSignupUserOperation operationWithAuthData:authData password:password profile:profile];
     operation.authResponseDelegate = self;
-    operation.signupCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(user, error);
-                });
-            }
-        };
+    operation.signupCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
     [self.container addOperation:operation];
 }
 
@@ -244,18 +231,14 @@
                   password:(NSString *)password
          completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    [self signupWithAuthData:@{@"username" : username}
-                    password:password
-           completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"username" : username} password:password completionHandler:completionHandler];
 }
 
 - (void)signupWithEmail:(NSString *)email
                password:(NSString *)password
       completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    [self signupWithAuthData:@{@"email" : email}
-                    password:password
-           completionHandler:completionHandler];
+    [self signupWithAuthData:@{@"email" : email} password:password completionHandler:completionHandler];
 }
 
 /**
@@ -286,19 +269,17 @@
            completionHandler:completionHandler];
 }
 
-- (void)signupAnonymouslyWithCompletionHandler:
-    (SKYContainerUserOperationActionCompletion)completionHandler
+- (void)signupAnonymouslyWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
     SKYSignupUserOperation *operation = [SKYSignupUserOperation operationWithAnonymousUser];
     operation.authResponseDelegate = self;
-    operation.signupCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(user, error);
-                });
-            }
-        };
+    operation.signupCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
     [self.container addOperation:operation];
 }
 
@@ -306,17 +287,15 @@
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    SKYLoginUserOperation *operation =
-        [SKYLoginUserOperation operationWithAuthData:authData password:password];
+    SKYLoginUserOperation *operation = [SKYLoginUserOperation operationWithAuthData:authData password:password];
     operation.authResponseDelegate = self;
-    operation.loginCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(user, error);
-                });
-            }
-        };
+    operation.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
     [self.container addOperation:operation];
 }
 
@@ -324,18 +303,14 @@
                  password:(NSString *)password
         completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    [self loginWithAuthData:@{@"username" : username}
-                   password:password
-          completionHandler:completionHandler];
+    [self loginWithAuthData:@{@"username" : username} password:password completionHandler:completionHandler];
 }
 
 - (void)loginWithEmail:(NSString *)email
               password:(NSString *)password
      completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    [self loginWithAuthData:@{@"email" : email}
-                   password:password
-          completionHandler:completionHandler];
+    [self loginWithAuthData:@{@"email" : email} password:password completionHandler:completionHandler];
 }
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
@@ -363,14 +338,13 @@
 
     NSString *deviceID = self.container.push.registeredDeviceID;
     if (deviceID != nil) {
-        [self.container.push
-            unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                if (error != nil) {
-                    NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
-                }
+        [self.container.push unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+            if (error != nil) {
+                NSLog(@"Warning: Failed to unregister device: %@", error.localizedDescription);
+            }
 
-                [weakSelf.container addOperation:logoutOperation];
-            }];
+            [weakSelf.container addOperation:logoutOperation];
+        }];
     } else {
         [self.container addOperation:logoutOperation];
     }
@@ -383,12 +357,11 @@
     SKYChangePasswordOperation *operation =
         [SKYChangePasswordOperation operationWithOldPassword:oldPassword passwordToSet:newPassword];
     operation.authResponseDelegate = self;
-    operation.changePasswordCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(user, error);
-            });
-        };
+    operation.changePasswordCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(user, error);
+        });
+    };
 
     [self.container addOperation:operation];
 }
@@ -397,24 +370,21 @@
 {
     SKYGetCurrentUserOperation *operation = [[SKYGetCurrentUserOperation alloc] init];
     operation.authResponseDelegate = self;
-    operation.getCurrentUserCompletionBlock =
-        ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-            if (completionHandler) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionHandler(user, error);
-                });
-            }
-        };
+    operation.getCurrentUserCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+        if (completionHandler) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(user, error);
+            });
+        }
+    };
     [self.container addOperation:operation];
 }
 
 #pragma mark -
 
-- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles
-              completion:(void (^)(NSError *error))completionBlock
+- (void)defineAdminRoles:(NSArray<SKYRole *> *)roles completion:(void (^)(NSError *error))completionBlock
 {
-    SKYDefineAdminRolesOperation *operation =
-        [SKYDefineAdminRolesOperation operationWithRoles:roles];
+    SKYDefineAdminRolesOperation *operation = [SKYDefineAdminRolesOperation operationWithRoles:roles];
 
     operation.defineAdminRolesCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -427,11 +397,9 @@
     [self.container addOperation:operation];
 }
 
-- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles
-                completion:(void (^)(NSError *error))completionBlock
+- (void)setUserDefaultRole:(NSArray<SKYRole *> *)roles completion:(void (^)(NSError *error))completionBlock
 {
-    SKYSetUserDefaultRoleOperation *operation =
-        [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+    SKYSetUserDefaultRoleOperation *operation = [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
     operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
         if (completionBlock) {
@@ -445,20 +413,18 @@
 }
 
 - (void)fetchRolesOfUsers:(NSArray<SKYRecord *> *)users
-               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *,
-                                    NSError *))completionBlock
+               completion:(void (^)(NSDictionary<NSString *, NSArray<SKYRole *> *> *, NSError *))completionBlock
 {
     [self fetchRolesOfUsersWithUserIDs:[self getUserIDs:users]
-                            completion:^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles,
-                                         NSError *error) {
+                            completion:^(NSDictionary<NSString *, NSArray<NSString *> *> *userRoles, NSError *error) {
                                 if (completionBlock) {
                                     if (error) {
                                         completionBlock(nil, error);
                                         return;
                                     }
 
-                                    NSMutableDictionary<NSString *, NSArray<SKYRole *> *>
-                                        *parsedUserRoles = [NSMutableDictionary dictionary];
+                                    NSMutableDictionary<NSString *, NSArray<SKYRole *> *> *parsedUserRoles =
+                                        [NSMutableDictionary dictionary];
                                     for (NSString *userID in userRoles) {
                                         NSMutableArray *roles = [NSMutableArray array];
                                         for (NSString *role in userRoles[userID]) {
@@ -473,8 +439,8 @@
 }
 
 - (void)fetchRolesOfUsersWithUserIDs:(NSArray<NSString *> *)userIDs
-                          completion:(void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *,
-                                               NSError *))completionBlock
+                          completion:
+                              (void (^)(NSDictionary<NSString *, NSArray<NSString *> *> *, NSError *))completionBlock
 {
     SKYFetchUserRoleOperation *operation = [SKYFetchUserRoleOperation operationWithUserIDs:userIDs];
     operation.fetchUserRoleCompletionBlock =
@@ -544,11 +510,9 @@
 }
 
 - (void)adminEnableUserWithUserID:(NSString *)userID
-                       completion:(void (^_Nullable)(NSString *userID,
-                                                     NSError *_Nullable error))completionBlock
+                       completion:(void (^_Nullable)(NSString *userID, NSError *_Nullable error))completionBlock
 {
-    SKYSetDisableUserOperation *operation =
-        [SKYSetDisableUserOperation enableOperationWithUserID:userID];
+    SKYSetDisableUserOperation *operation = [SKYSetDisableUserOperation enableOperationWithUserID:userID];
 
     operation.setCompletionBlock = ^(NSString *userID, NSError *error) {
         if (completionBlock) {
@@ -564,13 +528,10 @@
 - (void)adminDisableUserWithUserID:(NSString *)userID
                            message:(NSString *_Nullable)message
                             expiry:(NSDate *_Nullable)expiry
-                        completion:(void (^_Nullable)(NSString *userID,
-                                                      NSError *_Nullable error))completionBlock
+                        completion:(void (^_Nullable)(NSString *userID, NSError *_Nullable error))completionBlock
 {
     SKYSetDisableUserOperation *operation =
-        [SKYSetDisableUserOperation disableOperationWithUserID:userID
-                                                       message:message
-                                                        expiry:expiry];
+        [SKYSetDisableUserOperation disableOperationWithUserID:userID message:message expiry:expiry];
 
     operation.setCompletionBlock = ^(NSString *userID, NSError *error) {
         if (completionBlock) {

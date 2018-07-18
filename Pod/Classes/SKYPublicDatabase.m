@@ -30,14 +30,13 @@
 {
     SKYDefineCreationAccessOperation *operation =
         [SKYDefineCreationAccessOperation operationWithRecordType:recordType roles:roles];
-    operation.defineCreationAccessCompletionBlock =
-        ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
-            if (completionBlock) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(error);
-                });
-            }
-        };
+    operation.defineCreationAccessCompletionBlock = ^(NSString *recordType, NSArray<SKYRole *> *roles, NSError *error) {
+        if (completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(error);
+            });
+        }
+    };
 
     [self.container addOperation:operation];
 }
@@ -47,8 +46,7 @@
                                completion:(void (^)(NSError *error))completionBlock
 {
     SKYDefineDefaultAccessOperation *operation =
-        [SKYDefineDefaultAccessOperation operationWithRecordType:recordType
-                                                   accessControl:accessControl];
+        [SKYDefineDefaultAccessOperation operationWithRecordType:recordType accessControl:accessControl];
 
     operation.defineDefaultAccessCompletionBlock =
         ^(NSString *recordType, SKYAccessControl *accessControl, NSError *error) {

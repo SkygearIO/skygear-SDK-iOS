@@ -30,8 +30,7 @@ SpecBegin(SKYQueryOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
@@ -57,8 +56,7 @@ SpecBegin(SKYQueryOperation)
         });
 
         it(@"simple query", ^{
-            NSPredicate *predicate =
-                [NSPredicate predicateWithFormat:@"name = %@", @"A tale of two cities"];
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name = %@", @"A tale of two cities"];
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:predicate];
             SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
@@ -82,8 +80,7 @@ SpecBegin(SKYQueryOperation)
 
         it(@"sorted", ^{
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-            query.sortDescriptors =
-                @[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ];
+            query.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ];
             SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             operation.container = container;
@@ -91,9 +88,7 @@ SpecBegin(SKYQueryOperation)
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
 
-            expect(request.payload[@"sort"][0]).to.equal(@[
-                @{@"$type" : @"keypath", @"$val" : @"name"}, @"asc"
-            ]);
+            expect(request.payload[@"sort"][0]).to.equal(@[ @{@"$type" : @"keypath", @"$val" : @"name"}, @"asc" ]);
         });
 
         it(@"transient", ^{
@@ -106,9 +101,7 @@ SpecBegin(SKYQueryOperation)
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
 
-            expect(request.payload[@"include"]).to.equal(@{
-                @"shelf" : @{@"$type" : @"keypath", @"$val" : @"shelf"}
-            });
+            expect(request.payload[@"include"]).to.equal(@{@"shelf" : @{@"$type" : @"keypath", @"$val" : @"shelf"}});
         });
 
         it(@"make request", ^{
@@ -117,9 +110,10 @@ SpecBegin(SKYQueryOperation)
             SKYDatabase *database = [[SKYContainer defaultContainer] publicCloudDatabase];
             operation.database = database;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -138,11 +132,9 @@ SpecBegin(SKYQueryOperation)
                             }
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -166,14 +158,13 @@ SpecBegin(SKYQueryOperation)
         it(@"pass error", ^{
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
             SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -193,9 +184,10 @@ SpecBegin(SKYQueryOperation)
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
             SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -212,11 +204,9 @@ SpecBegin(SKYQueryOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -248,13 +238,13 @@ SpecBegin(SKYQueryOperation)
         it(@"per block with eager load", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-            query.transientIncludes =
-                @{@"category" : [NSExpression expressionForKeyPath:@"category"]};
+            query.transientIncludes = @{@"category" : [NSExpression expressionForKeyPath:@"category"]};
             SKYQueryOperation *operation = [SKYQueryOperation operationWithQuery:query];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -276,11 +266,9 @@ SpecBegin(SKYQueryOperation)
                             },
                         ],
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {

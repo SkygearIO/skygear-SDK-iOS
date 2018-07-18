@@ -28,8 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  Login a facebook user.
  */
 - (void)loginWithFacebookAccessToken:(FBSDKAccessToken *)accessToken
-                   completionHandler:
-                       (SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
+                   completionHandler:(SKYContainerUserOperationActionCompletion _Nullable)completionHandler;
 
 @end
 

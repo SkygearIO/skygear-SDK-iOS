@@ -33,10 +33,7 @@
                               pushTarget:(SKYPushTarget)pushTarget
                                IDsToSend:(NSArray *)IDsToSend
 {
-    return [self initWithNotificationInfo:notificationInfo
-                               pushTarget:pushTarget
-                                IDsToSend:IDsToSend
-                                    topic:nil];
+    return [self initWithNotificationInfo:notificationInfo pushTarget:pushTarget IDsToSend:IDsToSend topic:nil];
 }
 
 - (instancetype)initWithNotificationInfo:(SKYNotificationInfo *)notificationInfo
@@ -53,11 +50,9 @@
 
         [_IDsToSend enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if (![obj isKindOfClass:[NSString class]]) {
-                NSString *reason = [NSString stringWithFormat:@"User ID must be NSString. Got %@",
-                                                              NSStringFromClass([obj class])];
-                @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                               reason:reason
-                                             userInfo:nil];
+                NSString *reason =
+                    [NSString stringWithFormat:@"User ID must be NSString. Got %@", NSStringFromClass([obj class])];
+                @throw [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
             }
         }];
     }
@@ -113,8 +108,7 @@
     NSMutableDictionary *payload;
 
     SKYNotificationInfoSerializer *serializer = [SKYNotificationInfoSerializer serializer];
-    NSDictionary *serializedNotification =
-        [serializer dictionaryWithNotificationInfo:self.notificationInfo];
+    NSDictionary *serializedNotification = [serializer dictionaryWithNotificationInfo:self.notificationInfo];
 
     switch (self.pushTarget) {
         case SKYPushTargetIsUser:
@@ -132,11 +126,8 @@
             } mutableCopy];
             break;
         default: {
-            NSString *reason =
-                [NSString stringWithFormat:@"unexpected push target %d", (int)self.pushTarget];
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:reason
-                                         userInfo:nil];
+            NSString *reason = [NSString stringWithFormat:@"unexpected push target %d", (int)self.pushTarget];
+            @throw [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
         }
     }
 
@@ -164,9 +155,8 @@
     } else {
         successIDs = [NSMutableArray array];
         NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
-        [response enumerateResultsUsingBlock:^(NSString *resultKey, NSDictionary *result,
-                                               NSError *error, NSUInteger idx, BOOL *stop) {
-
+        [response enumerateResultsUsingBlock:^(NSString *resultKey, NSDictionary *result, NSError *error,
+                                               NSUInteger idx, BOOL *stop) {
             if (error && resultKey) {
                 errorsByID[resultKey] = error;
             } else {

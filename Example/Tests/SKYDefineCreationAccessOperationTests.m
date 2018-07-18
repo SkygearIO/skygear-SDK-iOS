@@ -39,15 +39,14 @@ SpecBegin(SKYDefineCreationAccessOperation)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYDefineCreationAccessOperation *operation = [SKYDefineCreationAccessOperation
-                operationWithRecordType:sourceCodeRecordType
-                                  roles:@[ developerRole, testerRole ]];
+            SKYDefineCreationAccessOperation *operation =
+                [SKYDefineCreationAccessOperation operationWithRecordType:sourceCodeRecordType
+                                                                    roles:@[ developerRole, testerRole ]];
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
 
@@ -56,8 +55,7 @@ SpecBegin(SKYDefineCreationAccessOperation)
             expect(request.accessToken.tokenString).to.equal(token);
 
             NSString *recordTypePayload = [request.payload objectForKey:@"type"];
-            NSArray<NSString *> *accessRolesPayload =
-                [request.payload objectForKey:@"create_roles"];
+            NSArray<NSString *> *accessRolesPayload = [request.payload objectForKey:@"create_roles"];
 
             expect(recordTypePayload).to.equal(sourceCodeRecordType);
             expect(accessRolesPayload).to.haveACountOf(2);
@@ -66,24 +64,20 @@ SpecBegin(SKYDefineCreationAccessOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{
-                        @"result" : @{
-                            @"type" : sourceCodeRecordType,
-                            @"roles" : @[ developerRoleName, testerRoleName ]
-                        }
+                        @"result" : @{@"type" : sourceCodeRecordType, @"roles" : @[ developerRoleName, testerRoleName ]}
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
-            SKYDefineCreationAccessOperation *operation = [SKYDefineCreationAccessOperation
-                operationWithRecordType:sourceCodeRecordType
-                                  roles:@[ developerRole, testerRole ]];
+            SKYDefineCreationAccessOperation *operation =
+                [SKYDefineCreationAccessOperation operationWithRecordType:sourceCodeRecordType
+                                                                    roles:@[ developerRole, testerRole ]];
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {

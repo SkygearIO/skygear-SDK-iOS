@@ -26,8 +26,7 @@
 #import "SKYRegisterDeviceOperation.h"
 #import "SKYUnregisterDeviceOperation.h"
 
-NSString *const SKYContainerDidRegisterDeviceNotification =
-    @"SKYContainerDidRegisterDeviceNotification";
+NSString *const SKYContainerDidRegisterDeviceNotification = @"SKYContainerDidRegisterDeviceNotification";
 
 @interface SKYPushContainer ()
 
@@ -60,9 +59,8 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SKYContainerDidRegisterDeviceNotification
-                      object:self.container];
+    [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification
+                                                        object:self.container];
 }
 
 - (NSData *)deviceToken
@@ -73,8 +71,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
 - (void)setDeviceToken:(NSData *)deviceToken
 {
     if (deviceToken) {
-        [[NSUserDefaults standardUserDefaults] setObject:deviceToken
-                                                  forKey:@"SKYContainerDeviceToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:@"SKYContainerDeviceToken"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -96,15 +93,13 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     }
 }
 
-- (void)handleSubscriptionNoticeWithSubscriptionID:(NSString *)subscriptionID
-                                     seqenceNumber:(NSNumber *)seqNum
+- (void)handleSubscriptionNoticeWithSubscriptionID:(NSString *)subscriptionID seqenceNumber:(NSNumber *)seqNum
 {
     NSMutableDictionary *dict = self.subscriptionSeqNumDict;
     NSNumber *lastSeqNum = dict[subscriptionID];
     if (seqNum.unsignedLongLongValue > lastSeqNum.unsignedLongLongValue) {
         dict[subscriptionID] = seqNum;
-        [self handleSubscriptionNotification:[[SKYNotification alloc]
-                                                 initWithSubscriptionID:subscriptionID]];
+        [self handleSubscriptionNotification:[[SKYNotification alloc] initWithSubscriptionID:subscriptionID]];
     }
 }
 
@@ -124,8 +119,7 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     [self setDeviceToken:deviceToken];
 
     NSString *topic = [[NSBundle mainBundle] bundleIdentifier];
-    SKYRegisterDeviceOperation *op =
-        [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken topic:topic];
+    SKYRegisterDeviceOperation *op = [[SKYRegisterDeviceOperation alloc] initWithDeviceToken:deviceToken topic:topic];
     op.deviceID = existingDeviceID;
     op.registerCompletionBlock = ^(NSString *deviceID, NSError *error) {
         BOOL willRetry = NO;
@@ -201,13 +195,11 @@ NSString *const SKYContainerDidRegisterDeviceNotification =
     }];
 }
 
-- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID,
-                                                    NSError *error))completionHandler
+- (void)unregisterDeviceCompletionHandler:(void (^)(NSString *deviceID, NSError *error))completionHandler
 {
     NSString *existingDeviceID = self.registeredDeviceID;
     if (existingDeviceID != nil) {
-        SKYUnregisterDeviceOperation *operation =
-            [SKYUnregisterDeviceOperation operationWithDeviceID:existingDeviceID];
+        SKYUnregisterDeviceOperation *operation = [SKYUnregisterDeviceOperation operationWithDeviceID:existingDeviceID];
         operation.unregisterCompletionBlock = ^(NSString *deviceID, NSError *error) {
             if (completionHandler != nil) {
                 dispatch_async(dispatch_get_main_queue(), ^{

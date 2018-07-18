@@ -33,12 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) NSString *recordType;
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable defineDefaultAccessCompletionBlock)
-    (NSString *_Nullable recordType, SKYAccessControl *_Nullable accessControl,
-     NSError *_Nullable error);
+    (NSString *_Nullable recordType, SKYAccessControl *_Nullable accessControl, NSError *_Nullable error);
 
 /// Undocumented
-+ (instancetype)operationWithRecordType:(NSString *)recordType
-                          accessControl:(SKYAccessControl *)accessControl;
++ (instancetype)operationWithRecordType:(NSString *)recordType accessControl:(SKYAccessControl *)accessControl;
 
 @end
 

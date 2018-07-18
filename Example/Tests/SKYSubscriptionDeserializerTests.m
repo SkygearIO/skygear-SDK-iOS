@@ -45,14 +45,12 @@ SpecBegin(SKYSubscriptionDeserializer)
         });
 
         it(@"deserialize dictionary without id to nil", ^{
-            SKYSubscription *subscription =
-                [deserializer subscriptionWithDictionary:@{@"type" : @"query"}];
+            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:@{@"type" : @"query"}];
             expect(subscription).to.equal(nil);
         });
 
         it(@"deserialize dictionary without type to nil", ^{
-            SKYSubscription *subscription =
-                [deserializer subscriptionWithDictionary:@{@"id" : @"subscriptionID"}];
+            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:@{@"id" : @"subscriptionID"}];
             expect(subscription).to.equal(nil);
         });
 
@@ -62,8 +60,7 @@ SpecBegin(SKYSubscriptionDeserializer)
                 @"type" : @"query",
             };
 
-            SKYSubscription *subscription =
-                [deserializer subscriptionWithDictionary:subscriptionDict];
+            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:subscriptionDict];
 
             expect(subscription.subscriptionType).to.equal(SKYSubscriptionTypeQuery);
             expect(subscription.subscriptionID).to.equal(@"subscriptionID");
@@ -89,13 +86,11 @@ SpecBegin(SKYSubscriptionDeserializer)
                 },
             };
 
-            SKYSubscription *subscription =
-                [deserializer subscriptionWithDictionary:subscriptionDict];
+            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:subscriptionDict];
             expect(subscription.subscriptionType).to.equal(SKYSubscriptionTypeQuery);
             expect(subscription.subscriptionID).to.equal(@"subscriptionID");
             expect(subscription.query.recordType).to.equal(@"recordType");
-            expect(subscription.query.predicate)
-                .to.equal([NSPredicate predicateWithFormat:@"name = %@", @"John"]);
+            expect(subscription.query.predicate).to.equal([NSPredicate predicateWithFormat:@"name = %@", @"John"]);
         });
 
         it(@"deserialize subscription with notification info", ^{
@@ -120,13 +115,11 @@ SpecBegin(SKYSubscriptionDeserializer)
                 },
             };
 
-            SKYSubscription *subscription =
-                [deserializer subscriptionWithDictionary:subscriptionDict];
+            SKYSubscription *subscription = [deserializer subscriptionWithDictionary:subscriptionDict];
             expect(subscription.subscriptionType).to.equal(SKYSubscriptionTypeQuery);
             expect(subscription.subscriptionID).to.equal(@"subscriptionID");
 
-            SKYAPSNotificationInfo *expectedAPSNotificationInfo =
-                [SKYAPSNotificationInfo notificationInfo];
+            SKYAPSNotificationInfo *expectedAPSNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
             expectedAPSNotificationInfo.alertBody = @"alertBody";
             expectedAPSNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
             expectedAPSNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
@@ -179,11 +172,9 @@ describe(@"deserialize notification info", ^{
             @"desired_keys" : @[ @"key0", @"key1" ],
         };
 
-        SKYNotificationInfo *notificationInfo =
-            [deserializer notificationInfoWithDictionary:notificationInfoDict];
+        SKYNotificationInfo *notificationInfo = [deserializer notificationInfoWithDictionary:notificationInfoDict];
 
-        SKYAPSNotificationInfo *expectedAPSNotificationInfo =
-            [SKYAPSNotificationInfo notificationInfo];
+        SKYAPSNotificationInfo *expectedAPSNotificationInfo = [SKYAPSNotificationInfo notificationInfo];
         expectedAPSNotificationInfo.alertBody = @"alertBody";
         expectedAPSNotificationInfo.alertActionLocalizationKey = @"alertActionLocalizationKey";
         expectedAPSNotificationInfo.alertLocalizationKey = @"alertLocalizationKey";
@@ -199,7 +190,6 @@ describe(@"deserialize notification info", ^{
 
         expect(notificationInfo).to.equal(expectedNotificationInfo);
     });
-
 });
 
 SpecEnd

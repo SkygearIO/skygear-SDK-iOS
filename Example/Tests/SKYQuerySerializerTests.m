@@ -55,8 +55,7 @@ SpecBegin(SKYQuerySerializer)
         });
 
         it(@"serialize sort", ^{
-            query.sortDescriptors =
-                @[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ];
+            query.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ];
 
             NSDictionary *result = [serializer serializeWithQuery:query];
             expect(result).to.equal(@{
@@ -90,8 +89,7 @@ describe(@"serialize predicate", ^{
     });
 
     it(@"lhs key path", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
         expect(result[0]).to.equal(@"eq");
@@ -102,24 +100,21 @@ describe(@"serialize predicate", ^{
     });
 
     it(@"equal string", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
         expect(result[2]).to.equal(@"Peter");
     });
 
     it(@"equal integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
         expect(result[2]).to.equal(12);
     });
 
     it(@"equal number", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@", @12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
         expect(result[2]).to.equal(12);
@@ -127,8 +122,7 @@ describe(@"serialize predicate", ^{
 
     it(@"equal date", ^{
         NSDate *dob = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"dob = %@", dob]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"dob = %@", dob]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
         expect(result[2][@"$type"]).to.equal(@"date");
@@ -136,50 +130,44 @@ describe(@"serialize predicate", ^{
     });
 
     it(@"equal ref", ^{
-        SKYReference *ref = [[SKYReference alloc]
-            initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"city" name:@"hongkong"]];
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"city = %@", ref]];
+        SKYReference *ref =
+            [[SKYReference alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"city" name:@"hongkong"]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"city = %@", ref]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
         expect(result[2]).to.equal(@{@"$type" : @"ref", @"$id" : @"city/hongkong"});
     });
 
     it(@"greater than integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name > %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name > %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"gt");
         expect(result[2]).to.equal(12);
     });
 
     it(@"greater than or equal integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name >= %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name >= %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"gte");
         expect(result[2]).to.equal(12);
     });
 
     it(@"less than integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name < %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name < %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"lt");
         expect(result[2]).to.equal(12);
     });
 
     it(@"less than or equal integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name <= %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name <= %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"lte");
         expect(result[2]).to.equal(12);
     });
 
     it(@"not equal integer", ^{
-        NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name <> %d", 12]];
+        NSArray *result = [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"name <> %d", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"neq");
         expect(result[2]).to.equal(12);
@@ -187,8 +175,7 @@ describe(@"serialize predicate", ^{
 
     it(@"and", ^{
         NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ && age >= %d",
-                                                                    @"Peter", 12]];
+            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ && age >= %d", @"Peter", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
         expect(result[0]).to.equal(@"and");
@@ -200,9 +187,8 @@ describe(@"serialize predicate", ^{
 
     it(@"double and", ^{
         NSArray *result = [serializer
-            serializeWithPredicate:
-                [NSPredicate predicateWithFormat:@"name = %@ && age >= %d && interest <> %@",
-                                                 @"Peter", 12, @"reading"]];
+            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ && age >= %d && interest <> %@",
+                                                                    @"Peter", 12, @"reading"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(4);
         expect(result[0]).to.equal(@"and");
@@ -212,8 +198,7 @@ describe(@"serialize predicate", ^{
 
     it(@"or", ^{
         NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ || age >= %d",
-                                                                    @"Peter", 12]];
+            serializeWithPredicate:[NSPredicate predicateWithFormat:@"name = %@ || age >= %d", @"Peter", 12]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(3);
         expect(result[0]).to.equal(@"or");
@@ -224,8 +209,8 @@ describe(@"serialize predicate", ^{
     });
 
     it(@"not", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"not (name = %@)", @"Peter"]];
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"not (name = %@)", @"Peter"]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result).to.haveCountOf(2);
         expect(result[0]).to.equal(@"not");
@@ -236,82 +221,68 @@ describe(@"serialize predicate", ^{
     it(@"distanceToLocation:fromLocation:", ^{
         CLLocation *loc = [[CLLocation alloc] initWithLatitude:1 longitude:2];
         NSArray *result = [serializer
-            serializeWithPredicate:
-                [NSPredicate
-                    predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", loc,
-                                        3.f]];
+            serializeWithPredicate:[NSPredicate
+                                       predicateWithFormat:@"distanceToLocation:fromLocation:(location, %@) < %f", loc,
+                                                           3.f]];
 
         expect(result).to.equal(@[
             @"lt",
             @[
                 @"func", @"distance", @{@"$type" : @"keypath", @"$val" : @"location"},
-                @{ @"$type" : @"geo",
-                   @"$lng" : @2,
-                   @"$lat" : @1 }
+                @{@"$type" : @"geo",
+                  @"$lng" : @2,
+                  @"$lat" : @1}
             ],
             @3,
         ]);
     });
 
     it(@"serialize beginswith", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate
-                                       predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content BEGINSWITH %@", @"hello"]];
 
-        expect(result).to.equal(
-            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"hello%" ]);
+        expect(result).to.equal(@[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"hello%" ]);
     });
 
     it(@"serialize endswith", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate
-                                       predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content ENDSWITH %@", @"hello"]];
 
-        expect(result).to.equal(
-            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello" ]);
+        expect(result).to.equal(@[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello" ]);
     });
 
     it(@"serialize contains", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate
-                                       predicateWithFormat:@"content CONTAINS %@", @"hello"]];
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content CONTAINS %@", @"hello"]];
 
-        expect(result).to.equal(
-            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello%" ]);
+        expect(result).to.equal(@[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello%" ]);
     });
 
     it(@"serialize like", ^{
         NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content LIKE %@",
-                                                                                @"*hello?"]];
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content LIKE %@", @"*hello?"]];
 
-        expect(result).to.equal(
-            @[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
+        expect(result).to.equal(@[ @"like", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
     });
 
     it(@"serialize like[c]", ^{
-        NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate
-                                       predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
+        NSArray *result =
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"content LIKE[c] %@", @"*hello?"]];
 
-        expect(result).to.equal(
-            @[ @"ilike", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
+        expect(result).to.equal(@[ @"ilike", @{@"$type" : @"keypath", @"$val" : @"content"}, @"%hello_" ]);
     });
 
     it(@"serialize in", ^{
         NSArray *result = [serializer
-            serializeWithPredicate:[NSPredicate predicateWithFormat:@"category IN %@",
-                                                                    @[ @"recipe", @"fiction" ]]];
+            serializeWithPredicate:[NSPredicate predicateWithFormat:@"category IN %@", @[ @"recipe", @"fiction" ]]];
 
-        expect(result).to.equal(@[
-            @"in", @{@"$type" : @"keypath", @"$val" : @"category"}, @[ @"recipe", @"fiction" ]
-        ]);
+        expect(result).to.equal(
+            @[ @"in", @{@"$type" : @"keypath", @"$val" : @"category"}, @[ @"recipe", @"fiction" ] ]);
     });
 
     it(@"serialize in with string on left hand side", ^{
         NSArray *result =
-            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"%@ IN categories",
-                                                                                @"fiction"]];
+            [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"%@ IN categories", @"fiction"]];
 
         expect(result).to.equal(@[
             @"in",
@@ -322,8 +293,7 @@ describe(@"serialize predicate", ^{
 
     it(@"user relation predicate", ^{
         SKYRelationPredicate *p =
-            [SKYRelationPredicate predicateWithRelation:[SKYRelation followingRelation]
-                                                keyPath:@"_owner"];
+            [SKYRelationPredicate predicateWithRelation:[SKYRelation followingRelation] keyPath:@"_owner"];
         NSArray *result = [serializer serializeWithPredicate:p];
 
         expect(result).to.equal(@[
@@ -389,16 +359,15 @@ describe(@"serialize sort descriptors", ^{
                 @"func",
                 @"distance",
                 @{@"$type" : @"keypath", @"$val" : @"latlng"},
-                @{ @"$type" : @"geo",
-                   @"$lng" : @24,
-                   @"$lat" : @42 },
+                @{@"$type" : @"geo",
+                  @"$lng" : @24,
+                  @"$lat" : @42},
             ],
             @"asc"
         ] ];
 
         expect(result).to.equal(expected);
     });
-
 });
 
 SpecEnd

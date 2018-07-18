@@ -30,9 +30,7 @@
     NSMutableDictionary *_changesUpdating;
 }
 
-- (instancetype)initWithContainer:(SKYContainer *)container
-                         database:(SKYDatabase *)database
-                            query:(SKYQuery *)query
+- (instancetype)initWithContainer:(SKYContainer *)container database:(SKYDatabase *)database query:(SKYQuery *)query
 {
     self = [super init];
     if (self) {
@@ -58,8 +56,7 @@
     }
 }
 
-- (void)setUpdateAvailableWithRecordStorage:(SKYRecordStorage *)storage
-                               notification:(SKYNotification *)note
+- (void)setUpdateAvailableWithRecordStorage:(SKYRecordStorage *)storage notification:(SKYNotification *)note
 {
     storage.hasUpdateAvailable = YES;
     if (storage.enabled) {
@@ -76,12 +73,10 @@
 
     if (_updating) {
         if (completionHandler) {
-            NSError *error = [NSError
-                errorWithDomain:@"SKYRecordStorageErrorDomain"
-                           code:0
-                       userInfo:@{
-                           NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)
-                       }];
+            NSError *error =
+                [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
+                                    code:0
+                                userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)}];
             completionHandler(NO, error);
         }
         return;
@@ -89,31 +84,29 @@
 
     SKYQueryOperation *op = [[SKYQueryOperation alloc] initWithQuery:self.query];
     __weak typeof(self) weakSelf = self;
-    op.queryRecordsCompletionBlock =
-        ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            [storage beginUpdating];
-            if (!operationError) {
-                NSLog(@"%@: Updating record storage by replacing with %lu records.", self,
-                      (unsigned long)[fetchedRecords count]);
-                [storage updateByReplacingWithRecords:fetchedRecords];
-                storage.hasUpdateAvailable = NO;
-            }
-            [storage finishUpdating];
-            if (strongSelf) {
-                strongSelf->_updating = NO;
-            }
+    op.queryRecordsCompletionBlock = ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [storage beginUpdating];
+        if (!operationError) {
+            NSLog(@"%@: Updating record storage by replacing with %lu records.", self,
+                  (unsigned long)[fetchedRecords count]);
+            [storage updateByReplacingWithRecords:fetchedRecords];
+            storage.hasUpdateAvailable = NO;
+        }
+        [storage finishUpdating];
+        if (strongSelf) {
+            strongSelf->_updating = NO;
+        }
 
-            if (completionHandler) {
-                completionHandler(YES, nil);
-            }
-        };
+        if (completionHandler) {
+            completionHandler(YES, nil);
+        }
+    };
     _updating = YES;
     [self.database executeOperation:op];
 }
 
-- (SKYRecord *)_constructRecordForSavingWithStorage:(SKYRecordStorage *)storage
-                                             change:(SKYRecordChange *)change
+- (SKYRecord *)_constructRecordForSavingWithStorage:(SKYRecordStorage *)storage change:(SKYRecordChange *)change
 {
     SKYRecord *recordToSave = [storage.backingStore fetchRecordWithRecordID:change.recordID];
     if (recordToSave) {
@@ -136,12 +129,10 @@
 {
     if (_updating) {
         if (completionHandler) {
-            NSError *error = [NSError
-                errorWithDomain:@"SKYRecordStorageErrorDomain"
-                           code:0
-                       userInfo:@{
-                           NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)
-                       }];
+            NSError *error =
+                [NSError errorWithDomain:@"SKYRecordStorageErrorDomain"
+                                    code:0
+                                userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"Already updating.", nil)}];
             completionHandler(NO, error);
         }
         return;
@@ -153,11 +144,9 @@
     __weak typeof(self) weakSelf = self;
     [changes enumerateObjectsUsingBlock:^(SKYRecordChange *change, NSUInteger idx, BOOL *stop) {
         if (change.action == SKYRecordChangeSave) {
-            SKYRecord *recordToSave =
-                [self _constructRecordForSavingWithStorage:storage change:change];
+            SKYRecord *recordToSave = [self _constructRecordForSavingWithStorage:storage change:change];
 
-            SKYModifyRecordsOperation *op =
-                [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:@[ recordToSave ]];
+            SKYModifyRecordsOperation *op = [[SKYModifyRecordsOperation alloc] initWithRecordsToSave:@[ recordToSave ]];
             op.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
                 if (!storage.updating) {
                     [storage beginUpdatingForChanges:YES];
@@ -192,28 +181,26 @@
                 }
                 [storage updateByApplyingChange:change recordOnRemote:nil error:error];
             };
-            op.deleteRecordsCompletionBlock =
-                ^(NSArray *deletedRecordIDs, NSError *operationError) {
-                    __strong typeof(weakSelf) strongSelf = weakSelf;
-                    if (storage.updating) {
-                        [storage finishUpdating];
+            op.deleteRecordsCompletionBlock = ^(NSArray *deletedRecordIDs, NSError *operationError) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if (storage.updating) {
+                    [storage finishUpdating];
+                }
+                if (strongSelf) {
+                    [strongSelf->_changesUpdating removeObjectForKey:change.recordID];
+                }
+                updateCount--;
+                if (updateCount <= 0) {
+                    self->_updating = NO;
+                    if (completionHandler) {
+                        completionHandler(YES, nil);
                     }
-                    if (strongSelf) {
-                        [strongSelf->_changesUpdating removeObjectForKey:change.recordID];
-                    }
-                    updateCount--;
-                    if (updateCount <= 0) {
-                        self->_updating = NO;
-                        if (completionHandler) {
-                            completionHandler(YES, nil);
-                        }
-                    }
-                };
+                }
+            };
             [self->_changesUpdating setObject:change forKey:change.recordID];
             updateCount++;
             [self.database executeOperation:op];
         }
-
     }];
 }
 

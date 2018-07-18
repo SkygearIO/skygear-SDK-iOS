@@ -21,8 +21,7 @@
 
 @interface SKYRelation ()
 
-- (instancetype)initWithName:(NSString *)name
-                   direction:(SKYRelationDirection)direction NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithName:(NSString *)name direction:(SKYRelationDirection)direction NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, readwrite, copy) NSString *name;
 
@@ -91,8 +90,7 @@
 
 - (BOOL)isEqualToRelation:(SKYRelation *)relation
 {
-    return self == relation ||
-           ([self.name isEqualToString:relation.name] && self.direction == relation.direction);
+    return self == relation || ([self.name isEqualToString:relation.name] && self.direction == relation.direction);
 }
 
 - (BOOL)isEqual:(id)object

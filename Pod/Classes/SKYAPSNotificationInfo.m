@@ -79,21 +79,20 @@ static BOOL isNilOrEqualArray(NSArray *a1, NSArray *a2)
 - (NSUInteger)hash
 {
     return self.alertActionLocalizationKey.hash ^ self.alertBody.hash ^ self.alertLaunchImage.hash ^
-           self.alertLocalizationArgs.hash ^ self.alertLocalizationKey.hash ^ self.soundName.hash ^
-           self.shouldBadge ^ self.shouldSendContentAvailable;
+           self.alertLocalizationArgs.hash ^ self.alertLocalizationKey.hash ^ self.soundName.hash ^ self.shouldBadge ^
+           self.shouldSendContentAvailable;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@ <alertBody = %@, alertLocalizationKey = %@, "
-                                      @"alertLocalizationArgs = %@, alertActionLocalizationKey = "
-                                      @"%@, alertLaunchImage = %@, soundName = %@, shouldBadge = "
-                                      @"%@, shouldSendContentAvailable = %@>",
-                                      NSStringFromClass(self.class), self.alertBody,
-                                      self.alertLocalizationKey, self.alertLocalizationArgs,
-                                      self.alertActionLocalizationKey, self.alertLaunchImage,
-                                      self.soundName, @(self.shouldBadge),
-                                      @(self.shouldSendContentAvailable)];
+    return
+        [NSString stringWithFormat:@"%@ <alertBody = %@, alertLocalizationKey = %@, "
+                                   @"alertLocalizationArgs = %@, alertActionLocalizationKey = "
+                                   @"%@, alertLaunchImage = %@, soundName = %@, shouldBadge = "
+                                   @"%@, shouldSendContentAvailable = %@>",
+                                   NSStringFromClass(self.class), self.alertBody, self.alertLocalizationKey,
+                                   self.alertLocalizationArgs, self.alertActionLocalizationKey, self.alertLaunchImage,
+                                   self.soundName, @(self.shouldBadge), @(self.shouldSendContentAvailable)];
 }
 
 @end

@@ -76,8 +76,7 @@
         }
 
         if (userRecordID == nil && error == nil) {
-            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                             message:@"Per-item response is malformed"];
+            error = [self.errorCreator errorWithCode:SKYErrorInvalidData message:@"Per-item response is malformed"];
         }
 
         if (self.perUserCompletionBlock) {
@@ -112,8 +111,7 @@
         userIDs = [self processResultArray:result operationError:&error];
     } else {
         userIDs = [NSArray array];
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
     if (self.removeRelationsCompletionBlock) {
         self.removeRelationsCompletionBlock(userIDs, error);

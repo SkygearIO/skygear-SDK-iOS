@@ -50,8 +50,7 @@ NSString *remoteFunctionName(NSString *localFunctionName)
     } else {
         @throw [NSException
             exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:@"Unrecgonized local function name `%@`",
-                                                         localFunctionName]
+                       reason:[NSString stringWithFormat:@"Unrecgonized local function name `%@`", localFunctionName]
                      userInfo:nil];
     }
 }
@@ -63,8 +62,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else {
         @throw [NSException
             exceptionWithName:NSInvalidArgumentException
-                       reason:[NSString stringWithFormat:@"Unrecgonized remote function name `%@`",
-                                                         remoteFunctionName]
+                       reason:[NSString stringWithFormat:@"Unrecgonized remote function name `%@`", remoteFunctionName]
                      userInfo:nil];
     }
 }
@@ -178,10 +176,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         deserializeValue = nil;
     } else if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *newArray = [NSMutableArray array];
-        [(NSArray *)value
-            enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
-                [newArray addObject:[self deserializeObjectWithValue:valueInArray]];
-            }];
+        [(NSArray *)value enumerateObjectsUsingBlock:^(id valueInArray, NSUInteger idx, BOOL *stop) {
+            [newArray addObject:[self deserializeObjectWithValue:valueInArray]];
+        }];
         deserializeValue = newArray;
     } else if ([value isKindOfClass:[NSDictionary class]]) {
         NSString *type = [(NSDictionary *)value objectForKey:SKYDataSerializationCustomTypeKey];
@@ -191,11 +188,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
             deserializeValue = [self deserializeSimpleObjectWithType:type value:value];
         } else {
             NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-            [(NSDictionary *)value
-                enumerateKeysAndObjectsUsingBlock:^(id key, id valueInDictionary, BOOL *stop) {
-                    [newDictionary setObject:[self deserializeObjectWithValue:valueInDictionary]
-                                      forKey:key];
-                }];
+            [(NSDictionary *)value enumerateKeysAndObjectsUsingBlock:^(id key, id valueInDictionary, BOOL *stop) {
+                [newDictionary setObject:[self deserializeObjectWithValue:valueInDictionary] forKey:key];
+            }];
             deserializeValue = newDictionary;
         }
     } else {
@@ -252,8 +247,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else if ([data[@"$direction"] isEqualToString:@"mutual"]) {
         direction = SKYRelationDirectionMutual;
     } else {
-        NSLog(@"Unexpected relation direction %@. Assuming direction is outward.",
-              data[@"$direction"]);
+        NSLog(@"Unexpected relation direction %@. Assuming direction is outward.", data[@"$direction"]);
         direction = SKYRelationDirectionOutward;
     }
 
@@ -314,10 +308,9 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         return newArray;
     } else if ([obj isKindOfClass:[NSDictionary class]]) {
         NSMutableDictionary *newDictionary = [NSMutableDictionary dictionary];
-        [(NSDictionary *)obj
-            enumerateKeysAndObjectsUsingBlock:^(id key, id objInDictionary, BOOL *stop) {
-                [newDictionary setObject:[self serializeObject:objInDictionary] forKey:key];
-            }];
+        [(NSDictionary *)obj enumerateKeysAndObjectsUsingBlock:^(id key, id objInDictionary, BOOL *stop) {
+            [newDictionary setObject:[self serializeObject:objInDictionary] forKey:key];
+        }];
         return newDictionary;
     } else if ([obj isKindOfClass:[SKYRecord class]]) {
         return [self serializeRecord:(SKYRecord *)obj];
@@ -338,8 +331,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 
 + (NSDictionary *)serializeAsset:(SKYAsset *)obj
 {
-    NSDictionary *data =
-        @{SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType, @"$name" : [obj name]};
+    NSDictionary *data = @{SKYDataSerializationCustomTypeKey : SKYDataSerializationAssetType, @"$name" : [obj name]};
 
     NSURL *assetURL = [obj url];
     if (assetURL != nil) {

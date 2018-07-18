@@ -28,9 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SKYAuthOperation ()
 
-- (void)handleAuthResponseWithUser:(SKYRecord *)user
-                       accessToken:(SKYAccessToken *)accessToken
-                             error:(NSError *)error;
+- (void)handleAuthResponseWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken error:(NSError *)error;
 
 @end
 

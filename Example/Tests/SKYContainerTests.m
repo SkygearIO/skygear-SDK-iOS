@@ -54,15 +54,13 @@ describe(@"calls lambda", ^{
     it(@"calls lambda no arguments", ^{
         SKYContainer *container = [SKYContainer testContainer];
 
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *parameters =
-                    @{ @"request_id" : @"REQUEST_ID",
-                       @"result" : @{@"message" : @"hello bob"} };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                NSDictionary *parameters = @{@"request_id" : @"REQUEST_ID", @"result" : @{@"message" : @"hello bob"}};
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
@@ -78,24 +76,21 @@ describe(@"calls lambda", ^{
     it(@"calls lambda with arguments", ^{
         SKYContainer *container = [SKYContainer testContainer];
 
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSData *body = request.OHHTTPStubs_HTTPBody;
                 NSError *jsonError;
-                NSDictionary *bodyJSON =
-                    [NSJSONSerialization JSONObjectWithData:body
-                                                    options:NSJSONReadingMutableContainers
-                                                      error:&jsonError];
+                NSDictionary *bodyJSON = [NSJSONSerialization JSONObjectWithData:body
+                                                                         options:NSJSONReadingMutableContainers
+                                                                           error:&jsonError];
                 expect(bodyJSON[@"action"]).to.equal(@"hello:world");
                 expect(bodyJSON[@"args"]).to.equal(@[ @"this", @"is", @"bob" ]);
 
-                NSDictionary *parameters =
-                    @{ @"request_id" : @"REQUEST_ID",
-                       @"result" : @{@"message" : @"hello bob"} };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                NSDictionary *parameters = @{@"request_id" : @"REQUEST_ID", @"result" : @{@"message" : @"hello bob"}};
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
@@ -111,24 +106,21 @@ describe(@"calls lambda", ^{
 
     it(@"calls lambda with array arguments", ^{
         SKYContainer *container = [SKYContainer testContainer];
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSData *body = request.OHHTTPStubs_HTTPBody;
                 NSError *jsonError;
-                NSDictionary *bodyJSON =
-                    [NSJSONSerialization JSONObjectWithData:body
-                                                    options:NSJSONReadingMutableContainers
-                                                      error:&jsonError];
+                NSDictionary *bodyJSON = [NSJSONSerialization JSONObjectWithData:body
+                                                                         options:NSJSONReadingMutableContainers
+                                                                           error:&jsonError];
                 expect(bodyJSON[@"action"]).to.equal(@"hello:world");
                 expect(bodyJSON[@"args"]).to.equal(@[ @"this", @"is", @"bob" ]);
 
-                NSDictionary *parameters =
-                    @{ @"request_id" : @"REQUEST_ID",
-                       @"result" : @{@"message" : @"hello bob"} };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                NSDictionary *parameters = @{@"request_id" : @"REQUEST_ID", @"result" : @{@"message" : @"hello bob"}};
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
 
@@ -143,24 +135,21 @@ describe(@"calls lambda", ^{
 
     it(@"calls lambda with dictionary arguments", ^{
         SKYContainer *container = [SKYContainer testContainer];
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSData *body = request.OHHTTPStubs_HTTPBody;
                 NSError *jsonError;
-                NSDictionary *bodyJSON =
-                    [NSJSONSerialization JSONObjectWithData:body
-                                                    options:NSJSONReadingMutableContainers
-                                                      error:&jsonError];
+                NSDictionary *bodyJSON = [NSJSONSerialization JSONObjectWithData:body
+                                                                         options:NSJSONReadingMutableContainers
+                                                                           error:&jsonError];
                 expect(bodyJSON[@"action"]).to.equal(@"hello:world");
-                expect(bodyJSON[@"args"]).to.equal(@{ @"message" : @[ @"this", @"is", @"bob" ] });
+                expect(bodyJSON[@"args"]).to.equal(@{@"message" : @[ @"this", @"is", @"bob" ]});
 
-                NSDictionary *parameters =
-                    @{ @"request_id" : @"REQUEST_ID",
-                       @"result" : @{@"message" : @"hello bob"} };
-                NSData *payload =
-                    [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                NSDictionary *parameters = @{@"request_id" : @"REQUEST_ID", @"result" : @{@"message" : @"hello bob"}};
+                NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
                 return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
             }];
 
@@ -198,16 +187,14 @@ describe(@"manage roles", ^{
     });
 
     it(@"should handle define admin roles correctly", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *response = @{
-                    @"result" : @{@"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]}
-                };
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
+                NSDictionary *response =
+                    @{@"result" : @{@"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]}};
+                return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
             }];
 
         waitUntil(^(DoneCallback done) {
@@ -223,16 +210,14 @@ describe(@"manage roles", ^{
     });
 
     it(@"should handle set user default role correctly", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *response = @{
-                    @"result" : @{@"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]}
-                };
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
+                NSDictionary *response =
+                    @{@"result" : @{@"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]}};
+                return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
             }];
 
         waitUntil(^(DoneCallback done) {
@@ -271,16 +256,14 @@ describe(@"record creation access", ^{
     });
 
     it(@"can define creation access of record", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *response = @{
-                    @"result" : @{@"type" : paintingRecordType, @"roles" : @[ painterRoleName ]}
-                };
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
+                NSDictionary *response =
+                    @{@"result" : @{@"type" : paintingRecordType, @"roles" : @[ painterRoleName ]}};
+                return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
             }];
 
         waitUntil(^(DoneCallback done) {
@@ -317,29 +300,26 @@ describe(@"record default access", ^{
     });
 
     it(@"can define default access of record", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSDictionary *response = @{
                     @"result" : @{
                         @"type" : paintingRecordType,
-                        @"default_access" : @[
-                            @{ @"public" : @1,
-                               @"level" : @"read" },
-                            @{@"role" : @"Painter", @"level" : @"write"}
-                        ]
+                        @"default_access" :
+                            @[ @{@"public" : @1,
+                                 @"level" : @"read"},
+                               @{@"role" : @"Painter", @"level" : @"write"} ]
                     }
                 };
-                return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                        statusCode:200
-                                                           headers:nil];
+                return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
             }];
 
         waitUntil(^(DoneCallback done) {
             SKYAccessControl *acl = [SKYAccessControl accessControlWithEntries:@[
-                [SKYAccessControlEntry readEntryForRole:painterRole],
-                [SKYAccessControlEntry readEntryForPublic]
+                [SKYAccessControlEntry readEntryForRole:painterRole], [SKYAccessControlEntry readEntryForPublic]
             ]];
             [container.publicCloudDatabase defineDefaultAccessWithRecordType:paintingRecordType
                                                                       access:acl

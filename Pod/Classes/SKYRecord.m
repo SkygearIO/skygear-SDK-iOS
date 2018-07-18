@@ -47,14 +47,10 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName
 {
-    return
-        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                          data:nil];
+    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName] data:nil];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary *)data
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId data:(NSDictionary *)data
 {
     if (![recordId.recordType isEqualToString:recordId.recordType]) {
         recordId = [[SKYRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
@@ -62,13 +58,9 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return [self initWithRecordID:recordId data:data];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                              name:(NSString *)recordName
-                              data:(NSDictionary *)data
+- (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
 {
-    return
-        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                          data:data];
+    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName] data:data];
 }
 
 - (instancetype)initWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data
@@ -93,9 +85,7 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return [[self alloc] initWithRecordType:recordType name:recordName];
 }
 
-+ (instancetype)recordWithRecordType:(NSString *)recordType
-                                name:(NSString *)recordName
-                                data:(NSDictionary *)data
++ (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName data:(NSDictionary *)data
 {
     return [[self alloc] initWithRecordType:recordType name:recordName data:data];
 }
@@ -135,17 +125,13 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     self = [self initWithRecordID:recordID data:object];
     if (self) {
         _transient = [aDecoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"transient"];
-        _ownerUserRecordID =
-            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"ownerUserRecordID"];
+        _ownerUserRecordID = [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"ownerUserRecordID"];
         _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"creationDate"];
-        _creatorUserRecordID =
-            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"creationUserRecordID"];
-        _modificationDate =
-            [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"modificationDate"];
+        _creatorUserRecordID = [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"creationUserRecordID"];
+        _modificationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"modificationDate"];
         _lastModifiedUserRecordID =
             [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"lastModifiedUserRecordID"];
-        _accessControl =
-            [aDecoder decodeObjectOfClass:[SKYAccessControl class] forKey:@"accessControl"];
+        _accessControl = [aDecoder decodeObjectOfClass:[SKYAccessControl class] forKey:@"accessControl"];
     }
 
     return self;

@@ -34,9 +34,10 @@ SpecBegin(SKYDatabase)
 
         it(@"fetch record", ^{
             NSString *bookTitle = @"A tale of two cities";
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -49,61 +50,55 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database
-                    fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(record.recordID.recordName).to.equal(@"book1");
-                            expect(record.recordID.recordType).to.equal(@"book");
-                            expect(record[@"title"]).to.equal(bookTitle);
-                            done();
-                        });
-                    }];
+                [database fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                          completionHandler:^(SKYRecord *record, NSError *error) {
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  expect(record.recordID.recordName).to.equal(@"book1");
+                                  expect(record.recordID.recordType).to.equal(@"book");
+                                  expect(record[@"title"]).to.equal(bookTitle);
+                                  done();
+                              });
+                          }];
             });
-
         });
 
         it(@"fetch record with operation error", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database
-                    fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(error).notTo.beNil();
-                            expect(error.domain).to.equal(SKYOperationErrorDomain);
-                            expect(error.code).to.equal(SKYErrorNetworkFailure);
-                            done();
-                        });
-                    }];
+                [database fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                          completionHandler:^(SKYRecord *record, NSError *error) {
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  expect(error).notTo.beNil();
+                                  expect(error.domain).to.equal(SKYOperationErrorDomain);
+                                  expect(error.code).to.equal(SKYErrorNetworkFailure);
+                                  done();
+                              });
+                          }];
             });
-
         });
 
         it(@"fetch records", ^{
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
             NSString *bookTitle = @"A tale of two cities";
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -123,11 +118,9 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -147,19 +140,19 @@ SpecBegin(SKYDatabase)
                         errorHandlerCallCount++;
                     }];
             });
-
         });
 
         it(@"modify record", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record =
+                [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                                               data:nil];
             record[@"title"] = bookTitle;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -172,11 +165,9 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -189,24 +180,22 @@ SpecBegin(SKYDatabase)
                               });
                           }];
             });
-
         });
 
         it(@"modify record with operation error", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record =
+                [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                                               data:nil];
             record[@"title"] = bookTitle;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -224,18 +213,19 @@ SpecBegin(SKYDatabase)
 
         it(@"modify records", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record1 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record1 =
+                [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
+                                               data:nil];
             record1[@"title"] = bookTitle;
-            SKYRecord *record2 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
-                            data:nil];
+            SKYRecord *record2 =
+                [[SKYRecord alloc] initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
+                                               data:nil];
             record2[@"title"] = bookTitle;
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -255,11 +245,9 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -277,26 +265,23 @@ SpecBegin(SKYDatabase)
                         errorHandlerCallCount++;
                     }];
             });
-
         });
 
         it(@"delete record", ^{
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *parameters = @{
-                        @"request_id" : @"REQUEST_ID",
-                        @"database_id" : database.databaseID,
-                        @"result" : @[]
-                    };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSDictionary *parameters =
+                        @{@"request_id" : @"REQUEST_ID",
+                          @"database_id" : database.databaseID,
+                          @"result" : @[]};
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -309,20 +294,18 @@ SpecBegin(SKYDatabase)
                                });
                            }];
             });
-
         });
 
         it(@"delete record with operation error", ^{
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -342,9 +325,10 @@ SpecBegin(SKYDatabase)
             SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -357,11 +341,9 @@ SpecBegin(SKYDatabase)
                             @"name" : @"UnexpectedError",
                         } ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -382,13 +364,13 @@ SpecBegin(SKYDatabase)
                         errorHandlerCallCount++;
                     }];
             });
-
         });
 
         it(@"perform query", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -401,39 +383,33 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
                 SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-                [database
-                         performQuery:query
-                    completionHandler:^(NSArray *results, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(results).to.haveCountOf(1);
-                            expect(((SKYRecord *)results[0]).recordID.recordType).to.equal(@"book");
-                            expect(((SKYRecord *)results[0]).recordID.recordName)
-                                .to.equal(@"book1");
-                            done();
-                        });
-                    }];
+                [database performQuery:query
+                     completionHandler:^(NSArray *results, NSError *error) {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             expect(results).to.haveCountOf(1);
+                             expect(((SKYRecord *)results[0]).recordID.recordType).to.equal(@"book");
+                             expect(((SKYRecord *)results[0]).recordID.recordName).to.equal(@"book1");
+                             done();
+                         });
+                     }];
             });
-
         });
 
         it(@"perform query with operation error", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -451,9 +427,10 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"fetch all subscriptions", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -475,32 +452,25 @@ SpecBegin(SKYDatabase)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database fetchAllSubscriptionsWithCompletionHandler:^(NSArray *subscriptions,
-                                                                       NSError *error) {
+                [database fetchAllSubscriptionsWithCompletionHandler:^(NSArray *subscriptions, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect([subscriptions count]).to.equal(2);
 
-                        NSMutableArray *expectedSubscriptionIDs =
-                            [@[ @"sub1", @"sub2" ] mutableCopy];
-                        [subscriptions
-                            enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                                [expectedSubscriptionIDs
-                                    removeObject:((SKYSubscription *)obj).subscriptionID];
-                            }];
+                        NSMutableArray *expectedSubscriptionIDs = [@[ @"sub1", @"sub2" ] mutableCopy];
+                        [subscriptions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                            [expectedSubscriptionIDs removeObject:((SKYSubscription *)obj).subscriptionID];
+                        }];
                         expect([expectedSubscriptionIDs count]).to.equal(0);
                         done();
                     });
                 }];
             });
-
         });
     });
 

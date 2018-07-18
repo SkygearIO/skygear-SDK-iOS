@@ -139,8 +139,7 @@
 
     NSPredicate *predicate;
     NSString *op = array[0];
-    if ([@[ @"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike", @"in" ]
-            containsObject:op]) {
+    if ([@[ @"eq", @"gt", @"gte", @"lt", @"lte", @"neq", @"like", @"ilike", @"in" ] containsObject:op]) {
         predicate = [self comparisonPredicateWithArray:array];
     } else if ([@[ @"and", @"or", @"not" ] containsObject:op]) {
         predicate = [self compoundPredicateWithArray:array];
@@ -223,8 +222,7 @@
     if ([obj isKindOfClass:[NSDictionary class]]) {
         NSString *objType = (NSString *)obj[@"$type"];
         if ([objType isEqualToString:@"keypath"]) {
-            return [NSExpression
-                expressionForKeyPath:[self keyPathWithDictionary:(NSDictionary *)obj]];
+            return [NSExpression expressionForKeyPath:[self keyPathWithDictionary:(NSDictionary *)obj]];
         }
     }
 
@@ -281,8 +279,7 @@
         }
     }
 
-    return
-        [[NSCompoundPredicate alloc] initWithType:compoundOperatorType subpredicates:subpredicates];
+    return [[NSCompoundPredicate alloc] initWithType:compoundOperatorType subpredicates:subpredicates];
 }
 
 - (NSPredicate *)functionalPredicateWithArray:(NSArray *)array

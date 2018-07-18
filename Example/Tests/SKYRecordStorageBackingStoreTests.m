@@ -39,8 +39,7 @@
 + (NSString *)temporaryFileWithSuffix:(NSString *)suffix
 {
     NSString *pathComponent = [NSString stringWithFormat:@"tmpXXXXXX%@", suffix];
-    NSString *tempFileTemplate =
-        [NSTemporaryDirectory() stringByAppendingPathComponent:pathComponent];
+    NSString *tempFileTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:pathComponent];
 
     const char *tempFileTemplateCString = [tempFileTemplate fileSystemRepresentation];
 
@@ -56,9 +55,9 @@
         return nil;
     }
 
-    NSString *tempFileName = [[NSFileManager defaultManager]
-        stringWithFileSystemRepresentation:tempFileNameCString
-                                    length:strlen(tempFileNameCString)];
+    NSString *tempFileName =
+        [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString
+                                                                    length:strlen(tempFileNameCString)];
 
     free(tempFileNameCString);
 
@@ -84,7 +83,7 @@ SharedExamplesBegin(SKYRecordStorageBackingStore)
         it(@"appending change and state changes", ^{
             SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:@"book/book1"];
             SKYRecordChange *change;
-            NSDictionary *attrs = @{ @"title" : @[ [NSNull null], @"Hello World" ] };
+            NSDictionary *attrs = @{@"title" : @[ [NSNull null], @"Hello World" ]};
             change = [[SKYRecordChange alloc] initWithRecordID:recordID
                                                         action:SKYRecordChangeSave
                                                  resolveMethod:SKYRecordResolveByReplacing
@@ -128,7 +127,7 @@ SharedExamplesBegin(SKYRecordStorageBackingStore)
             SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithCanonicalString:@"book/book1"];
             SKYRecordChange *change1;
             SKYRecordChange *change2;
-            NSDictionary *attrs = @{ @"title" : @[ [NSNull null], @"Hello World" ] };
+            NSDictionary *attrs = @{@"title" : @[ [NSNull null], @"Hello World" ]};
             change1 = [[SKYRecordChange alloc] initWithRecordID:recordID1
                                                          action:SKYRecordChangeSave
                                                   resolveMethod:SKYRecordResolveByReplacing
@@ -331,7 +330,6 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         SKYRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:recordID];
         expect(fetchedRecord).to.beNil();
     });
-
 });
 
 sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
@@ -346,38 +344,33 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
         }
 
         SKYRecord *record;
-        record = [[SKYRecord alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id1"]
-                        data:@{
-                            @"title" : @"Hello World!",
-                            @"order" : @(1)
-                        }];
+        record = [[SKYRecord alloc] initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id1"]
+                                                data:@{
+                                                    @"title" : @"Hello World!",
+                                                    @"order" : @(1)
+                                                }];
         [backingStore saveRecord:record];
 
-        record = [[SKYRecord alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id1"]
-                        data:@{
-                            @"title" : @"Bye World!",
-                            @"order" : @(3)
-                        }];
+        record = [[SKYRecord alloc] initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id1"]
+                                                data:@{
+                                                    @"title" : @"Bye World!",
+                                                    @"order" : @(3)
+                                                }];
         [backingStore saveRecordLocally:record];
 
-        record = [[SKYRecord alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id2"]
-                        data:@{
-                            @"title" : @"Hello Island!",
-                            @"order" : @(2)
-                        }];
+        record = [[SKYRecord alloc] initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"book/id2"]
+                                                data:@{
+                                                    @"title" : @"Hello Island!",
+                                                    @"order" : @(2)
+                                                }];
         [backingStore saveRecord:record];
 
-        record = [[SKYRecord alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id1"]
-                        data:@{@"title" : @"My note!"}];
+        record = [[SKYRecord alloc] initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id1"]
+                                                data:@{@"title" : @"My note!"}];
         [backingStore saveRecord:record];
 
-        record = [[SKYRecord alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id2"]
-                        data:@{@"title" : @"Your note!"}];
+        record = [[SKYRecord alloc] initWithRecordID:[SKYRecordID recordIDWithCanonicalString:@"note/id2"]
+                                                data:@{@"title" : @"Your note!"}];
         [backingStore saveRecord:record];
         [backingStore deleteRecordLocally:record];
         [backingStore synchronize];
@@ -422,8 +415,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
     it(@"predicate enumerate", ^{
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithType:@"book"
-                                     predicate:[NSPredicate predicateWithFormat:@"title = %@",
-                                                                                @"Hello Island!"]
+                                     predicate:[NSPredicate predicateWithFormat:@"title = %@", @"Hello Island!"]
                                sortDescriptors:nil
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
                                         [recordIDs addObject:record.recordID.canonicalString];
@@ -436,8 +428,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithType:@"book"
                                      predicate:nil
-                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
-                                                                                ascending:NO] ]
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:NO] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
                                         [recordIDs addObject:record.recordID.canonicalString];
                                     }];
@@ -450,8 +441,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithType:@"book"
                                      predicate:nil
-                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
-                                                                                ascending:YES] ]
+                               sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
                                         [recordIDs addObject:record.recordID.canonicalString];
                                     }];

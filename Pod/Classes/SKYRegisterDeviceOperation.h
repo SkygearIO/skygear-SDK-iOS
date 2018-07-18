@@ -43,8 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
     __attribute__((deprecated("Use +operationWithDeviceToken:topic: instead")));
 /// Undocumented
-+ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken
-                                   topic:(NSString *_Nullable)topic;
++ (instancetype)operationWithDeviceToken:(NSData *_Nullable)deviceToken topic:(NSString *_Nullable)topic;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSData *_Nullable deviceToken;

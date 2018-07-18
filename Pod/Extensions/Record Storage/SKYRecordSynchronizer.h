@@ -61,15 +61,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Notifies the synchronizer that update is available to the specified record storage.
  */
-- (void)setUpdateAvailableWithRecordStorage:(SKYRecordStorage *)storage
-                               notification:(SKYNotification *)note;
+- (void)setUpdateAvailableWithRecordStorage:(SKYRecordStorage *)storage notification:(SKYNotification *)note;
 
 /**
  Instantiate network operations that causes the specified record storage to be updated.
  */
 - (void)recordStorageFetchUpdates:(SKYRecordStorage *)storage
-                completionHandler:
-                    (void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
+                completionHandler:(void (^_Nullable)(BOOL finished, NSError *_Nullable error))completionHandler;
 
 /**
  Instantiate network operations that causes the specified changes to be saved.

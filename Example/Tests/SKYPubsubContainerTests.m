@@ -49,8 +49,7 @@ SpecBegin(SKYPubsubContainer)
         });
 
         it(@"sets endpoint correct address", ^{
-            OCMExpect([pubsub
-                setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
+            OCMExpect([pubsub setEndPointAddress:[NSURL URLWithString:@"ws://newpoint.com:4321/_/pubsub"]]);
 
             [container configAddress:@"http://newpoint.com:4321/"];
 
@@ -62,11 +61,9 @@ SpecBegin(SKYPubsubContainer)
 
             [container configAddress:@"http://newpoint.com:4321/"];
 
-            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
-                                                      forKey:@"SKYContainerDeviceID"];
-            [[NSNotificationCenter defaultCenter]
-                postNotificationName:SKYContainerDidRegisterDeviceNotification
-                              object:nil];
+            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid" forKey:@"SKYContainerDeviceID"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SKYContainerDidRegisterDeviceNotification
+                                                                object:nil];
 
             OCMVerifyAllWithDelay(pubsub, 100);
         });
@@ -74,8 +71,7 @@ SpecBegin(SKYPubsubContainer)
         it(@"subscribes with deviceID", ^{
             OCMExpect([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]);
 
-            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
-                                                      forKey:@"SKYContainerDeviceID"];
+            [[NSUserDefaults standardUserDefaults] setObject:@"deviceid" forKey:@"SKYContainerDeviceID"];
             [container configAddress:@"http://newpoint.com:4321/"];
 
             OCMVerifyAll(pubsub);
@@ -89,14 +85,12 @@ SpecBegin(SKYPubsubContainer)
                 delegate = OCMProtocolMock(@protocol(SKYContainerDelegate));
                 container.delegate = delegate;
 
-                [[NSUserDefaults standardUserDefaults] setObject:@"deviceid"
-                                                          forKey:@"SKYContainerDeviceID"];
-                OCMStub([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]])
-                    .andDo(^(NSInvocation *invocation) {
-                        void (^h)(NSDictionary *);
-                        [invocation getArgument:&h atIndex:3];
-                        handler = h;
-                    });
+                [[NSUserDefaults standardUserDefaults] setObject:@"deviceid" forKey:@"SKYContainerDeviceID"];
+                OCMStub([pubsub subscribeTo:@"_sub_deviceid" handler:[OCMArg any]]).andDo(^(NSInvocation *invocation) {
+                    void (^h)(NSDictionary *);
+                    [invocation getArgument:&h atIndex:3];
+                    handler = h;
+                });
                 [container configAddress:@"http://newpoint.com:4321/"];
             });
 
@@ -130,8 +124,7 @@ SpecBegin(SKYPubsubContainer)
                        didReceiveNotification:[OCMArg checkWithBlock:^BOOL(SKYNotification *n) {
                            return [n.subscriptionID isEqualToString:@"subscription1"];
                        }]]);
-                OCMExpect(
-                    [[delegate reject] container:[OCMArg any] didReceiveNotification:[OCMArg any]]);
+                OCMExpect([[delegate reject] container:[OCMArg any] didReceiveNotification:[OCMArg any]]);
 
                 handler(@{
                     @"subscription-id" : @"subscription0",

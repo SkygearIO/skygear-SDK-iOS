@@ -51,8 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)(SKYRecord *record);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable queryRecordsCompletionBlock)
-    (NSArray *_Nullable fetchedRecords, SKYQueryCursor *_Nullable cursor,
-     NSError *_Nullable operationError);
+    (NSArray *_Nullable fetchedRecords, SKYQueryCursor *_Nullable cursor, NSError *_Nullable operationError);
 
 @end
 

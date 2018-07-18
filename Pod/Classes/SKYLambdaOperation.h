@@ -36,8 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Instantiates an instance of <SKYLambdaOperation> with arguments specified as a dictionary.
  */
-- (instancetype)initWithAction:(NSString *)action
-           dictionaryArguments:(NSDictionary *_Nullable)arguments;
+- (instancetype)initWithAction:(NSString *)action dictionaryArguments:(NSDictionary *_Nullable)arguments;
 
 /**
  Creates and returns an instance of <SKYLambdaOperation> with arguments specified as an array.
@@ -47,8 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates and returns an instance of <SKYLambdaOperation> with arguments specified as a dictionary.
  */
-+ (instancetype)operationWithAction:(NSString *)action
-                dictionaryArguments:(NSDictionary *_Nullable)arguments;
++ (instancetype)operationWithAction:(NSString *)action dictionaryArguments:(NSDictionary *_Nullable)arguments;
 
 /**
  Sets or returns the action name of the labmda function.

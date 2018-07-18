@@ -22,16 +22,13 @@
 
 @implementation SKYDefineDefaultAccessOperation
 
-+ (instancetype)operationWithRecordType:(NSString *)recordType
-                          accessControl:(SKYAccessControl *)accessControl
++ (instancetype)operationWithRecordType:(NSString *)recordType accessControl:(SKYAccessControl *)accessControl
 {
-    return [[SKYDefineDefaultAccessOperation alloc]
-        initWithRecordType:recordType
-             accessControl:(SKYAccessControl *)accessControl];
+    return [[SKYDefineDefaultAccessOperation alloc] initWithRecordType:recordType
+                                                         accessControl:(SKYAccessControl *)accessControl];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                     accessControl:(SKYAccessControl *)accessControl
+- (instancetype)initWithRecordType:(NSString *)recordType accessControl:(SKYAccessControl *)accessControl
 {
     self = [super init];
     if (self) {
@@ -61,12 +58,10 @@
                                      userInfo:nil];
     }
 
-    id serialized =
-        [[SKYAccessControlSerializer serializer] arrayWithAccessControl:self.accessControl];
+    id serialized = [[SKYAccessControlSerializer serializer] arrayWithAccessControl:self.accessControl];
 
-    self.request = [[SKYRequest alloc]
-        initWithAction:@"schema:default_access"
-               payload:@{@"type" : self.recordType, @"default_access" : serialized}];
+    self.request = [[SKYRequest alloc] initWithAction:@"schema:default_access"
+                                              payload:@{@"type" : self.recordType, @"default_access" : serialized}];
 }
 
 // override

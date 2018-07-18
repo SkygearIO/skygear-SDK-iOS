@@ -40,10 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
  Registers a device token for push notification.
  */
 - (void)registerRemoteNotificationDeviceToken:(NSData *_Nullable)deviceToken
-                            completionHandler:
-                                (void (^_Nullable)(NSString *_Nullable,
-                                                   NSError *_Nullable))completionHandler
-    __deprecated;
+                            completionHandler:(void (^_Nullable)(NSString *_Nullable,
+                                                                 NSError *_Nullable))completionHandler __deprecated;
 
 /**
  Registers a device token for push notification.
@@ -51,8 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  -[SKYContainer unregisterDeviceCompletionHandler:].
  */
 - (void)registerDeviceWithDeviceToken:(NSData *_Nullable)deviceToken
-                    completionHandler:(void (^_Nullable)(NSString *_Nullable,
-                                                         NSError *_Nullable))completionHandler;
+                    completionHandler:(void (^_Nullable)(NSString *_Nullable, NSError *_Nullable))completionHandler;
 
 /**
  Registers a device without device token. This method should be called when the user denied
@@ -62,8 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  the application launches. It is okay to call this on subsequent launches, even if a device
  token is already associated with this device.
  */
-- (void)registerDeviceCompletionHandler:(void (^_Nullable)(NSString *_Nullable,
-                                                           NSError *_Nullable))completionHandler;
+- (void)registerDeviceCompletionHandler:(void (^_Nullable)(NSString *_Nullable, NSError *_Nullable))completionHandler;
 
 /**
  * Unregister the current user from the current device.
@@ -78,8 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @param completionHandler the completion handler
  *
  */
-- (void)unregisterDeviceCompletionHandler:
-    (void (^_Nullable)(NSString *_Nullable deviceID, NSError *_Nullable error))completionHandler;
+- (void)unregisterDeviceCompletionHandler:(void (^_Nullable)(NSString *_Nullable deviceID,
+                                                             NSError *_Nullable error))completionHandler;
 
 @end
 

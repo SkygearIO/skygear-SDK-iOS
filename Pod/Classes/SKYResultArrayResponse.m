@@ -34,8 +34,8 @@
         errorCreator = [[SKYErrorCreator alloc] init];
         resultArrayInResponse = self.responseDictionary[@"result"];
         if (![resultArrayInResponse isKindOfClass:[NSArray class]]) {
-            NSError *error = [errorCreator errorWithCode:SKYErrorBadResponse
-                                                 message:@"Result is not an array or not exists."];
+            NSError *error =
+                [errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
             [self foundResponseError:error];
         }
     }
@@ -47,8 +47,8 @@
     return [resultArrayInResponse count];
 }
 
-- (void)enumerateResultsUsingBlock:(void (^)(NSString *resultKey, NSDictionary *result,
-                                             NSError *error, NSUInteger idx, BOOL *stop))block
+- (void)enumerateResultsUsingBlock:(void (^)(NSString *resultKey, NSDictionary *result, NSError *error, NSUInteger idx,
+                                             BOOL *stop))block
 {
     if (!block) {
         return;
@@ -57,9 +57,8 @@
     [resultArrayInResponse enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSError *error;
         if (![obj isKindOfClass:[NSDictionary class]]) {
-            error =
-                [self->errorCreator errorWithCode:SKYErrorInvalidData
-                                          message:@"Result does not conform with expected format."];
+            error = [self->errorCreator errorWithCode:SKYErrorInvalidData
+                                              message:@"Result does not conform with expected format."];
             block(nil, nil, error, idx, stop);
             return;
         }

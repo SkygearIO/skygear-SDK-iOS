@@ -71,8 +71,7 @@
     self.request.accessToken = self.container.auth.currentAccessToken;
 }
 
-- (NSArray *)processResultArray:(NSArray *)result
-                 perRecordBlock:(void (^)(SKYRecord *record))perRecordBlock
+- (NSArray *)processResultArray:(NSArray *)result perRecordBlock:(void (^)(SKYRecord *record))perRecordBlock
 {
     NSMutableArray *fetchedRecords = [NSMutableArray array];
     SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
@@ -80,8 +79,7 @@
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSError *error = nil;
         SKYRecord *record = nil;
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+        SKYRecordID *recordID = [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
         if (recordID) {
             NSString *type = obj[SKYRecordSerializationRecordTypeKey];
@@ -147,8 +145,7 @@
                                     }
                                 }];
     } else {
-        error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                         message:@"Result is not an array or not exists."];
+        error = [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
     }
 
     if (self.queryRecordsCompletionBlock) {

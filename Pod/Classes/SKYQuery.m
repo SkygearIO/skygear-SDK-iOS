@@ -44,9 +44,9 @@
     NSPredicate *predicate = [aDecoder decodeObjectOfClass:[NSPredicate class] forKey:@"predicate"];
     self = [self initWithRecordType:recordType predicate:predicate];
     if (self) {
-        NSSet *set = [NSSet setWithArray:@[ [NSArray class], [NSSortDescriptor class] ]];
+        NSSet *set = [NSSet setWithArray:@ [[NSArray class], [NSSortDescriptor class]]];
         self.sortDescriptors = [aDecoder decodeObjectOfClasses:set forKey:@"sortDescriptors"];
-        set = [NSSet setWithArray:@[ [NSArray class], [NSString class] ]];
+        set = [NSSet setWithArray:@ [[NSArray class], [NSString class]]];
         self.transientIncludes = [aDecoder decodeObjectOfClasses:set forKey:@"transientIncludes"];
         self.limit = [aDecoder decodeIntegerForKey:@"limit"];
         self.offset = [aDecoder decodeIntegerForKey:@"offset"];
@@ -76,10 +76,8 @@
     if (![object isKindOfClass:[SKYQuery class]])
         return NO;
     SKYQuery *other = (SKYQuery *)object;
-    return ((self.predicate == nil && other.predicate == nil) ||
-            [self.predicate isEqual:other.predicate]) &&
-           ((self.recordType == nil && other.recordType == nil) ||
-            [self.recordType isEqual:other.recordType]) &&
+    return ((self.predicate == nil && other.predicate == nil) || [self.predicate isEqual:other.predicate]) &&
+           ((self.recordType == nil && other.recordType == nil) || [self.recordType isEqual:other.recordType]) &&
            ((self.sortDescriptors == nil && other.sortDescriptors == nil) ||
             [self.sortDescriptors isEqual:other.sortDescriptors]) &&
            ((self.transientIncludes == nil && other.transientIncludes == nil) ||

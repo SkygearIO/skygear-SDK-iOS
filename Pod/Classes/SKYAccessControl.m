@@ -86,40 +86,34 @@
 
 - (void)setNoAccessForUserID:(NSString *)userID
 {
-    [self.entries
-        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                                                   NSDictionary *bindings) {
-            return perEntry.entryType != SKYAccessControlEntryTypeDirect ||
-                   perEntry.userID != userID;
-        }]];
+    [self.entries filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                             NSDictionary *bindings) {
+                      return perEntry.entryType != SKYAccessControlEntryTypeDirect || perEntry.userID != userID;
+                  }]];
 }
 
 - (void)setNoAccessForRelation:(SKYRelation *)relation
 {
-    [self.entries
-        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                                                   NSDictionary *bindings) {
-            return perEntry.entryType != SKYAccessControlEntryTypeRelation ||
-                   perEntry.relation != relation;
-        }]];
+    [self.entries filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                             NSDictionary *bindings) {
+                      return perEntry.entryType != SKYAccessControlEntryTypeRelation || perEntry.relation != relation;
+                  }]];
 }
 
 - (void)setNoAccessForRole:(SKYRole *)role
 {
-    [self.entries
-        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                                                   NSDictionary *bindings) {
-            return perEntry.entryType != SKYAccessControlEntryTypeRole || perEntry.role != role;
-        }]];
+    [self.entries filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                             NSDictionary *bindings) {
+                      return perEntry.entryType != SKYAccessControlEntryTypeRole || perEntry.role != role;
+                  }]];
 }
 
 - (void)setNoAccessForPublic
 {
-    [self.entries
-        filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
-                                                                   NSDictionary *bindings) {
-            return perEntry.entryType != SKYAccessControlEntryTypePublic;
-        }]];
+    [self.entries filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(SKYAccessControlEntry *perEntry,
+                                                                             NSDictionary *bindings) {
+                      return perEntry.entryType != SKYAccessControlEntryTypePublic;
+                  }]];
 }
 
 #pragma mark - set read only
@@ -191,8 +185,7 @@
 - (BOOL)hasReadAccessForUserID:(NSString *)userID
 {
     return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForUserID:userID]] ||
-           [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]] ||
-           [self hasReadAccessForPublic];
+           [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]] || [self hasReadAccessForPublic];
 }
 
 - (BOOL)hasReadAccessForRelation:(SKYRelation *)relation
@@ -205,8 +198,7 @@
 - (BOOL)hasReadAccessForRole:(SKYRole *)role
 {
     return [self hasAccessForEntry:[SKYAccessControlEntry readEntryForRole:role]] ||
-           [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]] ||
-           [self hasReadAccessForPublic];
+           [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]] || [self hasReadAccessForPublic];
 }
 
 - (BOOL)hasReadAccessForPublic
@@ -223,8 +215,8 @@
 
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]] ||
-           [self hasWriteAccessForPublic];
+    return
+        [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForUserID:userID]] || [self hasWriteAccessForPublic];
 }
 
 - (BOOL)hasWriteAccessForRelation:(SKYRelation *)relation
@@ -235,8 +227,7 @@
 
 - (BOOL)hasWriteAccessForRole:(SKYRole *)role
 {
-    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]] ||
-           [self hasWriteAccessForPublic];
+    return [self hasAccessForEntry:[SKYAccessControlEntry writeEntryForRole:role]] || [self hasWriteAccessForPublic];
 }
 
 - (BOOL)hasWriteAccessForPublic

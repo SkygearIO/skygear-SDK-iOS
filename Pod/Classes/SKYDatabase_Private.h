@@ -27,8 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithContainer:(SKYContainer *)container databaseID:(NSString *)databaseID;
 
 - (void)sky_presave:(id _Nullable)object
-         completion:
-             (void (^_Nullable)(id _Nullable presavedObject, NSError *_Nullable error))completion;
+         completion:(void (^_Nullable)(id _Nullable presavedObject, NSError *_Nullable error))completion;
 
 @end
 

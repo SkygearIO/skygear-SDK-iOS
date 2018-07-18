@@ -91,8 +91,7 @@
 + (instancetype)assetWithName:(NSString *)name data:(NSData *)data
 {
     NSString *fileName = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSURL *fileURL =
-        [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+    NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
     [data writeToURL:fileURL atomically:NO];
 
     return [[self alloc] initWithName:name url:fileURL];
@@ -105,8 +104,7 @@
 
 + (instancetype)assetWithData:(NSData *)data
 {
-    return
-        [[self class] assetWithName:[[NSProcessInfo processInfo] globallyUniqueString] data:data];
+    return [[self class] assetWithName:[[NSProcessInfo processInfo] globallyUniqueString] data:data];
 }
 
 - (id)copyWithZone:(NSZone *)zone

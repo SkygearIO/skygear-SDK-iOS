@@ -23,7 +23,6 @@
 SpecBegin(SKYErrorCreatorTests)
 
     describe(@"error", ^{
-
         __block SKYErrorCreator *creator = nil;
 
         beforeEach(^{
@@ -40,8 +39,7 @@ SpecBegin(SKYErrorCreatorTests)
             expect(error.domain).to.equal(SKYOperationErrorDomain);
             expect(error.code).to.equal(SKYErrorUnknownError);
             expect(error.localizedDescription)
-                .to.equal(SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorUnknownError,
-                                                                      error.userInfo));
+                .to.equal(SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorUnknownError, error.userInfo));
             expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"Unknown error has occurred.");
             expect(error.userInfo[SKYErrorNameKey]).to.equal(@"UnknownError");
             expect(error.userInfo[@"key"]).to.equal(@"value");

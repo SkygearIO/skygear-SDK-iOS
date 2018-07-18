@@ -37,23 +37,20 @@ SpecBegin(SKYDefineDefaultAccessOperation)
         SKYRole *testerRole = [SKYRole roleWithName:testerRoleName];
 
         SKYAccessControl *acl = [SKYAccessControl accessControlWithEntries:@[
-            [SKYAccessControlEntry writeEntryForRole:developerRole],
-            [SKYAccessControlEntry readEntryForRole:testerRole]
+            [SKYAccessControlEntry writeEntryForRole:developerRole], [SKYAccessControlEntry readEntryForRole:testerRole]
         ]];
 
         __block SKYContainer *container;
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
             SKYDefineDefaultAccessOperation *operation =
-                [SKYDefineDefaultAccessOperation operationWithRecordType:sourceCodeRecordType
-                                                           accessControl:acl];
+                [SKYDefineDefaultAccessOperation operationWithRecordType:sourceCodeRecordType accessControl:acl];
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
 
@@ -62,8 +59,7 @@ SpecBegin(SKYDefineDefaultAccessOperation)
             expect(request.accessToken.tokenString).to.equal(token);
 
             NSString *recordTypePayload = [request.payload objectForKey:@"type"];
-            NSArray<NSString *> *accessRolesPayload =
-                [request.payload objectForKey:@"default_access"];
+            NSArray<NSString *> *accessRolesPayload = [request.payload objectForKey:@"default_access"];
 
             expect(recordTypePayload).to.equal(sourceCodeRecordType);
             expect(accessRolesPayload).to.haveACountOf(2);
@@ -72,28 +68,26 @@ SpecBegin(SKYDefineDefaultAccessOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *response = @{
                         @"result" : @{
                             @"type" : sourceCodeRecordType,
                             @"default_access" : @[
-                                @{ @"public" : @1,
-                                   @"level" : @"read" },
+                                @{@"public" : @1,
+                                  @"level" : @"read"},
                                 @{@"role" : @"Painter", @"level" : @"write"}
                             ]
                         }
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
             SKYDefineDefaultAccessOperation *operation =
-                [SKYDefineDefaultAccessOperation operationWithRecordType:sourceCodeRecordType
-                                                           accessControl:acl];
+                [SKYDefineDefaultAccessOperation operationWithRecordType:sourceCodeRecordType accessControl:acl];
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {

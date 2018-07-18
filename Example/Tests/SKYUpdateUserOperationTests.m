@@ -36,9 +36,8 @@ SpecBegin(SKYUpdateUserOperation)
         __block SKYContainer *container = nil;
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create correct request", ^{
@@ -63,9 +62,10 @@ SpecBegin(SKYUpdateUserOperation)
         });
 
         it(@"should handle success response correctly", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *payload = @{
                         @"result" : @{
@@ -75,9 +75,7 @@ SpecBegin(SKYUpdateUserOperation)
                             @"roles" : @[ developerRoleName ]
                         }
                     };
-                    return [OHHTTPStubsResponse responseWithJSONObject:payload
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:payload statusCode:200 headers:nil];
                 }];
 
             SKYUser *user = [userDeserializer userWithDictionary:@{
@@ -107,14 +105,13 @@ SpecBegin(SKYUpdateUserOperation)
         });
 
         it(@"should handle deserialization error", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *payload = @{@"email" : @"user@skygear.io"};
-                    return [OHHTTPStubsResponse responseWithJSONObject:payload
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:payload statusCode:200 headers:nil];
                 }];
 
             SKYUser *user = [userDeserializer userWithDictionary:@{

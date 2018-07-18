@@ -34,68 +34,63 @@ SpecBegin(SKYPushContainer)
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            notificationObserver = [[NSNotificationCenter defaultCenter]
-                addObserverForName:SKYContainerDidRegisterDeviceNotification
-                            object:container
-                             queue:[NSOperationQueue mainQueue]
-                        usingBlock:^(NSNotification *note) {
-                            notificationPosted = YES;
-                        }];
+            notificationObserver =
+                [[NSNotificationCenter defaultCenter] addObserverForName:SKYContainerDidRegisterDeviceNotification
+                                                                  object:container
+                                                                   queue:[NSOperationQueue mainQueue]
+                                                              usingBlock:^(NSNotification *note) {
+                                                                  notificationPosted = YES;
+                                                              }];
         });
 
         it(@"new device", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @{@"id" : @"DEVICE_ID"},
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [container.push
-                    registerDeviceWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
-                                completionHandler:^(NSString *deviceID, NSError *error) {
-                                    expect(deviceID).to.equal(@"DEVICE_ID");
-                                    expect([container.push registeredDeviceID])
-                                        .to.equal(@"DEVICE_ID");
-                                    expect(notificationPosted).to.beTruthy();
-                                    done();
-                                }];
+                [container.push registerDeviceWithDeviceToken:[SKYHexer dataWithHexString:@"abcdef1234567890"]
+                                            completionHandler:^(NSString *deviceID, NSError *error) {
+                                                expect(deviceID).to.equal(@"DEVICE_ID");
+                                                expect([container.push registeredDeviceID]).to.equal(@"DEVICE_ID");
+                                                expect(notificationPosted).to.beTruthy();
+                                                done();
+                                            }];
             });
         });
 
         it(@"new device without device token", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"result" : @{@"id" : @"DEVICE_ID"},
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [container.push
-                    registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                        expect(deviceID).to.equal(@"DEVICE_ID");
-                        expect([container.push registeredDeviceID]).to.equal(@"DEVICE_ID");
-                        expect(notificationPosted).to.beTruthy();
-                        done();
-                    }];
+                [container.push registerDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                    expect(deviceID).to.equal(@"DEVICE_ID");
+                    expect([container.push registeredDeviceID]).to.equal(@"DEVICE_ID");
+                    expect(notificationPosted).to.beTruthy();
+                    done();
+                }];
             });
         });
 
@@ -112,7 +107,6 @@ SpecBegin(SKYPushContainer)
     });
 
 describe(@"unregister device", ^{
-
     __block SKYContainer *container = nil;
 
     beforeAll(^{
@@ -129,9 +123,8 @@ describe(@"unregister device", ^{
 
     beforeEach(^{
         container = [SKYContainer testContainer];
-        [container.auth
-            updateWithUserRecordID:@"user_id_001"
-                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];
+        [container.auth updateWithUserRecordID:@"user_id_001"
+                                   accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];
     });
 
     afterEach(^{
@@ -140,52 +133,43 @@ describe(@"unregister device", ^{
     });
 
     it(@"handles response correctly", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *payloadDict = @{ @"result" : @{@"id" : @"device_id_001"} };
-                NSData *payloadData =
-                    [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
-                return
-                    [OHHTTPStubsResponse responseWithData:payloadData statusCode:200 headers:@{}];
+                NSDictionary *payloadDict = @{@"result" : @{@"id" : @"device_id_001"}};
+                NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                return [OHHTTPStubsResponse responseWithData:payloadData statusCode:200 headers:@{}];
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.push
-                unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                    expect(deviceID).to.equal(@"device_id_001");
-                    expect(error).to.beNil();
-                    done();
-                }];
+            [container.push unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                expect(deviceID).to.equal(@"device_id_001");
+                expect(error).to.beNil();
+                done();
+            }];
         });
     });
 
     it(@"handles error correctly", ^{
-        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-            return YES;
-        }
+        [OHHTTPStubs
+            stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return YES;
+            }
             withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                NSDictionary *payloadDict = @{
-                    @"error" : @{
-                        @"name" : @"ResourceNotFound",
-                        @"code" : @110,
-                        @"message" : @"device not found"
-                    }
-                };
-                NSData *payloadData =
-                    [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
-                return
-                    [OHHTTPStubsResponse responseWithData:payloadData statusCode:400 headers:@{}];
+                NSDictionary *payloadDict =
+                    @{@"error" : @{@"name" : @"ResourceNotFound", @"code" : @110, @"message" : @"device not found"}};
+                NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                return [OHHTTPStubsResponse responseWithData:payloadData statusCode:400 headers:@{}];
             }];
 
         waitUntil(^(DoneCallback done) {
-            [container.push
-                unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
-                    expect(deviceID).to.beNil();
-                    expect(error).notTo.beNil();
-                    done();
-                }];
+            [container.push unregisterDeviceCompletionHandler:^(NSString *deviceID, NSError *error) {
+                expect(deviceID).to.beNil();
+                expect(error).notTo.beNil();
+                done();
+            }];
         });
     });
 });

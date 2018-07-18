@@ -30,15 +30,14 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
         });
 
         it(@"multiple subscriptions", ^{
-            SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                  operationWithDeviceID:@"DEVICE_ID"
-                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+            SKYDeleteSubscriptionsOperation *operation =
+                [SKYDeleteSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                               subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
             operation.database = database;
             operation.container = container;
             [operation makeURLRequestWithError:nil];
@@ -55,13 +54,14 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
         });
 
         it(@"make request", ^{
-            SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                  operationWithDeviceID:@"DEVICE_ID"
-                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+            SKYDeleteSubscriptionsOperation *operation =
+                [SKYDeleteSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                               subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -71,63 +71,59 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
                             @{@"id" : @"ben's notes"},
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.deleteSubscriptionsCompletionBlock =
-                    ^(NSArray *subscriptionIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(subscriptionIDs).to.equal(@[ @"my notes", @"ben's notes" ]);
-                            expect(operationError).to.beNil();
-                            done();
-                        });
-                    };
+                operation.deleteSubscriptionsCompletionBlock = ^(NSArray *subscriptionIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(subscriptionIDs).to.equal(@[ @"my notes", @"ben's notes" ]);
+                        expect(operationError).to.beNil();
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
         });
 
         it(@"pass error", ^{
-            SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                  operationWithDeviceID:@"DEVICE_ID"
-                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+            SKYDeleteSubscriptionsOperation *operation =
+                [SKYDeleteSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                               subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.deleteSubscriptionsCompletionBlock =
-                    ^(NSArray *subscriptionIDs, NSError *operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(operationError).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.deleteSubscriptionsCompletionBlock = ^(NSArray *subscriptionIDs, NSError *operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(operationError).toNot.beNil();
+                        done();
+                    });
+                };
 
                 [database executeOperation:operation];
             });
         });
 
         it(@"pass per item error", ^{
-            SKYDeleteSubscriptionsOperation *operation = [SKYDeleteSubscriptionsOperation
-                  operationWithDeviceID:@"DEVICE_ID"
-                subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
+            SKYDeleteSubscriptionsOperation *operation =
+                [SKYDeleteSubscriptionsOperation operationWithDeviceID:@"DEVICE_ID"
+                                               subscriptionIDsToDelete:@[ @"my notes", @"ben's notes" ]];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
@@ -144,24 +140,20 @@ SpecBegin(SKYDeleteSubscriptionsOperation)
                             },
                         ]
                     };
-                    NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+                    NSData *payload = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.deleteSubscriptionsCompletionBlock = ^(NSArray *subscriptionIDs,
-                                                                 NSError *operationError) {
+                operation.deleteSubscriptionsCompletionBlock = ^(NSArray *subscriptionIDs, NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(subscriptionIDs).to.equal(@[ @"my notes" ]);
                         expect(operationError).toNot.beNil();
                         expect(operationError.domain).to.equal(SKYOperationErrorDomain);
                         expect(operationError.code).to.equal(SKYErrorPartialFailure);
 
-                        NSDictionary *errorBySubscriptionID =
-                            operationError.userInfo[SKYPartialErrorsByItemIDKey];
+                        NSDictionary *errorBySubscriptionID = operationError.userInfo[SKYPartialErrorsByItemIDKey];
                         expect(errorBySubscriptionID).toNot.beNil();
                         NSError *benError = errorBySubscriptionID[@"ben's notes"];
                         expect(benError).toNot.beNil();

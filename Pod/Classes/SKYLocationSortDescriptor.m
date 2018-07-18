@@ -25,18 +25,14 @@
     BOOL _ascending;
 }
 
-- (instancetype)initWithKey:(NSString *)key
-           relativeLocation:(CLLocation *)relativeLocation
-                  ascending:(BOOL)ascending
+- (instancetype)initWithKey:(NSString *)key relativeLocation:(CLLocation *)relativeLocation ascending:(BOOL)ascending
 {
     self = [super init];
     if (self) {
         if (![relativeLocation isKindOfClass:[CLLocation class]]) {
-            NSString *reason = [NSString
-                stringWithFormat:@"location must be of class CLLocation. Got %@", relativeLocation];
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:reason
-                                         userInfo:nil];
+            NSString *reason =
+                [NSString stringWithFormat:@"location must be of class CLLocation. Got %@", relativeLocation];
+            @throw [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
         }
 
         _key = [key copy];
@@ -58,8 +54,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _key = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"key"];
-        _relativeLocation =
-            [aDecoder decodeObjectOfClass:[CLLocation class] forKey:@"relativeLocation"];
+        _relativeLocation = [aDecoder decodeObjectOfClass:[CLLocation class] forKey:@"relativeLocation"];
         _ascending = [aDecoder decodeBoolForKey:@"ascending"];
     }
     return self;
@@ -88,15 +83,12 @@
     CLLocation *location2 = [object2 valueForKey:self.key];
     CLLocationDistance distance1 = [self.relativeLocation distanceFromLocation:location1];
     CLLocationDistance distance2 = [self.relativeLocation distanceFromLocation:location2];
-    return distance1 < distance2 ? NSOrderedAscending
-                                 : (distance2 < distance1 ? NSOrderedDescending : NSOrderedSame);
+    return distance1 < distance2 ? NSOrderedAscending : (distance2 < distance1 ? NSOrderedDescending : NSOrderedSame);
 }
 
 - (id)reversedSortDescriptor
 {
-    return [[[self class] alloc] initWithKey:self.key
-                            relativeLocation:self.relativeLocation
-                                   ascending:!self.ascending];
+    return [[[self class] alloc] initWithKey:self.key relativeLocation:self.relativeLocation ascending:!self.ascending];
 }
 
 @end

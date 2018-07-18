@@ -83,8 +83,7 @@
         } else {
             // malformed response
             NSError *error =
-                [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                         message:@"Missing `id` or not in correct format."];
+                [self.errorCreator errorWithCode:SKYErrorInvalidData message:@"Missing `id` or not in correct format."];
             errorBySubscriptionID[self.subscriptionIDsToDelete[idx]] = error;
         }
     }];
@@ -94,8 +93,7 @@
     }
 
     if (operationError && errorBySubscriptionID.count) {
-        *operationError =
-            [self.errorCreator partialErrorWithPerItemDictionary:errorBySubscriptionID];
+        *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorBySubscriptionID];
     } else if (operationError) {
         *operationError = nil;
     }
@@ -116,12 +114,10 @@
         NSError *error = nil;
         NSArray *responseArray = response[@"result"];
         if ([responseArray isKindOfClass:[NSArray class]]) {
-            [self processResultArray:responseArray
-                deletedsubscriptionIDs:&deletedSubscriptions
-                        operationError:&error];
+            [self processResultArray:responseArray deletedsubscriptionIDs:&deletedSubscriptions operationError:&error];
         } else {
-            error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                             message:@"Result is not an array or not exists."];
+            error =
+                [self.errorCreator errorWithCode:SKYErrorBadResponse message:@"Result is not an array or not exists."];
         }
         self.deleteSubscriptionsCompletionBlock(deletedSubscriptions, error);
     }

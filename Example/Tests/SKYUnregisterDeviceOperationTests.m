@@ -29,8 +29,7 @@ SpecBegin(SKYUnregisterDeviceOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"user_id"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"access_token"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"access_token"]];
         });
 
         afterEach(^{
@@ -38,8 +37,7 @@ SpecBegin(SKYUnregisterDeviceOperation)
         });
 
         it(@"creates correct request", ^{
-            SKYUnregisterDeviceOperation *operation =
-                [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
+            SKYUnregisterDeviceOperation *operation = [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
 
@@ -51,19 +49,16 @@ SpecBegin(SKYUnregisterDeviceOperation)
         });
 
         it(@"handles response correctly", ^{
-            SKYUnregisterDeviceOperation *operation =
-                [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
+            SKYUnregisterDeviceOperation *operation = [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *payloadDict = @{ @"result" : @{@"id" : @"device_id"} };
-                    NSData *payloadData =
-                        [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
-                    return [OHHTTPStubsResponse responseWithData:payloadData
-                                                      statusCode:200
-                                                         headers:@{}];
+                    NSDictionary *payloadDict = @{@"result" : @{@"id" : @"device_id"}};
+                    NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                    return [OHHTTPStubsResponse responseWithData:payloadData statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -81,25 +76,18 @@ SpecBegin(SKYUnregisterDeviceOperation)
         });
 
         it(@"handles error correctly", ^{
-            SKYUnregisterDeviceOperation *operation =
-                [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
+            SKYUnregisterDeviceOperation *operation = [SKYUnregisterDeviceOperation operationWithDeviceID:@"device_id"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *payloadDict = @{
-                        @"error" : @{
-                            @"name" : @"ResourceNotFound",
-                            @"code" : @110,
-                            @"message" : @"device not found"
-                        }
+                        @"error" : @{@"name" : @"ResourceNotFound", @"code" : @110, @"message" : @"device not found"}
                     };
-                    NSData *payloadData =
-                        [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
-                    return [OHHTTPStubsResponse responseWithData:payloadData
-                                                      statusCode:400
-                                                         headers:@{}];
+                    NSData *payloadData = [NSJSONSerialization dataWithJSONObject:payloadDict options:0 error:nil];
+                    return [OHHTTPStubsResponse responseWithData:payloadData statusCode:400 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -114,7 +102,6 @@ SpecBegin(SKYUnregisterDeviceOperation)
                 [container addOperation:operation];
             });
         });
-
     });
 
 SpecEnd

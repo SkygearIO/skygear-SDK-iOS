@@ -106,8 +106,7 @@ NSString *SKYErrorNameWithCode(SKYErrorCode errorCode)
     }
 }
 
-NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
-                                                      NSDictionary<NSString *, id> *info)
+NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode, NSDictionary<NSString *, id> *info)
 {
     switch (errorCode) {
         case SKYErrorUnknownError:
@@ -115,8 +114,7 @@ NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
         case SKYErrorNetworkUnavailable:
             return NSLocalizedString(@"Network is unavailable.", nil);
         case SKYErrorNetworkFailure:
-            return NSLocalizedString(@"There was a network failure while processing the request.",
-                                     nil);
+            return NSLocalizedString(@"There was a network failure while processing the request.", nil);
         case SKYErrorServiceUnavailable:
             return NSLocalizedString(@"Service is unavailable at the moment.", nil);
         case SKYErrorBadResponse:
@@ -124,30 +122,26 @@ NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
         case SKYErrorInvalidData:
             return NSLocalizedString(@"The data sent by the server cannot be processed.", nil);
         case SKYErrorRequestPayloadTooLarge:
-            return NSLocalizedString(@"The data trying to be sent to the server is too large.",
-                                     nil);
+            return NSLocalizedString(@"The data trying to be sent to the server is too large.", nil);
         case SKYErrorContainerNotConfigured:
             return NSLocalizedString(@"The client app container is not properly configured.", nil);
         case SKYErrorNotAuthenticated:
-            return NSLocalizedString(@"You have to be authenticated to perform this operation.",
-                                     nil);
+            return NSLocalizedString(@"You have to be authenticated to perform this operation.", nil);
         case SKYErrorPermissionDenied:
         case SKYErrorAccessKeyNotAccepted:
         case SKYErrorAccessTokenNotAccepted:
             return NSLocalizedString(@"You are not allowed to perform this operation.", nil);
         case SKYErrorInvalidCredentials:
-            return NSLocalizedString(
-                @"You are not allowed to log in because the credentials you provided are not "
-                @"valid.",
-                nil);
+            return NSLocalizedString(@"You are not allowed to log in because the credentials you provided are not "
+                                     @"valid.",
+                                     nil);
         case SKYErrorInvalidSignature:
         case SKYErrorBadRequest:
             return NSLocalizedString(@"The server is unable to process the request.", nil);
         case SKYErrorInvalidArgument:
             return NSLocalizedString(@"The server is unable to process the data.", nil);
         case SKYErrorDuplicated:
-            return NSLocalizedString(
-                @"This request contains duplicate of an existing resource on the server.", nil);
+            return NSLocalizedString(@"This request contains duplicate of an existing resource on the server.", nil);
         case SKYErrorResourceNotFound:
             return NSLocalizedString(@"The requested resource is not found.", nil);
         case SKYErrorNotSupported:
@@ -182,8 +176,7 @@ NSString *SKYErrorLocalizedDescriptionWithCodeAndInfo(SKYErrorCode errorCode,
         case SKYErrorUserDisabled:
             if (info[@"message"]) {
                 return
-                    [NSString stringWithFormat:NSLocalizedString(@"The user is disabled: %@", nil),
-                                               info[@"message"]];
+                    [NSString stringWithFormat:NSLocalizedString(@"The user is disabled: %@", nil), info[@"message"]];
             } else {
                 return NSLocalizedString(@"The user is disabled.", nil);
             }

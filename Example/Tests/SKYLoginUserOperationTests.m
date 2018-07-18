@@ -29,14 +29,12 @@ SpecBegin(SKYLoginUserOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make SKYRequest with username login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{@"username" : @"username"}
-                                                    password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{@"username" : @"username"} password:@"password"];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -50,8 +48,7 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"make SKYRequest with email login", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
-                                                    password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"} password:@"password"];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -64,11 +61,10 @@ SpecBegin(SKYLoginUserOperation)
         });
 
         it(@"make SKYRequest with provider", ^{
-            SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithProvider:@"com.example"
-                                            providerAuthData:@{
-                                                @"access_token" : @"hello_world",
-                                            }];
+            SKYLoginUserOperation *operation = [SKYLoginUserOperation operationWithProvider:@"com.example"
+                                                                           providerAuthData:@{
+                                                                               @"access_token" : @"hello_world",
+                                                                           }];
             operation.container = container;
             [operation makeURLRequestWithError:nil];
             SKYRequest *request = operation.request;
@@ -77,19 +73,17 @@ SpecBegin(SKYLoginUserOperation)
             expect(request.accessToken).to.beNil();
             expect(request.APIKey).to.equal(@"API_KEY");
             expect(request.payload[@"provider"]).to.equal(@"com.example");
-            expect(request.payload[@"provider_auth_data"]).to.equal(@{
-                @"access_token" : @"hello_world"
-            });
+            expect(request.payload[@"provider_auth_data"]).to.equal(@{@"access_token" : @"hello_world"});
         });
 
         it(@"make request", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
-                                                    password:@"password"];
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"} password:@"password"];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{
                         @"user_id" : @"UUID",
@@ -100,25 +94,21 @@ SpecBegin(SKYLoginUserOperation)
                         },
                     };
                     NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
-                                                        options:0
-                                                          error:nil];
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters} options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.loginCompletionBlock =
-                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(user.recordID.recordType).to.equal(@"user");
-                            expect(user.recordID.recordName).to.equal(@"UUID");
-                            expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
-                            expect(error).to.beNil();
-                            done();
-                        });
-                    };
+                operation.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(user.recordID.recordType).to.equal(@"user");
+                        expect(user.recordID.recordName).to.equal(@"UUID");
+                        expect(accessToken.tokenString).to.equal(@"ACCESS_TOKEN");
+                        expect(error).to.beNil();
+                        done();
+                    });
+                };
 
                 [container addOperation:operation];
             });
@@ -126,26 +116,23 @@ SpecBegin(SKYLoginUserOperation)
 
         it(@"pass error", ^{
             SKYLoginUserOperation *operation =
-                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"}
-                                                    password:@"password"];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+                [SKYLoginUserOperation operationWithAuthData:@{@"email" : @"user@example.com"} password:@"password"];
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.loginCompletionBlock =
-                    ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(error).toNot.beNil();
-                            done();
-                        });
-                    };
+                operation.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(error).toNot.beNil();
+                        done();
+                    });
+                };
                 [container addOperation:operation];
             });
         });
@@ -153,7 +140,6 @@ SpecBegin(SKYLoginUserOperation)
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });
-
     });
 
 SpecEnd

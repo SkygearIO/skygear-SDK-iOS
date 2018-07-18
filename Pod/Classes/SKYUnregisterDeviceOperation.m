@@ -46,8 +46,7 @@
 
 - (void)prepareForRequest
 {
-    self.request =
-        [[SKYRequest alloc] initWithAction:@"device:unregister" payload:@{@"id" : self.deviceID}];
+    self.request = [[SKYRequest alloc] initWithAction:@"device:unregister" payload:@{@"id" : self.deviceID}];
     self.request.APIKey = self.container.APIKey;
     self.request.accessToken = self.container.auth.currentAccessToken;
 }
@@ -58,8 +57,7 @@
     NSString *deviceID = dict[@"result"][@"id"];
     NSError *error = nil;
     if (deviceID == nil) {
-        error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                         message:@"Response missing device id"];
+        error = [self.errorCreator errorWithCode:SKYErrorInvalidData message:@"Response missing device id"];
     }
 
     if (self.unregisterCompletionBlock != nil) {

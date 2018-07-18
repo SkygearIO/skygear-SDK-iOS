@@ -45,9 +45,7 @@
     if (_error == nil) {
         _error = error;
     } else {
-        @throw [NSException exceptionWithName:NSGenericException
-                                       reason:@"error is already set"
-                                     userInfo:nil];
+        @throw [NSException exceptionWithName:NSGenericException reason:@"error is already set" userInfo:nil];
     }
 }
 

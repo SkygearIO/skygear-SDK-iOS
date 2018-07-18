@@ -55,8 +55,7 @@
 
     _endPointAddress = url;
 
-    self.pubsubClient.endPointAddress =
-        [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
+    self.pubsubClient.endPointAddress = [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
     self.internalPubsubClient.endPointAddress =
         [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
 
@@ -81,11 +80,10 @@
 
     NSString *deviceID = self.container.push.registeredDeviceID;
     if (deviceID.length) {
-        [_internalPubsubClient
-            subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID]
-                handler:^(NSDictionary *data) {
-                    [weakSelf.container.push handleSubscriptionNoticeWithData:data];
-                }];
+        [_internalPubsubClient subscribeTo:[NSString stringWithFormat:@"_sub_%@", deviceID]
+                                   handler:^(NSDictionary *data) {
+                                       [weakSelf.container.push handleSubscriptionNoticeWithData:data];
+                                   }];
     } else {
         __block id observer;
         observer = [[NSNotificationCenter defaultCenter]

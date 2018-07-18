@@ -57,35 +57,28 @@
     return request;
 }
 
-- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session
-                                            request:(NSURLRequest *)request
+- (NSURLSessionTask *)makeURLSessionTaskWithSession:(NSURLSession *)session request:(NSURLRequest *)request
 {
     NSURLSessionDownloadTask *task;
     task = [session
         downloadTaskWithRequest:request
               completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
                   if ([self shouldObserveProgress]) {
-                      [self.task
-                          removeObserver:self
-                              forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
-                                 context:nil];
+                      [self.task removeObserver:self
+                                     forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
+                                        context:nil];
                   }
 
                   NSData *data = nil;
                   if (!error) {
-                      data = [NSData dataWithContentsOfURL:location
-                                                   options:NSDataReadingMappedIfSafe
-                                                     error:&error];
+                      data = [NSData dataWithContentsOfURL:location options:NSDataReadingMappedIfSafe error:&error];
                   }
 
                   [self handleRequestCompletionWithData:data response:response error:error];
               }];
 
     if ([self shouldObserveProgress]) {
-        [task addObserver:self
-               forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived))
-                  options:0
-                  context:nil];
+        [task addObserver:self forKeyPath:NSStringFromSelector(@selector(countOfBytesReceived)) options:0 context:nil];
     }
 
     self.task = task;
@@ -102,8 +95,8 @@
             NSURLSessionDownloadTask *task = object;
 
             if (task.countOfBytesExpectedToReceive != NSURLSessionTransferSizeUnknown) {
-                self.downloadAssetProgressBlock(self.asset, task.countOfBytesReceived * 1.0 /
-                                                                task.countOfBytesExpectedToReceive);
+                self.downloadAssetProgressBlock(self.asset,
+                                                task.countOfBytesReceived * 1.0 / task.countOfBytesExpectedToReceive);
             }
         }
     }

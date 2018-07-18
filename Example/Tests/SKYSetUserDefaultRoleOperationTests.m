@@ -30,21 +30,18 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
         NSString *readerRoleName = @"Reader";
         NSString *writerRoleName = @"Writer";
 
-        NSArray<SKYRole *> *roles =
-            @[ [SKYRole roleWithName:readerRoleName], [SKYRole roleWithName:writerRoleName] ];
+        NSArray<SKYRole *> *roles = @[ [SKYRole roleWithName:readerRoleName], [SKYRole roleWithName:writerRoleName] ];
 
         __block SKYContainer *container = nil;
 
         beforeEach(^{
             container = [SKYContainer testContainer];
-            [container.auth
-                updateWithUserRecordID:currentUserID
-                           accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
+            [container.auth updateWithUserRecordID:currentUserID
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:token]];
         });
 
         it(@"should create SKYRequest correctly", ^{
-            SKYSetUserDefaultRoleOperation *operation =
-                [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+            SKYSetUserDefaultRoleOperation *operation = [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
             [operation setContainer:container];
             [operation makeURLRequestWithError:nil];
@@ -52,36 +49,32 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
             SKYRequest *request = operation.request;
             expect(request.action).to.equal(@"role:default");
             expect(request.accessToken.tokenString).to.equal(token);
-            expect(request.payload).to.equal(@{ @"roles" : @[ readerRoleName, writerRoleName ] });
+            expect(request.payload).to.equal(@{@"roles" : @[ readerRoleName, writerRoleName ]});
         });
 
         it(@"should handle success response", ^{
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *_Nonnull request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                    NSDictionary *response =
-                        @{ @"result" : @{@"roles" : @[ readerRoleName, writerRoleName ]} };
+                    NSDictionary *response = @{@"result" : @{@"roles" : @[ readerRoleName, writerRoleName ]}};
 
-                    return [OHHTTPStubsResponse responseWithJSONObject:response
-                                                            statusCode:200
-                                                               headers:nil];
+                    return [OHHTTPStubsResponse responseWithJSONObject:response statusCode:200 headers:nil];
                 }];
 
-            SKYSetUserDefaultRoleOperation *operation =
-                [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
+            SKYSetUserDefaultRoleOperation *operation = [SKYSetUserDefaultRoleOperation operationWithRoles:roles];
 
             [operation setContainer:container];
 
             waitUntil(^(DoneCallback done) {
-                operation.setUserDefaultRoleCompletionBlock =
-                    ^(NSArray<SKYRole *> *roles, NSError *error) {
-                        expect(roles.count).to.equal(2);
-                        expect(roles).to.contain([SKYRole roleWithName:readerRoleName]);
-                        expect(roles).to.contain([SKYRole roleWithName:writerRoleName]);
-                        expect(error).to.beNil();
-                        done();
-                    };
+                operation.setUserDefaultRoleCompletionBlock = ^(NSArray<SKYRole *> *roles, NSError *error) {
+                    expect(roles.count).to.equal(2);
+                    expect(roles).to.contain([SKYRole roleWithName:readerRoleName]);
+                    expect(roles).to.contain([SKYRole roleWithName:writerRoleName]);
+                    expect(error).to.beNil();
+                    done();
+                };
 
                 [container addOperation:operation];
             });

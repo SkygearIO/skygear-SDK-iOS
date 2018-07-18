@@ -31,8 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable fetchUserRoleCompletionBlock)
-    (NSDictionary<NSString *, NSArray<NSString *> *> *_Nullable userRoles, NSError *_Nullable error)
-        ;
+    (NSDictionary<NSString *, NSArray<NSString *> *> *_Nullable userRoles, NSError *_Nullable error);
 
 /// Undocumented
 + (instancetype)operationWithUserIDs:(NSArray<NSString *> *)userIDs;

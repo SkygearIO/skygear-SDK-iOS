@@ -63,8 +63,7 @@ SpecBegin(SKYRecordDeserializer)
             expect(record.ownerUserRecordID).to.equal(@"ownerID");
             expect(record.creationDate).to.equal([NSDate dateWithTimeIntervalSince1970:1136214245]);
             expect(record.creatorUserRecordID).to.equal(@"creatorID");
-            expect(record.modificationDate)
-                .to.equal([NSDate dateWithTimeIntervalSince1970:1136214246]);
+            expect(record.modificationDate).to.equal([NSDate dateWithTimeIntervalSince1970:1136214246]);
             expect(record.lastModifiedUserRecordID).to.equal(@"updaterID");
         });
 
@@ -101,10 +100,8 @@ SpecBegin(SKYRecordDeserializer)
             SKYRecord *record = [deserializer recordWithDictionary:data];
             expect(record.accessControl).notTo.beNil();
             expect(record.accessControl.entries).to.haveCountOf(1);
-            expect(record.accessControl.entries[0].entryType)
-                .to.equal(SKYAccessControlEntryTypeRelation);
-            expect(record.accessControl.entries[0].accessLevel)
-                .to.equal(SKYAccessControlEntryLevelRead);
+            expect(record.accessControl.entries[0].entryType).to.equal(SKYAccessControlEntryTypeRelation);
+            expect(record.accessControl.entries[0].accessLevel).to.equal(SKYAccessControlEntryLevelRead);
             expect(record.accessControl.entries[0].relation.name).to.equal(@"friend");
         });
 
@@ -196,7 +193,6 @@ SpecBegin(SKYRecordDeserializer)
             SKYRecord *record = [deserializer recordWithDictionary:data];
             expect([record[@"location"] coordinate])
                 .to.equal([[[CLLocation alloc] initWithLatitude:1 longitude:2] coordinate]);
-
         });
 
         it(@"deserialize sequence", ^{
@@ -206,7 +202,6 @@ SpecBegin(SKYRecordDeserializer)
             };
             SKYRecord *record = [deserializer recordWithDictionary:data];
             expect([record[@"seq"] class]).to.beSubclassOf([SKYSequence class]);
-
         });
 
         it(@"deserialize unknown value", ^{

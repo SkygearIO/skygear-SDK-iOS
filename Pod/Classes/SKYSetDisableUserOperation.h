@@ -53,8 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Block to be called when the operation completes.
  */
-@property (nonatomic, copy) void (^_Nullable setCompletionBlock)
-    (NSString *userID, NSError *_Nullable error);
+@property (nonatomic, copy) void (^_Nullable setCompletionBlock)(NSString *userID, NSError *_Nullable error);
 
 /**
  *  Returns an instance of operation to disable a user account.

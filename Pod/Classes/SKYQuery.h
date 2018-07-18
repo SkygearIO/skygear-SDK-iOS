@@ -31,8 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
                          predicate:(NSPredicate *_Nullable)predicate NS_DESIGNATED_INITIALIZER;
 
 /// Undocumented
-+ (instancetype)queryWithRecordType:(NSString *)recordType
-                          predicate:(NSPredicate *_Nullable)predicate;
++ (instancetype)queryWithRecordType:(NSString *)recordType predicate:(NSPredicate *_Nullable)predicate;
 
 /// Undocumented
 @property (nonatomic, readonly, copy) NSString *recordType;

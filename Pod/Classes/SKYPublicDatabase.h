@@ -33,8 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)defineCreationAccessWithRecordType:(NSString *)recordType
                                      roles:(NSArray<SKYRole *> *)roles
-                                completion:
-                                    (void (^_Nullable)(NSError *_Nullable error))completionBlock;
+                                completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 /**
  *  Set default access of a record type
@@ -45,8 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)defineDefaultAccessWithRecordType:(NSString *)recordType
                                    access:(SKYAccessControl *)accessControl
-                               completion:
-                                   (void (^_Nullable)(NSError *_Nullable error))completionBlock;
+                               completion:(void (^_Nullable)(NSError *_Nullable error))completionBlock;
 
 @end
 

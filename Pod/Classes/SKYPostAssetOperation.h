@@ -46,8 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSDictionary *_Nullable extraFields;
 
 /// Undocumented
-@property (nonatomic, copy) void (^_Nullable postAssetProgressBlock)
-    (SKYAsset *_Nullable asset, double progress);
+@property (nonatomic, copy) void (^_Nullable postAssetProgressBlock)(SKYAsset *_Nullable asset, double progress);
 /// Undocumented
 @property (nonatomic, copy) void (^_Nullable postAssetCompletionBlock)
     (SKYAsset *_Nullable asset, NSError *_Nullable operationError);

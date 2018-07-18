@@ -128,8 +128,7 @@ SpecBegin(SKYPubsub)
                 onErrorCalledWithError = error;
             }];
 
-            NSError *errorOnInvocation =
-                [[NSError alloc] initWithDomain:@"io.skygear.test" code:0 userInfo:nil];
+            NSError *errorOnInvocation = [[NSError alloc] initWithDomain:@"io.skygear.test" code:0 userInfo:nil];
             [pubsubClient webSocket:mockWS didFailWithError:errorOnInvocation];
             expect(onErrorCalledWithError).to.equal(errorOnInvocation);
         });
@@ -158,31 +157,29 @@ describe(@"Pubsub message", ^{
     });
 
     it(@"publish message", ^{
-        [[mockWS expect]
-            send:[OCMArg checkWithBlock:^BOOL(id value) {
-                NSData *objectData = [value dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *error;
-                NSDictionary *jsonData =
-                    [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
-                expect(jsonData[@"channel"]).to.equal(@"channel");
-                expect(jsonData[@"action"]).to.equal(@"pub");
-                return true;
-            }]];
+        [[mockWS expect] send:[OCMArg checkWithBlock:^BOOL(id value) {
+                             NSData *objectData = [value dataUsingEncoding:NSUTF8StringEncoding];
+                             NSError *error;
+                             NSDictionary *jsonData =
+                                 [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
+                             expect(jsonData[@"channel"]).to.equal(@"channel");
+                             expect(jsonData[@"action"]).to.equal(@"pub");
+                             return true;
+                         }]];
         [pubsubClient publishMessage:@{} toChannel:@"channel"];
         [mockWS verify];
     });
 
     it(@"subscribe channel", ^{
-        [[mockWS expect]
-            send:[OCMArg checkWithBlock:^BOOL(id value) {
-                NSData *objectData = [value dataUsingEncoding:NSUTF8StringEncoding];
-                NSError *error;
-                NSDictionary *jsonData =
-                    [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
-                expect(jsonData[@"channel"]).to.equal(@"channel");
-                expect(jsonData[@"action"]).to.equal(@"sub");
-                return true;
-            }]];
+        [[mockWS expect] send:[OCMArg checkWithBlock:^BOOL(id value) {
+                             NSData *objectData = [value dataUsingEncoding:NSUTF8StringEncoding];
+                             NSError *error;
+                             NSDictionary *jsonData =
+                                 [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
+                             expect(jsonData[@"channel"]).to.equal(@"channel");
+                             expect(jsonData[@"action"]).to.equal(@"sub");
+                             return true;
+                         }]];
         [pubsubClient subscribeTo:@"channel"
                           handler:^(NSDictionary *dict) {
                               return;

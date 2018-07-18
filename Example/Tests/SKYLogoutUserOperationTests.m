@@ -29,8 +29,7 @@ SpecBegin(SKYLogoutUserOperation)
         beforeEach(^{
             container = [SKYContainer testContainer];
             [container.auth updateWithUserRecordID:@"USER_ID"
-                                       accessToken:[[SKYAccessToken alloc]
-                                                       initWithTokenString:@"ACCESS_TOKEN"]];
+                                       accessToken:[[SKYAccessToken alloc] initWithTokenString:@"ACCESS_TOKEN"]];
         });
 
         it(@"make SKYRequest", ^{
@@ -46,18 +45,16 @@ SpecBegin(SKYLogoutUserOperation)
         it(@"make request", ^{
             SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
 
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     NSDictionary *parameters = @{};
                     NSData *payload =
-                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters}
-                                                        options:0
-                                                          error:nil];
+                        [NSJSONSerialization dataWithJSONObject:@{@"result" : parameters} options:0 error:nil];
 
-                    return
-                        [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
+                    return [OHHTTPStubsResponse responseWithData:payload statusCode:200 headers:@{}];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -73,14 +70,13 @@ SpecBegin(SKYLogoutUserOperation)
 
         it(@"pass error", ^{
             SKYLogoutUserOperation *operation = [[SKYLogoutUserOperation alloc] init];
-            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            }
+            [OHHTTPStubs
+                stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                }
                 withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                     return [OHHTTPStubsResponse
-                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain
-                                                              code:0
-                                                          userInfo:nil]];
+                        responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:nil]];
                 }];
 
             waitUntil(^(DoneCallback done) {
@@ -97,7 +93,6 @@ SpecBegin(SKYLogoutUserOperation)
         afterEach(^{
             [OHHTTPStubs removeAllStubs];
         });
-
     });
 
 SpecEnd
