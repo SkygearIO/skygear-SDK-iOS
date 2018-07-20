@@ -1,5 +1,5 @@
 //
-//  SKYRecordResponse.h
+//  SKYRecordResponseDeserializer.h
 //  SKYKit
 //
 //  Copyright 2018 Oursky Ltd.

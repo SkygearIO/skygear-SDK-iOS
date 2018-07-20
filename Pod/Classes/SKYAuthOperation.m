@@ -62,9 +62,7 @@
     SKYAccessToken *accessToken =
         error ? nil : [[SKYAccessToken alloc] initWithTokenString:tokenString];
 
-    [self handleAuthResponseWithUser:error ? nil : user
-                         accessToken:error ? nil : accessToken
-                               error:error];
+    [self handleAuthResponseWithUser:user accessToken:accessToken error:error];
 }
 
 - (void)handleAuthResponseWithUser:(SKYRecord *)record
