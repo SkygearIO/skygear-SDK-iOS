@@ -75,7 +75,8 @@ SpecBegin(SKYSignupUserOperation)
                             @"user_id" : @"USER_ID",
                             @"access_token" : @"ACCESS_TOKEN",
                             @"profile" : @{
-                                @"_id" : @"user/USER_ID",
+                                @"_recordType" : @"user",
+                                @"_recordID" : @"USER_ID",
                                 @"_access" : [NSNull null],
                                 @"email" : @"user@example.com",
                             },
@@ -117,7 +118,8 @@ SpecBegin(SKYSignupUserOperation)
                             @"user_id" : @"USER_ID",
                             @"access_token" : @"ACCESS_TOKEN",
                             @"profile" : @{
-                                @"_id" : @"user/USER_ID",
+                                @"_recordType" : @"user",
+                                @"_recordID" : @"USER_ID",
                                 @"_access" : [NSNull null],
                             },
                         },

@@ -142,26 +142,10 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
                              error:(NSError *)error
                  completionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
-    NSError *loginError = error;
-    SKYRecord *user = nil;
-    SKYAccessToken *accessToken = nil;
-    if (!loginError) {
-        NSDictionary *response = result[@"result"];
-        NSDictionary *profile = response[@"profile"];
-        NSString *recordID = profile[@"_id"];
-        if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
-            user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
-            accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
+    [self handleAuthResponse:result[@"result"]];
 
-            [self updateWithUser:user accessToken:accessToken];
-        } else {
-            loginError = [[[SKYErrorCreator alloc] init]
-                errorWithCode:SKYErrorBadResponse
-                      message:@"Returned data does not contain expected data."];
-        }
-    }
     if (completionHandler) {
-        completionHandler(user, loginError);
+        completionHandler(self.currentUser, error);
     }
 }
 
@@ -233,11 +217,8 @@ typedef enum : NSInteger { SKYOAuthActionLogin, SKYOAuthActionLink } SKYOAuthAct
 {
     SKYLoginCustomTokenOperation *op =
         [SKYLoginCustomTokenOperation operationWithCustomToken:customToken];
+    op.authResponseDelegate = self;
     op.loginCompletionBlock = ^(SKYRecord *user, SKYAccessToken *accessToken, NSError *error) {
-        if (!error) {
-            [self.container.auth updateWithUser:user accessToken:accessToken];
-        }
-
         if (completionHandler) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionHandler(user, error);

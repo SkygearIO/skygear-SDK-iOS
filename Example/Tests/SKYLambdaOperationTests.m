@@ -88,7 +88,9 @@ SpecBegin(SKYLambdaOperation)
                 @"record" : @{
                     @"$record" : @{
                         @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
-                        @"_type" : @"record"
+                        @"_type" : @"record",
+                        @"_recordType" : @"note",
+                        @"_recordID" : @"AA0954F8-0481-456F-A347-41C55D47A301"
                     },
                     @"$type" : @"record"
                 }
@@ -111,7 +113,8 @@ SpecBegin(SKYLambdaOperation)
                             @"location" : @{@"$lat" : @1, @"$lng" : @2, @"$type" : @"geo"},
                             @"record" : @{
                                 @"$record" : @{
-                                    @"_id" : @"note/AA0954F8-0481-456F-A347-41C55D47A301",
+                                    @"_recordType" : @"note",
+                                    @"_recordID" : @"AA0954F8-0481-456F-A347-41C55D47A301",
                                     @"_type" : @"record"
                                 },
                                 @"$type" : @"record"

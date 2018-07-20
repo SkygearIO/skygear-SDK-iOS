@@ -21,7 +21,7 @@
 #import "SKYDataSerialization.h"
 #import "SKYOperationSubclass.h"
 #import "SKYQuerySerializer.h"
-#import "SKYRecordDeserializer.h"
+#import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
 @interface SKYQueryOperation ()
@@ -75,38 +75,26 @@
                  perRecordBlock:(void (^)(SKYRecord *record))perRecordBlock
 {
     NSMutableArray *fetchedRecords = [NSMutableArray array];
-    SKYRecordDeserializer *deserializer = [SKYRecordDeserializer deserializer];
+    SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
 
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        NSError *error = nil;
-        SKYRecord *record = nil;
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
 
-        if (recordID) {
-            NSString *type = obj[SKYRecordSerializationRecordTypeKey];
-            if ([type isEqualToString:@"record"]) {
-                record = [deserializer recordWithDictionary:obj];
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        if (error) {
+                                            NSLog(@"Record does not conform with expected format.");
+                                            return;
+                                        }
 
-                if (!record) {
-                    NSLog(@"Warning: Received malformed record dictionary.");
-                }
-            } else {
-                // not expecting an error here.
-                NSLog(@"Warning: Received dictionary with unexpected value (%@) in `%@` key.", type,
-                      SKYRecordSerializationRecordTypeKey);
-            }
-        } else {
-            error = [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                             message:@"Missing `_id` or not in correct format."];
-        }
-
-        if (record) {
-            [fetchedRecords addObject:record];
-            if (perRecordBlock) {
-                perRecordBlock(record);
-            }
-        }
+                                        if (record) {
+                                            [fetchedRecords addObject:record];
+                                            if (perRecordBlock) {
+                                                perRecordBlock(record);
+                                            }
+                                        }
+                                    }];
     }];
 
     return fetchedRecords;

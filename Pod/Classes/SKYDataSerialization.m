@@ -150,8 +150,7 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     if ([type isEqualToString:SKYDataSerializationDateType]) {
         obj = [self dateFromString:data[@"$date"]];
     } else if ([type isEqualToString:SKYDataSerializationReferenceType]) {
-        SKYRecordID *recordID = [[SKYRecordID alloc] initWithCanonicalString:data[@"$id"]];
-        obj = [[SKYReference alloc] initWithRecordID:recordID];
+        obj = [self deserializeReferenceWithDictionary:data];
     } else if ([type isEqualToString:SKYDataSerializationAssetType]) {
         obj = [self deserializeAssetWithDictionary:data];
     } else if ([type isEqualToString:SKYDataSerializationLocationType]) {
@@ -260,6 +259,37 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     return [SKYRelation relationWithName:name direction:direction];
 }
 
++ (SKYReference *)deserializeReferenceWithDictionary:(NSDictionary *)data
+{
+    NSString *recordType = data[@"$recordType"];
+    NSString *recordName = data[@"$recordID"];
+    NSString *deprecatedID = data[@"$id"];
+
+    if (recordType) {
+        if (![recordType isKindOfClass:[NSString class]] ||
+            ![recordName isKindOfClass:[NSString class]]) {
+            NSLog(@"Unexpected reference with record type \"%@\" and record ID \"%@\". Return nil "
+                  @"instead.",
+                  recordType, recordName);
+            return nil;
+        }
+        return [[SKYReference alloc]
+            initWithRecordID:[SKYRecordID recordIDWithRecordType:recordType name:recordName]];
+    } else if (deprecatedID) {
+        if (![deprecatedID isKindOfClass:[NSString class]]) {
+            NSLog(@"Unexpected reference with record ID \"%@\". Return nil instead.", deprecatedID);
+            return nil;
+        }
+        return [[SKYReference alloc]
+            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:deprecatedID]];
+    } else {
+        NSLog(@"Unexpected reference with missing record ID. Return nil instead.");
+        return nil;
+    }
+
+    return nil;
+}
+
 + (id)serializeSimpleObject:(id)obj
 {
     id data = nil;
@@ -272,6 +302,8 @@ NSString *localFunctionName(NSString *remoteFunctionName)
         data = @{
             SKYDataSerializationCustomTypeKey : SKYDataSerializationReferenceType,
             @"$id" : [(SKYReference *)obj recordID].canonicalString,
+            @"$recordType" : [(SKYReference *)obj recordID].recordType,
+            @"$recordID" : [(SKYReference *)obj recordID].recordName,
         };
     } else if ([obj isKindOfClass:[SKYAsset class]]) {
         data = [SKYDataSerialization serializeAsset:obj];

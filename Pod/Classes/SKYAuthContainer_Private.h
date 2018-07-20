@@ -40,4 +40,6 @@
  */
 - (void)loadCurrentUserAndAccessToken;
 
+- (void)handleAuthResponse:(NSDictionary<NSString *, id> *)authResponse;
+
 @end

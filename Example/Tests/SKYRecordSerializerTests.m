@@ -98,6 +98,8 @@ SpecBegin(SKYRecordSerializer)
             expect(authorRef[SKYDataSerializationCustomTypeKey])
                 .to.equal(SKYDataSerializationReferenceType);
             expect(authorRef[@"$id"]).to.equal(@"author/author1");
+            expect(authorRef[@"$recordType"]).to.equal(@"author");
+            expect(authorRef[@"$recordID"]).to.equal(@"author1");
         });
 
         it(@"serialize date", ^{

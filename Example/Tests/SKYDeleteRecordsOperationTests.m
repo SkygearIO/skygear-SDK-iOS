@@ -96,11 +96,13 @@ SpecBegin(SKYDeleteRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"record",
                             },
                         ],
@@ -167,7 +169,8 @@ SpecBegin(SKYDeleteRecordsOperation)
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
                         @"result" : @[ @{
-                            @"_id" : @"book/book2",
+                            @"_recordType" : @"book",
+                            @"_recordID" : @"book2",
                             @"_type" : @"error",
                             @"code" : @(SKYErrorUnexpectedError),
                             @"message" : @"An error.",

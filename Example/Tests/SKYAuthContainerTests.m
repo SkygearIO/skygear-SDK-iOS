@@ -84,7 +84,8 @@ SpecBegin(SKYAuthContainer)
                         @"user_id" : @"UUID",
                         @"access_token" : @"ACCESS_TOKEN",
                         @"profile" : @{
-                            @"_id" : @"user/UUID",
+                            @"_recordType" : @"user",
+                            @"_recordID" : @"UUID",
                             @"_access" : [NSNull null],
                             @"username" : @"john.doe",
                             @"email" : @"john.doe@example.com",
@@ -109,7 +110,8 @@ SpecBegin(SKYAuthContainer)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"user/UUID",
+                                @"_recordType" : @"user",
+                                @"_recordID" : @"UUID",
                                 @"_type" : @"record",
                                 @"foo" : @"bar",
                             },
@@ -217,7 +219,8 @@ describe(@"get current user from server", ^{
                         @"roles" : @[ @"Developer", @"Designer" ],
                         @"access_token" : @"token-1",
                         @"profile" : @{
-                            @"_id" : @"user/user-1",
+                            @"_recordType" : @"user",
+                            @"_recordID" : @"user-1",
                             @"_access" : [NSNull null],
                             @"username" : @"user1",
                             @"email" : @"user1@skygear.dev",

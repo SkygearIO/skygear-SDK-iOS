@@ -87,12 +87,14 @@ SpecBegin(SKYFetchRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"record",
                                 @"title" : @"Old man and the sea",
                             }
@@ -165,19 +167,22 @@ SpecBegin(SKYFetchRecordsOperation)
                         @"database_id" : database.databaseID,
                         @"result" : @[
                             @{
-                                @"_id" : @"book/book1",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },
                             @{
-                                @"_id" : @"book/book2",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
                                 @"_type" : @"error",
                                 @"code" : @(SKYErrorResourceNotFound),
                                 @"message" : @"An error.",
                                 @"name" : @"ResourceNotFound",
                             },
                             @{
-                                @"_id" : @"book/book3",
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book3",
                                 @"_type" : @"unknown",
                             },
                         ]
@@ -217,7 +222,7 @@ SpecBegin(SKYFetchRecordsOperation)
                             expect(operationError.code).to.equal(SKYErrorPartialFailure);
                             NSDictionary *errorsByID =
                                 operationError.userInfo[SKYPartialErrorsByItemIDKey];
-                            expect(errorsByID).to.haveCountOf(1);
+                            expect(errorsByID).to.haveCountOf(2);
                             expect([errorsByID[recordID2] class]).to.beSubclassOf([NSError class]);
                             done();
                         });

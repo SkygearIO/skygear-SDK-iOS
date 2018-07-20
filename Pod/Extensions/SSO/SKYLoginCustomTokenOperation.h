@@ -17,14 +17,14 @@
 //  limitations under the License.
 //
 
-#import "SKYOperation.h"
+#import "SKYAuthOperation.h"
 
 #import "SKYAccessToken.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// SKYLoginCustomTokenOperation is used to send a login with custom token request to the server.
-@interface SKYLoginCustomTokenOperation : SKYOperation
+@interface SKYLoginCustomTokenOperation : SKYAuthOperation
 
 /**
  Returns a custom token in the operation.

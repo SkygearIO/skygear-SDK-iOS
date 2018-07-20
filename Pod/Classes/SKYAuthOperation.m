@@ -27,8 +27,6 @@
 
 - (void)handleResponse:(SKYResponse *)aResponse
 {
-    SKYRecord *user = nil;
-    SKYAccessToken *accessToken = nil;
     NSError *error = nil;
 
     NSDictionary *response = aResponse.responseDictionary[@"result"];
@@ -38,18 +36,31 @@
     }
 
     NSDictionary *profile = response[@"profile"];
-    NSString *recordID = profile[@"_id"];
-    if ([recordID hasPrefix:@"user/"] && response[@"access_token"]) {
-        user = [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
-        accessToken = [[SKYAccessToken alloc] initWithTokenString:response[@"access_token"]];
-    } else {
+    if (![profile isKindOfClass:[NSDictionary class]]) {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
                                          message:@"Returned data does not contain expected data."];
     }
 
-    if (!error) {
-        NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
+    SKYRecord *user =
+        error ? nil : [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
+    if (![user.recordID.recordType isEqualToString:@"user"]) {
+        error = error ? error
+                      : [self.errorCreator
+                            errorWithCode:SKYErrorBadResponse
+                                  message:@"Returned data does not contain expected data."];
     }
+
+    NSString *tokenString = response[@"access_token"];
+    if (![tokenString isKindOfClass:[NSString class]]) {
+        tokenString = nil;
+        error = error ? error
+                      : [self.errorCreator
+                            errorWithCode:SKYErrorBadResponse
+                                  message:@"Returned data does not contain expected data."];
+    }
+
+    SKYAccessToken *accessToken =
+        error ? nil : [[SKYAccessToken alloc] initWithTokenString:tokenString];
 
     [self handleAuthResponseWithUser:user accessToken:accessToken error:error];
 }

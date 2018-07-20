@@ -142,7 +142,12 @@ describe(@"serialize predicate", ^{
             [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"city = %@", ref]];
         expect([result class]).to.beSubclassOf([NSArray class]);
         expect(result[0]).to.equal(@"eq");
-        expect(result[2]).to.equal(@{@"$type" : @"ref", @"$id" : @"city/hongkong"});
+        expect(result[2]).to.equal(@{
+            @"$type" : @"ref",
+            @"$id" : @"city/hongkong",
+            @"$recordType" : @"city",
+            @"$recordID" : @"hongkong"
+        });
     });
 
     it(@"greater than integer", ^{

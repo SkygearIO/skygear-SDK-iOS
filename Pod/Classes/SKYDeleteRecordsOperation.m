@@ -22,6 +22,7 @@
 
 #import "SKYDataSerialization.h"
 #import "SKYError.h"
+#import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
 @implementation SKYDeleteRecordsOperation
@@ -63,23 +64,29 @@
 {
     __block BOOL erroneousResponse = NO;
 
+    SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
     NSMutableDictionary *errorsByID = [NSMutableDictionary dictionary];
     [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        SKYRecordID *recordID =
-            [SKYRecordID recordIDWithCanonicalString:obj[SKYRecordSerializationRecordIDKey]];
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        SKYRecordID *deprecatedRecordID =
+                                            recordType && recordID
+                                                ? [SKYRecordID recordIDWithRecordType:recordType
+                                                                                 name:recordID]
+                                                : nil;
 
-        if (!recordID) {
-            erroneousResponse = YES;
-            *stop = YES;
-            return;
-        }
+                                        if (!deprecatedRecordID) {
+                                            erroneousResponse = YES;
+                                            *stop = YES;
+                                            return;
+                                        }
 
-        if (![obj[SKYRecordSerializationRecordTypeKey] isEqualToString:@"error"]) {
-            return;
-        }
-
-        NSError *error = [self.errorCreator errorWithResponseDictionary:obj];
-        [errorsByID setObject:error forKey:recordID];
+                                        if (error) {
+                                            [errorsByID setObject:error forKey:deprecatedRecordID];
+                                        }
+                                    }];
     }];
 
     if (erroneousResponse) {
