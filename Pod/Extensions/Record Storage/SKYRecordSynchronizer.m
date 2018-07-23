@@ -18,7 +18,7 @@
 //
 
 #import "SKYRecordSynchronizer.h"
-#import "SKYDeprecatedDeleteRecordsOperation.h"
+#import "SKYDeleteRecordsOperation.h"
 #import "SKYModifyRecordsOperation.h"
 #import "SKYQueryOperation.h"
 #import "SKYRecordChange.h"
@@ -184,16 +184,18 @@
             updateCount++;
             [self.database executeOperation:op];
         } else if (change.action == SKYRecordChangeDelete) {
-            SKYDeprecatedDeleteRecordsOperation *op = [[SKYDeprecatedDeleteRecordsOperation alloc]
-                initWithRecordIDsToDelete:@[ change.recordID ]];
-            op.perRecordCompletionBlock = ^(SKYRecordID *recordID, NSError *error) {
-                if (!storage.updating) {
-                    [storage beginUpdatingForChanges:YES];
-                }
-                [storage updateByApplyingChange:change recordOnRemote:nil error:error];
-            };
+            SKYDeleteRecordsOperation *op =
+                [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[ change.recordID ]];
+            op.perRecordCompletionBlock =
+                ^(NSString *recordType, NSString *recordID, NSError *error) {
+                    if (!storage.updating) {
+                        [storage beginUpdatingForChanges:YES];
+                    }
+                    [storage updateByApplyingChange:change recordOnRemote:nil error:error];
+                };
             op.deleteRecordsCompletionBlock =
-                ^(NSArray *deletedRecordIDs, NSError *operationError) {
+                ^(NSArray<NSString *> *deletedRecordTypes, NSArray<NSString *> *deletedRecordIDs,
+                  NSError *operationError) {
                     __strong typeof(weakSelf) strongSelf = weakSelf;
                     if (storage.updating) {
                         [storage finishUpdating];

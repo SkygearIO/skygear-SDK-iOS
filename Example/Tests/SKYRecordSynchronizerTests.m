@@ -121,20 +121,20 @@ SpecBegin(SKYRecordSynchronizer)
 
         it(@"apply change for delete", ^{
             SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
-            OCMStub([database executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
-                                  expect([obj class])
-                                      .to.beSubclassOf([SKYDeprecatedDeleteRecordsOperation class]);
+            OCMStub([database
+                executeOperation:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    expect([obj class]).to.beSubclassOf([SKYDeleteRecordsOperation class]);
 
-                                  SKYDeprecatedDeleteRecordsOperation *op = obj;
-                                  if (op.perRecordCompletionBlock) {
-                                      op.perRecordCompletionBlock(record.deprecatedID, nil);
-                                  }
-                                  if (op.deleteRecordsCompletionBlock) {
-                                      op.deleteRecordsCompletionBlock(@[ record.deprecatedID ],
-                                                                      nil);
-                                  }
-                                  return YES;
-                              }]]);
+                    SKYDeleteRecordsOperation *op = obj;
+                    if (op.perRecordCompletionBlock) {
+                        op.perRecordCompletionBlock(record.recordType, record.recordID, nil);
+                    }
+                    if (op.deleteRecordsCompletionBlock) {
+                        op.deleteRecordsCompletionBlock(@[ record.recordType ],
+                                                        @[ record.recordID ], nil);
+                    }
+                    return YES;
+                }]]);
 
             [storage deleteRecord:existingRecord];
             SKYRecordChange *change = [[storage pendingChanges] firstObject];

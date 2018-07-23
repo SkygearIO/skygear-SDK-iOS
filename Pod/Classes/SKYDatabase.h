@@ -131,7 +131,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
 - (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
-           completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
+           completionHandler:(void (^_Nullable)(NSArray<SKYRecordID *> *_Nullable deletedRecordIDs,
                                                 NSError *_Nullable error))completionHandler
        perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
                                                 NSError *_Nullable error))errorHandler

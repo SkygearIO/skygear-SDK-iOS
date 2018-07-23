@@ -286,7 +286,11 @@ SpecBegin(SKYDatabase)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[]
+                        @"result" : @[ @{
+                            @"_recordType" : @"book",
+                            @"_recordID" : @"book1",
+                            @"_type" : @"record"
+                        } ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -344,14 +348,21 @@ SpecBegin(SKYDatabase)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[ @{
-                            @"_recordType" : @"book",
-                            @"_recordID" : @"book2",
-                            @"_type" : @"error",
-                            @"code" : @(SKYErrorUnexpectedError),
-                            @"message" : @"An error.",
-                            @"name" : @"UnexpectedError",
-                        } ]
+                        @"result" : @[
+                            @{
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
+                                @"_type" : @"record"
+                            },
+                            @{
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
+                                @"_type" : @"error",
+                                @"code" : @(SKYErrorUnexpectedError),
+                                @"message" : @"An error.",
+                                @"name" : @"UnexpectedError",
+                            }
+                        ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];

@@ -36,7 +36,6 @@
 #import "SKYDefineDefaultAccessOperation.h"
 #import "SKYDeleteRecordsOperation.h"
 #import "SKYDeleteSubscriptionsOperation.h"
-#import "SKYDeprecatedDeleteRecordsOperation.h"
 #import "SKYDownloadAssetOperation.h"
 #import "SKYError.h"
 #import "SKYErrorCreator.h"
