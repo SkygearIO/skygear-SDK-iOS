@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.default_subspecs = 'Core', 'ForgotPassword', 'SSO', 'RecordStorage'
+  s.default_subspecs = 'Core', 'ForgotPassword', 'SSO'
 
   s.subspec 'Core' do |core|
     core.requires_arc = true
@@ -56,15 +56,5 @@ Pod::Spec.new do |s|
     sso.requires_arc = true
 
     sso.dependency 'SKYKit/Core'
-  end
-
-  s.subspec 'RecordStorage' do |recordStorage|
-    recordStorage.ios.deployment_target = '8.0'
-
-    recordStorage.source_files = 'Pod/Extensions/Record Storage/**/*.{h,m}'
-    recordStorage.requires_arc = true
-
-    recordStorage.dependency 'SKYKit/Core'
-    recordStorage.dependency 'FMDB', '~> 2.6.0'
   end
 end

@@ -37,18 +37,13 @@
 		3813B6AF1D35E62C004F4E14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6AD1D35E62C004F4E14 /* Main.storyboard */; };
 		3813B6B11D35E62C004F4E14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6B01D35E62C004F4E14 /* Assets.xcassets */; };
 		3813B6B41D35E62C004F4E14 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6B21D35E62C004F4E14 /* LaunchScreen.storyboard */; };
-		383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */; };
-		383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */; };
 		383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383CE06C1ADBB8420085E24B /* SKYQueryTests.m */; };
 		383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */; };
-		3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */; };
 		387F41B91D3DE52D0081D2AE /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387F41B81D3DE52D0081D2AE /* TextFieldTableViewCell.swift */; };
 		387F41BB1D3DE5690081D2AE /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387F41BA1D3DE5690081D2AE /* PickerTableViewCell.swift */; };
-		38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */; };
 		38A48B441D34E41800988B84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A48B431D34E41800988B84 /* main.m */; };
 		38A48B471D34E41800988B84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A48B461D34E41800988B84 /* AppDelegate.m */; };
 		38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */; };
-		38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */; };
 		38D3E2281B7ED41E00CCD28D /* SKYResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */; };
 		38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */; };
 		38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */; };
@@ -155,21 +150,16 @@
 		3813B6B01D35E62C004F4E14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3813B6B31D35E62C004F4E14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3813B6B51D35E62C004F4E14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordChangeTests.m; sourceTree = "<group>"; };
-		383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageTests.m; sourceTree = "<group>"; };
 		383CE06C1ADBB8420085E24B /* SKYQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYQueryTests.m; sourceTree = "<group>"; };
 		383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLambdaOperationTests.m; sourceTree = "<group>"; };
-		3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
 		387F41B81D3DE52D0081D2AE /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		387F41BA1D3DE5690081D2AE /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
-		38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordSynchronizerTests.m; sourceTree = "<group>"; };
 		38A48B401D34E41800988B84 /* Test Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Test Runner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A48B431D34E41800988B84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		38A48B451D34E41800988B84 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		38A48B461D34E41800988B84 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		38A48B531D34E41800988B84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYErrorCreatorTests.m; sourceTree = "<group>"; };
-		38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
 		38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResponseTest.m; sourceTree = "<group>"; };
 		38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResultArrayResponseTest.m; sourceTree = "<group>"; };
 		38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSendPushNotificationOperationTests.m; sourceTree = "<group>"; };
@@ -450,14 +440,9 @@
 				CD42FE131AA4499C0079B3DA /* SKYQueryOperationTests.m */,
 				CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */,
 				383CE06C1ADBB8420085E24B /* SKYQueryTests.m */,
-				383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */,
 				CD98A8A31A9F28030056420F /* SKYRecordDeserializerTests.m */,
 				CD5697291AAC7D3700AE596B /* SKYRecordIDTests.m */,
 				CD8FE82F1A9F1FE10087FE71 /* SKYRecordSerializerTests.m */,
-				38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */,
-				3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */,
-				383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */,
-				38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */,
 				CD56972D1AAC7E2500AE596B /* SKYRecordTests.m */,
 				606CB9931FB5991800046BCE /* SKYReferenceTests.m */,
 				38E053D81AC1489A00850988 /* SKYRegisterDeviceOperationTests.m */,
@@ -921,7 +906,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Bolts-framework/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit-framework/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FMDB-framework/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-framework/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook-framework/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-framework/SocketRocket.framework",
@@ -930,7 +914,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
@@ -1008,7 +991,6 @@
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */,
 				38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */,
-				38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */,
 				A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */,
 				38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
@@ -1016,7 +998,6 @@
 				38E053D91AC1489A00850988 /* SKYRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* SKYRecordTests.m in Sources */,
 				60209E5B1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m in Sources */,
-				3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */,
 				37CDD6041B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* SKYRecordDeserializerTests.m in Sources */,
 				383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */,
@@ -1029,7 +1010,6 @@
 				3785584A1AE63FEC00685319 /* SKYSubscriptionSerializerTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* SKYModifyRecordsOperationTests.m in Sources */,
 				F413CD5C1ED6BBE2001EBFAB /* SKYAssetTests.m in Sources */,
-				38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */,
 				CF234C631E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* SKYSignupUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* SKYRecordIDTests.m in Sources */,
@@ -1039,7 +1019,6 @@
 				374863DA1C3CF16000A6E787 /* SKYChangePasswordOperationTests.m in Sources */,
 				37CDD6071B4C040F007B9FE1 /* SKYDownloadAssetOperationTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */,
-				383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */,
 				38EAA71B1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m in Sources */,
 				F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */,
@@ -1056,7 +1035,6 @@
 				CD7FE26D1A9DBB9F002C076E /* SKYLoginUserOperationTests.m in Sources */,
 				372E77911B28338A001F1972 /* SKYAccessControlTests.m in Sources */,
 				5F9F71411B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m in Sources */,
-				383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */,
 				60209E651D76F18400B7E10B /* SKYPostAssetOperationTests.m in Sources */,
 				CD8FE8301A9F1FE10087FE71 /* SKYRecordSerializerTests.m in Sources */,
 				CD42FE141AA4499C0079B3DA /* SKYQueryOperationTests.m in Sources */,

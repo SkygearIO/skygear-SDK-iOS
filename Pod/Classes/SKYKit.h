@@ -113,7 +113,3 @@
 #include "SKYKitSSOExtension.h"
 #endif
 #endif
-
-#if __has_include("SKYKitRecordStorageExtension.h")
-#include "SKYKitRecordStorageExtension.h"
-#endif
