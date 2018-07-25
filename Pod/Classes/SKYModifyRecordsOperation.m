@@ -30,7 +30,7 @@
     NSMutableDictionary *recordsByRecordID;
 }
 
-- (instancetype)initWithRecordsToSave:(NSArray *)records
+- (instancetype)initWithRecords:(NSArray *)records
 {
     self = [super init];
     if (self) {
@@ -39,9 +39,9 @@
     return self;
 }
 
-+ (instancetype)operationWithRecordsToSave:(NSArray *)records
++ (instancetype)operationWithRecords:(NSArray *)records
 {
-    return [[self alloc] initWithRecordsToSave:records];
+    return [[self alloc] initWithRecords:records];
 }
 
 - (void)prepareForRequest
@@ -77,58 +77,39 @@
     }
 }
 
-- (NSArray *)handleResponseArray:(NSArray *)responseArray error:(NSError **)error
+- (void)handleResponse:(SKYResponse *)responseObject
 {
-    if (!responseArray) {
-        if (error) {
-            *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
-                                              message:@"Result is not an array or not exists."];
-        }
-        return nil;
+    if (!self.modifyRecordsCompletionBlock) {
+        return;
     }
 
-    NSMutableDictionary *errorByID = [NSMutableDictionary dictionary];
-    NSMutableArray *resultArray = [NSMutableArray array];
+    NSDictionary *response = responseObject.responseDictionary;
+    NSArray *responseArray = response[@"result"];
+
+    if (!responseArray) {
+        NSError *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
+                                                  message:@"Result is not an array or not exists."];
+        self.modifyRecordsCompletionBlock(nil, error);
+        return;
+    }
+
+    NSMutableArray<SKYRecordResult<SKYRecord *> *> *resultArray = [NSMutableArray array];
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
     [deserializer
         deserializeResponseArray:responseArray
                            block:^(NSString *recordType, NSString *recordID, SKYRecord *record,
                                    NSError *error) {
-                               SKYRecord *rtnRecord = record;
-
                                if (error) {
-                                   NSString *concatenatedID =
-                                       SKYRecordConcatenatedID(recordType, recordID);
-                                   if (recordType && recordID) {
-                                       errorByID[concatenatedID] = error;
-                                   }
-                                   rtnRecord = self->recordsByRecordID[concatenatedID];
-                               }
-
-                               if (record) {
-                                   [resultArray addObject:record];
-                               }
-
-                               if ((rtnRecord || error) && self.perRecordCompletionBlock) {
-                                   self.perRecordCompletionBlock(rtnRecord, error);
+                                   [resultArray addObject:[[SKYRecordResult<SKYRecord *> alloc]
+                                                              initWithError:error]];
+                                   return;
+                               } else if (record) {
+                                   [resultArray addObject:[[SKYRecordResult<SKYRecord *> alloc]
+                                                              initWithValue:record]];
                                }
                            }];
 
-    if ([errorByID count] && error) {
-        *error = [self.errorCreator partialErrorWithPerItemDictionary:errorByID];
-    }
-    return resultArray;
-}
-
-- (void)handleResponse:(SKYResponse *)responseObject
-{
-    NSDictionary *response = responseObject.responseDictionary;
-    NSError *operationError = nil;
-    NSArray *responseArray = [self handleResponseArray:response[@"result"] error:&operationError];
-
-    if (self.modifyRecordsCompletionBlock) {
-        self.modifyRecordsCompletionBlock(responseArray, operationError);
-    }
+    self.modifyRecordsCompletionBlock(resultArray, nil);
 }
 
 @end

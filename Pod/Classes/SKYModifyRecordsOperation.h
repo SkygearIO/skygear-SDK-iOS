@@ -18,11 +18,12 @@
 //
 
 #import "SKYDatabaseOperation.h"
+#import "SKYRecordResult.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// Undocumented
-typedef enum : NSInteger {
+__attribute__((deprecated)) typedef enum : NSInteger {
     SKYRecordSaveIfServerRecordUnchanged = 0,
     SKYRecordSaveChangedKeys = 1,
     SKYRecordSaveAllKeys = 2,
@@ -41,7 +42,7 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-- (instancetype)initWithRecordsToSave:(NSArray<SKYRecord *> *)records;
+- (instancetype)initWithRecords:(NSArray<SKYRecord *> *)records;
 
 /**
  Creates and returns an instance of <OdModifyRecordsOperation> with a list of records to be saved to
@@ -49,7 +50,7 @@ typedef enum : NSInteger {
 
  @param records An array of records to be saved to database.
  */
-+ (instancetype)operationWithRecordsToSave:(NSArray<SKYRecord *> *)records;
++ (instancetype)operationWithRecords:(NSArray<SKYRecord *> *)records;
 
 /**
  Sets or returns an array of records to be saved to database.
@@ -68,24 +69,11 @@ typedef enum : NSInteger {
 @property (nonatomic, assign) BOOL atomic;
 
 /**
- Sets or returns a block to be called when progress information is available for saving each record.
- */
-@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (SKYRecord *_Nullable record, double progress);
-
-/**
- Sets or returns a block to be called when the save operation for individual record is completed.
- If an error occurred during the save, the <NSError> will be specified.
- */
-@property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
-    (SKYRecord *_Nullable record, NSError *error);
-
-/**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable modifyRecordsCompletionBlock)
-    (NSArray<SKYRecord *> *_Nullable savedRecords, NSError *_Nullable operationError);
+    (NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results, NSError *_Nullable operationError);
 
 @end
 

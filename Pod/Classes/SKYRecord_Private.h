@@ -19,14 +19,21 @@
 
 #import "SKYRecord.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SKYRecord ()
+
++ (instancetype)deletedRecordWithType:(NSString *)recordType recordID:(NSString *)recordID;
 
 @property (nonatomic, readwrite, copy) NSString *recordType;
 @property (nonatomic, readwrite, copy) NSString *recordID;
-@property (nonatomic, readwrite, copy) NSString *ownerUserRecordID;
-@property (nonatomic, readwrite, copy) NSDate *creationDate;
-@property (nonatomic, readwrite, copy) NSString *creatorUserRecordID;
-@property (nonatomic, readwrite, copy) NSDate *modificationDate;
-@property (nonatomic, readwrite, copy) NSString *lastModifiedUserRecordID;
+@property (nonatomic, readwrite, copy) NSString *_Nullable ownerUserRecordID;
+@property (nonatomic, readwrite, copy) NSDate *_Nullable creationDate;
+@property (nonatomic, readwrite, copy) NSString *_Nullable creatorUserRecordID;
+@property (nonatomic, readwrite, copy) NSDate *_Nullable modificationDate;
+@property (nonatomic, readwrite, copy) NSString *_Nullable lastModifiedUserRecordID;
+@property (nonatomic, readwrite) BOOL deleted;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -130,15 +130,16 @@ SpecBegin(SKYDeleteRecordsOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.deleteRecordsCompletionBlock =
-                    ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
-                      NSError *operationError) {
+                    ^(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                      NSError *_Nullable operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordIDs).to.equal(@[ recordID1, recordID2 ]);
+                            expect(results).to.haveCountOf(2);
+                            expect(results[0].value.recordID).to.equal(recordID1);
+                            expect(results[1].value.recordID).to.equal(recordID2);
                             expect(operationError).to.beNil();
                             done();
                         });
                     };
-
                 [database executeOperation:operation];
             });
         });
@@ -161,8 +162,8 @@ SpecBegin(SKYDeleteRecordsOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.deleteRecordsCompletionBlock =
-                    ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
-                      NSError *operationError) {
+                    ^(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                      NSError *_Nullable operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(operationError).toNot.beNil();
                             done();
@@ -210,30 +211,17 @@ SpecBegin(SKYDeleteRecordsOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remaingRecordIDs = [@[ recordID1, recordID2 ] mutableCopy];
-                operation.perRecordCompletionBlock =
-                    ^(NSString *recordType, NSString *recordID, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [remaingRecordIDs removeObject:recordID];
-                        });
-                    };
-
                 operation.deleteRecordsCompletionBlock =
-                    ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
-                      NSError *operationError) {
+                    ^(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                      NSError *_Nullable operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(recordIDs).to.haveCountOf(1);
-                            expect(remaingRecordIDs).to.haveCountOf(0);
-                            expect(operationError.code).to.equal(SKYErrorPartialFailure);
-                            NSDictionary *errorsByID =
-                                operationError.userInfo[SKYPartialErrorsByItemIDKey];
-                            expect(errorsByID).to.haveCountOf(1);
-                            expect([errorsByID[SKYRecordConcatenatedID(@"book", recordID2)] class])
-                                .to.beSubclassOf([NSError class]);
+                            expect(results).to.haveCountOf(2);
+                            expect(results[0].value.recordID).to.equal(recordID1);
+                            expect(results[1].error).notTo.beNil();
+                            expect(operationError).to.beNil();
                             done();
                         });
                     };
-
                 [database executeOperation:operation];
             });
         });

@@ -71,6 +71,7 @@
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordID.h"
 #import "SKYRecordResponseDeserializer.h"
+#import "SKYRecordResult.h"
 #import "SKYRecordSerialization.h"
 #import "SKYRecordSerializer.h"
 #import "SKYReference.h"

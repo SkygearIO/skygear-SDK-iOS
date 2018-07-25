@@ -41,7 +41,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
         it(@"multiple record", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
             operation.container = container;
             operation.database = database;
             [operation makeURLRequestWithError:nil];
@@ -60,7 +60,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
         it(@"set atomic", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
             operation.atomic = YES;
 
             operation.container = container;
@@ -73,7 +73,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
         it(@"make request", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -106,23 +106,23 @@ SpecBegin(SKYModifyRecordsOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.modifyRecordsCompletionBlock =
-                    ^(NSArray *savedRecords, NSError *operationError) {
+                    ^(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                      NSError *_Nullable operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            expect([savedRecords class]).to.beSubclassOf([NSArray class]);
-                            expect(savedRecords).to.haveCountOf(2);
-                            expect([savedRecords[0] recordID]).to.equal(record1.recordID);
-                            expect([savedRecords[1] recordID]).to.equal(record2.recordID);
+                            expect(results).to.haveCountOf(2);
+                            expect(results[0].value.recordID).to.equal(record1.recordID);
+                            expect(results[1].value.recordID).to.equal(record2.recordID);
                             done();
                         });
-                    };
 
+                    };
                 [database executeOperation:operation];
             });
         });
 
         it(@"pass error", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -147,7 +147,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
         it(@"per block", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -182,42 +182,21 @@ SpecBegin(SKYModifyRecordsOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray<NSString *> *remainingRecordIDs =
-                    [@[ record1.recordID, record2.recordID ] mutableCopy];
+                operation.modifyRecordsCompletionBlock = ^(
+                    NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                    NSError *_Nullable operationError) {
+                    expect(results).to.haveCountOf(2);
 
-                operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
-                    if ([record.recordID isEqual:record1.recordID]) {
-                        expect([record class]).to.beSubclassOf([SKYRecord class]);
-                        expect(record.recordID).to.equal(record1.recordID);
-                        expect(record[@"title"]).to.equal(@"Title From Server");
-                    } else if ([record.recordID isEqual:record2.recordID]) {
-                        expect([error class]).to.beSubclassOf([NSError class]);
-                        expect(error.userInfo[SKYErrorNameKey]).to.equal(@"ResourceNotFound");
-                        expect(error.code).to.equal(SKYErrorResourceNotFound);
-                        expect(error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
-                    }
-                    [remainingRecordIDs removeObject:record.recordID];
-                };
+                    expect([results[0].value class]).to.beSubclassOf([SKYRecord class]);
+                    expect(results[0].value.recordID).to.equal(record1.recordID);
+                    expect(results[0].value[@"title"]).to.equal(@"Title From Server");
 
-                operation.modifyRecordsCompletionBlock = ^(NSArray<SKYRecord *> *savedRecords,
-                                                           NSError *operationError) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        expect(savedRecords).to.haveCountOf(1);
-                        expect(remainingRecordIDs).to.haveCountOf(0);
-                        expect([operationError class]).to.beSubclassOf([NSError class]);
-                        expect(operationError.code).to.equal(SKYErrorPartialFailure);
-
-                        NSError *perRecordError =
-                            operationError
-                                .userInfo[SKYPartialErrorsByItemIDKey][SKYRecordConcatenatedID(
-                                    record2.recordType, record2.recordID)];
-                        expect([perRecordError class]).to.beSubclassOf([NSError class]);
-                        expect(perRecordError.userInfo[SKYErrorNameKey])
-                            .to.equal(@"ResourceNotFound");
-                        expect(perRecordError.code).to.equal(SKYErrorResourceNotFound);
-                        expect(perRecordError.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
-                        done();
-                    });
+                    expect([results[1].error class]).to.beSubclassOf([NSError class]);
+                    expect(results[1].error.userInfo[SKYErrorNameKey])
+                        .to.equal(@"ResourceNotFound");
+                    expect(results[1].error.code).to.equal(SKYErrorResourceNotFound);
+                    expect(results[1].error.userInfo[SKYErrorMessageKey]).to.equal(@"An error.");
+                    done();
                 };
 
                 [database executeOperation:operation];
@@ -226,7 +205,7 @@ SpecBegin(SKYModifyRecordsOperation)
 
         it(@"bug: server return write not allowed", ^{
             SKYModifyRecordsOperation *operation =
-                [SKYModifyRecordsOperation operationWithRecordsToSave:@[ record1, record2 ]];
+                [SKYModifyRecordsOperation operationWithRecords:@[ record1, record2 ]];
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }

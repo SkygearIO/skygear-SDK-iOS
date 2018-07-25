@@ -153,6 +153,13 @@ NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID)
 }
 #pragma GCC diagnostic pop
 
++ (instancetype)deletedRecordWithType:(NSString *)recordType recordID:(NSString *)recordID
+{
+    SKYRecord *record = [[SKYRecord alloc] initWithType:recordType recordID:recordID];
+    record.deleted = YES;
+    return record;
+}
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone
@@ -168,6 +175,7 @@ NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID)
     record->_modificationDate = [_modificationDate copyWithZone:zone];
     record->_lastModifiedUserRecordID = [_lastModifiedUserRecordID copyWithZone:zone];
     record->_accessControl = [_accessControl copyWithZone:zone];
+    record->_deleted = _deleted;
     return record;
 }
 
@@ -207,6 +215,7 @@ NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID)
             [aDecoder decodeObjectOfClass:[NSString class] forKey:@"lastModifiedUserRecordID"];
         _accessControl =
             [aDecoder decodeObjectOfClass:[SKYAccessControl class] forKey:@"accessControl"];
+        _deleted = [aDecoder decodeBoolForKey:@"deleted"];
     }
 
     return self;
@@ -224,6 +233,7 @@ NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID)
     [aCoder encodeObject:_modificationDate forKey:@"modificationDate"];
     [aCoder encodeObject:_lastModifiedUserRecordID forKey:@"lastModifiedUserRecordID"];
     [aCoder encodeObject:_accessControl forKey:@"accessControl"];
+    [aCoder encodeBool:_deleted forKey:@"deleted"];
 }
 
 #pragma mark - Properties
