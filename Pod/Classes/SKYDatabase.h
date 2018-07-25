@@ -31,9 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class SKYContainer;
 
 /// Undocumented
-typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_Nullable error);
-
-/// Undocumented
 @interface SKYDatabase : NSObject
 
 /// Undocumented
@@ -92,7 +89,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                    recordID:(NSString *)recordID
                  completion:(void (^_Nullable)(SKYRecord *_Nullable record,
                                                NSError *_Nullable error))completion
-    /* clang-format off */ NS_SWIFT_NAME(fetchRecord(recordType:recordID:completion:)); /* clang-format on */
+    /* clang-format off */ NS_SWIFT_NAME(fetchRecord(type:recordID:completion:)); /* clang-format on */
 
 /**
  Fetches multiple records from Skygear.
@@ -110,7 +107,7 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                   completion:
                       (void (^_Nullable)(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
                                          NSError *_Nullable operationError))completion
-    /* clang-format off */ NS_SWIFT_NAME(fetchRecord(recordType:recordIDs:completion:)); /* clang-format on */
+    /* clang-format off */ NS_REFINED_FOR_SWIFT; /* clang-format on */
 
 /**
  Saves a single record to Skygear.
@@ -128,7 +125,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion _Nullable)completion;
+- (void)saveRecord:(SKYRecord *)record
+        completion:(void (^_Nullable)(SKYRecord *_Nullable record,
+                                      NSError *_Nullable operationError))completion
+    /* clang-format off */ NS_SWIFT_NAME(saveRecord(_:completion:)); /* clang-format on */
 
 /**
  Saves multiple records to Skygear.
@@ -147,7 +147,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  */
 - (void)saveRecords:(NSArray<SKYRecord *> *)records
          completion:(void (^_Nullable)(NSArray *_Nullable savedRecords,
-                                       NSError *_Nullable operationError))completion;
+                                       NSError *_Nullable operationError))completion
+    /* clang-format off */ NS_SWIFT_NAME(saveRecords(_:completion:)); /* clang-format on */
 
 /**
  Saves multiple records non-atomically to Skygear.
@@ -160,9 +161,10 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  also called when an operation error occurred.
  */
 - (void)saveRecordsNonAtomically:(NSArray<SKYRecord *> *)records
-                      completion:
-                          (void (^_Nullable)(NSArray<SKYRecordResult<SKYRecord *> *> *results,
-                                             NSError *_Nullable operationError))completion;
+                      completion:(void (^_Nullable)(
+                                     NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                                     NSError *_Nullable operationError))completion
+    /* clang-format off */ NS_REFINED_FOR_SWIFT; /* clang-format on */
 
 /**
  Deletes a single record from Skygear.
@@ -179,7 +181,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)deleteRecordWithType:(NSString *)recordType
                     recordID:(NSString *)recordID
                   completion:(void (^_Nullable)(NSString *_Nullable recordID,
-                                                NSError *_Nullable error))completion;
+                                                NSError *_Nullable error))completion
+    /* clang-format off */ NS_SWIFT_NAME(deleteRecord(type:recordID:completion:)); /* clang-format on */
 
 /**
  Deletes multiple records from Skygear.
@@ -196,7 +199,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)deleteRecordsWithType:(NSString *)recordType
                     recordIDs:(NSArray<NSString *> *)recordIDs
                    completion:(void (^_Nullable)(NSArray<NSString *> *_Nullable deletedRecordIDs,
-                                                 NSError *_Nullable error))completion;
+                                                 NSError *_Nullable error))completion
+    /* clang-format off */ NS_SWIFT_NAME(deleteRecords(type:recordIDs:completion:)); /* clang-format on */
 
 /**
  Deletes multiple records non-atomically to Skygear.
@@ -217,7 +221,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
                                 completion:
                                     (void (^_Nullable)(
                                         NSArray<SKYRecordResult<NSString *> *> *_Nullable results,
-                                        NSError *_Nullable error))completion;
+                                        NSError *_Nullable error))completion
+    /* clang-format off */ NS_REFINED_FOR_SWIFT; /* clang-format on */
 
 /**
  Deletes a single record from Skygear.
@@ -232,7 +237,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  */
 - (void)deleteRecord:(SKYRecord *)record
           completion:
-              (void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))completion;
+              (void (^_Nullable)(SKYRecord *_Nullable record, NSError *_Nullable error))completion
+    /* clang-format off */ NS_SWIFT_NAME(deleteRecord(_:completion:)); /* clang-format on */
 
 /**
  Deletes multiple records from Skygear.
@@ -247,7 +253,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  */
 - (void)deleteRecords:(NSArray<SKYRecord *> *)records
            completion:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable deletedRecords,
-                                         NSError *_Nullable error))completion;
+                                         NSError *_Nullable error))completion
+    /* clang-format off */ NS_SWIFT_NAME(deleteRecords(_:completion:)); /* clang-format on */
 
 /**
  Deletes multiple records non-atomically to Skygear.
@@ -265,7 +272,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)deleteRecordsNonAtomicallyRecords:(NSArray<SKYRecord *> *)records
                                completion:(void (^_Nullable)(NSArray<SKYRecordResult<SKYRecord *> *>
                                                                  *_Nullable deletedRecords,
-                                                             NSError *_Nullable error))completion;
+                                                             NSError *_Nullable error))completion
+    /* clang-format off */ NS_REFINED_FOR_SWIFT; /* clang-format on */
 
 /// Undocumented
 - (void)fetchAllSubscriptionsWithCompletionHandler:

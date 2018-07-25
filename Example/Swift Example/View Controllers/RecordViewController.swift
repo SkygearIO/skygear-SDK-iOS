@@ -164,7 +164,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return
         }
 
-        SKYContainer.default().publicCloudDatabase.deleteRecord(withType: record.recordType, recordID: record.recordID) { (recordID, error) in
+        SKYContainer.default().publicCloudDatabase.deleteRecord(type: record.recordType, recordID: record.recordID) { (recordID, error) in
             guard error == nil else {
                 let alert = UIAlertController(title: "Unable to delete", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -188,7 +188,7 @@ class RecordViewController: UITableViewController, RecordTypeViewControllerDeleg
             return
         }
 
-        SKYContainer.default().publicCloudDatabase.save(record) { (record, error) in
+        SKYContainer.default().publicCloudDatabase.saveRecord(record) { (record, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to Save", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

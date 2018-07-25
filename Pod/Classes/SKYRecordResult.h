@@ -22,8 +22,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- SKYRecordResult represents a sucessful result or an error.
+ SKYRecordResult represents a successful result or an error.
  */
+NS_SWIFT_NAME(__SKYRecordResult)
 @interface SKYRecordResult <__covariant T> : NSObject
 
 /**

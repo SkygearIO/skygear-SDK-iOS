@@ -334,7 +334,8 @@
 
 #pragma mark Public methods for records
 
-- (void)saveRecord:(SKYRecord *)record completion:(SKYRecordSaveCompletion)completion
+- (void)saveRecord:(SKYRecord *)record
+        completion:(void (^_Nullable)(SKYRecord *_Nullable, NSError *_Nullable))completion
 {
     [self sky_saveRecords:@[ record ]
                atomically:NO
