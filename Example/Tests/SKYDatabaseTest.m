@@ -137,7 +137,8 @@ SpecBegin(SKYDatabase)
                                     completion:^(
                                         NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
                                         NSError *_Nullable operationError) {
-                                        expect(results[0].value.recordID).to.equal(@"book1");
+                                        expect([(SKYRecord *)results[0].value recordID])
+                                            .to.equal(@"book1");
                                         expect(results[1].error).notTo.beNil();
                                         expect(results).to.haveCountOf(2);
                                         done();
@@ -260,7 +261,8 @@ SpecBegin(SKYDatabase)
                                       NSArray<SKYRecordResult<SKYRecord *> *> *_Nonnull results,
                                       NSError *_Nullable operationError) {
                                       expect(results).to.haveCountOf(2);
-                                      expect(results[0].value.recordID).to.equal(record1.recordID);
+                                      expect([(SKYRecord *)results[0].value recordID])
+                                          .to.equal(record1.recordID);
                                       expect(results[1].error).notTo.beNil();
                                       done();
                                   }];

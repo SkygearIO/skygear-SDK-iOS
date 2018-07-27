@@ -105,17 +105,18 @@ SpecBegin(SKYModifyRecordsOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                operation.modifyRecordsCompletionBlock =
-                    ^(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
-                      NSError *_Nullable operationError) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(results).to.haveCountOf(2);
-                            expect(results[0].value.recordID).to.equal(record1.recordID);
-                            expect(results[1].value.recordID).to.equal(record2.recordID);
-                            done();
-                        });
+                operation.modifyRecordsCompletionBlock = ^(
+                    NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results,
+                    NSError *_Nullable operationError) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        expect(results).to.haveCountOf(2);
 
-                    };
+                        expect([(SKYRecord *)results[0].value recordID]).to.equal(record1.recordID);
+                        expect([(SKYRecord *)results[1].value recordID]).to.equal(record2.recordID);
+                        done();
+                    });
+
+                };
                 [database executeOperation:operation];
             });
         });
@@ -188,7 +189,7 @@ SpecBegin(SKYModifyRecordsOperation)
                     expect(results).to.haveCountOf(2);
 
                     expect([results[0].value class]).to.beSubclassOf([SKYRecord class]);
-                    expect(results[0].value.recordID).to.equal(record1.recordID);
+                    expect([(SKYRecord *)results[0].value recordID]).to.equal(record1.recordID);
                     expect(results[0].value[@"title"]).to.equal(@"Title From Server");
 
                     expect([results[1].error class]).to.beSubclassOf([NSError class]);
