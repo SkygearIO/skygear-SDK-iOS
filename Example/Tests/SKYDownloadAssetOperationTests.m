@@ -19,9 +19,8 @@
 
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYAsset_Private.h>
 #import <SKYKit/SKYKit.h>
-
-#import "SKYAsset_Private.h"
 
 @interface SKYUploadAssetOperation ()
 

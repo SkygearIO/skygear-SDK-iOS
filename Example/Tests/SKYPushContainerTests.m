@@ -20,10 +20,9 @@
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
+#import <SKYKit/SKYPushContainer_Private.h>
 
 #import "SKYHexer.h"
-
-#import "SKYPushContainer_Private.h"
 
 SpecBegin(SKYPushContainer)
 

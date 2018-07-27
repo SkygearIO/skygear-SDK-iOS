@@ -17,11 +17,11 @@
 //  limitations under the License.
 //
 
-#import "SKYRecord_Private.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
+#import <SKYKit/SKYRecord_Private.h>
 
 SpecBegin(SKYLambdaOperation)
 

@@ -19,12 +19,10 @@
 
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYAuthContainer_Private.h>
 #import <SKYKit/SKYKit.h>
 
 #import "SKYHexer.h"
-
-#import "SKYAuthContainer+SSO.h"
-#import "SKYAuthContainer_Private.h"
 
 SpecBegin(SKYAuthContainerSSO)
 

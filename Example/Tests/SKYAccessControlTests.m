@@ -17,12 +17,8 @@
 //  limitations under the License.
 //
 
+#import <SKYKit/SKYAccessControl_Private.h>
 #import <SKYKit/SKYKit.h>
-
-#import "SKYAccessControlDeserializer.h"
-#import "SKYAccessControlEntry.h"
-#import "SKYAccessControlSerializer.h"
-#import "SKYAccessControl_Private.h"
 
 // Currently there are no methods to access the internal state of SKYAccessControl.
 // Before that comes, use serialization for assertion.

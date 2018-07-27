@@ -19,6 +19,8 @@
 
 #import "SKYAPSNotificationInfo.h"
 #import "SKYAccessControl.h"
+#import "SKYAccessControlDeserializer.h"
+#import "SKYAccessControlSerializer.h"
 #import "SKYAccessToken.h"
 #import "SKYAddRelationsOperation.h"
 #import "SKYAsset.h"

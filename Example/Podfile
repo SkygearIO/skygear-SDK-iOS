@@ -37,17 +37,6 @@ target 'Mac Example' do
 end
 
 post_install do |installer|
-  installer.aggregate_targets.each do |aggregate_target|
-    if aggregate_target.name == "Pods-Tests"
-      puts "Updating #{aggregate_target.name} HEADER_SEARCH_PATHS"
-      aggregate_target.xcconfigs.each do |config_name, config_file|
-        config_file.attributes['HEADER_SEARCH_PATHS'] << ' "${PODS_ROOT}/Headers/Private/SKYKit"'
-        xcconfig_path = aggregate_target.xcconfig_path(config_name)
-        config_file.save_as(xcconfig_path)
-      end
-    end
-  end
-
   # Set "Treat Warnings as Errors" build settings.
   # Only warnings in the SKYKit targets will be treated as errors.
   # To disable, comment this section and run `pod install`.

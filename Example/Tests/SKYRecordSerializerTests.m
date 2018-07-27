@@ -19,12 +19,10 @@
 
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
+#import <SKYKit/SKYAccessControl_Private.h>
+#import <SKYKit/SKYAsset_Private.h>
 #import <SKYKit/SKYKit.h>
-
-#import "SKYAccessControlEntry.h"
-#import "SKYAccessControl_Private.h"
-#import "SKYAsset_Private.h"
-#import "SKYRecord_Private.h"
+#import <SKYKit/SKYRecord_Private.h>
 
 SpecBegin(SKYRecordSerializer)
 

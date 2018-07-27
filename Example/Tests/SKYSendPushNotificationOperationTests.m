@@ -17,7 +17,6 @@
 //  limitations under the License.
 //
 
-#import "SKYNotificationInfo.h"
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
