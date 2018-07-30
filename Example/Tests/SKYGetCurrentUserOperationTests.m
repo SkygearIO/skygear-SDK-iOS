@@ -85,8 +85,8 @@ SpecBegin(SKYGetCurrentUserOperation)
                             expect(accessToken.tokenString).to.equal(@"token-1");
 
                             expect(user).notTo.beNil();
-                            expect(user.recordID.recordType).to.equal(@"user");
-                            expect(user.recordID.recordName).to.equal(@"user-1");
+                            expect(user.recordType).to.equal(@"user");
+                            expect(user.recordID).to.equal(@"user-1");
                             expect(user[@"username"]).to.equal(@"user1");
                             expect(user[@"email"]).to.equal(@"user1@skygear.dev");
 

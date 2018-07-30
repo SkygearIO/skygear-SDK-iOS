@@ -19,6 +19,10 @@
 
 #import "SKYRecordID.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordID
 
 - (instancetype)init
@@ -148,3 +152,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

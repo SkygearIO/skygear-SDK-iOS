@@ -21,6 +21,10 @@
 #import "SKYRecord.h"
 #import "SKYRecordChange_Private.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYRecordChange
 
 - (instancetype)initWithRecord:(SKYRecord *)record
@@ -30,7 +34,7 @@
 {
     self = [self init];
     if (self) {
-        _recordID = [record.recordID copy];
+        _recordID = [record.deprecatedID copy];
         _action = action;
         _resolveMethod = resolveMethod;
         _attributesToSave = [attributesToSave copy];
@@ -78,3 +82,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop

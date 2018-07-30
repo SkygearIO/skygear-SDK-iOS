@@ -28,6 +28,9 @@
 #import "SKYRecordSynchronizer.h"
 #import "SKYRecord_Private.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 @interface SKYRecordStorageBackingStoreSpecTempFileProvider : NSObject
 
 + (NSString *)temporaryFileWithSuffix:(NSString *)suffix;
@@ -217,7 +220,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         expect(recordIDs).to.haveCountOf(1);
 
         // Fetch record
-        SKYRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:record.recordID];
+        SKYRecord *fetchedRecord = [backingStore fetchRecordWithRecordID:record.deprecatedID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
         expect(fetchedRecord.transient[@"temporary"]).to.equal(@YES);
         expect(fetchedRecord.creationDate).toNot.beNil();
@@ -227,7 +230,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
         record[@"title"] = @"Bye World";
         [backingStore saveRecord:record];
         [backingStore synchronize];
-        fetchedRecord = [backingStore fetchRecordWithRecordID:record.recordID];
+        fetchedRecord = [backingStore fetchRecordWithRecordID:record.deprecatedID];
         expect(fetchedRecord[@"title"]).to.equal(record[@"title"]);
         expect(fetchedRecord.transient[@"temporary"]).to.equal(record.transient[@"temporary"]);
 
@@ -237,7 +240,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Records", ^(NSDictionary *data) {
 
         recordIDs = [backingStore recordIDsWithRecordType:@"book"];
         expect(recordIDs).to.haveCountOf(0);
-        expect([backingStore fetchRecordWithRecordID:record.recordID]).to.beNil();
+        expect([backingStore fetchRecordWithRecordID:record.deprecatedID]).to.beNil();
     });
 
     it(@"save, fetch, revert locally", ^{
@@ -389,7 +392,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
                                      predicate:nil
                                sortDescriptors:nil
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
-                                        [recordIDs addObject:record.recordID.canonicalString];
+                                        [recordIDs addObject:record.deprecatedID.canonicalString];
                                     }];
         expect(recordIDs).to.haveCountOf(2);
         expect(recordIDs).to.contain(@"book/id1");
@@ -399,7 +402,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
     it(@"enumerate all", ^{
         NSMutableArray *recordIDs = [NSMutableArray array];
         [backingStore enumerateRecordsWithBlock:^(SKYRecord *record, BOOL *stop) {
-            [recordIDs addObject:record.recordID.canonicalString];
+            [recordIDs addObject:record.deprecatedID.canonicalString];
         }];
         expect(recordIDs).to.haveCountOf(3);
         expect(recordIDs).to.contain(@"book/id1");
@@ -413,7 +416,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
                                      predicate:nil
                                sortDescriptors:nil
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
-                                        [recordIDs addObject:record.recordID.canonicalString];
+                                        [recordIDs addObject:record.deprecatedID.canonicalString];
                                     }];
         expect(recordIDs).to.haveCountOf(1);
         expect(recordIDs).to.contain(@"note/id1");
@@ -426,7 +429,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
                                                                                 @"Hello Island!"]
                                sortDescriptors:nil
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
-                                        [recordIDs addObject:record.recordID.canonicalString];
+                                        [recordIDs addObject:record.deprecatedID.canonicalString];
                                     }];
         expect(recordIDs).to.haveCountOf(1);
         expect(recordIDs).to.contain(@"book/id2");
@@ -439,7 +442,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
                                sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
                                                                                 ascending:NO] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
-                                        [recordIDs addObject:record.recordID.canonicalString];
+                                        [recordIDs addObject:record.deprecatedID.canonicalString];
                                     }];
         expect(recordIDs).to.haveCountOf(2);
         expect(recordIDs[0]).to.contain(@"book/id1");
@@ -453,7 +456,7 @@ sharedExamples(@"SKYRecordStorageBackingStore-Query", ^(NSDictionary *data) {
                                sortDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"order"
                                                                                 ascending:YES] ]
                                     usingBlock:^(SKYRecord *record, BOOL *stop) {
-                                        [recordIDs addObject:record.recordID.canonicalString];
+                                        [recordIDs addObject:record.deprecatedID.canonicalString];
                                     }];
         expect(recordIDs).to.haveCountOf(2);
         expect(recordIDs[1]).to.contain(@"book/id1");
@@ -513,3 +516,5 @@ SpecEnd
         });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

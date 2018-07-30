@@ -22,8 +22,8 @@
 
 @interface SKYRecordStorageMemoryStore ()
 
-@property (nonatomic, readonly) NSMutableDictionary *records;
+@property (nonatomic, readonly) NSMutableDictionary<SKYRecordID *, id> *records;
 @property (nonatomic, readonly) NSMutableArray *changes;
-@property (nonatomic, readonly) NSMutableDictionary *localRecords;
+@property (nonatomic, readonly) NSMutableDictionary<SKYRecordID *, id> *localRecords;
 
 @end

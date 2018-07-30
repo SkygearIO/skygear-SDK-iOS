@@ -81,7 +81,7 @@
 #pragma mark - set no access
 - (void)setNoAccessForUser:(SKYRecord *)user
 {
-    [self setNoAccessForUserID:user.recordID.recordName];
+    [self setNoAccessForUserID:user.recordID];
 }
 
 - (void)setNoAccessForUserID:(NSString *)userID
@@ -125,7 +125,7 @@
 #pragma mark - set read only
 - (void)setReadOnlyForUser:(SKYRecord *)user
 {
-    [self setReadOnlyForUserID:user.recordID.recordName];
+    [self setReadOnlyForUserID:user.recordID];
 }
 
 - (void)setReadOnlyForUserID:(NSString *)userID
@@ -155,7 +155,7 @@
 #pragma mark - set read write access
 - (void)setReadWriteAccessForUser:(SKYRecord *)user
 {
-    [self setReadWriteAccessForUserID:user.recordID.recordName];
+    [self setReadWriteAccessForUserID:user.recordID];
 }
 
 - (void)setReadWriteAccessForUserID:(NSString *)userID
@@ -185,7 +185,7 @@
 #pragma mark - has read access checking
 - (BOOL)hasReadAccessForUser:(SKYRecord *)user
 {
-    return [self hasReadAccessForUserID:user.recordID.recordName];
+    return [self hasReadAccessForUserID:user.recordID];
 }
 
 - (BOOL)hasReadAccessForUserID:(NSString *)userID
@@ -218,7 +218,7 @@
 #pragma mark - has write access checking
 - (BOOL)hasWriteAccessForUser:(SKYRecord *)user
 {
-    return [self hasWriteAccessForUserID:user.recordID.recordName];
+    return [self hasWriteAccessForUserID:user.recordID];
 }
 
 - (BOOL)hasWriteAccessForUserID:(NSString *)userID

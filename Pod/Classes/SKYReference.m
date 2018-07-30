@@ -22,9 +22,6 @@
 @interface SKYReference ()
 
 - (instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID
-                referencedRecord:(SKYRecord *)record
-                          action:(SKYReferenceAction)action NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -32,41 +29,53 @@
 
 - (instancetype)initWithRecord:(SKYRecord *)record
 {
-    return [self initWithRecord:record action:SKYReferenceActionNone];
+    if ((self = [self initWithRecordType:record.recordType recordID:record.recordID])) {
+        self->_record = [record copy];
+    }
+    return self;
 }
+
+- (instancetype)initWithRecordType:(NSString *)recordType recordID:(NSString *)recordID
+{
+    if ((self = [super init])) {
+        _recordType = [recordType copy];
+        _recordID = [recordID copy];
+    }
+    return self;
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 - (instancetype)initWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action
 {
-    return [self initWithRecordID:record.recordID referencedRecord:record action:action];
+    return [self initWithRecord:record];
 }
 
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID
 {
-    return [self initWithRecordID:recordID action:SKYReferenceActionNone];
+    return [self initWithRecordType:recordID.recordType recordID:recordID.recordName];
 }
 
 - (instancetype)initWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action
 {
-    return [self initWithRecordID:recordID referencedRecord:nil action:action];
+    return [self initWithRecordType:recordID.recordType recordID:recordID.recordName];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordID
-                referencedRecord:(SKYRecord *)record
-                          action:(SKYReferenceAction)action
-{
-    self = [super init];
-    if (self) {
-        _record = record;
-        _recordID = recordID;
-        _referenceAction = action;
-    }
-    return self;
-}
+#pragma GCC diagnostic pop
 
 + (instancetype)referenceWithRecord:(SKYRecord *)record
 {
     return [[self alloc] initWithRecord:record];
 }
+
++ (instancetype)referenceWithRecordType:(NSString *)recordType recordID:(NSString *)recordID
+{
+    return [[self alloc] initWithRecordType:recordType recordID:recordID];
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 + (instancetype)referenceWithRecord:(SKYRecord *)record action:(SKYReferenceAction)action
 {
@@ -75,13 +84,15 @@
 
 + (instancetype)referenceWithRecordID:(SKYRecordID *)recordID
 {
-    return [[self alloc] initWithRecordID:recordID];
+    return [[self alloc] initWithRecordType:recordID.recordType recordID:recordID.recordName];
 }
 
 + (instancetype)referenceWithRecordID:(SKYRecordID *)recordID action:(SKYReferenceAction)action
 {
-    return [[self alloc] initWithRecordID:recordID action:action];
+    return [[self alloc] initWithRecordID:recordID];
 }
+
+#pragma GCC diagnostic pop
 
 - (BOOL)isEqual:(id)object
 {
@@ -98,43 +109,65 @@
 
 - (BOOL)isEqualToReference:(SKYReference *)reference
 {
-    return [_recordID isEqualToRecordID:reference.recordID] &&
-           _referenceAction == reference.referenceAction;
+    return [_recordType isEqual:reference.recordType] && [_recordID isEqual:reference.recordID];
 }
 
 - (NSUInteger)hash
 {
-    return _recordID.hash ^ _referenceAction;
+    return _recordID.hash ^ _recordType.hash;
 }
 
 #pragma NSCoding
 
-- (instancetype)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    SKYRecordID *recordID = [decoder decodeObjectOfClass:[SKYRecordID class] forKey:@"recordID"];
-    SKYReferenceAction action = [decoder decodeIntegerForKey:@"referenceAction"];
+    NSString *recordType = nil;
+    NSString *recordID = nil;
+    id idObj = [aDecoder decodeObjectForKey:@"recordID"];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    if ([idObj isKindOfClass:[SKYRecordID class]]) {
+        recordType = [(SKYRecordID *)idObj recordType];
+        recordID = [(SKYRecordID *)idObj recordName];
+    } else if ([idObj isKindOfClass:[NSString class]]) {
+        recordID = (NSString *)idObj;
+        recordType = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"recordType"];
+    }
+#pragma GCC diagnostic pop
+    if (!recordType || !recordID) {
+        return nil;
+    }
+
     self = [super init];
     if (self) {
+        _recordType = recordType;
         _recordID = recordID;
-        _referenceAction = action;
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
+    [encoder encodeObject:_recordType forKey:@"recordType"];
     [encoder encodeObject:_recordID forKey:@"recordID"];
-    [encoder encodeInteger:_referenceAction forKey:@"referenceAction"];
 }
 
 #pragma NSCopying
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    SKYRecordID *recordID = [self.recordID copyWithZone:zone];
-    SKYReferenceAction action = self.referenceAction;
-
-    return [[SKYReference alloc] initWithRecordID:recordID action:action];
+    return [[SKYReference allocWithZone:zone] initWithRecordType:[self.recordType copyWithZone:zone]
+                                                        recordID:[self.recordID copyWithZone:zone]];
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
+- (SKYReferenceAction)referenceAction
+{
+    return SKYReferenceActionNone;
+}
+
+#pragma GCC diagnostic pop
 @end

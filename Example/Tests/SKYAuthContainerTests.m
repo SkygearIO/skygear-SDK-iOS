@@ -130,7 +130,7 @@ SpecBegin(SKYAuthContainer)
                 [container.auth signupWithEmail:@"test@invalid"
                                        password:@"secret"
                               completionHandler:^(SKYRecord *user, NSError *error) {
-                                  assertLoggedIn(user.recordID.recordName, error);
+                                  assertLoggedIn(user.recordID, error);
                                   done();
                               }];
             });
@@ -141,7 +141,7 @@ SpecBegin(SKYAuthContainer)
                 [container.auth signupWithUsername:@"test"
                                           password:@"secret"
                                  completionHandler:^(SKYRecord *user, NSError *error) {
-                                     assertLoggedIn(user.recordID.recordName, error);
+                                     assertLoggedIn(user.recordID, error);
                                      done();
                                  }];
             });
@@ -153,7 +153,7 @@ SpecBegin(SKYAuthContainer)
                                        password:@"secret"
                               profileDictionary:@{@"foo" : @"bar"}
                               completionHandler:^(SKYRecord *record, NSError *error) {
-                                  assertLoggedIn(record.recordID.recordName, error);
+                                  assertLoggedIn(record.recordID, error);
                                   done();
                               }];
             });
@@ -165,7 +165,7 @@ SpecBegin(SKYAuthContainer)
                                           password:@"secret"
                                  profileDictionary:@{@"foo" : @"bar"}
                                  completionHandler:^(SKYRecord *record, NSError *error) {
-                                     assertLoggedIn(record.recordID.recordName, error);
+                                     assertLoggedIn(record.recordID, error);
                                      done();
                                  }];
             });
@@ -176,7 +176,7 @@ SpecBegin(SKYAuthContainer)
                 [container.auth loginWithEmail:@"test@invalid"
                                       password:@"secret"
                              completionHandler:^(SKYRecord *user, NSError *error) {
-                                 assertLoggedIn(user.recordID.recordName, error);
+                                 assertLoggedIn(user.recordID, error);
                                  done();
                              }];
             });
@@ -187,7 +187,7 @@ SpecBegin(SKYAuthContainer)
                 [container.auth loginWithUsername:@"test"
                                          password:@"secret"
                                 completionHandler:^(SKYRecord *user, NSError *error) {
-                                    assertLoggedIn(user.recordID.recordName, error);
+                                    assertLoggedIn(user.recordID, error);
                                     done();
                                 }];
             });
@@ -237,7 +237,7 @@ describe(@"get current user from server", ^{
                 expect(error).to.beNil();
 
                 expect(user).notTo.beNil();
-                expect(user.recordID.recordName).to.equal(@"user-1");
+                expect(user.recordID).to.equal(@"user-1");
                 expect(user[@"username"]).to.equal(@"user1");
                 expect(user[@"email"]).to.equal(@"user1@skygear.dev");
 
@@ -316,7 +316,7 @@ describe(@"save current user", ^{
 
     it(@"fetch user with User", ^{
         SKYContainer *container = [SKYContainer testContainer];
-        SKYRecord *user = [SKYRecord recordWithRecordType:@"user" name:@"user1"];
+        SKYRecord *user = [SKYRecord recordWithType:@"user" recordID:@"user1"];
         user[@"username"] = @"username1";
         [container.auth
             updateWithUser:user

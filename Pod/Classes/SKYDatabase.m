@@ -36,7 +36,7 @@
 
 @interface SKYDatabase ()
 
-@property (nonatomic, readonly) NSMutableArray /* SKYDatabaseOperation */ *pendingOperations;
+@property (nonatomic, readonly) NSMutableArray<SKYDatabaseOperation *> *pendingOperations;
 @property (nonatomic, readonly) NSOperationQueue *operationQueue;
 @property (nonatomic, strong, readwrite) SKYContainer *container;
 
@@ -381,6 +381,166 @@
         perRecordCompletion:nil];
 }
 
+- (void)fetchRecordWithType:(NSString *)recordType
+                   recordID:(NSString *)recordID
+                 completion:(void (^)(SKYRecord *record, NSError *error))completion
+{
+    SKYQuery *query =
+        [SKYQuery queryWithRecordType:recordType
+                            predicate:[NSPredicate predicateWithFormat:@"_id = %@", recordID]];
+    [self performQuery:query
+        completionHandler:^(NSArray<SKYRecord *> *_Nullable results, NSError *_Nullable error) {
+            if (!completion) {
+                return;
+            }
+
+            if (error) {
+                completion(nil, error);
+                return;
+            }
+
+            if ([results count] < 1) {
+                completion(nil, [NSError errorWithDomain:SKYOperationErrorDomain
+                                                    code:SKYErrorResourceNotFound
+                                                userInfo:nil]);
+                return;
+            }
+            completion(results[0], nil);
+        }];
+}
+
+- (void)fetchRecordsWithType:(NSString *)recordType
+                   recordIDs:(NSArray<NSString *> *)recordIDs
+                  completion:(void (^)(NSDictionary<NSString *, SKYRecord *> *,
+                                       NSError *))completion
+       perRecordErrorHandler:(void (^)(NSString *, NSError *))errorHandler
+{
+    SKYQuery *query =
+        [SKYQuery queryWithRecordType:recordType
+                            predicate:[NSPredicate predicateWithFormat:@"_id IN %@", recordIDs]];
+    [self performQuery:query
+        completionHandler:^(NSArray<SKYRecord *> *_Nullable results, NSError *_Nullable error) {
+            if (error) {
+                if (completion) {
+                    completion(nil, error);
+                }
+                return;
+            }
+
+            NSMutableArray<NSString *> *remainingRecordIDs = [recordIDs mutableCopy];
+            NSMutableDictionary<NSString *, SKYRecord *> *recordsByID =
+                [[NSMutableDictionary alloc] init];
+            for (SKYRecord *record in results) {
+                [recordsByID setObject:record forKey:record.recordID];
+                [remainingRecordIDs removeObject:record.recordID];
+            }
+
+            if (errorHandler) {
+                for (NSString *recordID in remainingRecordIDs) {
+                    errorHandler(recordID, [NSError errorWithDomain:SKYOperationErrorDomain
+                                                               code:SKYErrorResourceNotFound
+                                                           userInfo:nil]);
+                }
+            }
+            if (completion) {
+                completion(recordsByID, nil);
+            }
+        }];
+}
+
+- (void)deleteRecordWithType:(NSString *)recordType
+                    recordID:(NSString *)recordID
+                  completion:(void (^)(NSString *recordID, NSError *error))completion
+{
+    SKYDeleteRecordsOperation *operation =
+        [[SKYDeleteRecordsOperation alloc] initWithRecordType:recordType recordIDs:@[ recordID ]];
+
+    if (completion) {
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                NSString *deletedRecordID = nil;
+                NSError *error = nil;
+                if (operationError != nil) {
+                    if (operationError.code == SKYErrorPartialOperationFailure) {
+                        error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+                    }
+
+                    // If error is not a partial error, or if the error cannot be obtained
+                    // from the info dictionary, set the returned error to the operationError.
+                    if (!error) {
+                        error = operationError;
+                    }
+                }
+                if ([recordIDs count] > 0) {
+                    deletedRecordID = recordIDs[0];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(deletedRecordID, error);
+                });
+            };
+    }
+
+    [self executeOperation:operation];
+}
+
+- (void)deleteRecordsWithType:(NSString *)recordType
+                    recordIDs:(NSArray<NSString *> *)recordIDs
+                   completion:(void (^)(NSArray<NSString *> *, NSError *))completion
+        perRecordErrorHandler:(void (^)(NSString *, NSError *))errorHandler
+{
+    SKYDeleteRecordsOperation *operation =
+        [[SKYDeleteRecordsOperation alloc] initWithRecordType:recordType recordIDs:recordIDs];
+
+    if (completion) {
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(recordIDs, operationError);
+                });
+            };
+    }
+
+    if (errorHandler) {
+        operation.perRecordCompletionBlock =
+            ^(NSString *deletedRecordType, NSString *deletedRecordID, NSError *error) {
+                if (error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        errorHandler(deletedRecordID, error);
+                    });
+                }
+            };
+    }
+
+    [self executeOperation:operation];
+}
+
+- (void)deleteRecordsAtomicallyWithType:(NSString *)recordType
+                              recordIDs:(NSArray<NSString *> *)recordIDs
+                             completion:(void (^)(NSArray<NSString *> *deletedRecordIDs,
+                                                  NSError *error))completion
+{
+    SKYDeleteRecordsOperation *operation =
+        [[SKYDeleteRecordsOperation alloc] initWithRecordType:recordType recordIDs:recordIDs];
+    operation.atomic = YES;
+
+    if (completion) {
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(recordIDs, operationError);
+                });
+            };
+    }
+
+    [self executeOperation:operation];
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
         completionHandler:(void (^)(SKYRecord *record, NSError *error))completionHandler
 {
@@ -450,78 +610,100 @@
         [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:@[ recordID ]];
 
     if (completionHandler) {
-        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
-            SKYRecordID *deletedRecordID = nil;
-            NSError *error = nil;
-            if (operationError != nil) {
-                if (operationError.code == SKYErrorPartialOperationFailure) {
-                    error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                NSError *error = nil;
+                if (operationError != nil) {
+                    if (operationError.code == SKYErrorPartialOperationFailure) {
+                        error = operationError.userInfo[SKYPartialErrorsByItemIDKey][recordID];
+                    }
+
+                    // If error is not a partial error, or if the error cannot be obtained
+                    // from the info dictionary, set the returned error to the operationError.
+                    if (!error) {
+                        error = operationError;
+                    }
                 }
 
-                // If error is not a partial error, or if the error cannot be obtained
-                // from the info dictionary, set the returned error to the operationError.
-                if (!error) {
-                    error = operationError;
-                }
-            }
-            if ([recordIDs count] > 0) {
-                deletedRecordID = recordIDs[0];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(deletedRecordID, error);
-            });
-        };
+                SKYRecordID *deletedRecordID =
+                    [recordIDs count]
+                        ? [SKYRecordID recordIDWithRecordType:recordTypes[0] name:recordIDs[0]]
+                        : nil;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(deletedRecordID, error);
+                });
+            };
     }
 
     [self executeOperation:operation];
 }
 
-- (void)deleteRecordsWithIDs:(NSArray *)recordIDs
-           completionHandler:(void (^)(NSArray *, NSError *))completionHandler
+- (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
+           completionHandler:(void (^)(NSArray<SKYRecordID *> *, NSError *))completionHandler
        perRecordErrorHandler:(void (^)(SKYRecordID *, NSError *))errorHandler
 {
     SKYDeleteRecordsOperation *operation =
         [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
 
     if (completionHandler) {
-        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordIDs, operationError);
-            });
-        };
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                NSMutableArray<SKYRecordID *> *deprecatedIDs = [NSMutableArray array];
+                for (NSUInteger i = 0; i < recordTypes.count; i++) {
+                    [deprecatedIDs addObject:[SKYRecordID recordIDWithRecordType:recordTypes[i]
+                                                                            name:recordIDs[i]]];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(deprecatedIDs, operationError);
+                });
+            };
     }
 
     if (errorHandler) {
-        operation.perRecordCompletionBlock = ^(SKYRecordID *deletedRecordID, NSError *error) {
-            if (error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    errorHandler(deletedRecordID, error);
-                });
-            }
-        };
+        operation.perRecordCompletionBlock =
+            ^(NSString *deletedRecordType, NSString *deletedRecordID, NSError *error) {
+                if (error) {
+                    SKYRecordID *deprecatedID =
+                        [SKYRecordID recordIDWithRecordType:deletedRecordType name:deletedRecordID];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        errorHandler(deprecatedID, error);
+                    });
+                }
+            };
     }
 
     [self executeOperation:operation];
 }
 
-- (void)deleteRecordsWithIDsAtomically:(NSArray *)recordIDs
-                     completionHandler:
-                         (void (^)(NSArray *deletedRecordIDs, NSError *error))completionHandler
+- (void)deleteRecordsWithIDsAtomically:(NSArray<SKYRecordID *> *)recordIDs
+                     completionHandler:(void (^)(NSArray<SKYRecordID *> *deletedRecordIDs,
+                                                 NSError *error))completionHandler
 {
     SKYDeleteRecordsOperation *operation =
         [[SKYDeleteRecordsOperation alloc] initWithRecordIDsToDelete:recordIDs];
     operation.atomic = YES;
 
     if (completionHandler) {
-        operation.deleteRecordsCompletionBlock = ^(NSArray *recordIDs, NSError *operationError) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(recordIDs, operationError);
-            });
-        };
+        operation.deleteRecordsCompletionBlock =
+            ^(NSArray<NSString *> *recordTypes, NSArray<NSString *> *recordIDs,
+              NSError *operationError) {
+                NSMutableArray<SKYRecordID *> *deprecatedIDs = [NSMutableArray array];
+                for (NSUInteger i = 0; i < recordTypes.count; i++) {
+                    [deprecatedIDs addObject:[SKYRecordID recordIDWithRecordType:recordTypes[i]
+                                                                            name:recordIDs[i]]];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(deprecatedIDs, operationError);
+                });
+            };
     }
 
     [self executeOperation:operation];
 }
+
+#pragma GCC diagnostic pop
 
 - (void)performQuery:(SKYQuery *)query
     completionHandler:(void (^)(NSArray<SKYRecord *> *, NSError *))completionHandler

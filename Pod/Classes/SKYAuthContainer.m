@@ -73,7 +73,7 @@
     if (accessToken && (userRecordID || user)) {
         _currentUser = user;
         if (user) {
-            _userRecordID = user.recordID.recordName;
+            _userRecordID = user.recordID;
         } else {
             _userRecordID = userRecordID;
         }
@@ -169,10 +169,10 @@
 
 - (void)updateWithUser:(SKYRecord *)user accessToken:(SKYAccessToken *)accessToken
 {
-    BOOL needRegisterDevice = user && ![user.recordID.recordName isEqualToString:_userRecordID];
+    BOOL needRegisterDevice = user && ![user.recordID isEqualToString:_userRecordID];
 
     if (user && accessToken) {
-        _userRecordID = user.recordID.recordName;
+        _userRecordID = user.recordID;
         _accessToken = accessToken;
         _currentUser = user;
     } else {
@@ -183,7 +183,7 @@
 
     [self saveCurrentUserAndAccessToken];
 
-    NSLog(@"User logged in with UserRecordID %@.", user.recordID.recordName);
+    NSLog(@"User logged in with UserRecordID %@.", user.recordID);
 
     // register device when current user change
     if (needRegisterDevice) {
@@ -594,13 +594,13 @@
 {
     NSMutableArray<NSString *> *userIDs = [NSMutableArray arrayWithCapacity:users.count];
     for (SKYRecord *user in users) {
-        if (![user.recordID.recordType isEqualToString:@"user"]) {
+        if (![user.recordType isEqualToString:@"user"]) {
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:@"Record type should be user"
                                          userInfo:nil];
         }
 
-        [userIDs addObject:user.recordID.recordName];
+        [userIDs addObject:user.recordID];
     }
 
     return userIDs;

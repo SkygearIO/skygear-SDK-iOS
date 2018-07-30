@@ -22,11 +22,14 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYRecordChange)
 
     describe(@"SKYRecordChange", ^{
         it(@"init", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             SKYRecordChange *change;
             change = [[SKYRecordChange alloc] initWithRecord:record
                                                       action:SKYRecordChangeSave
@@ -36,7 +39,7 @@ SpecBegin(SKYRecordChange)
                                             }];
 
             expect([change class]).to.beSubclassOf([SKYRecordChange class]);
-            expect(change.recordID).to.equal(record.recordID);
+            expect(change.recordID).to.equal(record.deprecatedID);
             expect(change.action).to.equal(SKYRecordChangeSave);
             expect(change.resolveMethod).to.equal(SKYRecordResolveByUpdatingDelta);
             expect(change.attributesToSave).to.equal(@{
@@ -45,7 +48,7 @@ SpecBegin(SKYRecordChange)
         });
 
         it(@"set error", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             SKYRecordChange *change;
             change = [[SKYRecordChange alloc] initWithRecord:record
                                                       action:SKYRecordChangeSave
@@ -62,3 +65,5 @@ SpecBegin(SKYRecordChange)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

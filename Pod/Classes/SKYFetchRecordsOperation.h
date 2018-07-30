@@ -21,6 +21,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
+// clang-format off
+
 /**
  <SKYFetchRecordsOperation> is a subclass of <SKYOperation> that implements fetching records from
  Skygear. Use this to
@@ -31,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  <SKYRecordID>, the <perRecordCompletionBlock>
  will be called with the fetched record or an error if one occurred.
  */
-@interface SKYFetchRecordsOperation : SKYDatabaseOperation
+__attribute__((deprecated)) @interface SKYFetchRecordsOperation : SKYDatabaseOperation
 
 /**
  Instantiates an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
@@ -39,7 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
  @param recordIDs An array of <SKYRecordID>s of records to be fetched from Skygear.
  @return an instance of SKYFetchRecordsOperation.
  */
-- (instancetype)initWithRecordIDs:(NSArray<SKYRecordID *> *)recordIDs;
+- (instancetype)initWithRecordIDs : (NSArray<SKYRecordID *> *)recordIDs;
+
+// clang-format on
 
 /**
  Creates and returns an instance of <SKYFetchRecordsOperation> with the desired <SKYRecordID>s.
@@ -91,4 +96,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

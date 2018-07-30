@@ -21,7 +21,8 @@
 
 @interface SKYRecord ()
 
-@property (nonatomic, readwrite, copy) SKYRecordID *recordID;
+@property (nonatomic, readwrite, copy) NSString *recordType;
+@property (nonatomic, readwrite, copy) NSString *recordID;
 @property (nonatomic, readwrite, copy) NSString *ownerUserRecordID;
 @property (nonatomic, readwrite, copy) NSDate *creationDate;
 @property (nonatomic, readwrite, copy) NSString *creatorUserRecordID;

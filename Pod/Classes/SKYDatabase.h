@@ -73,7 +73,8 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
  */
 - (void)fetchRecordWithID:(SKYRecordID *)recordID
         completionHandler:(void (^_Nullable)(SKYRecord *_Nullable record,
-                                             NSError *_Nullable error))completionHandler;
+                                             NSError *_Nullable error))completionHandler
+    __attribute__((deprecated));
 
 /**
  Fetches multiple records from Skygear.
@@ -92,8 +93,86 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 - (void)fetchRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
           completionHandler:(void (^_Nullable)(NSDictionary *_Nullable recordsByRecordID,
                                                NSError *_Nullable operationError))completionHandler
-      perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                               NSError *_Nullable error))errorHandler;
+      perRecordErrorHandler:
+          (void (^_Nullable)(SKYRecordID *_Nullable recordID, NSError *_Nullable error))errorHandler
+    __attribute__((deprecated));
+
+/**
+ Deletes a single record from Skygear.
+
+ Use this method to delete a single record from Skygear by specifying a <SKYRecordID>. The deletion
+ will be performed asynchronously and
+ <completionHandler> will be called when the operation completes.
+
+ This is a convenient method for <SKYDeleteRecordsOperation>, which supports deleting multiple
+ records by specifying multiple <SKYRecordID>s.
+
+ @param recordID the record identifier to delete
+ @param completionHandler the block to be called when operation completes. The specified block is
+ also called when an operation error occurred.
+ */
+- (void)deleteRecordWithID:(SKYRecordID *)recordID
+         completionHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
+                                              NSError *_Nullable error))completionHandler
+    __attribute__((deprecated));
+
+/**
+ Deletes multiple records from Skygear.
+
+ Use this method to delete multiple records from Skygear by specifying a <SKYRecordID>s. The
+ deletion will be performed asynchronously and <completionHandler> will be called when the operation
+ completes.
+
+ This is a convenient method for <SKYDeleteRecordsOperation>.
+
+ @param recordIDs the record identifiers to delete
+ @param completionHandler the block to be called when operation completes. The specified block is
+ also called when an operation error occurred.
+ @param errorHandler the block to be called when an error occurred to individual record operation
+ */
+- (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
+           completionHandler:(void (^_Nullable)(NSArray<SKYRecordID *> *_Nullable deletedRecordIDs,
+                                                NSError *_Nullable error))completionHandler
+       perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
+                                                NSError *_Nullable error))errorHandler
+    __attribute__((deprecated));
+
+/**
+ Fetches a single record from Skygear.
+
+ Use this method to fetch a single record from Skygear by specifying record type an record ID. The
+ fetch will be performed asynchronously and <completion> will be called when the operation
+ completes.
+
+ @param recordType the record to fetch
+ @param recordID the record identifier to fetch
+ @param completion the block to be called when operation completes.
+ */
+- (void)fetchRecordWithType:(NSString *)recordType
+                   recordID:(NSString *)recordID
+                 completion:(void (^_Nullable)(SKYRecord *_Nullable record,
+                                               NSError *_Nullable error))completion;
+
+/**
+ Fetches multiple records from Skygear.
+
+ Use this method to fetch multiple records from Skygear by specifying an array of <SKYRecordID>s.
+ The fetch will be performed asynchronously and <completion> will be called when the
+ operation completes.
+
+ @param recordType the record to fetch
+ @param recordIDs the record identifiers to fetch
+ @param completion the block to be called when operation completes. The specified block is
+ also called when an operation error occurred.
+ @param errorHandler the block to be called when an error occurred to individual record operation
+ */
+- (void)fetchRecordsWithType:(NSString *)recordType
+                   recordIDs:(NSArray<NSString *> *)recordIDs
+                  completion:(void (^_Nullable)(
+                                 NSDictionary<NSString *, SKYRecord *> *_Nullable recordsByRecordID,
+                                 NSError *_Nullable operationError))completion
+       perRecordErrorHandler:
+           (void (^_Nullable)(NSString *_Nullable recordID, NSError *_Nullable error))errorHandler;
 
 /**
  Saves a single record to Skygear.
@@ -155,58 +234,59 @@ typedef void (^SKYRecordSaveCompletion)(SKYRecord *_Nullable record, NSError *_N
 /**
  Deletes a single record from Skygear.
 
- Use this method to delete a single record from Skygear by specifying a <SKYRecordID>. The deletion
+ Use this method to delete a single record from Skygear. The deletion
  will be performed asynchronously and
- <completionHandler> will be called when the operation completes.
+ <completion> will be called when the operation completes.
 
- This is a convenient method for <SKYDeleteRecordsOperation>, which supports deleting multiple
- records by specifying multiple <SKYRecordID>s.
-
+ @param recordType the record type to delete
  @param recordID the record identifier to delete
- @param completionHandler the block to be called when operation completes. The specified block is
+ @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)deleteRecordWithID:(SKYRecordID *)recordID
-         completionHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                              NSError *_Nullable error))completionHandler;
+- (void)deleteRecordWithType:(NSString *)recordType
+                    recordID:(NSString *)recordID
+                  completion:(void (^_Nullable)(NSString *_Nullable recordID,
+                                                NSError *_Nullable error))completion;
 
 /**
  Deletes multiple records from Skygear.
 
- Use this method to delete multiple records from Skygear by specifying a <SKYRecordID>s. The
+ Use this method to delete multiple records from Skygear. The
  deletion will be performed asynchronously and <completionHandler> will be called when the operation
  completes.
 
- This is a convenient method for <SKYDeleteRecordsOperation>.
-
+ @param recordType the record type to delete
  @param recordIDs the record identifiers to delete
- @param completionHandler the block to be called when operation completes. The specified block is
+ @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  @param errorHandler the block to be called when an error occurred to individual record operation
  */
-- (void)deleteRecordsWithIDs:(NSArray<SKYRecordID *> *)recordIDs
-           completionHandler:(void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
-                                                NSError *_Nullable error))completionHandler
-       perRecordErrorHandler:(void (^_Nullable)(SKYRecordID *_Nullable recordID,
-                                                NSError *_Nullable error))errorHandler;
+- (void)deleteRecordsWithType:(NSString *)recordType
+                    recordIDs:(NSArray<NSString *> *)recordIDs
+                   completion:(void (^_Nullable)(NSArray<NSString *> *_Nullable deletedRecordIDs,
+                                                 NSError *_Nullable error))completion
+        perRecordErrorHandler:
+            (void (^_Nullable)(NSString *_Nullable recordID, NSError *_Nullable error))errorHandler;
 
 /**
  Deletes multiple records atomically to Skygear.
 
  The behaviour of this method is identical to
- deleteRecordsWithIDs:completionHandler:perRecordErrorHandler:,
+ deleteRecordsWithType:recordIDs:completion:perRecordErrorHandler:,
  except that it also sets the atomic flag on the operation.
 
  Since the operation either succeeds or fails as a whole, perRecordErrorHandler is omitted.
 
+ @param recordType the record type to delete
  @param recordIDs the records to save
- @param completionHandler the block to be called when operation completes. The specified block is
+ @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)deleteRecordsWithIDsAtomically:(NSArray<SKYRecordID *> *)recordIDs
-                     completionHandler:
-                         (void (^_Nullable)(NSArray *_Nullable deletedRecordIDs,
-                                            NSError *_Nullable error))completionHandler;
+- (void)deleteRecordsAtomicallyWithType:(NSString *)recordType
+                              recordIDs:(NSArray<NSString *> *)recordIDs
+                             completion:
+                                 (void (^_Nullable)(NSArray<NSString *> *_Nullable deletedRecordIDs,
+                                                    NSError *_Nullable error))completion;
 
 /// Undocumented
 - (void)fetchAllSubscriptionsWithCompletionHandler:

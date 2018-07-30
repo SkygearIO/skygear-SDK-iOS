@@ -50,10 +50,13 @@
 
     NSMutableArray *dictionariesToSave = [NSMutableArray array];
     recordsByRecordID = [NSMutableDictionary dictionary];
-    [self.recordsToSave enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [dictionariesToSave addObject:[serializer dictionaryWithRecord:obj]];
-        [self->recordsByRecordID setObject:obj forKey:[(SKYRecord *)obj recordID]];
-    }];
+    [self.recordsToSave
+        enumerateObjectsUsingBlock:^(SKYRecord *record, NSUInteger idx, BOOL *stop) {
+            [dictionariesToSave addObject:[serializer dictionaryWithRecord:record]];
+            [self->recordsByRecordID
+                setObject:record
+                   forKey:SKYRecordConcatenatedID(record.recordType, record.recordID)];
+        }];
 
     NSMutableDictionary *payload = [@{
         @"records" : dictionariesToSave,
@@ -87,34 +90,29 @@
     NSMutableDictionary *errorByID = [NSMutableDictionary dictionary];
     NSMutableArray *resultArray = [NSMutableArray array];
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
-    [responseArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        [deserializer
-            deserializeResponseDictionary:obj
-                                    block:^(NSString *recordType, NSString *recordID,
-                                            SKYRecord *record, NSError *error) {
-                                        SKYRecordID *deprecatedRecordID =
-                                            recordType && recordID
-                                                ? [SKYRecordID recordIDWithRecordType:recordType
-                                                                                 name:recordID]
-                                                : nil;
-                                        SKYRecord *rtnRecord = record;
+    [deserializer
+        deserializeResponseArray:responseArray
+                           block:^(NSString *recordType, NSString *recordID, SKYRecord *record,
+                                   NSError *error) {
+                               SKYRecord *rtnRecord = record;
 
-                                        if (error) {
-                                            if (deprecatedRecordID) {
-                                                errorByID[deprecatedRecordID] = error;
-                                            }
-                                            rtnRecord = self->recordsByRecordID[deprecatedRecordID];
-                                        }
+                               if (error) {
+                                   NSString *concatenatedID =
+                                       SKYRecordConcatenatedID(recordType, recordID);
+                                   if (recordType && recordID) {
+                                       errorByID[concatenatedID] = error;
+                                   }
+                                   rtnRecord = self->recordsByRecordID[concatenatedID];
+                               }
 
-                                        if (record) {
-                                            [resultArray addObject:record];
-                                        }
+                               if (record) {
+                                   [resultArray addObject:record];
+                               }
 
-                                        if ((rtnRecord || error) && self.perRecordCompletionBlock) {
-                                            self.perRecordCompletionBlock(rtnRecord, error);
-                                        }
-                                    }];
-    }];
+                               if ((rtnRecord || error) && self.perRecordCompletionBlock) {
+                                   self.perRecordCompletionBlock(rtnRecord, error);
+                               }
+                           }];
 
     if ([errorByID count] && error) {
         *error = [self.errorCreator partialErrorWithPerItemDictionary:errorByID];

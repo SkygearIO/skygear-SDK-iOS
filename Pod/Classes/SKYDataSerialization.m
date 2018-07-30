@@ -262,26 +262,26 @@ NSString *localFunctionName(NSString *remoteFunctionName)
 + (SKYReference *)deserializeReferenceWithDictionary:(NSDictionary *)data
 {
     NSString *recordType = data[@"$recordType"];
-    NSString *recordName = data[@"$recordID"];
+    NSString *recordID = data[@"$recordID"];
     NSString *deprecatedID = data[@"$id"];
 
     if (recordType) {
         if (![recordType isKindOfClass:[NSString class]] ||
-            ![recordName isKindOfClass:[NSString class]]) {
+            ![recordID isKindOfClass:[NSString class]]) {
             NSLog(@"Unexpected reference with record type \"%@\" and record ID \"%@\". Return nil "
                   @"instead.",
-                  recordType, recordName);
+                  recordType, recordID);
             return nil;
         }
-        return [[SKYReference alloc]
-            initWithRecordID:[SKYRecordID recordIDWithRecordType:recordType name:recordName]];
+        return [[SKYReference alloc] initWithRecordType:recordType recordID:recordID];
     } else if (deprecatedID) {
         if (![deprecatedID isKindOfClass:[NSString class]]) {
             NSLog(@"Unexpected reference with record ID \"%@\". Return nil instead.", deprecatedID);
             return nil;
         }
-        return [[SKYReference alloc]
-            initWithRecordID:[SKYRecordID recordIDWithCanonicalString:deprecatedID]];
+        return
+            [[SKYReference alloc] initWithRecordType:SKYRecordTypeFromConcatenatedID(deprecatedID)
+                                            recordID:SKYRecordIDFromConcatenatedID(deprecatedID)];
     } else {
         NSLog(@"Unexpected reference with missing record ID. Return nil instead.");
         return nil;
@@ -301,9 +301,10 @@ NSString *localFunctionName(NSString *remoteFunctionName)
     } else if ([obj isKindOfClass:[SKYReference class]]) {
         data = @{
             SKYDataSerializationCustomTypeKey : SKYDataSerializationReferenceType,
-            @"$id" : [(SKYReference *)obj recordID].canonicalString,
-            @"$recordType" : [(SKYReference *)obj recordID].recordType,
-            @"$recordID" : [(SKYReference *)obj recordID].recordName,
+            @"$id" : SKYRecordConcatenatedID([(SKYReference *)obj recordType],
+                                             [(SKYReference *)obj recordID]),
+            @"$recordType" : [(SKYReference *)obj recordType],
+            @"$recordID" : [(SKYReference *)obj recordID],
         };
     } else if ([obj isKindOfClass:[SKYAsset class]]) {
         data = [SKYDataSerialization serializeAsset:obj];

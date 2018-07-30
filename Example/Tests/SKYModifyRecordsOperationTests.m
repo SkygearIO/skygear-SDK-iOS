@@ -35,12 +35,8 @@ SpecBegin(SKYModifyRecordsOperation)
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
             database = [container publicCloudDatabase];
-            record1 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
-            record2 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
-                            data:nil];
+            record1 = [[SKYRecord alloc] initWithType:@"book" recordID:@"book1"];
+            record2 = [[SKYRecord alloc] initWithType:@"book" recordID:@"book2"];
         });
 
         it(@"multiple record", ^{
@@ -186,7 +182,7 @@ SpecBegin(SKYModifyRecordsOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remainingRecordIDs =
+                NSMutableArray<NSString *> *remainingRecordIDs =
                     [@[ record1.recordID, record2.recordID ] mutableCopy];
 
                 operation.perRecordCompletionBlock = ^(SKYRecord *record, NSError *error) {
@@ -203,7 +199,7 @@ SpecBegin(SKYModifyRecordsOperation)
                     [remainingRecordIDs removeObject:record.recordID];
                 };
 
-                operation.modifyRecordsCompletionBlock = ^(NSArray *savedRecords,
+                operation.modifyRecordsCompletionBlock = ^(NSArray<SKYRecord *> *savedRecords,
                                                            NSError *operationError) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(savedRecords).to.haveCountOf(1);
@@ -212,7 +208,9 @@ SpecBegin(SKYModifyRecordsOperation)
                         expect(operationError.code).to.equal(SKYErrorPartialFailure);
 
                         NSError *perRecordError =
-                            operationError.userInfo[SKYPartialErrorsByItemIDKey][record2.recordID];
+                            operationError
+                                .userInfo[SKYPartialErrorsByItemIDKey][SKYRecordConcatenatedID(
+                                    record2.recordType, record2.recordID)];
                         expect([perRecordError class]).to.beSubclassOf([NSError class]);
                         expect(perRecordError.userInfo[SKYErrorNameKey])
                             .to.equal(@"ResourceNotFound");

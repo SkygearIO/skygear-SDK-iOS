@@ -24,6 +24,35 @@
 
 NSString *const SKYRecordTypeUserRecord = @"_User";
 
+NSString *SKYRecordConcatenatedID(NSString *recordType, NSString *recordID)
+{
+    return [NSString stringWithFormat:@"%@/%@", recordType, recordID];
+}
+
+NSString *SKYRecordTypeFromConcatenatedID(NSString *concatenatedID)
+{
+    NSArray *components = [concatenatedID componentsSeparatedByString:@"/"];
+    if ([components count] != 2) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"Invalid Record ID string."
+                                     userInfo:nil];
+    }
+
+    return components[0];
+}
+
+NSString *SKYRecordIDFromConcatenatedID(NSString *concatenatedID)
+{
+    NSArray *components = [concatenatedID componentsSeparatedByString:@"/"];
+    if ([components count] != 2) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException
+                                       reason:@"Invalid Record ID string."
+                                     userInfo:nil];
+    }
+
+    return components[1];
+}
+
 @interface SKYRecord ()
 
 @property (nonatomic, readonly) NSMutableDictionary *object;
@@ -34,48 +63,39 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (instancetype)initWithRecordType:(NSString *)recordType
 {
-    return [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType] data:nil];
+    return [self initWithType:recordType recordID:nil data:nil];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType recordID:(SKYRecordID *)recordId
+- (instancetype)initWithType:(NSString *)recordType
 {
-    if (![recordId.recordType isEqualToString:recordId.recordType]) {
-        recordId = [[SKYRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
-    }
-    return [self initWithRecordID:recordId data:nil];
+    return [self initWithType:recordType recordID:nil data:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType name:(NSString *)recordName
 {
-    return
-        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                          data:nil];
+    return [self initWithType:recordType recordID:recordName data:nil];
 }
 
-- (instancetype)initWithRecordType:(NSString *)recordType
-                          recordID:(SKYRecordID *)recordId
-                              data:(NSDictionary *)data
+- (instancetype)initWithType:(NSString *)recordType recordID:(NSString *)recordID
 {
-    if (![recordId.recordType isEqualToString:recordId.recordType]) {
-        recordId = [[SKYRecordID alloc] initWithRecordType:recordType name:recordId.recordName];
-    }
-    return [self initWithRecordID:recordId data:data];
+    return [self initWithType:recordType recordID:recordID data:nil];
 }
 
 - (instancetype)initWithRecordType:(NSString *)recordType
                               name:(NSString *)recordName
-                              data:(NSDictionary *)data
+                              data:(NSDictionary<NSString *, id> *)data
 {
-    return
-        [self initWithRecordID:[[SKYRecordID alloc] initWithRecordType:recordType name:recordName]
-                          data:data];
+    return [self initWithType:recordType recordID:recordName data:data];
 }
 
-- (instancetype)initWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data
+- (instancetype)initWithType:(NSString *)recordType
+                    recordID:(NSString *)recordID
+                        data:(NSDictionary<NSString *, id> *)data
 {
     self = [super init];
     if (self) {
-        _recordID = [recordId copy];
+        _recordType = recordType ? [recordType copy] : @"";
+        _recordID = recordID ? [recordID copy] : [[NSUUID UUID] UUIDString];
         _object = data ? [data mutableCopy] : [[NSMutableDictionary alloc] init];
         _accessControl = nil;
         _transient = [NSMutableDictionary dictionary];
@@ -83,33 +103,62 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
     return self;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+- (instancetype)initWithRecordID:(SKYRecordID *)recordID data:(NSDictionary<NSString *, id> *)data
+{
+    return [self initWithType:recordID.recordType recordID:recordID.recordName data:data];
+}
+#pragma GCC diagnostic pop
+
++ (instancetype)recordWithType:(NSString *)recordType
+{
+    return [[self alloc] initWithType:recordType recordID:nil data:nil];
+}
+
 + (instancetype)recordWithRecordType:(NSString *)recordType
 {
-    return [[self alloc] initWithRecordType:recordType];
+    return [[self alloc] initWithType:recordType recordID:nil data:nil];
 }
 
 + (instancetype)recordWithRecordType:(NSString *)recordType name:(NSString *)recordName
 {
-    return [[self alloc] initWithRecordType:recordType name:recordName];
+    return [[self alloc] initWithType:recordType recordID:recordName data:nil];
+}
+
++ (instancetype)recordWithType:(NSString *)recordType recordID:(NSString *)recordID
+{
+    return [[self alloc] initWithType:recordType recordID:recordID data:nil];
 }
 
 + (instancetype)recordWithRecordType:(NSString *)recordType
                                 name:(NSString *)recordName
-                                data:(NSDictionary *)data
+                                data:(NSDictionary<NSString *, id> *)data
 {
-    return [[self alloc] initWithRecordType:recordType name:recordName data:data];
+    return [[self alloc] initWithType:recordType recordID:recordName data:data];
 }
 
-+ (instancetype)recordWithRecordID:(SKYRecordID *)recordId data:(NSDictionary *)data
++ (instancetype)recordWithType:(NSString *)recordType
+                      recordID:(NSString *)recordID
+                          data:(NSDictionary<NSString *, id> *)data
 {
-    return [[self alloc] initWithRecordID:recordId data:data];
+    return [[self alloc] initWithType:recordType recordID:recordID data:data];
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++ (instancetype)recordWithRecordID:(SKYRecordID *)recordID data:(NSDictionary<NSString *, id> *)data
+{
+    return [[self alloc] initWithType:recordID.recordType recordID:recordID.recordName data:data];
+}
+#pragma GCC diagnostic pop
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone
 {
     SKYRecord *record = [[self.class allocWithZone:zone] init];
+    record->_recordType = [_recordType copyWithZone:zone];
     record->_recordID = [_recordID copyWithZone:zone];
     record->_object = [_object mutableCopyWithZone:zone];
     record->_transient = [_transient mutableCopyWithZone:zone];
@@ -126,24 +175,36 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
-    SKYRecordID *recordID = [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"recordID"];
-    if (!recordID) {
+    NSString *recordType = nil;
+    NSString *recordID = nil;
+    id idObj = [aDecoder decodeObjectForKey:@"recordID"];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    if ([idObj isKindOfClass:[SKYRecordID class]]) {
+        recordType = [(SKYRecordID *)idObj recordType];
+        recordID = [(SKYRecordID *)idObj recordName];
+    } else if ([idObj isKindOfClass:[NSString class]]) {
+        recordID = (NSString *)idObj;
+        recordType = [aDecoder decodeObjectOfClass:[NSString class] forKey:@"recordType"];
+    }
+#pragma GCC diagnostic pop
+    if (!recordType || !recordID) {
         return nil;
     }
 
     NSDictionary *object = [aDecoder decodeObjectOfClass:[NSDictionary class] forKey:@"object"];
-    self = [self initWithRecordID:recordID data:object];
+    self = [self initWithType:recordType recordID:recordID data:object];
     if (self) {
         _transient = [aDecoder decodeObjectOfClass:[NSMutableDictionary class] forKey:@"transient"];
         _ownerUserRecordID =
-            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"ownerUserRecordID"];
+            [aDecoder decodeObjectOfClass:[NSString class] forKey:@"ownerUserRecordID"];
         _creationDate = [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"creationDate"];
         _creatorUserRecordID =
-            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"creationUserRecordID"];
+            [aDecoder decodeObjectOfClass:[NSString class] forKey:@"creationUserRecordID"];
         _modificationDate =
             [aDecoder decodeObjectOfClass:[NSDate class] forKey:@"modificationDate"];
         _lastModifiedUserRecordID =
-            [aDecoder decodeObjectOfClass:[SKYRecordID class] forKey:@"lastModifiedUserRecordID"];
+            [aDecoder decodeObjectOfClass:[NSString class] forKey:@"lastModifiedUserRecordID"];
         _accessControl =
             [aDecoder decodeObjectOfClass:[SKYAccessControl class] forKey:@"accessControl"];
     }
@@ -153,6 +214,7 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeObject:_recordType forKey:@"recordType"];
     [aCoder encodeObject:_recordID forKey:@"recordID"];
     [aCoder encodeObject:_object forKey:@"object"];
     [aCoder encodeObject:_transient forKey:@"transient"];
@@ -166,38 +228,20 @@ NSString *const SKYRecordTypeUserRecord = @"_User";
 
 #pragma mark - Properties
 
-- (void)setRecordID:(SKYRecordID *)recordID
-{
-    _recordID = recordID;
-}
-
-- (void)setCreationDate:(NSDate *)date
-{
-    _creationDate = date;
-}
-
 - (NSDictionary *)dictionary
 {
     return [_object copy];
 }
 
-- (NSString *)recordType
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+- (SKYRecordID *)deprecatedID
 {
-    return self.recordID.recordType;
+    return [[SKYRecordID alloc] initWithRecordType:self.recordType name:self.recordID];
 }
 
-- (void)setAccessControl:(SKYAccessControl *)accessControl
-{
-    _accessControl = accessControl;
-}
-
-- (SKYAccessControl *)getAccessControl
-{
-    if (_accessControl == nil) {
-        _accessControl = [SKYAccessControl emptyAccessControl];
-    }
-    return _accessControl;
-}
+#pragma GCC diagnostic pop
 
 #pragma mark - Dictionary-like methods
 

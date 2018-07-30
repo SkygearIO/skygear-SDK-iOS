@@ -23,6 +23,9 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 SpecBegin(SKYRecordStorage)
 
     describe(@"SKYRecordStorage", ^{
@@ -39,7 +42,7 @@ SpecBegin(SKYRecordStorage)
 
         it(@"fetch, save, delete", ^{
             // save
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
 
@@ -47,17 +50,17 @@ SpecBegin(SKYRecordStorage)
             expect(record.modificationDate).toNot.beNil();
 
             // fetch
-            SKYRecord *gotRecord = [storage recordWithRecordID:record.recordID];
+            SKYRecord *gotRecord = [storage recordWithRecordID:record.deprecatedID];
             expect(gotRecord).to.beIdenticalTo(record);
 
             // delete
             [storage deleteRecord:gotRecord];
-            expect([storage recordWithRecordID:record.recordID]).to.beNil();
+            expect([storage recordWithRecordID:record.deprecatedID]).to.beNil();
         });
 
         it(@"save record then delete should override previous change", ^{
             // save
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
 
@@ -70,7 +73,7 @@ SpecBegin(SKYRecordStorage)
         });
 
         it(@"delete record then save should override previous change", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ record ]];
@@ -79,7 +82,7 @@ SpecBegin(SKYRecordStorage)
             [storage deleteRecord:record];
 
             SKYRecord *anotherRecord =
-                [[SKYRecord alloc] initWithRecordID:record.recordID data:record.dictionary];
+                [[SKYRecord alloc] initWithRecordID:record.deprecatedID data:record.dictionary];
             [storage saveRecord:anotherRecord];
             expect([storage pendingChanges]).to.haveCountOf(1);
             SKYRecordChange *change = [[storage pendingChanges] firstObject];
@@ -88,7 +91,7 @@ SpecBegin(SKYRecordStorage)
 
         it(@"save record will add to pending changes", ^{
             // save
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
 
@@ -97,7 +100,7 @@ SpecBegin(SKYRecordStorage)
 
         it(@"dismiss changes will remove pending changes", ^{
             // save
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
             expect(storage.pendingChanges).to.haveCountOf(1);
@@ -108,13 +111,13 @@ SpecBegin(SKYRecordStorage)
 
         it(@"query records", ^{
             // save
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World!";
             [storage saveRecord:record];
 
             NSArray *records = [storage recordsWithType:@"book" predicate:nil sortDescriptors:nil];
             expect(records).to.haveCountOf(1);
-            expect(((SKYRecord *)records[0]).recordID).to.equal(record.recordID);
+            expect(((SKYRecord *)records[0]).deprecatedID).to.equal(record.deprecatedID);
         });
 
         it(@"call synchronizer when enabled", ^{
@@ -133,7 +136,7 @@ SpecBegin(SKYRecordStorage)
             SKYRecordSynchronizer *mockSyncher = OCMClassMock([SKYRecordSynchronizer class]);
             storage.synchronizer = mockSyncher;
 
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             [storage saveRecord:record];
 
             OCMStub([mockSyncher
@@ -143,7 +146,7 @@ SpecBegin(SKYRecordStorage)
                           expect(obj).to.haveCountOf(1);
                           SKYRecordChange *change = [obj objectAtIndex:0];
                           expect([change class]).to.beSubclassOf([SKYRecordChange class]);
-                          expect(change.recordID).to.equal(record.recordID);
+                          expect(change.recordID).to.equal(record.deprecatedID);
                           return YES;
                       }]
                 completionHandler:nil]);
@@ -156,9 +159,9 @@ SpecBegin(SKYRecordStorage)
             // NOTE: Currently there does not exist facility to add records to backing store.
             // Therefore, we do this by calling -updateByReplacingWithRecords:, which is the same
             // method we have to test in this test case.
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World";
-            SKYRecord *recordToDelete = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *recordToDelete = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Bye World";
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ record, recordToDelete ]];
@@ -167,28 +170,28 @@ SpecBegin(SKYRecordStorage)
             SKYRecord *recordToChange = [record copy];
             recordToChange[@"title"] = @"Hello World Second Edition";
 
-            SKYRecord *recordToAdd = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *recordToAdd = [[SKYRecord alloc] initWithType:@"book"];
             recordToAdd[@"title"] = @"Welcome World";
 
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ recordToChange, recordToAdd ]];
             [storage finishUpdating];
 
-            NSArray *records = [storage recordsWithType:@"book"];
+            NSArray<SKYRecord *> *records = [storage recordsWithType:@"book"];
             expect(records).to.haveCountOf(2);
-            NSArray *recordIDs = @[
-                ((SKYRecord *)records[0]).recordID,
-                ((SKYRecord *)records[1]).recordID,
+            NSArray<SKYRecordID *> *recordIDs = @[
+                ((SKYRecord *)records[0]).deprecatedID,
+                ((SKYRecord *)records[1]).deprecatedID,
             ];
-            expect(recordIDs).to.contain(recordToAdd.recordID);
-            expect(recordIDs).to.contain(recordToChange.recordID);
+            expect(recordIDs).to.contain(recordToAdd.deprecatedID);
+            expect(recordIDs).to.contain(recordToChange.deprecatedID);
 
-            SKYRecord *changedRecord = [storage recordWithRecordID:recordToChange.recordID];
+            SKYRecord *changedRecord = [storage recordWithRecordID:recordToChange.deprecatedID];
             expect(changedRecord[@"title"]).to.equal(recordToChange[@"title"]);
         });
 
         it(@"update by applying change", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World";
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ record ]];
@@ -205,12 +208,12 @@ SpecBegin(SKYRecordStorage)
             [storage updateByApplyingChange:change recordOnRemote:[recordToChange copy] error:nil];
             [storage finishUpdating];
 
-            SKYRecord *changedRecord = [storage recordWithRecordID:recordToChange.recordID];
+            SKYRecord *changedRecord = [storage recordWithRecordID:recordToChange.deprecatedID];
             expect(changedRecord[@"title"]).to.equal(recordToChange[@"title"]);
         });
 
         it(@"record state", ^{
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World";
             [storage beginUpdating];
             [storage updateByReplacingWithRecords:@[ record ]];
@@ -226,7 +229,7 @@ SpecBegin(SKYRecordStorage)
             SKYRecordSynchronizer *mockSyncher = OCMClassMock([SKYRecordSynchronizer class]);
             storage.synchronizer = mockSyncher;
 
-            SKYRecord *record = [[SKYRecord alloc] initWithRecordType:@"book"];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book"];
             record[@"title"] = @"Hello World";
             [storage saveRecord:record];
 
@@ -236,3 +239,5 @@ SpecBegin(SKYRecordStorage)
     });
 
 SpecEnd
+
+#pragma GCC diagnostic pop

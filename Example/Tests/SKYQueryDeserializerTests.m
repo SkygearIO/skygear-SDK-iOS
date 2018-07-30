@@ -141,8 +141,8 @@ describe(@"deserialize predicate", ^{
         ];
 
         NSPredicate *predicate = [deserializer predicateWithArray:predicateArray];
-        SKYReference *reference = [[SKYReference alloc]
-            initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"city" name:@"hongkong"]];
+        SKYReference *reference =
+            [[SKYReference alloc] initWithRecordType:@"city" recordID:@"hongkong"];
         expect(predicate).to.equal([NSPredicate predicateWithFormat:@"city = %@", reference]);
     });
 

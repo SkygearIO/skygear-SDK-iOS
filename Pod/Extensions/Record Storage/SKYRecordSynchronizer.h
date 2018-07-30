@@ -32,12 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  This class handles the network operations required to sync a record storage with remote server.
  */
-@interface SKYRecordSynchronizer : NSObject
+__attribute((deprecated)) @interface SKYRecordSynchronizer
+    : NSObject
 
-/**
- The <SKYContaniner> that this this synchronzier synchronizes with.
- */
-@property (nonatomic, readonly, strong) SKYContainer *container;
+      /**
+       The <SKYContaniner> that this this synchronzier synchronizes with.
+       */
+      @property(nonatomic, readonly, strong) SKYContainer *container;
 
 /**
  The <SKYDatabase> that this this synchronzier synchronizes with.
@@ -83,4 +84,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

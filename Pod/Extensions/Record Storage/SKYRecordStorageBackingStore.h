@@ -25,13 +25,18 @@ NS_ASSUME_NONNULL_BEGIN
 @class SKYRecord;
 @class SKYRecordID;
 
+// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
+// clang-format off
+
 /// Undocumented
-@protocol SKYRecordStorageBackingStore <NSObject>
+__attribute((deprecated)) @protocol SKYRecordStorageBackingStore<NSObject>
 
 /**
  Delete data associated with this backing store.
  */
-- (BOOL)purgeWithError:(NSError **_Nullable)error;
+- (BOOL)purgeWithError : (NSError **_Nullable)error;
+
+// clang-format on
 
 /**
  Writes data to persistent storage if the backing store supports it.
@@ -168,4 +173,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

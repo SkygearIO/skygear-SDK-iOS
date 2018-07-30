@@ -43,7 +43,7 @@
 
     SKYRecord *user =
         error ? nil : [[SKYRecordDeserializer deserializer] recordWithDictionary:profile];
-    if (![user.recordID.recordType isEqualToString:@"user"]) {
+    if (![user.recordType isEqualToString:@"user"]) {
         error = error ? error
                       : [self.errorCreator
                             errorWithCode:SKYErrorBadResponse

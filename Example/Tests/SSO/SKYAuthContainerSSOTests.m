@@ -75,7 +75,7 @@ SpecBegin(SKYAuthContainerSSO)
             waitUntil(^(DoneCallback done) {
                 [container.auth loginWithCustomToken:@"eyXXX"
                                    completionHandler:^(SKYRecord *user, NSError *error) {
-                                       assertLoggedIn(user.recordID.recordName, error);
+                                       assertLoggedIn(user.recordID, error);
                                        done();
                                    }];
             });

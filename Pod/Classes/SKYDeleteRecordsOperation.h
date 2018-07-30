@@ -19,7 +19,6 @@
 
 #import "SKYDatabaseOperation.h"
 #import "SKYRecord.h"
-#import "SKYRecordID.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -31,25 +30,65 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SKYDeleteRecordsOperation : SKYDatabaseOperation
 
 /**
- Instantiates an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted from
- database.
+ Creates an operation to delete records with the specified record type and record IDs.
 
- @param recordIDs An array of records to be deleted from database.
+ The number of record types should match the number of record IDs, with each element correspond
+ to each other.
+
+ @param recordTypes array of record type to delete
+ @param recordIDs array of record IDs to delete
+ @return instance of SKYDeleteRecordsOperation
  */
-- (instancetype)initWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
+- (instancetype)initWithRecordTypes:(NSArray<NSString *> *)recordTypes
+                          recordIDs:(NSArray<NSString *> *)recordIDs NS_DESIGNATED_INITIALIZER;
 
 /**
- Creates and returns an instance of <SKYDeleteRecordsOperation> with a list of records to be deleted
- from database.
+ Creates an operation to delete records with the specified records.
 
- @param recordIDs An array of records to be deleted from database.
+ @param records array of records to delete
+ @return instance of SKYDeleteRecordsOperation
  */
-+ (instancetype)operationWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs;
+- (instancetype)initWithRecords:(NSArray<SKYRecord *> *)records;
 
 /**
- Sets or returns an array of records to be from from database.
+ Creates an operation to delete records with the specified record type and record IDs.
+
+ @param recordType record type to delete
+ @param recordIDs array of record IDs to delete
+ @return instance of SKYDeleteRecordsOperation
  */
-@property (nonatomic, copy) NSArray<SKYRecordID *> *recordIDs;
+- (instancetype)initWithRecordType:(NSString *)recordType
+                         recordIDs:(NSArray<NSString *> *)recordIDs;
+
+/**
+ This method is deprecated.
+ */
+- (instancetype)initWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs
+    __attribute__((deprecated));
+
+/**
+ Creates an operation to delete records with the specified records.
+
+ @param records array of records to delete
+ @return instance of SKYDeleteRecordsOperation
+ */
++ (instancetype)operationWithRecords:(NSArray<SKYRecord *> *)records;
+
+/**
+ Creates an operation to delete records with the specified record type and record IDs.
+
+ @param recordType record type to delete
+ @param recordIDs array of record IDs to delete
+ @return instance of SKYDeleteRecordsOperation
+ */
++ (instancetype)operationWithRecordType:(NSString *)recordType
+                              recordIDs:(NSArray<NSString *> *)recordIDs;
+
+/**
+ This method is deprecated.
+ */
++ (instancetype)operationWithRecordIDsToDelete:(NSArray<SKYRecordID *> *)recordIDs
+    __attribute__((deprecated));
 
 /**
  Sets whether the operation should be treated as an atomic operation. An atomic operation saves all
@@ -67,21 +106,23 @@ NS_ASSUME_NONNULL_BEGIN
  record.
  */
 @property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (SKYRecordID *_Nullable recordID, double progress);
+    (NSString *_Nullable recordType, NSString *_Nullable recordID, double progress);
 
 /**
  Sets or returns a block to be called when the delete operation for individual record is completed.
  If an error occurred during the deletion, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
-    (SKYRecordID *_Nullable deletedRecordID, NSError *_Nullable error);
+    (NSString *_Nullable deletedRecordType, NSString *_Nullable deletedRecordID,
+     NSError *_Nullable error);
 
 /**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable deleteRecordsCompletionBlock)
-    (NSArray<SKYRecordID *> *_Nullable deletedRecordIDs, NSError *_Nullable operationError);
+    (NSArray<NSString *> *_Nullable deletedRecordTypes,
+     NSArray<NSString *> *_Nullable deletedRecordIDs, NSError *_Nullable operationError);
 
 @end
 

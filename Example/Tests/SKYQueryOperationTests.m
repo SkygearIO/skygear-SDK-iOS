@@ -154,8 +154,8 @@ SpecBegin(SKYQueryOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([fetchedRecords class]).to.beSubclassOf([NSArray class]);
                             expect(fetchedRecords).to.haveCountOf(2);
-                            expect([[fetchedRecords[0] recordID] recordName]).to.equal(@"book1");
-                            expect([[fetchedRecords[1] recordID] recordName]).to.equal(@"book2");
+                            expect([fetchedRecords[0] recordID]).to.equal(@"book1");
+                            expect([fetchedRecords[1] recordID]).to.equal(@"book2");
                             expect(weakOperation.overallCount).to.equal(2);
                             done();
                         });
@@ -191,7 +191,6 @@ SpecBegin(SKYQueryOperation)
         });
 
         it(@"per block", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
             SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 
@@ -224,16 +223,14 @@ SpecBegin(SKYQueryOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remainingRecordIDs = [@[ recordID1 ] mutableCopy];
+                NSMutableArray<NSString *> *remainingRecordIDs = [@[ @"book1" ] mutableCopy];
                 operation.perRecordCompletionBlock = ^(SKYRecord *record) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(record).toNot.beNil();
-                        SKYRecordID *recordID = record.recordID;
-                        if ([recordID isEqual:recordID1]) {
+                        if ([record.recordID isEqual:@"book1"]) {
                             expect([record class]).to.beSubclassOf([SKYRecord class]);
-                            expect(record.recordID).to.equal(recordID1);
                         }
-                        [remainingRecordIDs removeObject:recordID];
+                        [remainingRecordIDs removeObject:record.recordID];
                     });
                 };
 
@@ -250,7 +247,6 @@ SpecBegin(SKYQueryOperation)
         });
 
         it(@"per block with eager load", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
             SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
             query.transientIncludes =
                 @{@"category" : [NSExpression expressionForKeyPath:@"category"]};
@@ -295,19 +291,17 @@ SpecBegin(SKYQueryOperation)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                NSMutableArray *remainingRecordIDs = [@[ recordID1 ] mutableCopy];
+                NSMutableArray<NSString *> *remainingRecordIDs = [@[ @"book1" ] mutableCopy];
                 operation.perRecordCompletionBlock = ^(SKYRecord *record) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(record).toNot.beNil();
-                        SKYRecordID *recordID = record.recordID;
-                        if ([recordID isEqual:recordID1]) {
+                        if ([record.recordID isEqual:@"book1"]) {
                             expect([record class]).to.beSubclassOf([SKYRecord class]);
-                            expect(record.recordID).to.equal(recordID1);
                         }
                         SKYRecord *categoryRecord = record.transient[@"category"];
                         expect([categoryRecord class]).to.beSubclassOf([SKYRecord class]);
                         expect(categoryRecord[@"title"]).to.equal(@"Important");
-                        [remainingRecordIDs removeObject:recordID];
+                        [remainingRecordIDs removeObject:record.recordID];
                     });
                 };
 

@@ -59,10 +59,11 @@ typedef enum : NSInteger {
 } SKYRecordChangeAction;
 
 /// Undocumented
-@interface SKYRecordChange : NSObject <NSCoding>
+__attribute((deprecated)) @interface SKYRecordChange
+    : NSObject<NSCoding>
 
-/// Undocumented
-@property (nonatomic, readonly, copy) SKYRecordID *recordID;
+      /// Undocumented
+      @property(nonatomic, readonly, copy) SKYRecordID *recordID;
 /// Undocumented
 @property (nonatomic, readonly, copy) NSDictionary *attributesToSave;
 /// Undocumented
@@ -88,4 +89,4 @@ typedef enum : NSInteger {
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

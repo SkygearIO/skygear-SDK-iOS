@@ -22,14 +22,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Undocumented
-@interface SKYRecordStorageSqliteStore : NSObject <SKYRecordStorageBackingStore>
+// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
+// clang-format off
 
 /// Undocumented
-- (instancetype)init NS_UNAVAILABLE;
+__attribute((deprecated)) @interface SKYRecordStorageSqliteStore : NSObject<SKYRecordStorageBackingStore>
+
+/// Undocumented
+-
+(instancetype)init NS_UNAVAILABLE;
+
+// clang-format on
+
 /// Undocumented
 - (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

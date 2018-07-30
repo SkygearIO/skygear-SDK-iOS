@@ -34,9 +34,9 @@ SpecBegin(SKYRemoveRelationsOperation)
                                        accessToken:[[SKYAccessToken alloc]
                                                        initWithTokenString:@"ACCESS_TOKEN"]];
             NSString *userRecordID = @"user1001";
-            follower1 = [SKYRecord recordWithRecordType:@"user" name:userRecordID];
+            follower1 = [SKYRecord recordWithType:@"user" recordID:userRecordID];
             userRecordID = @"user1002";
-            follower2 = [SKYRecord recordWithRecordType:@"user" name:userRecordID];
+            follower2 = [SKYRecord recordWithType:@"user" recordID:userRecordID];
         });
 
         it(@"multiple relations", ^{
@@ -94,7 +94,7 @@ SpecBegin(SKYRemoveRelationsOperation)
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([deletedUserIDs class]).to.beSubclassOf([NSArray class]);
                             expect(deletedUserIDs).to.haveCountOf(1);
-                            expect(deletedUserIDs[0]).to.equal(follower1.recordID.recordName);
+                            expect(deletedUserIDs[0]).to.equal(follower1.recordID);
                             expect(operationError).toNot.beNil();
                             done();
                         });

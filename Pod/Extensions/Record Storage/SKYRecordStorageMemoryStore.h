@@ -26,8 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class SKYRecordID;
 
 /// Undocumented
-@interface SKYRecordStorageMemoryStore : NSObject <SKYRecordStorageBackingStore>
+__attribute((deprecated)) @interface SKYRecordStorageMemoryStore
+    : NSObject<SKYRecordStorageBackingStore>
 
-@end
+      @end
 
-NS_ASSUME_NONNULL_END
+          NS_ASSUME_NONNULL_END

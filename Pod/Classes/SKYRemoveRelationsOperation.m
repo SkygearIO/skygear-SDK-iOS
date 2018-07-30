@@ -50,7 +50,7 @@
                                          userInfo:nil];
         }
 
-        [targets addObject:user.recordID.recordName];
+        [targets addObject:user.recordID];
     }
     payload[@"targets"] = targets;
     self.request = [[SKYRequest alloc] initWithAction:@"relation:delete" payload:payload];

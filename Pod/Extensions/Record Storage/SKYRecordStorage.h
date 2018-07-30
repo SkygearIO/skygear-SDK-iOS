@@ -82,17 +82,18 @@ typedef enum : NSInteger {
  instance of <SKYRecordStorage> should be obtained from
  <SKYRecordStorageCoordinator>.
  */
-@interface SKYRecordStorage : NSObject
+__attribute((deprecated)) @interface SKYRecordStorage
+    : NSObject
 
-/**
- Returns whether the <SKYRecordStorage> should synchronizes changes
- from remote to local and vice versa.
+      /**
+       Returns whether the <SKYRecordStorage> should synchronizes changes
+       from remote to local and vice versa.
 
- When this is YES, any pending changes will be performed at an appropriate
- time. When this is set to NO, any changes will be kept in pending state
- until this is set to YES again.
- */
-@property (nonatomic, assign) BOOL enabled;
+       When this is YES, any pending changes will be performed at an appropriate
+       time. When this is set to NO, any changes will be kept in pending state
+       until this is set to YES again.
+       */
+      @property(nonatomic, assign) BOOL enabled;
 
 /**
  Returns whether the <SKYRecordStorage> is currently updating the backing store.
@@ -299,4 +300,4 @@ typedef enum : NSInteger {
 
 @end
 
-NS_ASSUME_NONNULL_END
+    NS_ASSUME_NONNULL_END

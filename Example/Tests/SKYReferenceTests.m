@@ -24,8 +24,9 @@ SpecBegin(SKYReference)
 
     describe(@"SKYReference", ^{
         it(@"can be copied", ^{
-            SKYReference *ref = [[SKYReference alloc]
-                initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
+            SKYReference *ref =
+                [[SKYReference alloc] initWithRecordType:@"book"
+                                                recordID:[[NSUUID UUID] UUIDString]];
             SKYReference *refClone = [ref copy];
 
             expect(refClone.recordID).to.equal(ref.recordID);
@@ -33,16 +34,17 @@ SpecBegin(SKYReference)
         });
 
         it(@"can be encoded and decoded", ^{
-            SKYReference *ref = [[SKYReference alloc]
-                initWithRecordID:[SKYRecordID recordIDWithRecordType:@"book"]];
+            SKYReference *ref =
+                [[SKYReference alloc] initWithRecordType:@"book"
+                                                recordID:[[NSUUID UUID] UUIDString]];
 
             NSData *data = [NSKeyedArchiver archivedDataWithRootObject:ref];
             SKYReference *refClone = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
             //// Don't know why this cannot pass
             // expect(refClone.recordID).to.equal(ref.recordID);
-            expect(refClone.recordID.recordType).to.equal(ref.recordID.recordType);
-            expect(refClone.recordID.recordName).to.equal(ref.recordID.recordName);
+            expect(refClone.recordType).to.equal(ref.recordType);
+            expect(refClone.recordID).to.equal(ref.recordID);
             expect(refClone.referenceAction).to.equal(ref.referenceAction);
         });
     });

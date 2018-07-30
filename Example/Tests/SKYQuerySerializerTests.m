@@ -136,8 +136,7 @@ describe(@"serialize predicate", ^{
     });
 
     it(@"equal ref", ^{
-        SKYReference *ref = [[SKYReference alloc]
-            initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"city" name:@"hongkong"]];
+        SKYReference *ref = [[SKYReference alloc] initWithRecordType:@"city" recordID:@"hongkong"];
         NSArray *result =
             [serializer serializeWithPredicate:[NSPredicate predicateWithFormat:@"city = %@", ref]];
         expect([result class]).to.beSubclassOf([NSArray class]);

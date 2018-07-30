@@ -58,16 +58,16 @@ SpecBegin(SKYDatabase)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database
-                    fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(record.recordID.recordName).to.equal(@"book1");
-                            expect(record.recordID.recordType).to.equal(@"book");
-                            expect(record[@"title"]).to.equal(bookTitle);
-                            done();
-                        });
-                    }];
+                [database fetchRecordWithType:@"book"
+                                     recordID:@"book1"
+                                   completion:^(SKYRecord *record, NSError *error) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           expect(record.recordID).to.equal(@"book1");
+                                           expect(record.recordType).to.equal(@"book");
+                                           expect(record[@"title"]).to.equal(bookTitle);
+                                           done();
+                                       });
+                                   }];
             });
 
         });
@@ -84,23 +84,21 @@ SpecBegin(SKYDatabase)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database
-                    fetchRecordWithID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                    completionHandler:^(SKYRecord *record, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(error).notTo.beNil();
-                            expect(error.domain).to.equal(SKYOperationErrorDomain);
-                            expect(error.code).to.equal(SKYErrorNetworkFailure);
-                            done();
-                        });
-                    }];
+                [database fetchRecordWithType:@"book"
+                                     recordID:@"book1"
+                                   completion:^(SKYRecord *record, NSError *error) {
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           expect(error).notTo.beNil();
+                                           expect(error.domain).to.equal(SKYOperationErrorDomain);
+                                           expect(error.code).to.equal(SKYErrorNetworkFailure);
+                                           done();
+                                       });
+                                   }];
             });
 
         });
 
         it(@"fetch records", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
             NSString *bookTitle = @"A tale of two cities";
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -136,17 +134,19 @@ SpecBegin(SKYDatabase)
             waitUntil(^(DoneCallback done) {
                 __block NSUInteger errorHandlerCallCount = 0;
 
-                [database fetchRecordsWithIDs:@[ recordID1, recordID2 ]
-                    completionHandler:^(NSDictionary *recordsByRecordID, NSError *operationError) {
-                        expect(recordsByRecordID).to.contain(recordID1);
+                [database fetchRecordsWithType:@"book"
+                    recordIDs:@[ @"book1", @"book2" ]
+                    completion:^(NSDictionary<NSString *, SKYRecord *> *recordsByRecordID,
+                                 NSError *operationError) {
+                        expect(recordsByRecordID).to.contain(@"book1");
                         expect(recordsByRecordID).to.haveCountOf(1);
 
                         if (errorHandlerCallCount == 1) {
                             done();
                         }
                     }
-                    perRecordErrorHandler:^(SKYRecordID *recordID, NSError *error) {
-                        expect(recordID).to.equal(recordID2);
+                    perRecordErrorHandler:^(NSString *recordID, NSError *error) {
+                        expect(recordID).to.equal(@"book2");
                         errorHandlerCallCount++;
                     }];
             });
@@ -155,9 +155,7 @@ SpecBegin(SKYDatabase)
 
         it(@"modify record", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book" recordID:@"book1" data:nil];
             record[@"title"] = bookTitle;
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -187,8 +185,8 @@ SpecBegin(SKYDatabase)
                 [database saveRecord:record
                           completion:^(SKYRecord *record, NSError *error) {
                               dispatch_async(dispatch_get_main_queue(), ^{
-                                  expect(record.recordID.recordName).to.equal(@"book1");
-                                  expect(record.recordID.recordType).to.equal(@"book");
+                                  expect(record.recordID).to.equal(@"book1");
+                                  expect(record.recordType).to.equal(@"book");
                                   done();
                               });
                           }];
@@ -198,9 +196,7 @@ SpecBegin(SKYDatabase)
 
         it(@"modify record with operation error", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record = [[SKYRecord alloc] initWithType:@"book" recordID:@"book1"];
             record[@"title"] = bookTitle;
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -228,13 +224,9 @@ SpecBegin(SKYDatabase)
 
         it(@"modify records", ^{
             NSString *bookTitle = @"A tale of two cities";
-            SKYRecord *record1 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"]
-                            data:nil];
+            SKYRecord *record1 = [[SKYRecord alloc] initWithType:@"book" recordID:@"book1"];
             record1[@"title"] = bookTitle;
-            SKYRecord *record2 = [[SKYRecord alloc]
-                initWithRecordID:[[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"]
-                            data:nil];
+            SKYRecord *record2 = [[SKYRecord alloc] initWithType:@"book" recordID:@"book2"];
             record2[@"title"] = bookTitle;
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -287,8 +279,6 @@ SpecBegin(SKYDatabase)
         });
 
         it(@"delete record", ^{
-            SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -296,7 +286,11 @@ SpecBegin(SKYDatabase)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[]
+                        @"result" : @[ @{
+                            @"_recordType" : @"book",
+                            @"_recordID" : @"book1",
+                            @"_type" : @"record"
+                        } ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -306,21 +300,19 @@ SpecBegin(SKYDatabase)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database deleteRecordWithID:recordID
-                           completionHandler:^(SKYRecordID *recordID, NSError *error) {
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   expect(recordID.recordType).to.equal(@"book");
-                                   expect(recordID.recordName).to.equal(@"book1");
-                                   done();
-                               });
-                           }];
+                [database deleteRecordWithType:@"book"
+                                      recordID:@"book1"
+                                    completion:^(NSString *recordID, NSError *error) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            expect(recordID).to.equal(@"book1");
+                                            done();
+                                        });
+                                    }];
             });
 
         });
 
         it(@"delete record with operation error", ^{
-            SKYRecordID *recordID = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             }
@@ -332,21 +324,22 @@ SpecBegin(SKYDatabase)
                 }];
 
             waitUntil(^(DoneCallback done) {
-                [database deleteRecordWithID:recordID
-                           completionHandler:^(SKYRecordID *recordID, NSError *error) {
-                               dispatch_async(dispatch_get_main_queue(), ^{
-                                   expect(error).notTo.beNil();
-                                   expect(error.domain).to.equal(SKYOperationErrorDomain);
-                                   expect(error.code).to.equal(SKYErrorNetworkFailure);
-                                   done();
-                               });
-                           }];
+                [database deleteRecordWithType:@"book"
+                                      recordID:@"book1"
+                                    completion:^(NSString *recordID, NSError *error) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            expect(error).notTo.beNil();
+                                            expect(error.domain).to.equal(SKYOperationErrorDomain);
+                                            expect(error.code).to.equal(SKYErrorNetworkFailure);
+                                            done();
+                                        });
+                                    }];
             });
         });
 
         it(@"delete records", ^{
-            SKYRecordID *recordID1 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book1"];
-            SKYRecordID *recordID2 = [[SKYRecordID alloc] initWithRecordType:@"book" name:@"book2"];
+            NSString *recordID1 = @"book1";
+            NSString *recordID2 = @"book2";
 
             [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
@@ -355,14 +348,21 @@ SpecBegin(SKYDatabase)
                     NSDictionary *parameters = @{
                         @"request_id" : @"REQUEST_ID",
                         @"database_id" : database.databaseID,
-                        @"result" : @[ @{
-                            @"_recordType" : @"book",
-                            @"_recordID" : @"book2",
-                            @"_type" : @"error",
-                            @"code" : @(SKYErrorUnexpectedError),
-                            @"message" : @"An error.",
-                            @"name" : @"UnexpectedError",
-                        } ]
+                        @"result" : @[
+                            @{
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book1",
+                                @"_type" : @"record"
+                            },
+                            @{
+                                @"_recordType" : @"book",
+                                @"_recordID" : @"book2",
+                                @"_type" : @"error",
+                                @"code" : @(SKYErrorUnexpectedError),
+                                @"message" : @"An error.",
+                                @"name" : @"UnexpectedError",
+                            }
+                        ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -374,8 +374,9 @@ SpecBegin(SKYDatabase)
             waitUntil(^(DoneCallback done) {
                 __block NSUInteger errorHandlerCallCount = 0;
 
-                [database deleteRecordsWithIDs:@[ recordID1, recordID2 ]
-                    completionHandler:^(NSArray *deletedRecordIDs, NSError *error) {
+                [database deleteRecordsWithType:@"book"
+                    recordIDs:@[ recordID1, recordID2 ]
+                    completion:^(NSArray<NSString *> *deletedRecordIDs, NSError *error) {
                         expect(deletedRecordIDs).to.contain(recordID1);
                         expect(deletedRecordIDs).to.haveCountOf(1);
 
@@ -383,7 +384,7 @@ SpecBegin(SKYDatabase)
                             done();
                         }
                     }
-                    perRecordErrorHandler:^(SKYRecordID *recordID, NSError *error) {
+                    perRecordErrorHandler:^(NSString *recordID, NSError *error) {
                         expect(recordID).to.equal(recordID2);
                         expect(error).toNot.beNil();
                         errorHandlerCallCount++;
@@ -418,17 +419,15 @@ SpecBegin(SKYDatabase)
 
             waitUntil(^(DoneCallback done) {
                 SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
-                [database
-                         performQuery:query
-                    completionHandler:^(NSArray *results, NSError *error) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            expect(results).to.haveCountOf(1);
-                            expect(((SKYRecord *)results[0]).recordID.recordType).to.equal(@"book");
-                            expect(((SKYRecord *)results[0]).recordID.recordName)
-                                .to.equal(@"book1");
-                            done();
-                        });
-                    }];
+                [database performQuery:query
+                     completionHandler:^(NSArray *results, NSError *error) {
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             expect(results).to.haveCountOf(1);
+                             expect(((SKYRecord *)results[0]).recordType).to.equal(@"book");
+                             expect(((SKYRecord *)results[0]).recordID).to.equal(@"book1");
+                             done();
+                         });
+                     }];
             });
 
         });

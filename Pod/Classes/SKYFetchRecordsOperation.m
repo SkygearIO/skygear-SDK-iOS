@@ -26,6 +26,10 @@
 #import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYFetchRecordsOperation
 
 - (instancetype)initWithRecordIDs:(NSArray *)recordIDs
@@ -67,37 +71,33 @@
 
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
 
-    [result enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        [deserializer
-            deserializeResponseDictionary:obj
-                                    block:^(NSString *recordType, NSString *recordID,
-                                            SKYRecord *record, NSError *error) {
-                                        SKYRecordID *deprecatedRecordID =
-                                            recordType && recordID
-                                                ? [SKYRecordID recordIDWithRecordType:recordType
-                                                                                 name:recordID]
-                                                : nil;
+    [deserializer
+        deserializeResponseArray:result
+                           block:^(NSString *recordType, NSString *recordID, SKYRecord *record,
+                                   NSError *error) {
+                               SKYRecordID *deprecatedRecordID =
+                                   recordType && recordID
+                                       ? [SKYRecordID recordIDWithRecordType:recordType
+                                                                        name:recordID]
+                                       : nil;
 
-                                        if (!deprecatedRecordID) {
-                                            NSLog(@"Record does not conform with expected format.");
-                                            return;
-                                        }
+                               if (!deprecatedRecordID) {
+                                   NSLog(@"Record does not conform with expected format.");
+                                   return;
+                               }
 
-                                        if (error) {
-                                            [errorsByID setObject:error forKey:deprecatedRecordID];
-                                        }
+                               if (error) {
+                                   [errorsByID setObject:error forKey:deprecatedRecordID];
+                               }
 
-                                        if (record) {
-                                            [recordsByRecordID setObject:record
-                                                                  forKey:deprecatedRecordID];
-                                        }
+                               if (record) {
+                                   [recordsByRecordID setObject:record forKey:deprecatedRecordID];
+                               }
 
-                                        if ((record || error) && self.perRecordCompletionBlock) {
-                                            self.perRecordCompletionBlock(
-                                                record, deprecatedRecordID, error);
-                                        }
-                                    }];
-    }];
+                               if ((record || error) && self.perRecordCompletionBlock) {
+                                   self.perRecordCompletionBlock(record, deprecatedRecordID, error);
+                               }
+                           }];
 
     if (operationError && [errorsByID count] > 0) {
         *operationError = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
@@ -134,3 +134,5 @@
 }
 
 @end
+
+#pragma GCC diagnostic pop
