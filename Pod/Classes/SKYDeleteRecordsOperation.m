@@ -24,6 +24,7 @@
 #import "SKYError.h"
 #import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
+#import "SKYRecord_Private.h"
 
 @implementation SKYDeleteRecordsOperation {
     NSArray<NSString *> *_recordTypes;
@@ -141,78 +142,43 @@
 - (void)handleRequestError:(NSError *)error
 {
     if (self.deleteRecordsCompletionBlock) {
-        self.deleteRecordsCompletionBlock(nil, nil, error);
+        self.deleteRecordsCompletionBlock(nil, error);
     }
 }
 
 - (void)handleResponse:(SKYResponse *)response
 {
-    NSMutableArray<NSString *> *deleteRecordTypes = [NSMutableArray array];
-    NSMutableArray<NSString *> *deleteRecordIDs = [NSMutableArray array];
-    NSMutableDictionary<NSString *, NSError *> *errorsByID = [NSMutableDictionary dictionary];
+    if (!self.deleteRecordsCompletionBlock) {
+        return;
+    }
 
     NSArray *responseArray = response.responseDictionary[@"result"];
     if (![responseArray isKindOfClass:[NSArray class]]) {
         NSError *error = [self.errorCreator errorWithCode:SKYErrorBadResponse
                                                   message:@"Result is not an array or not exists."];
-        if (self.deleteRecordsCompletionBlock) {
-            self.deleteRecordsCompletionBlock(nil, nil, error);
-        }
+        self.deleteRecordsCompletionBlock(nil, error);
         return;
     }
 
-    __block BOOL erroneousResponse = NO;
-
+    NSMutableArray<SKYRecordResult<SKYRecord *> *> *results = [NSMutableArray array];
     SKYRecordResponseDeserializer *deserializer = [[SKYRecordResponseDeserializer alloc] init];
     [responseArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-        [deserializer deserializeResponseDictionary:obj
-                                              block:^(NSString *recordType, NSString *recordID,
-                                                      SKYRecord *record, NSError *error) {
-                                                  if (!(recordType && recordID)) {
-                                                      erroneousResponse = YES;
-                                                      *stop = YES;
-                                                      return;
-                                                  }
-
-                                                  if (error) {
-                                                      [errorsByID
-                                                          setObject:error
-                                                             forKey:SKYRecordConcatenatedID(
-                                                                        recordType, recordID)];
-                                                  } else {
-                                                      [deleteRecordTypes addObject:recordType];
-                                                      [deleteRecordIDs addObject:recordID];
-                                                  }
-                                              }];
+        [deserializer
+            deserializeResponseDictionary:obj
+                                    block:^(NSString *recordType, NSString *recordID,
+                                            SKYRecord *record, NSError *error) {
+                                        if (error) {
+                                            [results addObject:[[SKYRecordResult<SKYRecord *> alloc]
+                                                                   initWithError:error]];
+                                        } else {
+                                            record = [SKYRecord deletedRecordWithType:recordType
+                                                                             recordID:recordID];
+                                            [results addObject:[[SKYRecordResult<SKYRecord *> alloc]
+                                                                   initWithValue:record]];
+                                        }
+                                    }];
     }];
-
-    if (erroneousResponse) {
-        NSError *error =
-            [self.errorCreator errorWithCode:SKYErrorInvalidData
-                                     message:@"Missing `_id` or not in correct format."];
-        if (self.deleteRecordsCompletionBlock) {
-            self.deleteRecordsCompletionBlock(nil, nil, error);
-        }
-        return;
-    }
-
-    NSError *error = nil;
-    if ([errorsByID count] > 0) {
-        error = [self.errorCreator partialErrorWithPerItemDictionary:errorsByID];
-    }
-
-    for (NSUInteger i = 0; i < _recordTypes.count; i++) {
-        NSError *perRecordError =
-            errorsByID[SKYRecordConcatenatedID(_recordTypes[i], _recordIDs[i])];
-
-        if (self.perRecordCompletionBlock) {
-            self.perRecordCompletionBlock(_recordTypes[i], _recordIDs[i], perRecordError);
-        }
-    }
-
-    if (self.deleteRecordsCompletionBlock) {
-        self.deleteRecordsCompletionBlock(deleteRecordTypes, deleteRecordIDs, error);
-    }
+    self.deleteRecordsCompletionBlock(results, nil);
 }
 
 @end

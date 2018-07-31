@@ -20,14 +20,13 @@
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/NSURLRequest+HTTPBodyTesting.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYAccessControl_Private.h>
+#import <SKYKit/SKYContainer_Private.h>
 #import <SKYKit/SKYKit.h>
+#import <SKYKit/SKYNotification_Private.h>
+#import <SKYKit/SKYPubsubContainer_Private.h>
 
 #import "SKYHexer.h"
-
-#import "SKYAccessControl_Private.h"
-#import "SKYContainer_Private.h"
-#import "SKYNotification_Private.h"
-#import "SKYPubsubContainer_Private.h"
 
 SpecBegin(SKYContainer)
 

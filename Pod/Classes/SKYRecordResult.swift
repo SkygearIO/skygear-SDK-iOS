@@ -1,5 +1,5 @@
 //
-//  SKYRecordChange_Private.h
+//  SKYRecordResult.swift
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,13 +17,17 @@
 //  limitations under the License.
 //
 
-#import "SKYRecordChange.h"
+import Foundation
 
-@class SKYRecord;
+public enum SKYRecordResult<T> {
+    case success(T)
+    case error(Error)
 
-@interface SKYRecordChange ()
-
-@property (nonatomic, readwrite, getter=isFinished) BOOL finished;
-@property (nonatomic, readwrite) NSError *error;
-
-@end
+    internal static func fromObjC<T: Any>(_ obj: __SKYRecordResult<T>) -> SKYRecordResult<T> {
+        if let value = obj.value {
+            return SKYRecordResult<T>.success(value)
+        } else {
+            return SKYRecordResult<T>.error(obj.error!)
+        }
+    }
+}

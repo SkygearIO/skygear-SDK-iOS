@@ -8,9 +8,6 @@ PODS:
   - Expecta (1.0.6)
   - FBSDKCoreKit (4.30.0):
     - Bolts (~> 1.7)
-  - FMDB (2.6.2):
-    - FMDB/standard (= 2.6.2)
-  - FMDB/standard (2.6.2)
   - MagicKit-Skygear (0.0.6)
   - OCMock (3.4.1)
   - OHHTTPStubs (6.1.0):
@@ -28,19 +25,18 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (6.1.0)
   - SKYKit (1.6.0):
     - SKYKit/Core (= 1.6.0)
+    - SKYKit/Core-Swift (= 1.6.0)
     - SKYKit/ForgotPassword (= 1.6.0)
-    - SKYKit/RecordStorage (= 1.6.0)
     - SKYKit/SSO (= 1.6.0)
   - SKYKit/Core (1.6.0):
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
+  - SKYKit/Core-Swift (1.6.0):
+    - SKYKit/Core
   - SKYKit/Facebook (1.6.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
   - SKYKit/ForgotPassword (1.6.0):
-    - SKYKit/Core
-  - SKYKit/RecordStorage (1.6.0):
-    - FMDB (~> 2.6.0)
     - SKYKit/Core
   - SKYKit/SSO (1.6.0):
     - SKYKit/Core
@@ -56,22 +52,32 @@ DEPENDENCIES:
   - SKYKit/Facebook (from `../`)
   - Specta
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Bolts
+    - Expecta
+    - FBSDKCoreKit
+    - MagicKit-Skygear
+    - OCMock
+    - OHHTTPStubs
+    - SocketRocket
+    - Specta
+
 EXTERNAL SOURCES:
   SKYKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   FBSDKCoreKit: 7c4bba2877781a131ab5d54c0a78c405d4307b62
-  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: bc091aa3ca1d5101f5839baddceff70e4186cc58
+  SKYKit: 4d3c5495c2eea81836d67cb369fbebf85ae038d9
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 99aa3bbc29f1748afd1838be10322cbd4cda45c2
+PODFILE CHECKSUM: d2bdbcdda1d05a16a5aa0529882d2a724cbbb7a0
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

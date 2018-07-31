@@ -12,20 +12,24 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.default_subspecs = 'Core', 'ForgotPassword', 'SSO', 'RecordStorage'
+  s.default_subspecs = 'Core', 'Core-Swift', 'ForgotPassword', 'SSO'
 
   s.subspec 'Core' do |core|
     core.requires_arc = true
     core.ios.deployment_target = '8.0'
     core.osx.deployment_target = '10.9'
 
-    core.source_files = 'Pod/Classes/**/*'
+    core.source_files = 'Pod/Classes/**/*.{h,m}'
     core.private_header_files = 'Pod/Classes/**/*_Private.h'
 
-    # core.public_header_files = 'Pod/Classes/**/*.h'
-    # core.frameworks = 'UIKit', 'MapKit'
     core.dependency 'SocketRocket', '~> 0.4'
     core.dependency 'MagicKit-Skygear', '~> 0.0.6'
+  end
+
+  s.subspec 'Core-Swift' do |core|
+    core.source_files = 'Pod/Classes/**/*.{swift}'
+
+    core.dependency 'SKYKit/Core'
   end
 
   s.subspec 'Facebook' do |facebook|
@@ -56,15 +60,5 @@ Pod::Spec.new do |s|
     sso.requires_arc = true
 
     sso.dependency 'SKYKit/Core'
-  end
-
-  s.subspec 'RecordStorage' do |recordStorage|
-    recordStorage.ios.deployment_target = '8.0'
-
-    recordStorage.source_files = 'Pod/Extensions/Record Storage/**/*.{h,m}'
-    recordStorage.requires_arc = true
-
-    recordStorage.dependency 'SKYKit/Core'
-    recordStorage.dependency 'FMDB', '~> 2.6.0'
   end
 end

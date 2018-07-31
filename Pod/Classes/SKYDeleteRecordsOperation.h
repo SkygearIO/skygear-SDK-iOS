@@ -19,6 +19,7 @@
 
 #import "SKYDatabaseOperation.h"
 #import "SKYRecord.h"
+#import "SKYRecordResult.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -102,27 +103,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL atomic;
 
 /**
- Sets or returns a block to be called when progress information is available for deleting each
- record.
- */
-@property (nonatomic, copy) void (^_Nullable perRecordProgressBlock)
-    (NSString *_Nullable recordType, NSString *_Nullable recordID, double progress);
-
-/**
- Sets or returns a block to be called when the delete operation for individual record is completed.
- If an error occurred during the deletion, the <NSError> will be specified.
- */
-@property (nonatomic, copy) void (^_Nullable perRecordCompletionBlock)
-    (NSString *_Nullable deletedRecordType, NSString *_Nullable deletedRecordID,
-     NSError *_Nullable error);
-
-/**
  Sets or returns a block to be called when the entire operation completes. If the entire operation
  results in an error, the <NSError> will be specified.
  */
 @property (nonatomic, copy) void (^_Nullable deleteRecordsCompletionBlock)
-    (NSArray<NSString *> *_Nullable deletedRecordTypes,
-     NSArray<NSString *> *_Nullable deletedRecordIDs, NSError *_Nullable operationError);
+    (NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable results, NSError *_Nullable operationError);
 
 @end
 

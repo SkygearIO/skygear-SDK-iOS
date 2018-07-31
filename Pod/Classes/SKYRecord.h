@@ -232,6 +232,11 @@ extern NSString *const SKYRecordTypeUserRecord;
  */
 @property (nonatomic, readonly, copy) NSMutableDictionary<NSString *, id> *transient;
 
+/**
+ Returns whether the record is deleted.
+ */
+@property (nonatomic, readonly) BOOL deleted;
+
 @end
 
 NS_ASSUME_NONNULL_END

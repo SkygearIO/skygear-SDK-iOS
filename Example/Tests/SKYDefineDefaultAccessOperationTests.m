@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "SKYAccessControl_Private.h"
 #import <Foundation/Foundation.h>
+#import <SKYKit/SKYAccessControl_Private.h>
 #import <SKYKit/SKYKit.h>
 
 SpecBegin(SKYDefineDefaultAccessOperation)

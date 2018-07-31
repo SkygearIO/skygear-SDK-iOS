@@ -19,6 +19,8 @@
 
 #import "SKYAPSNotificationInfo.h"
 #import "SKYAccessControl.h"
+#import "SKYAccessControlDeserializer.h"
+#import "SKYAccessControlSerializer.h"
 #import "SKYAccessToken.h"
 #import "SKYAddRelationsOperation.h"
 #import "SKYAsset.h"
@@ -71,6 +73,7 @@
 #import "SKYRecordDeserializer.h"
 #import "SKYRecordID.h"
 #import "SKYRecordResponseDeserializer.h"
+#import "SKYRecordResult.h"
 #import "SKYRecordSerialization.h"
 #import "SKYRecordSerializer.h"
 #import "SKYReference.h"
@@ -112,8 +115,4 @@
 #if __has_include("SKYKitSSOExtension.h")
 #include "SKYKitSSOExtension.h"
 #endif
-#endif
-
-#if __has_include("SKYKitRecordStorageExtension.h")
-#include "SKYKitRecordStorageExtension.h"
 #endif

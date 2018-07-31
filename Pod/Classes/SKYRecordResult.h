@@ -1,5 +1,5 @@
 //
-//  SKYRecordStorageSqliteStore.h
+//  SKYRecordResult.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,26 +17,38 @@
 //  limitations under the License.
 //
 
-#import "SKYRecordStorageBackingStore.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-// NOTE(cheungpat): Should be removed after clang-format version 2018-04-24
-// clang-format off
+/**
+ SKYRecordResult represents a successful result or an error.
+ */
+NS_SWIFT_NAME(__SKYRecordResult)
+@interface SKYRecordResult <__covariant T> : NSObject
 
-/// Undocumented
-__attribute((deprecated)) @interface SKYRecordStorageSqliteStore : NSObject<SKYRecordStorageBackingStore>
+/**
+ Gets the result.
+ */
+@property (nonatomic, readonly, nullable) T value;
 
-/// Undocumented
--
-(instancetype)init NS_UNAVAILABLE;
+/**
+ Gets the error.
+ */
+@property (nonatomic, readonly, nullable) NSError *error;
 
-// clang-format on
+- (instancetype)init NS_UNAVAILABLE;
 
-/// Undocumented
-- (instancetype)initWithFile:(NSString *)path NS_DESIGNATED_INITIALIZER;
+/**
+ Instantiate a SKYRecordResult with a result value.
+ */
+- (instancetype)initWithValue:(T)value;
+
+/**
+ Instantiate a SKYRecordResult with an error.
+ */
+- (instancetype)initWithError:(NSError *)error;
 
 @end
 
-    NS_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

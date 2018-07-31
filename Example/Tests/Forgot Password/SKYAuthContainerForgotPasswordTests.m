@@ -19,9 +19,8 @@
 
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYAuthContainer_Private.h>
 #import <SKYKit/SKYKit.h>
-
-#import "SKYAuthContainer_Private.h"
 
 SpecBegin(SKYAuthContainerForgotPassword)
 

@@ -19,11 +19,10 @@
 
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <SKYKit/SKYAuthContainer_Private.h>
 #import <SKYKit/SKYKit.h>
 
 #import "SKYHexer.h"
-
-#import "SKYAuthContainer_Private.h"
 
 // an empty SKYOperation subclass that does nothing but call its completion handler
 @interface MockOperation : SKYOperation

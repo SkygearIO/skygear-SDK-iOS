@@ -20,10 +20,9 @@
 #import <Foundation/Foundation.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
 #import <SKYKit/SKYKit.h>
+#import <SKYKit/SKYPubsubContainer_Private.h>
 
 #import "SKYHexer.h"
-
-#import "SKYPubsubContainer_Private.h"
 
 SpecBegin(SKYPubsubContainer)
 

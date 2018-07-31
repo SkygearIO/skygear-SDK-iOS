@@ -17,8 +17,8 @@
 //  limitations under the License.
 //
 
-#import "SKYContainer.h"
 #import <Foundation/Foundation.h>
+#import <SKYKit/SKYKit.h>
 
 @interface SKYContainer (Test)
 

@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2AF9E45174F02FA44938F0D1 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F9E13B85E0AD3E4D614D32 /* libPods-Tests.a */; };
+		23F9D6FD9EEA522D9B06CA39 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DA4C9E63D112643EF96AD7E /* Pods_Tests.framework */; };
 		372E77911B28338A001F1972 /* SKYAccessControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 372E77901B28338A001F1972 /* SKYAccessControlTests.m */; };
 		372FD24E1AF79F59008128EC /* SKYHexer.m in Sources */ = {isa = PBXBuildFile; fileRef = 372FD24D1AF79F59008128EC /* SKYHexer.m */; };
 		3745755A1B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 374575591B08C682004539C3 /* SKYDeleteSubscriptionsOperationTests.m */; };
@@ -37,18 +37,13 @@
 		3813B6AF1D35E62C004F4E14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6AD1D35E62C004F4E14 /* Main.storyboard */; };
 		3813B6B11D35E62C004F4E14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6B01D35E62C004F4E14 /* Assets.xcassets */; };
 		3813B6B41D35E62C004F4E14 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3813B6B21D35E62C004F4E14 /* LaunchScreen.storyboard */; };
-		383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */; };
-		383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */; };
 		383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383CE06C1ADBB8420085E24B /* SKYQueryTests.m */; };
 		383D272B1B46EBA300AE8606 /* SKYLambdaOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */; };
-		3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */; };
 		387F41B91D3DE52D0081D2AE /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387F41B81D3DE52D0081D2AE /* TextFieldTableViewCell.swift */; };
 		387F41BB1D3DE5690081D2AE /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387F41BA1D3DE5690081D2AE /* PickerTableViewCell.swift */; };
-		38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */; };
 		38A48B441D34E41800988B84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A48B431D34E41800988B84 /* main.m */; };
 		38A48B471D34E41800988B84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A48B461D34E41800988B84 /* AppDelegate.m */; };
 		38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */; };
-		38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */; };
 		38D3E2281B7ED41E00CCD28D /* SKYResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */; };
 		38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */; };
 		38D3E2341B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */; };
@@ -79,7 +74,8 @@
 		606CB9941FB5991800046BCE /* SKYReferenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 606CB9931FB5991800046BCE /* SKYReferenceTests.m */; };
 		607B788D1C7B0DD500498FAC /* SKYRoleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 607B788C1C7B0DD500498FAC /* SKYRoleTests.m */; };
 		60B47C631C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */; };
-		61EC71D6586A7B54510F43BE /* libPods-Test Runner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A045FB52079D18AA899BF47 /* libPods-Test Runner.a */; };
+		66CE47C1B050A4C6A91FA25F /* Pods_Test_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4781835652584DE845919A48 /* Pods_Test_Runner.framework */; };
+		813FB5FB38FCDD9C45A9195D /* Pods_Mac_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07045BAB8A44BE97FECFB097 /* Pods_Mac_Example.framework */; };
 		9EC4F4B220528E1C00D62C73 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */; };
 		A9CC0CAB1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */; };
 		A9CC0CAD1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A9CC0CAC1F25A04B00FE8B8D /* SKYRevokeUserRoleOperation.m */; };
@@ -118,7 +114,6 @@
 		F4BACC8E20221D79003E2FAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F4BACC8D20221D79003E2FAA /* main.m */; };
 		F4E355DC20343B120053E0A9 /* SKYSetDisableUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */; };
 		F4E553262074DE1D000E854A /* SKYContainer+Test.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E553252074DE1D000E854A /* SKYContainer+Test.m */; };
-		F72C1CD25FC5E7B211DE7002 /* libPods-Mac Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9CFCD1EE493CB3F6B12642B /* libPods-Mac Example.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,11 +127,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07045BAB8A44BE97FECFB097 /* Pods_Mac_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mac_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ABCCA4A6587D99309D358CA /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		0D0271D34A0BED4B72961477 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		186122FADBE78900445CC501 /* Pods-Swift Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swift Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example.debug.xcconfig"; sourceTree = "<group>"; };
 		18C7CD9796A87EEC8773A265 /* Pods-Test Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test Runner.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner.release.xcconfig"; sourceTree = "<group>"; };
 		2C525CB7BEDCD9C5F745CECD /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		2DA4C9E63D112643EF96AD7E /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		372E77901B28338A001F1972 /* SKYAccessControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAccessControlTests.m; sourceTree = "<group>"; };
 		372FD24C1AF79F59008128EC /* SKYHexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKYHexer.h; sourceTree = "<group>"; };
 		372FD24D1AF79F59008128EC /* SKYHexer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYHexer.m; sourceTree = "<group>"; };
@@ -155,21 +152,16 @@
 		3813B6B01D35E62C004F4E14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3813B6B31D35E62C004F4E14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3813B6B51D35E62C004F4E14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordChangeTests.m; sourceTree = "<group>"; };
-		383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageTests.m; sourceTree = "<group>"; };
 		383CE06C1ADBB8420085E24B /* SKYQueryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYQueryTests.m; sourceTree = "<group>"; };
 		383D272A1B46EBA300AE8606 /* SKYLambdaOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLambdaOperationTests.m; sourceTree = "<group>"; };
-		3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageCoordinatorTests.m; sourceTree = "<group>"; };
 		387F41B81D3DE52D0081D2AE /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		387F41BA1D3DE5690081D2AE /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
-		38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordSynchronizerTests.m; sourceTree = "<group>"; };
 		38A48B401D34E41800988B84 /* Test Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Test Runner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A48B431D34E41800988B84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		38A48B451D34E41800988B84 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		38A48B461D34E41800988B84 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		38A48B531D34E41800988B84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		38C1A5271C24316C003E57B7 /* SKYErrorCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYErrorCreatorTests.m; sourceTree = "<group>"; };
-		38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRecordStorageBackingStoreTests.m; sourceTree = "<group>"; };
 		38D3E2271B7ED41E00CCD28D /* SKYResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResponseTest.m; sourceTree = "<group>"; };
 		38D3E2291B7ED83600CCD28D /* SKYResultArrayResponseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYResultArrayResponseTest.m; sourceTree = "<group>"; };
 		38D3E2331B7EDFD300CCD28D /* SKYSendPushNotificationOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSendPushNotificationOperationTests.m; sourceTree = "<group>"; };
@@ -185,6 +177,7 @@
 		38E8EB491D3F115D004AE52B /* UserAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAuthenticationViewController.swift; sourceTree = "<group>"; };
 		38EAA71A1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLocationSortDescriptorTests.m; sourceTree = "<group>"; };
 		3CA6B566CC8E79627E5C2EEE /* Pods-Test Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test Runner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		4781835652584DE845919A48 /* Pods_Test_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Test_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F0532C01B8D912E00DA4D8B /* SKYPubsubTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYPubsubTests.m; sourceTree = "<group>"; };
 		5F9F71401B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAddRelationsOperationTests.m; sourceTree = "<group>"; };
 		5F9F71421B0B349700F7ADDD /* SKYRemoveRelationsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRemoveRelationsOperationTests.m; sourceTree = "<group>"; };
@@ -207,7 +200,6 @@
 		60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineCreationAccessOperationTests.m; sourceTree = "<group>"; };
 		6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SKYKit.podspec; path = ../SKYKit.podspec; sourceTree = "<group>"; };
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		9A045FB52079D18AA899BF47 /* libPods-Test Runner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Test Runner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		A827C48B1AC7FFDD987D3EB4 /* Pods-Mac Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mac Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example.release.xcconfig"; sourceTree = "<group>"; };
 		A9CC0CAA1F259B7600FE8B8D /* SKYAssignUserRoleOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssignUserRoleOperationTests.m; sourceTree = "<group>"; };
@@ -237,7 +229,6 @@
 		CD98A8A51A9F34390056420F /* SKYFetchRecordsOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYFetchRecordsOperationTests.m; sourceTree = "<group>"; };
 		CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYQuerySerializerTests.m; sourceTree = "<group>"; };
 		CF234C621E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineDefaultAccessOperationTests.m; sourceTree = "<group>"; };
-		D4F9E13B85E0AD3E4D614D32 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7512B977EF61E3298F643E9 /* Pods-Mac Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mac Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example.debug.xcconfig"; sourceTree = "<group>"; };
 		F413CD5B1ED6BBE2001EBFAB /* SKYAssetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYAssetTests.m; sourceTree = "<group>"; };
 		F43389DF1FE280BE00B7B317 /* SKYLoginCustomTokenOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYLoginCustomTokenOperationTests.m; sourceTree = "<group>"; };
@@ -255,7 +246,6 @@
 		F4E355DB20343B120053E0A9 /* SKYSetDisableUserOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYSetDisableUserOperationTests.m; sourceTree = "<group>"; };
 		F4E553242074DE1D000E854A /* SKYContainer+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SKYContainer+Test.h"; sourceTree = "<group>"; };
 		F4E553252074DE1D000E854A /* SKYContainer+Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SKYContainer+Test.m"; sourceTree = "<group>"; };
-		F9CFCD1EE493CB3F6B12642B /* libPods-Mac Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mac Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,7 +261,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61EC71D6586A7B54510F43BE /* libPods-Test Runner.a in Frameworks */,
+				66CE47C1B050A4C6A91FA25F /* Pods_Test_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +272,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				2AF9E45174F02FA44938F0D1 /* libPods-Tests.a in Frameworks */,
+				23F9D6FD9EEA522D9B06CA39 /* Pods_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +280,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F72C1CD25FC5E7B211DE7002 /* libPods-Mac Example.a in Frameworks */,
+				813FB5FB38FCDD9C45A9195D /* Pods_Mac_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,10 +390,10 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				F9CFCD1EE493CB3F6B12642B /* libPods-Mac Example.a */,
 				AF830E6671191AF604718509 /* Pods_Swift_Example.framework */,
-				9A045FB52079D18AA899BF47 /* libPods-Test Runner.a */,
-				D4F9E13B85E0AD3E4D614D32 /* libPods-Tests.a */,
+				07045BAB8A44BE97FECFB097 /* Pods_Mac_Example.framework */,
+				4781835652584DE845919A48 /* Pods_Test_Runner.framework */,
+				2DA4C9E63D112643EF96AD7E /* Pods_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -450,14 +440,9 @@
 				CD42FE131AA4499C0079B3DA /* SKYQueryOperationTests.m */,
 				CDF571021AB4825700091DB3 /* SKYQuerySerializerTests.m */,
 				383CE06C1ADBB8420085E24B /* SKYQueryTests.m */,
-				383510E91AFB4DF5009DD3E2 /* SKYRecordChangeTests.m */,
 				CD98A8A31A9F28030056420F /* SKYRecordDeserializerTests.m */,
 				CD5697291AAC7D3700AE596B /* SKYRecordIDTests.m */,
 				CD8FE82F1A9F1FE10087FE71 /* SKYRecordSerializerTests.m */,
-				38CBC3721B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m */,
-				3867EA321AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m */,
-				383510EB1AFB5014009DD3E2 /* SKYRecordStorageTests.m */,
-				38A115341B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m */,
 				CD56972D1AAC7E2500AE596B /* SKYRecordTests.m */,
 				606CB9931FB5991800046BCE /* SKYReferenceTests.m */,
 				38E053D81AC1489A00850988 /* SKYRegisterDeviceOperationTests.m */,
@@ -560,7 +545,6 @@
 				3813B6A31D35E62C004F4E14 /* Resources */,
 				389ABCDE1DE1599C00CE8394 /* SwiftLint */,
 				C21173344AD62BF2194F1DB6 /* [CP] Embed Pods Frameworks */,
-				7CEA7FD719A775A85E2059A5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -580,7 +564,6 @@
 				38A48B3D1D34E41800988B84 /* Frameworks */,
 				38A48B3E1D34E41800988B84 /* Resources */,
 				71A2C81E443505E1701BF02D /* [CP] Embed Pods Frameworks */,
-				2DFC09E9BE63F14C78CEA5F8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -600,7 +583,6 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				59C1FF3D707B885582757578 /* [CP] Embed Pods Frameworks */,
-				7112832E8CEB57CE92E0791E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -621,7 +603,6 @@
 				F4BACC7F20221D78003E2FAA /* Frameworks */,
 				F4BACC8020221D78003E2FAA /* Resources */,
 				C69F32A5C4556D5E0D670CE7 /* [CP] Embed Pods Frameworks */,
-				738A1C60018E02AB8C5D9F5F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -741,26 +722,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2DFC09E9BE63F14C78CEA5F8 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-resources.sh",
-				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
-				"${PODS_ROOT}/MagicKit-Skygear/magic.mgc",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		33454CFEDFC6FCA85EF6C190 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -817,33 +778,32 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7112832E8CEB57CE92E0791E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh",
-				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
-				"${PODS_ROOT}/MagicKit-Skygear/magic.mgc",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		71A2C81E443505E1701BF02D /* [CP] Embed Pods Frameworks */ = {
@@ -852,46 +812,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Test Runner/Pods-Test Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		738A1C60018E02AB8C5D9F5F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example-resources.sh",
-				"${PODS_ROOT}/MagicKit-Skygear/magic.mgc",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/magic.mgc",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7CEA7FD719A775A85E2059A5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A721F23238A467241E05AA22 /* [CP] Check Pods Manifest.lock */ = {
@@ -919,18 +857,16 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Swift Example/Pods-Swift Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Bolts-framework/Bolts.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit-framework/FBSDKCoreKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FMDB-framework/FMDB.framework",
-				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-framework/MagicKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook-framework/SKYKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SocketRocket-framework/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
@@ -946,9 +882,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-macOS/MagicKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SKYKit-Core/SKYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SocketRocket-macOS/SocketRocket.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1008,7 +951,6 @@
 			files = (
 				CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */,
 				38C1A5281C24316C003E57B7 /* SKYErrorCreatorTests.m in Sources */,
-				38CBC3731B0B23E200CA21B6 /* SKYRecordStorageBackingStoreTests.m in Sources */,
 				A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */,
 				38D3E22A1B7ED83600CCD28D /* SKYResultArrayResponseTest.m in Sources */,
 				CD48CE0D1AA05A9200A1CD04 /* SKYContainerTests.m in Sources */,
@@ -1016,7 +958,6 @@
 				38E053D91AC1489A00850988 /* SKYRegisterDeviceOperationTests.m in Sources */,
 				CD56972E1AAC7E2500AE596B /* SKYRecordTests.m in Sources */,
 				60209E5B1D76C48E00B7E10B /* SKYGetAssetPostRequestOperationTests.m in Sources */,
-				3867EA331AFC5B7100962100 /* SKYRecordStorageCoordinatorTests.m in Sources */,
 				37CDD6041B4BF1F8007B9FE1 /* SKYUploadAssetOperationTests.m in Sources */,
 				CD98A8A41A9F28030056420F /* SKYRecordDeserializerTests.m in Sources */,
 				383CE06D1ADBB8420085E24B /* SKYQueryTests.m in Sources */,
@@ -1029,7 +970,6 @@
 				3785584A1AE63FEC00685319 /* SKYSubscriptionSerializerTests.m in Sources */,
 				CD48CE0F1AA06C7900A1CD04 /* SKYModifyRecordsOperationTests.m in Sources */,
 				F413CD5C1ED6BBE2001EBFAB /* SKYAssetTests.m in Sources */,
-				38A115351B02EC4E00D3BAFB /* SKYRecordSynchronizerTests.m in Sources */,
 				CF234C631E8AB08600BF4E0F /* SKYDefineDefaultAccessOperationTests.m in Sources */,
 				CD7FE2721A9EDD5B002C076E /* SKYSignupUserOperationTests.m in Sources */,
 				CD56972A1AAC7D3700AE596B /* SKYRecordIDTests.m in Sources */,
@@ -1039,7 +979,6 @@
 				374863DA1C3CF16000A6E787 /* SKYChangePasswordOperationTests.m in Sources */,
 				37CDD6071B4C040F007B9FE1 /* SKYDownloadAssetOperationTests.m in Sources */,
 				CDF571031AB4825700091DB3 /* SKYQuerySerializerTests.m in Sources */,
-				383510EA1AFB4DF5009DD3E2 /* SKYRecordChangeTests.m in Sources */,
 				38EAA71B1B84937C009D25C1 /* SKYLocationSortDescriptorTests.m in Sources */,
 				F43CFB71205FBAF10059510C /* SKYAuthContainerForgotPasswordTests.m in Sources */,
 				CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */,
@@ -1056,7 +995,6 @@
 				CD7FE26D1A9DBB9F002C076E /* SKYLoginUserOperationTests.m in Sources */,
 				372E77911B28338A001F1972 /* SKYAccessControlTests.m in Sources */,
 				5F9F71411B0B131A00F7ADDD /* SKYAddRelationsOperationTests.m in Sources */,
-				383510EC1AFB5014009DD3E2 /* SKYRecordStorageTests.m in Sources */,
 				60209E651D76F18400B7E10B /* SKYPostAssetOperationTests.m in Sources */,
 				CD8FE8301A9F1FE10087FE71 /* SKYRecordSerializerTests.m in Sources */,
 				CD42FE141AA4499C0079B3DA /* SKYQueryOperationTests.m in Sources */,
