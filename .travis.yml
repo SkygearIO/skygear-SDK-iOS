@@ -61,7 +61,7 @@ jobs:
     # deploy
     - if: type != pull_request
       language: ruby
-      rvm: 2.2.4
+      rvm: 2.5.1
       install:
         - gem install jazzy
         - pip2 install awscli
