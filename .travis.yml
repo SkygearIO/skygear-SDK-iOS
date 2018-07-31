@@ -12,7 +12,8 @@ env:
 
 stages:
   - test
-  - deploy
+  - name: deploy
+    if: type != pull_request
 
 refs:
   - &pod_test_config
@@ -58,21 +59,14 @@ jobs:
         - swiftlint --strict
         - lizard Pod/ -C 15 -W .lizard -w -i 0
 
-    # deploy
-    - if: type != pull_request
-      language: ruby
-      rvm: 2.2.4
+    - <<: *pod_test_config
+      stage: deploy
       install:
+        - rvm install ruby-2.5.1
+        - rvm use ruby-2.5.1
         - gem install jazzy
         - pip2 install awscli
-      script: /bin/true
-      deploy:
-        - provider: script
-          script: scripts/deploy.sh
-          skip_cleanup: true
-          on:
-            repo: SkygearIO/skygear-SDK-iOS
-            all_branches: true
+      script: scripts/deploy.sh
 
 notifications:
   slack:
