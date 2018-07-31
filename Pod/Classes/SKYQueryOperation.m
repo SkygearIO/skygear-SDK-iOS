@@ -20,13 +20,12 @@
 #import "SKYQueryOperation.h"
 #import "SKYDataSerialization.h"
 #import "SKYOperationSubclass.h"
+#import "SKYQueryInfo_Private.h"
 #import "SKYQuerySerializer.h"
 #import "SKYRecordResponseDeserializer.h"
 #import "SKYRecordSerialization.h"
 
 @interface SKYQueryOperation ()
-
-@property SKYQueryCursor *cursor;
 
 @end
 
@@ -41,23 +40,9 @@
     return self;
 }
 
-- (instancetype)initWithCursor:(SKYQueryCursor *)cursor
-{
-    self = [super init];
-    if (self) {
-        _cursor = cursor;
-    }
-    return self;
-}
-
 + (instancetype)operationWithQuery:(SKYQuery *)query
 {
     return [[self alloc] initWithQuery:query];
-}
-
-+ (instancetype)operationWithCursor:(SKYQueryCursor *)cursor
-{
-    return [[self alloc] initWithCursor:cursor];
 }
 
 - (void)prepareForRequest
@@ -124,12 +109,18 @@
 
     [self processResultInfo:response[@"info"]];
 
+    SKYQueryInfo *queryInfo = [[SKYQueryInfo alloc] init];
+    queryInfo.overallCount = _overallCount;
+
     if ([responseArray isKindOfClass:[NSArray class]]) {
         resultArray = [self processResultArray:responseArray
                                 perRecordBlock:^(SKYRecord *record) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
                                     if (self.perRecordCompletionBlock) {
                                         self.perRecordCompletionBlock(record);
                                     }
+#pragma GCC diagnostic pop
                                 }];
     } else {
         error = [self.errorCreator errorWithCode:SKYErrorBadResponse
@@ -137,7 +128,7 @@
     }
 
     if (self.queryRecordsCompletionBlock) {
-        self.queryRecordsCompletionBlock(resultArray, nil, error);
+        self.queryRecordsCompletionBlock(resultArray, queryInfo, error);
     }
 }
 

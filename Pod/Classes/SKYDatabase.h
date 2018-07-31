@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SKYDatabaseOperation;
 @class SKYQuery;
+@class SKYQueryInfo;
 @class SKYSubscription;
 @class SKYContainer;
 
@@ -57,6 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)performQuery:(SKYQuery *)query
           completion:(void (^_Nullable)(NSArray<SKYRecord *> *_Nullable results,
+                                        SKYQueryInfo *_Nullable info,
                                         NSError *_Nullable error))completion
     /* clang-format off */ NS_SWIFT_NAME(performQuery(_:completion:)); /* clang-format on */
 

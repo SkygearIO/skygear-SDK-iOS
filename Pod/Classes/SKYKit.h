@@ -67,6 +67,7 @@
 #import "SKYQuery.h"
 #import "SKYQueryCursor.h"
 #import "SKYQueryDeserializer.h"
+#import "SKYQueryInfo.h"
 #import "SKYQueryOperation.h"
 #import "SKYQuerySerializer.h"
 #import "SKYRecord.h"

@@ -394,7 +394,10 @@ SpecBegin(SKYDatabase)
                                 @"_type" : @"record",
                                 @"title" : @"A tale of two cities",
                             },
-                        ]
+                        ],
+                        @"info" : @[ @{
+                            @"count" : @24,
+                        } ]
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -406,7 +409,8 @@ SpecBegin(SKYDatabase)
             waitUntil(^(DoneCallback done) {
                 SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
                 [database performQuery:query
-                            completion:^(NSArray *results, NSError *error) {
+                            completion:^(NSArray<SKYRecord *> *results, SKYQueryInfo *info,
+                                         NSError *error) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     expect(results).to.haveCountOf(1);
                                     expect(((SKYRecord *)results[0]).recordType).to.equal(@"book");
@@ -432,7 +436,8 @@ SpecBegin(SKYDatabase)
             waitUntil(^(DoneCallback done) {
                 SKYQuery *query = [[SKYQuery alloc] initWithRecordType:@"book" predicate:nil];
                 [database performQuery:query
-                            completion:^(NSArray *results, NSError *error) {
+                            completion:^(NSArray<SKYRecord *> *results, SKYQueryInfo *info,
+                                         NSError *error) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     expect(error).notTo.beNil();
                                     expect(error.domain).to.equal(SKYOperationErrorDomain);

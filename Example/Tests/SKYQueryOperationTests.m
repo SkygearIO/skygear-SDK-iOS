@@ -150,13 +150,13 @@ SpecBegin(SKYQueryOperation)
             waitUntil(^(DoneCallback done) {
                 __weak SKYQueryOperation *weakOperation = operation;
                 operation.queryRecordsCompletionBlock =
-                    ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+                    ^(NSArray *fetchedRecords, SKYQueryInfo *info, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect([fetchedRecords class]).to.beSubclassOf([NSArray class]);
                             expect(fetchedRecords).to.haveCountOf(2);
                             expect([fetchedRecords[0] recordID]).to.equal(@"book1");
                             expect([fetchedRecords[1] recordID]).to.equal(@"book2");
-                            expect(weakOperation.overallCount).to.equal(2);
+                            expect(info.overallCount).to.equal(2);
                             done();
                         });
                     };
@@ -180,7 +180,7 @@ SpecBegin(SKYQueryOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.queryRecordsCompletionBlock =
-                    ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+                    ^(NSArray *fetchedRecords, SKYQueryInfo *info, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(operationError).toNot.beNil();
                             done();
@@ -213,7 +213,10 @@ SpecBegin(SKYQueryOperation)
                                 @"_recordID" : @"book2",
                                 @"_type" : @"unknown",
                             },
-                        ]
+                        ],
+                        @"info" : @{
+                            @"count" : @24,
+                        }
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -224,6 +227,8 @@ SpecBegin(SKYQueryOperation)
 
             waitUntil(^(DoneCallback done) {
                 NSMutableArray<NSString *> *remainingRecordIDs = [@[ @"book1" ] mutableCopy];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
                 operation.perRecordCompletionBlock = ^(SKYRecord *record) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(record).toNot.beNil();
@@ -233,11 +238,12 @@ SpecBegin(SKYQueryOperation)
                         [remainingRecordIDs removeObject:record.recordID];
                     });
                 };
-
+#pragma GCC diagnostic pop
                 operation.queryRecordsCompletionBlock =
-                    ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+                    ^(NSArray *fetchedRecords, SKYQueryInfo *info, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(remainingRecordIDs).to.haveCountOf(0);
+                            expect(info.overallCount).to.equal(24);
                             done();
                         });
                     };
@@ -282,6 +288,10 @@ SpecBegin(SKYQueryOperation)
                                 }
                             },
                         ],
+                        @"info" : @{
+                            @"count" : @24,
+                        }
+
                     };
                     NSData *payload =
                         [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -292,6 +302,8 @@ SpecBegin(SKYQueryOperation)
 
             waitUntil(^(DoneCallback done) {
                 NSMutableArray<NSString *> *remainingRecordIDs = [@[ @"book1" ] mutableCopy];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
                 operation.perRecordCompletionBlock = ^(SKYRecord *record) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         expect(record).toNot.beNil();
@@ -304,11 +316,13 @@ SpecBegin(SKYQueryOperation)
                         [remainingRecordIDs removeObject:record.recordID];
                     });
                 };
+#pragma GCC diagnostic pop
 
                 operation.queryRecordsCompletionBlock =
-                    ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+                    ^(NSArray *fetchedRecords, SKYQueryInfo *info, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(remainingRecordIDs).to.haveCountOf(0);
+                            expect(info.overallCount).to.equal(24);
                             done();
                         });
                     };

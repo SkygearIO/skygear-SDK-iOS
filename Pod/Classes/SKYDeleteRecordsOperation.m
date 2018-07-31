@@ -35,10 +35,10 @@
                           recordIDs:(NSArray<NSString *> *)recordIDs
 {
     if ([recordTypes count] != [recordIDs count]) {
-        NSString *reason =
-            [NSString stringWithFormat:@"The number of record IDs (%lu) does not match the number "
-                                       @"of the record types (%lu).",
-                                       (unsigned long)[recordIDs count], [recordTypes count]];
+        NSString *reason = [NSString
+            stringWithFormat:@"The number of record IDs (%lu) does not match the number "
+                             @"of the record types (%lu).",
+                             (unsigned long)[recordIDs count], (unsigned long)[recordTypes count]];
         @throw
             [NSException exceptionWithName:NSInvalidArgumentException reason:reason userInfo:nil];
     }

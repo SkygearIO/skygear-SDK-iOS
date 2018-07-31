@@ -19,6 +19,12 @@
 
 #import "SKYQueryCursor.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
+
 @implementation SKYQueryCursor
 
 @end
+
+#pragma GCC diagnostic pop
