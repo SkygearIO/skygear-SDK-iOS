@@ -339,14 +339,15 @@
 {
     [self sky_saveRecords:@[ record ]
                atomically:NO
-               completion:^(NSArray<SKYRecordResult<SKYRecord *> *> *results, NSError *error) {
+               completion:^(NSArray<SKYRecordResult<SKYRecord *> *> *results,
+                            NSError *operationError) {
                    if (!completion) {
                        return;
                    }
-                   if (error) {
-                       completion(nil, error);
+                   if (operationError) {
+                       completion(nil, operationError);
                    } else {
-                       completion(results[0].value, nil);
+                       completion(results.firstObject.value, results.firstObject.error);
                    }
                }];
 }
@@ -408,7 +409,7 @@
                                                     userInfo:nil]);
                     return;
                 }
-                completion(results[0], nil);
+                completion(results.firstObject, nil);
             }];
 }
 
