@@ -47,7 +47,7 @@ extension SKYDatabase {
     }
 
     public func deleteRecordsNonAtomically(_ records: [SKYRecord], completion: (([SKYRecordResult<SKYRecord>]?, Error?) -> Void)?) {
-        __deleteRecordsNonAtomicallyRecords(records) { (results, operationError) in
+        __deleteRecordsNonAtomically(records) { (results, operationError) in
             guard let completion = completion else {
                 return
             }

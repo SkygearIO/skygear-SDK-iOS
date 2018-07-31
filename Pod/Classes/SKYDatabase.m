@@ -610,9 +610,8 @@
                  }];
 }
 
-- (void)deleteRecordsNonAtomicallyRecords:(NSArray<SKYRecord *> *)records
-                               completion:
-                                   (void (^)(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable,
+- (void)deleteRecordsNonAtomically:(NSArray<SKYRecord *> *)records
+                        completion:(void (^)(NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable,
                                              NSError *_Nullable))completion
 {
     [self sky_deleteRecords:records atomically:NO completion:completion];

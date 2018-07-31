@@ -269,10 +269,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion the block to be called when operation completes. The specified block is
  also called when an operation error occurred.
  */
-- (void)deleteRecordsNonAtomicallyRecords:(NSArray<SKYRecord *> *)records
-                               completion:(void (^_Nullable)(NSArray<SKYRecordResult<SKYRecord *> *>
-                                                                 *_Nullable deletedRecords,
-                                                             NSError *_Nullable error))completion
+- (void)deleteRecordsNonAtomically:(NSArray<SKYRecord *> *)records
+                        completion:
+                            (void (^_Nullable)(
+                                NSArray<SKYRecordResult<SKYRecord *> *> *_Nullable deletedRecords,
+                                NSError *_Nullable error))completion
     /* clang-format off */ NS_REFINED_FOR_SWIFT; /* clang-format on */
 
 /// Undocumented
