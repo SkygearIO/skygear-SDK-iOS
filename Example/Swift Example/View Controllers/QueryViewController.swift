@@ -78,7 +78,7 @@ class QueryViewController: UITableViewController, PredicateViewControllerDelegat
     }
 
     func performQuery(_ query: SKYQuery, handler: (() -> Void)?) {
-        SKYContainer.default().publicCloudDatabase.performQuery(query) { (records, error) in
+        SKYContainer.default().publicCloudDatabase.performQuery(query) { (records, _, error) in
             if error != nil {
                 let alert = UIAlertController(title: "Unable to query", message: error?.localizedDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

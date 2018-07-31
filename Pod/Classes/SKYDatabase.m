@@ -393,7 +393,8 @@
         [SKYQuery queryWithRecordType:recordType
                             predicate:[NSPredicate predicateWithFormat:@"_id = %@", recordID]];
     [self performQuery:query
-            completion:^(NSArray<SKYRecord *> *_Nullable results, NSError *_Nullable error) {
+            completion:^(NSArray<SKYRecord *> *_Nullable results, SKYQueryInfo *_Nullable info,
+                         NSError *_Nullable error) {
                 if (!completion) {
                     return;
                 }
@@ -423,7 +424,8 @@
                             predicate:[NSPredicate predicateWithFormat:@"_id IN %@", recordIDs]];
     [self
         performQuery:query
-          completion:^(NSArray<SKYRecord *> *_Nullable results, NSError *_Nullable error) {
+          completion:^(NSArray<SKYRecord *> *_Nullable results, SKYQueryInfo *_Nullable info,
+                       NSError *_Nullable error) {
               if (error) {
                   if (completion) {
                       completion(nil, error);
@@ -621,15 +623,16 @@
 #pragma mark - Querying Records
 
 - (void)performQuery:(SKYQuery *)query
-          completion:(void (^)(NSArray<SKYRecord *> *, NSError *))completion
+          completion:(void (^)(NSArray<SKYRecord *> *, SKYQueryInfo *, NSError *))completion
 {
     SKYQueryOperation *operation = [[SKYQueryOperation alloc] initWithQuery:query];
 
     if (completion) {
         operation.queryRecordsCompletionBlock =
-            ^(NSArray *fetchedRecords, SKYQueryCursor *cursor, NSError *operationError) {
+            ^(NSArray<SKYRecord *> *fetchedRecords, SKYQueryInfo *queryInfo,
+              NSError *operationError) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(fetchedRecords, operationError);
+                    completion(fetchedRecords, queryInfo, operationError);
                 });
             };
     }
@@ -647,7 +650,7 @@
     }
 
     [self performQuery:query
-            completion:^(NSArray *results, NSError *error) {
+            completion:^(NSArray<SKYRecord *> *results, SKYQueryInfo *info, NSError *error) {
                 if (error) {
                     if (completion) {
                         completion(cachedResults, NO, error);

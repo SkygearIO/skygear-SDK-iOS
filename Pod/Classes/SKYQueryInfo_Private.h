@@ -1,5 +1,5 @@
 //
-//  SKYQueryCursor.h
+//  SKYQueryInfo_Private.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -19,11 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@interface SKYQueryInfo ()
 
-/// Undocumented
-__attribute__((deprecated)) @interface SKYQueryCursor : NSObject
+@property (nonatomic, readwrite) NSUInteger overallCount;
 
-                                                        @end
-
-                                                            NS_ASSUME_NONNULL_END
+@end

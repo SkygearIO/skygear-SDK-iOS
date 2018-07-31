@@ -1,5 +1,5 @@
 //
-//  SKYQueryCursor.h
+//  SKYQueryInfo.m
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,13 +17,9 @@
 //  limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+#import "SKYQueryInfo.h"
+#import "SKYQueryInfo_Private.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation SKYQueryInfo
 
-/// Undocumented
-__attribute__((deprecated)) @interface SKYQueryCursor : NSObject
-
-                                                        @end
-
-                                                            NS_ASSUME_NONNULL_END
+@end
