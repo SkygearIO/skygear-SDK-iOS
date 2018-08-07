@@ -31,6 +31,7 @@ PODS:
   - SKYKit/Core (1.6.0):
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
+    - XMLDictionary (~> 1.4.1)
   - SKYKit/Core-Swift (1.6.0):
     - SKYKit/Core
   - SKYKit/Facebook (1.6.0):
@@ -42,6 +43,7 @@ PODS:
     - SKYKit/Core
   - SocketRocket (0.5.1)
   - Specta (1.0.7)
+  - XMLDictionary (1.4.1)
 
 DEPENDENCIES:
   - Expecta
@@ -62,6 +64,7 @@ SPEC REPOS:
     - OHHTTPStubs
     - SocketRocket
     - Specta
+    - XMLDictionary
 
 EXTERNAL SOURCES:
   SKYKit:
@@ -74,9 +77,10 @@ SPEC CHECKSUMS:
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: 4d3c5495c2eea81836d67cb369fbebf85ae038d9
+  SKYKit: 2d45c0ddb64e63545765c08b6fcf2279871edd64
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
 PODFILE CHECKSUM: d2bdbcdda1d05a16a5aa0529882d2a724cbbb7a0
 
