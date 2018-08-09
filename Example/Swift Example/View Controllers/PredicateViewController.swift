@@ -128,7 +128,7 @@ class PredicateViewController: UITableViewController, UIPickerViewDelegate, UIPi
 
         let leftExpr = NSExpression(forKeyPath: attributeName)
         let rightExpr = NSExpression(forConstantValue: attributeValue)
-        var predicate: NSComparisonPredicate? = nil
+        var predicate: NSComparisonPredicate?
 
         switch predicateOperator {
         case 0:

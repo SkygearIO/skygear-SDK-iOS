@@ -264,14 +264,12 @@ class OAuthViewController: UITableViewController {
 
     func updateUsersLabel() {
         if let user = SKYContainer.default().auth.currentUser {
-            // swiftlint:disable:next force_cast
-            self.userEmailLabel?.text = user["email"] as! String!
+            self.userEmailLabel?.text = user["email"] as? String
             self.userIDLabel?.text = SKYContainer.default().auth.currentUserRecordID
             self.userAccessTokenLabel?.text = SKYContainer.default().auth.currentAccessToken?.tokenString
-            // swiftlint:disable:next force_cast
-            if let lastLoginAt = user["last_login_at"] as! Date! {
-                let f = self.dateFormatter.string(from: lastLoginAt)
-                self.userLastLoginLabel?.text = f
+            if let lastLoginAt = user["last_login_at"] as? Date {
+                let labelText = self.dateFormatter.string(from: lastLoginAt)
+                self.userLastLoginLabel?.text = labelText
             }
         } else {
             self.userEmailLabel?.text = nil

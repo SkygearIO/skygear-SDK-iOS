@@ -72,9 +72,7 @@ class UserAuthenticationViewController: UITableViewController {
     func showAuthenticationError(_ user: SKYRecord?, error: Error, completion: (() -> Void)?) {
         let alert = UIAlertController(title: "Unable to Authenticate", message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let c = completion {
-                c()
-            }
+            completion?()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -82,9 +80,7 @@ class UserAuthenticationViewController: UITableViewController {
     func showError(_ error: Error, completion: (() -> Void)?) {
         let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let c = completion {
-                c()
-            }
+            completion?()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -92,9 +88,7 @@ class UserAuthenticationViewController: UITableViewController {
     func showInvalidCodeError(completion: (() -> Void)?) {
         let alert = UIAlertController(title: "Invalid Code", message: "You can try requesting another code.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            if let c = completion {
-                c()
-            }
+            completion?()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -354,8 +348,7 @@ class UserAuthenticationViewController: UITableViewController {
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Username"
                 if let user = SKYContainer.default().auth.currentUser {
-                    // swiftlint:disable:next force_cast
-                    cell.detailTextLabel?.text = user["username"] as! String!
+                    cell.detailTextLabel?.text = user["username"] as? String
                 } else {
                     cell.detailTextLabel?.text = "(Unavailable)"
                 }
@@ -368,10 +361,9 @@ class UserAuthenticationViewController: UITableViewController {
             } else if indexPath.row == 3 {
                 cell.textLabel?.text = "Last Login At"
                 if let user = SKYContainer.default().auth.currentUser {
-                    // swiftlint:disable:next force_cast
-                    if let lastLoginAt = user["last_login_at"] as! Date! {
-                        let f = self.dateFormatter.string(from: lastLoginAt)
-                        cell.detailTextLabel?.text = f
+                    if let lastLoginAt = user["last_login_at"] as? Date {
+                        let labelText = self.dateFormatter.string(from: lastLoginAt)
+                        cell.detailTextLabel?.text = labelText
                     } else {
                         cell.detailTextLabel?.text = "Querying..."
                     }
