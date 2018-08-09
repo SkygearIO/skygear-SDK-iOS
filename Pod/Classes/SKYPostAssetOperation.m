@@ -21,6 +21,7 @@
 #import "NSURLRequest+SKYRequest.h"
 #import "SKYAsset_Private.h"
 #import "SKYOperationSubclass.h"
+#import <XMLDictionary/XMLDictionary.h>
 
 @interface SKYOperation ()
 
@@ -213,10 +214,9 @@
 
     NSError *operationError;
     if (httpResponse.statusCode >= 400) {
-        NSLog(@"Asset Post Request Fails: %@",
-              [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-        operationError = [self.errorCreator errorWithCode:SKYErrorUnknownError
-                                                  message:@"Asset Post Request Fails"];
+        NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"Asset Post Request Fails: %@", content);
+        operationError = [self skyErrorWithErrorContent:content];
     }
 
     if (self.postAssetCompletionBlock) {
@@ -243,6 +243,38 @@
                                                         self.asset.fileSize.integerValue);
         }
     }
+}
+
+#pragma mark - Parse error
+
+- (NSError *)skyErrorWithErrorContent:(NSString *)content
+{
+    // try to parse error in xml format
+    NSDictionary *errorDictionary = [NSDictionary dictionaryWithXMLString:content];
+    if (errorDictionary) {
+        // try to parse s3 error
+        if ([errorDictionary[@"__name"] isEqualToString:@"Error"] &&
+            [errorDictionary[@"Code"] isKindOfClass:[NSString class]] &&
+            [errorDictionary[@"Message"] isKindOfClass:[NSString class]]) {
+            return [self skyErrorWithS3ErrorCode:errorDictionary[@"Code"]
+                                         message:errorDictionary[@"Message"]];
+        }
+    }
+
+    // unknown error
+    return
+        [self.errorCreator errorWithCode:SKYErrorUnknownError message:@"Asset Post Request Fails"];
+}
+
+- (NSError *)skyErrorWithS3ErrorCode:(NSString *)code message:(NSString *)message
+{
+    SKYErrorCode skyErrorCode = SKYErrorUnknownError;
+
+    if ([code isEqualToString:@"EntityTooLarge"]) {
+        skyErrorCode = SKYErrorAssetSizeTooLarge;
+    }
+
+    return [self.errorCreator errorWithCode:skyErrorCode message:message];
 }
 
 @end

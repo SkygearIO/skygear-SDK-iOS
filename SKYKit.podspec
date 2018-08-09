@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
 
     core.dependency 'SocketRocket', '~> 0.4'
     core.dependency 'MagicKit-Skygear', '~> 0.0.6'
+    core.dependency 'XMLDictionary', '~> 1.4.1'
   end
 
   s.subspec 'Core-Swift' do |core|

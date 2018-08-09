@@ -198,7 +198,7 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		607B788C1C7B0DD500498FAC /* SKYRoleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYRoleTests.m; sourceTree = "<group>"; };
 		60B47C621C8423D80091A7C3 /* SKYDefineCreationAccessOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKYDefineCreationAccessOperationTests.m; sourceTree = "<group>"; };
-		6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SKYKit.podspec; path = ../SKYKit.podspec; sourceTree = "<group>"; };
+		6B46A624FFAA79E1A174FB17 /* SKYKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SKYKit.podspec; path = ../SKYKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		813616DF0F77FA2B355E0989 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		9EC4F4B120528E1C00D62C73 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		A827C48B1AC7FFDD987D3EB4 /* Pods-Mac Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mac Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mac Example/Pods-Mac Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -784,6 +784,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
@@ -796,6 +797,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
@@ -818,6 +820,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -826,6 +829,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -862,6 +866,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -870,6 +875,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -886,12 +892,14 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-macOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit-Core/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-macOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/XMLDictionary-macOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
