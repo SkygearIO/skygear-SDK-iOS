@@ -66,7 +66,8 @@
 
 - (void)cacheQuery:(SKYQuery *)query results:(NSArray *)results
 {
-    SKYRecordSerializer *serializer = [SKYRecordSerializer serializer];
+    SKYRecordSerializer *serializer = [[SKYRecordSerializer alloc] init];
+    serializer.serializeTransientDictionary = YES;
     NSMutableArray *toBeCached = [NSMutableArray array];
     [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [toBeCached addObject:[serializer dictionaryWithRecord:obj]];
