@@ -1,3 +1,11 @@
+## 1.6.2 (2018-08-23)
+
+### Bug Fixes
+
+- Fix transient objects not be serialized in cached query (#233)
+- Add asset too large error code
+- Add verification required error code
+
 ## 1.6.0 (2018-06-26)
 
 ### Features
