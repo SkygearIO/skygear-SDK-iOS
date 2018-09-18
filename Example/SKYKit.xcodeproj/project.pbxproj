@@ -784,6 +784,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
@@ -797,6 +798,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
@@ -820,6 +822,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -829,6 +832,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,6 +870,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -875,6 +880,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -892,6 +898,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-macOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit-Core/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-macOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-macOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-macOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -899,6 +906,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
