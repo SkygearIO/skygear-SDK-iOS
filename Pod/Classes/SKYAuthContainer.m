@@ -86,6 +86,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 {
     NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
+    keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
 
     NSString *accessToken = [keychain stringForKey:SKYContainerAccessTokenKey];
     NSData *encodedUser = [keychain dataForKey:SKYContainerCurrentUserRecordKey];
@@ -185,6 +186,8 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 {
     NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
+    keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
+
     if (_accessToken && _currentUser) {
         [keychain setData:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
                    forKey:SKYContainerCurrentUserRecordKey];

@@ -1,5 +1,5 @@
 //
-//  SKYPubsubContainer_Private.h
+//  SKYConfiguration.h
 //  SKYKit
 //
 //  Copyright 2015 Oursky Ltd.
@@ -17,25 +17,16 @@
 //  limitations under the License.
 //
 
-#import "SKYPubsubContainer.h"
+#import <Foundation/Foundation.h>
 
-#import "SKYContainer.h"
-#import "SKYPubsubClient.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@interface SKYPubsubContainer ()
+@interface SKYConfiguration : NSObject
 
-@property (nonatomic, weak) SKYContainer *container;
-
-@property (nonatomic, strong) SKYPubsubClient *pubsubClient;
-
-@property (nonatomic, strong) SKYPubsubClient *internalPubsubClient;
-
-- (instancetype)initWithContainer:(SKYContainer *)container;
-
-- (void)configInternalPubsubClient;
-
-- (void)configAddress:(NSString *)address;
-- (void)configureWithAPIKey:(NSString *)APIKey;
-- (void)configAddress:(NSString *)address apiKey:(NSString *)apiKey;
+@property (nonatomic, strong) NSURL *endPointAddress;
+@property (nonatomic, strong) NSString *apiKey;
+@property (nonatomic, assign) BOOL encryptCurrentUserData;
 
 @end
+
+NS_ASSUME_NONNULL_END
