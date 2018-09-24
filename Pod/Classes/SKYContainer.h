@@ -20,6 +20,7 @@
 #import <Foundation/Foundation.h>
 
 #import "SKYAccessToken.h"
+#import "SKYConfiguration.h"
 #import "SKYNotification.h"
 #import "SKYPublicDatabase.h"
 #import "SKYRole.h"
@@ -104,6 +105,11 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
  Set a new API key to the container.
  */
 - (void)configureWithAPIKey:(NSString *_Nullable)APIKey;
+
+/**
+ Updates configuration of the container
+ */
+- (void)configure:(SKYConfiguration *)config;
 
 /// Undocumented
 - (void)addOperation:(SKYOperation *)operation;

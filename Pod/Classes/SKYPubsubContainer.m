@@ -37,7 +37,7 @@
     return self;
 }
 
-- (void)configAddress:(NSString *)address
+- (void)_configAddress:(NSString *)address
 {
     NSURL *url = [NSURL URLWithString:address];
     NSString *schema = url.scheme;
@@ -59,17 +59,35 @@
         [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/pubsub"];
     self.internalPubsubClient.endPointAddress =
         [[NSURL alloc] initWithScheme:webSocketSchema host:host path:@"/_/pubsub"];
+}
+
+- (void)configAddress:(NSString *)address
+{
+    [self _configAddress:address];
 
     if (self.autoInternalPubsub) {
         [self configInternalPubsubClient];
     }
 }
 
-- (void)configureWithAPIKey:(NSString *)APIKey
+- (void)_configureWithAPIKey:(NSString *)APIKey
 {
     self.pubsubClient.APIKey = APIKey;
     self.internalPubsubClient.APIKey = APIKey;
+}
 
+- (void)configureWithAPIKey:(NSString *)APIKey
+{
+    [self _configureWithAPIKey:APIKey];
+    if (self.autoInternalPubsub) {
+        [self configInternalPubsubClient];
+    }
+}
+
+- (void)configAddress:(NSString *)address apiKey:(NSString *)apiKey
+{
+    [self _configAddress:address];
+    [self _configureWithAPIKey:apiKey];
     if (self.autoInternalPubsub) {
         [self configInternalPubsubClient];
     }
