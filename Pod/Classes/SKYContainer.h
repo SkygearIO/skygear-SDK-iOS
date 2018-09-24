@@ -99,12 +99,13 @@ extern NSString *const SKYContainerDidRegisterDeviceNotification;
 @property (nonatomic, readwrite) NSTimeInterval defaultTimeoutInterval;
 
 /// Configuration on the container End-Point, API-Token
-- (void)configAddress:(NSString *)address;
+- (void)configAddress:(NSString *)address __attribute__((deprecated("Use -configure: instead")));
 
 /**
  Set a new API key to the container.
  */
-- (void)configureWithAPIKey:(NSString *_Nullable)APIKey;
+- (void)configureWithAPIKey:(NSString *_Nullable)APIKey
+    __attribute__((deprecated("Use -configure: instead")));
 
 /**
  Updates configuration of the container
