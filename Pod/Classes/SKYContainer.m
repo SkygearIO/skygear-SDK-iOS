@@ -119,10 +119,8 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 - (void)configure:(SKYConfiguration *)config
 {
     _config = config;
-    if (_config.encryptCurrentUserData) {
-        [_auth setCurrentUserDataEncryptionEnable:YES];
-        [_auth loadCurrentUserAndAccessToken];
-    }
+    [_auth setCurrentUserDataEncryptionEnable:_config.encryptCurrentUserData];
+    [_auth loadCurrentUserAndAccessToken];
     [self.pubsub configAddress:config.endPointAddress.absoluteString apiKey:_config.apiKey];
 }
 
