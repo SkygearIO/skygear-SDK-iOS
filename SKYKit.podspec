@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |core|
     core.requires_arc = true
     core.ios.deployment_target = '8.0'
-    core.osx.deployment_target = '10.9'
+    core.osx.deployment_target = '10.10'
 
     core.source_files = 'Pod/Classes/**/*'
     core.private_header_files = 'Pod/Classes/**/*_Private.h'
