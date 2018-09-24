@@ -112,9 +112,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
                                             NSStringFromClass([APIKey class])]
                      userInfo:nil];
     }
-    [self willChangeValueForKey:@"applicationIdentifier"];
     _config.apiKey = [APIKey copy];
-    [self didChangeValueForKey:@"applicationIdentifier"];
     [self.pubsub configureWithAPIKey:APIKey];
 }
 
