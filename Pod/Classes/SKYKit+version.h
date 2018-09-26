@@ -20,6 +20,6 @@
 #ifndef SKYKit_version_h
 #define SKYKit_version_h
 
-#define SKY_VERSION @"1.6.2"
+#define SKY_VERSION @"1.6.3"
 
 #endif /* SKYKit_version_h */

@@ -1,3 +1,9 @@
+## 1.6.3 (2018-09-26)
+
+### Features
+
+- Support store access token and current user record in keychain  SkygearIO/features#250
+
 ## 1.6.2 (2018-08-23)
 
 ### Bug Fixes
