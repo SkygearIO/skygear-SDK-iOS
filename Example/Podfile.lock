@@ -26,26 +26,28 @@ PODS:
   - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - SKYKit (1.5.0):
-    - SKYKit/Core (= 1.5.0)
-    - SKYKit/ForgotPassword (= 1.5.0)
-    - SKYKit/RecordStorage (= 1.5.0)
-    - SKYKit/SSO (= 1.5.0)
-  - SKYKit/Core (1.5.0):
+  - SKYKit (1.6.0):
+    - SKYKit/Core (= 1.6.0)
+    - SKYKit/ForgotPassword (= 1.6.0)
+    - SKYKit/RecordStorage (= 1.6.0)
+    - SKYKit/SSO (= 1.6.0)
+  - SKYKit/Core (1.6.0):
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
-  - SKYKit/Facebook (1.5.0):
+    - UICKeyChainStore (~> 2.1.0)
+  - SKYKit/Facebook (1.6.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
-  - SKYKit/ForgotPassword (1.5.0):
+  - SKYKit/ForgotPassword (1.6.0):
     - SKYKit/Core
-  - SKYKit/RecordStorage (1.5.0):
+  - SKYKit/RecordStorage (1.6.0):
     - FMDB (~> 2.6.0)
     - SKYKit/Core
-  - SKYKit/SSO (1.5.0):
+  - SKYKit/SSO (1.6.0):
     - SKYKit/Core
   - SocketRocket (0.5.1)
   - Specta (1.0.7)
+  - UICKeyChainStore (2.1.1)
 
 DEPENDENCIES:
   - Expecta
@@ -56,9 +58,22 @@ DEPENDENCIES:
   - SKYKit/Facebook (from `../`)
   - Specta
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Bolts
+    - Expecta
+    - FBSDKCoreKit
+    - FMDB
+    - MagicKit-Skygear
+    - OCMock
+    - OHHTTPStubs
+    - SocketRocket
+    - Specta
+    - UICKeyChainStore
+
 EXTERNAL SOURCES:
   SKYKit:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -68,10 +83,11 @@ SPEC CHECKSUMS:
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: 15d4f787cc55ba274d09d7d2a049c320f17fc396
+  SKYKit: de5640bfeb2386a81bd1040d747a4dc47e218895
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
 
-PODFILE CHECKSUM: 02718670052b8664d9f93383d8b7f33408861959
+PODFILE CHECKSUM: 1b7868ae1cc8c4fcef7047737d0a0700c515d241
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

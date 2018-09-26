@@ -20,6 +20,8 @@
 #import "SKYAuthContainer.h"
 #import "SKYAuthContainer_Private.h"
 
+#import "UICKeyChainStore.h"
+
 #import "SKYAccessToken.h"
 #import "SKYContainer.h"
 #import "SKYError.h"
@@ -40,13 +42,27 @@
 #import "SKYSetUserDefaultRoleOperation.h"
 #import "SKYSignupUserOperation.h"
 
+NSString *const SKYContainerCurrentUserRecordIDKey = @"SKYContainerCurrentUserRecordID";
+NSString *const SKYContainerAccessTokenKey = @"SKYContainerAccessToken";
+NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserRecord";
+
 @implementation SKYAuthContainer {
     SKYAccessToken *_accessToken;
     NSString *_userRecordID;
     SKYRecord *_currentUser;
+    BOOL _currentUserDataEncryptionEnabled;
 }
 
 #pragma mark - private
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _currentUserDataEncryptionEnabled = NO;
+    }
+    return self;
+}
 
 - (instancetype)initWithContainer:(SKYContainer *)container
 {
@@ -59,13 +75,47 @@
 
 - (void)loadCurrentUserAndAccessToken
 {
+    if (_currentUserDataEncryptionEnabled) {
+        [self loadCurrentUserAndAccessTokenFromKeychain];
+    } else {
+        [self loadCurrentUserAndAccessTokenFromUserDefaults];
+    }
+}
+
+- (void)loadCurrentUserAndAccessTokenFromKeychain
+{
+    NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
+    keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
+
+    NSString *accessToken = [keychain stringForKey:SKYContainerAccessTokenKey];
+    NSData *encodedUser = [keychain dataForKey:SKYContainerCurrentUserRecordKey];
+
+    SKYRecord *user = nil;
+    if ([encodedUser isKindOfClass:[NSData class]]) {
+        user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
+    }
+
+    if (accessToken && user) {
+        _currentUser = user;
+        _userRecordID = user.recordID.recordName;
+        _accessToken = [[SKYAccessToken alloc] initWithTokenString:accessToken];
+    } else {
+        _currentUser = nil;
+        _userRecordID = nil;
+        _accessToken = nil;
+    }
+}
+
+- (void)loadCurrentUserAndAccessTokenFromUserDefaults
+{
     NSString *userRecordID =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecordID"];
+        [[NSUserDefaults standardUserDefaults] objectForKey:SKYContainerCurrentUserRecordIDKey];
     NSString *accessToken =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerAccessToken"];
+        [[NSUserDefaults standardUserDefaults] objectForKey:SKYContainerAccessTokenKey];
     SKYRecord *user = nil;
     NSData *encodedUser =
-        [[NSUserDefaults standardUserDefaults] objectForKey:@"SKYContainerCurrentUserRecord"];
+        [[NSUserDefaults standardUserDefaults] objectForKey:SKYContainerCurrentUserRecordKey];
     if ([encodedUser isKindOfClass:[NSData class]]) {
         user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
     }
@@ -73,6 +123,7 @@
     if (accessToken && (userRecordID || user)) {
         _currentUser = user;
         if (user) {
+
             _userRecordID = user.recordID.recordName;
         } else {
             _userRecordID = userRecordID;
@@ -120,26 +171,55 @@
 
 - (void)saveCurrentUserAndAccessToken
 {
+    if (_currentUserDataEncryptionEnabled) {
+        [self saveCurrentUserAndAccessTokenToKeychain];
+    } else {
+        [self saveCurrentUserAndAccessTokenToUserDefaults];
+    }
+}
+
+- (void)saveCurrentUserAndAccessTokenToKeychain
+{
+    NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
+    keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
+
+    if (_accessToken && _currentUser) {
+        [keychain setData:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
+                   forKey:SKYContainerCurrentUserRecordKey];
+        [keychain setString:_accessToken.tokenString forKey:SKYContainerAccessTokenKey];
+    } else {
+        [keychain removeItemForKey:SKYContainerAccessTokenKey];
+        [keychain removeItemForKey:SKYContainerCurrentUserRecordKey];
+    }
+}
+
+- (void)saveCurrentUserAndAccessTokenToUserDefaults
+{
     if (_accessToken && (_userRecordID || _currentUser)) {
         if (_userRecordID) {
             [[NSUserDefaults standardUserDefaults] setObject:_userRecordID
-                                                      forKey:@"SKYContainerCurrentUserRecordID"];
+                                                      forKey:SKYContainerCurrentUserRecordIDKey];
         }
         if (_currentUser) {
             [[NSUserDefaults standardUserDefaults]
                 setObject:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
-                   forKey:@"SKYContainerCurrentUserRecord"];
+                   forKey:SKYContainerCurrentUserRecordKey];
         }
         [[NSUserDefaults standardUserDefaults] setObject:_accessToken.tokenString
-                                                  forKey:@"SKYContainerAccessToken"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+                                                  forKey:SKYContainerAccessTokenKey];
     } else {
         [[NSUserDefaults standardUserDefaults]
-            removeObjectForKey:@"SKYContainerCurrentUserRecordID"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerAccessToken"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"SKYContainerCurrentUserRecord"];
+            removeObjectForKey:SKYContainerCurrentUserRecordIDKey];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SKYContainerAccessTokenKey];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SKYContainerCurrentUserRecordKey];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setCurrentUserDataEncryptionEnable:(BOOL)enabled
+{
+    _currentUserDataEncryptionEnabled = enabled;
 }
 
 - (void)updateWithUserRecordID:(NSString *)userRecordID accessToken:(SKYAccessToken *)accessToken

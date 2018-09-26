@@ -29,11 +29,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-    
-    // You can obtain the following information from portal.skygear.io
-    [[SKYContainer defaultContainer] configAddress:@"https://example.skygeario.com"];
-    [[SKYContainer defaultContainer] configureWithAPIKey:@"c4bf6faa7ccb4737b2342d2c319ff6f0"];
-    
+
+    SKYConfiguration *config = [[SKYConfiguration alloc] init];
+    config.endPointAddress = [NSURL URLWithString:@"https://example.skygeario.com"];
+    config.apiKey = @"c4bf6faa7ccb4737b2342d2c319ff6f0";
+    [[SKYContainer defaultContainer] configure:config];
+
     // Login with username and password
     [[[SKYContainer defaultContainer] auth] loginWithUsername:@"johndoe"
                                                      password:@"passw0rd"

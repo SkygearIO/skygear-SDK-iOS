@@ -36,7 +36,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 
 @implementation SKYContainer {
     SKYPublicDatabase *_publicCloudDatabase;
-    NSString *_APIKey;
+    SKYConfiguration *_config;
 
     SKYAuthContainer *_auth;
     SKYPubsubContainer *_pubsub;
@@ -47,8 +47,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 {
     self = [super init];
     if (self) {
-        _endPointAddress = nil;
-        _APIKey = nil;
+        _config = [[SKYConfiguration alloc] init];
         _defaultTimeoutInterval = 60.0;
 
         _operationQueue = [[NSOperationQueue alloc] init];
@@ -99,7 +98,7 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
 - (void)configAddress:(NSString *)address
 {
     NSURL *url = [NSURL URLWithString:address];
-    _endPointAddress = url;
+    _config.endPointAddress = url;
     [self.pubsub configAddress:address];
 }
 
@@ -113,10 +112,16 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
                                             NSStringFromClass([APIKey class])]
                      userInfo:nil];
     }
-    [self willChangeValueForKey:@"applicationIdentifier"];
-    _APIKey = [APIKey copy];
-    [self didChangeValueForKey:@"applicationIdentifier"];
+    _config.apiKey = [APIKey copy];
     [self.pubsub configureWithAPIKey:APIKey];
+}
+
+- (void)configure:(SKYConfiguration *)config
+{
+    _config = config;
+    [_auth setCurrentUserDataEncryptionEnable:_config.encryptCurrentUserData];
+    [_auth loadCurrentUserAndAccessToken];
+    [self.pubsub configAddress:config.endPointAddress.absoluteString apiKey:_config.apiKey];
 }
 
 - (void)addOperation:(SKYOperation *)operation
@@ -126,31 +131,36 @@ NSString *const SKYContainerDidChangeCurrentUserNotification =
     [self.operationQueue addOperation:operation];
 }
 
+- (void)setEndPointAddress:(NSURL *)endPointAddress
+{
+    _config.endPointAddress = endPointAddress;
+}
+
 - (NSURL *)endPointAddress
 {
     static BOOL warnedOnce;
 
-    if (!_endPointAddress && !warnedOnce) {
+    if (!_config.endPointAddress && !warnedOnce) {
         NSLog(
             @"Warning: Container is not configured with an endpoint address. Please call -[%@ %@].",
             NSStringFromClass([SKYContainer class]),
             NSStringFromSelector(@selector(configAddress:)));
         warnedOnce = YES;
     }
-    return _endPointAddress;
+    return _config.endPointAddress;
 }
 
 - (NSString *)APIKey
 {
     static BOOL warnedOnce;
 
-    if (!_APIKey && !warnedOnce) {
+    if (!_config.apiKey && !warnedOnce) {
         NSLog(@"Warning: Container is not configured with an API key. Please call -[%@ %@].",
               NSStringFromClass([SKYContainer class]),
               NSStringFromSelector(@selector(configureWithAPIKey:)));
         warnedOnce = YES;
     }
-    return _APIKey;
+    return _config.apiKey;
 }
 
 - (void)callLambda:(NSString *)action completionHandler:(void (^)(id, NSError *))completionHandler
