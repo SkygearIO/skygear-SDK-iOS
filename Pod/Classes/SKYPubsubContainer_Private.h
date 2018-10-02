@@ -34,7 +34,10 @@
 
 - (void)configInternalPubsubClient;
 
-- (void)configAddress:(NSString *)address;
-- (void)configureWithAPIKey:(NSString *)APIKey;
+- (void)configAddress:(NSString *)address
+    __attribute__((deprecated("Use -configAddress:apiKey: instead")));
+- (void)configureWithAPIKey:(NSString *)APIKey
+    __attribute__((deprecated("Use -configAddress:apiKey: instead")));
+- (void)configAddress:(NSString *)address apiKey:(NSString *)apiKey;
 
 @end

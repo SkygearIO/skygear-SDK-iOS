@@ -83,9 +83,9 @@
 		A9E9311C1EEA4D18004AF717 /* SKYAuthContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311B1EEA4D18004AF717 /* SKYAuthContainerTests.m */; };
 		A9E9311E1EEA4E2E004AF717 /* SKYPushContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311D1EEA4E2E004AF717 /* SKYPushContainerTests.m */; };
 		A9E931201EEA5406004AF717 /* SKYPubsubContainerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E9311F1EEA5406004AF717 /* SKYPubsubContainerTests.m */; };
-		BB8D5796B0ED81845EFF247C /* Pods_Swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF830E6671191AF604718509 /* Pods_Swift_Example.framework */; };
 		CC4B7F2A1FBDB590006D5317 /* OAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4B7F291FBDB590006D5317 /* OAuthViewController.swift */; };
 		CC8016141FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8016131FE2CF90006D3EF7 /* OAuthProfilesResultViewController.swift */; };
+		CCFA4BF52158AB8000115B64 /* Pods_Swift_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF830E6671191AF604718509 /* Pods_Swift_Example.framework */; };
 		CD395D0D1AA0273F00A97B16 /* SKYDatabaseTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CD395D0C1AA0273F00A97B16 /* SKYDatabaseTest.m */; };
 		CD42FE0C1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0B1AA2DAA20079B3DA /* SKYDeleteRecordsOperationTests.m */; };
 		CD42FE101AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CD42FE0F1AA3DB0A0079B3DA /* SKYLogoutUserOperationTests.m */; };
@@ -253,7 +253,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB8D5796B0ED81845EFF247C /* Pods_Swift_Example.framework in Frameworks */,
+				CCFA4BF52158AB8000115B64 /* Pods_Swift_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,6 +784,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
@@ -797,6 +798,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
@@ -820,6 +822,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -829,6 +832,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,6 +870,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-iOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit.default-Facebook/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-iOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-iOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-iOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -875,6 +880,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -892,6 +898,7 @@
 				"${BUILT_PRODUCTS_DIR}/MagicKit-Skygear-macOS/MagicKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SKYKit-Core/SKYKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket-macOS/SocketRocket.framework",
+				"${BUILT_PRODUCTS_DIR}/UICKeyChainStore-macOS/UICKeyChainStore.framework",
 				"${BUILT_PRODUCTS_DIR}/XMLDictionary-macOS/XMLDictionary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -899,6 +906,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MagicKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKYKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UICKeyChainStore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMLDictionary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -29,6 +29,7 @@
 #import "SKYAuthOperation.h"
 #import "SKYAuthResponseDelegateProtocol.h"
 #import "SKYChangePasswordOperation.h"
+#import "SKYConfiguration.h"
 #import "SKYContainer.h"
 #import "SKYDataSerialization.h"
 #import "SKYDatabase.h"

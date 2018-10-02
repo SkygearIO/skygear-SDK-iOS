@@ -45,6 +45,14 @@ typedef void (^SKYContainerUserOperationActionCompletion)(SKYRecord *_Nullable u
 @property (nonatomic, readonly) BOOL currentUserVerified;
 
 /**
+ Set current user data encryption enable state
+
+ When this is on, current user data will be saved and retrieved from Keychain instead of
+ UserDefaults. Default is NO.
+ */
+- (void)setCurrentUserDataEncryptionEnable:(BOOL)enabled;
+
+/**
  Updates the <currentUserRecordID> and <currentAccessToken>. The updated access credentials are also
  stored in persistent
  storage.

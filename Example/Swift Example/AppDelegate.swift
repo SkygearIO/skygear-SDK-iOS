@@ -27,14 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let endpoint = UserDefaults.standard.string(forKey: "SkygearEndpoint")
-        if let endpointValue = endpoint {
-            SKYContainer.default().configAddress(endpointValue)
-        }
+        if let endpoint = UserDefaults.standard.string(forKey: "SkygearEndpoint"),
+            let apiKey = UserDefaults.standard.string(forKey: "SkygearApiKey") {
 
-        let apiKey = UserDefaults.standard.string(forKey: "SkygearApiKey")
-        if let apiKeyValue = apiKey {
-            SKYContainer.default().configure(withAPIKey: apiKeyValue)
+            let config = SKYConfiguration()
+            config.endPointAddress = URL.init(string: endpoint)!
+            config.apiKey = apiKey
+            SKYContainer.default().configure(config)
         }
 
         application.registerUserNotificationSettings(UIUserNotificationSettings(

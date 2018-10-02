@@ -31,6 +31,7 @@ PODS:
   - SKYKit/Core (1.6.0):
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
+    - UICKeyChainStore (~> 2.1.0)
     - XMLDictionary (~> 1.4.1)
   - SKYKit/Core-Swift (1.6.0):
     - SKYKit/Core
@@ -43,6 +44,7 @@ PODS:
     - SKYKit/Core
   - SocketRocket (0.5.1)
   - Specta (1.0.7)
+  - UICKeyChainStore (2.1.1)
   - XMLDictionary (1.4.1)
 
 DEPENDENCIES:
@@ -64,6 +66,7 @@ SPEC REPOS:
     - OHHTTPStubs
     - SocketRocket
     - Specta
+    - UICKeyChainStore
     - XMLDictionary
 
 EXTERNAL SOURCES:
@@ -77,11 +80,12 @@ SPEC CHECKSUMS:
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: 2d45c0ddb64e63545765c08b6fcf2279871edd64
+  SKYKit: dfedf4b4b2394837b135c0fcf0116d587284b474
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
+  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   XMLDictionary: fa07b6ff422b3a91d47a5de9bc82e3fc04fbd167
 
-PODFILE CHECKSUM: d2bdbcdda1d05a16a5aa0529882d2a724cbbb7a0
+PODFILE CHECKSUM: 24b04b04f7201971a9d306e2ff59c0b7233b4e4b
 
 COCOAPODS: 1.5.3

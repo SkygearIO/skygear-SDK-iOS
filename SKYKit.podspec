@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |core|
     core.requires_arc = true
     core.ios.deployment_target = '8.0'
-    core.osx.deployment_target = '10.9'
+    core.osx.deployment_target = '10.10'
 
     core.source_files = 'Pod/Classes/**/*.{h,m}'
     core.private_header_files = 'Pod/Classes/**/*_Private.h'
@@ -25,6 +25,7 @@ Pod::Spec.new do |s|
     core.dependency 'SocketRocket', '~> 0.4'
     core.dependency 'MagicKit-Skygear', '~> 0.0.6'
     core.dependency 'XMLDictionary', '~> 1.4.1'
+    core.dependency 'UICKeyChainStore', '~> 2.1.0'
   end
 
   s.subspec 'Core-Swift' do |core|
