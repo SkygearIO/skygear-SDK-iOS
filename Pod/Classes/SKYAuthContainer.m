@@ -75,6 +75,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 
 - (void)loadCurrentUserAndAccessToken
 {
+    NSLog(@"[Auth] Start loading access token %d", _currentUserDataEncryptionEnabled);
     if (_currentUserDataEncryptionEnabled) {
         [self loadCurrentUserAndAccessTokenFromKeychain];
     } else {
@@ -88,14 +89,23 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
     keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
 
-    NSString *accessToken = [keychain stringForKey:SKYContainerAccessTokenKey];
-    NSData *encodedUser = [keychain dataForKey:SKYContainerCurrentUserRecordKey];
-
+    NSError *error;
+    NSString *accessToken = [keychain stringForKey:SKYContainerAccessTokenKey error:&error];
+    NSLog(@"[Auth] load from appBundleIdentifier %@", appBundleIdentifier);
+    NSLog(@"[Auth] Loaded access token: %@", accessToken);
+    if (error) {
+        NSLog(@"[Auth] Error loading access token: %@", error);
+    }
+    error = nil;
+    NSData *encodedUser = [keychain dataForKey:SKYContainerCurrentUserRecordKey error:&error];
+    if (error) {
+        NSLog(@"[Auth] Error loading current user: %@", error);
+    }
     SKYRecord *user = nil;
     if ([encodedUser isKindOfClass:[NSData class]]) {
         user = [NSKeyedUnarchiver unarchiveObjectWithData:encodedUser];
     }
-
+    NSLog(@"[Auth] Loaded user: %@", user);
     if (accessToken && user) {
         _currentUser = user;
         _userRecordID = user.recordID.recordName;
@@ -139,6 +149,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 - (void)operation:(id)operation
     didCompleteWithAuthResponse:(NSDictionary<NSString *, id> *)authResponse
 {
+    NSLog(@"[Auth] didCompleteWithAuthResponse");
     NSDictionary *profile = authResponse[@"profile"];
     if (![profile isKindOfClass:[NSDictionary class]]) {
         NSLog(@"didCompleteWithAuthResponse error: No profile dictionary.");
@@ -171,6 +182,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 
 - (void)saveCurrentUserAndAccessToken
 {
+    NSLog(@"[Auth] Start saving current user %d", _currentUserDataEncryptionEnabled);
     if (_currentUserDataEncryptionEnabled) {
         [self saveCurrentUserAndAccessTokenToKeychain];
     } else {
@@ -184,13 +196,34 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
     UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:appBundleIdentifier];
     keychain.accessibility = UICKeyChainStoreAccessibilityAfterFirstUnlock;
 
+    NSLog(@"[Auth] save to appBundleIdentifier %@", appBundleIdentifier);
+    NSLog(@"[Auth] Try to save access token: %@", _accessToken);
     if (_accessToken && _currentUser) {
+        NSError *error;
         [keychain setData:[NSKeyedArchiver archivedDataWithRootObject:_currentUser]
-                   forKey:SKYContainerCurrentUserRecordKey];
-        [keychain setString:_accessToken.tokenString forKey:SKYContainerAccessTokenKey];
+                   forKey:SKYContainerCurrentUserRecordKey
+                    error:&error];
+        if (error) {
+            NSLog(@"Error saving current user: %@", error);
+        }
+        error = nil;
+        [keychain setString:_accessToken.tokenString
+                     forKey:SKYContainerAccessTokenKey
+                      error:&error];
+        if (error) {
+            NSLog(@"Error saving access token: %@", error);
+        }
     } else {
-        [keychain removeItemForKey:SKYContainerAccessTokenKey];
-        [keychain removeItemForKey:SKYContainerCurrentUserRecordKey];
+        NSError *error;
+        [keychain removeItemForKey:SKYContainerAccessTokenKey error:&error];
+        if (error) {
+            NSLog(@"Error removing access token: %@", error);
+        }
+        error = nil;
+        [keychain removeItemForKey:SKYContainerCurrentUserRecordKey error:&error];
+        if (error) {
+            NSLog(@"Error removing current user: %@", error);
+        }
     }
 }
 
@@ -234,6 +267,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
         _currentUser = nil;
     }
 
+    NSLog(@"[Auth] updateWithUserRecordID %@ %@", userRecordID, accessToken);
     [self saveCurrentUserAndAccessToken];
 
     [[NSNotificationCenter defaultCenter]
@@ -256,6 +290,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
         _currentUser = nil;
     }
 
+    NSLog(@"[Auth] updateWithUser %@ %@", user, accessToken);
     [self saveCurrentUserAndAccessToken];
 
     // register device when current user change
@@ -420,6 +455,7 @@ NSString *const SKYContainerCurrentUserRecordKey = @"SKYContainerCurrentUserReco
 
 - (void)logoutWithCompletionHandler:(SKYContainerUserOperationActionCompletion)completionHandler
 {
+    NSLog(@"[Auth] logoutWithCompletionHandler");
     SKYLogoutUserOperation *logoutOperation = [[SKYLogoutUserOperation alloc] init];
 
     __weak typeof(self) weakSelf = self;
