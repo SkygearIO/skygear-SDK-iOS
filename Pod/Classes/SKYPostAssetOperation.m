@@ -199,6 +199,11 @@
                                                  userInfo:@{NSUnderlyingErrorKey : requestError}];
 
         [self didEncounterError:error];
+
+        if (self.postAssetCompletionBlock) {
+            self.postAssetCompletionBlock(nil, error);
+        }
+
         [self setFinished:YES];
 
         return;
@@ -217,6 +222,10 @@
               [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         operationError = [self.errorCreator errorWithCode:SKYErrorUnknownError
                                                   message:@"Asset Post Request Fails"];
+    }
+
+    if (operationError) {
+        [self didEncounterError:operationError];
     }
 
     if (self.postAssetCompletionBlock) {
