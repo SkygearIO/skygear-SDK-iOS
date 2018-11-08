@@ -54,7 +54,7 @@
 // override
 - (void)prepareForRequest
 {
-    self.request = [[SKYRequest alloc] initWithAction:@"role:assign"
+    self.request = [[SKYRequest alloc] initWithAction:@"auth:role:assign"
                                               payload:@{
                                                   @"users" : self.userIDs,
                                                   @"roles" : self.roleNames,

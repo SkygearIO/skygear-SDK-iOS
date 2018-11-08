@@ -50,7 +50,7 @@ SpecBegin(SKYSetUserDefaultRoleOperation)
             [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
-            expect(request.action).to.equal(@"role:default");
+            expect(request.action).to.equal(@"auth:role:default");
             expect(request.accessToken.tokenString).to.equal(token);
             expect(request.payload).to.equal(@{ @"roles" : @[ readerRoleName, writerRoleName ] });
         });

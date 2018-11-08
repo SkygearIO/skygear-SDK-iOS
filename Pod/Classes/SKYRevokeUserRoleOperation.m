@@ -54,7 +54,7 @@
 // override
 - (void)prepareForRequest
 {
-    self.request = [[SKYRequest alloc] initWithAction:@"role:revoke"
+    self.request = [[SKYRequest alloc] initWithAction:@"auth:role:revoke"
                                               payload:@{
                                                   @"users" : self.userIDs,
                                                   @"roles" : self.roleNames,

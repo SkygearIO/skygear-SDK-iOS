@@ -38,6 +38,7 @@ SpecBegin(SKYPubsubContainer)
             publicPubsub = OCMClassMock([SKYPubsubClient class]);
             container.pubsub.internalPubsubClient = pubsub;
             container.pubsub.pubsubClient = publicPubsub;
+            container.pubsub.autoInternalPubsub = true;
         });
 
         afterEach(^{

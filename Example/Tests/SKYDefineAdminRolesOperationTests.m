@@ -53,7 +53,7 @@ SpecBegin(SKYDefineAdminRolesOperation)
             [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
-            expect(request.action).to.equal(@"role:admin");
+            expect(request.action).to.equal(@"auth:role:admin");
             expect(request.accessToken.tokenString).to.equal(token);
             expect(request.payload).to.equal(@{
                 @"roles" : @[ developerRoleName, testerRoleName, pmRoleName ]

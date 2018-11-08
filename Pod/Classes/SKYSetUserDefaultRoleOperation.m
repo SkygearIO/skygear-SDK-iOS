@@ -51,7 +51,7 @@
     }];
 
     self.request =
-        [[SKYRequest alloc] initWithAction:@"role:default" payload:@{@"roles" : roleNames}];
+        [[SKYRequest alloc] initWithAction:@"auth:role:default" payload:@{@"roles" : roleNames}];
 }
 
 // override

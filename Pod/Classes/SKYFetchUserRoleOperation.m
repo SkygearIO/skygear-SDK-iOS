@@ -54,7 +54,7 @@
 - (void)prepareForRequest
 {
     self.request =
-        [[SKYRequest alloc] initWithAction:@"role:get" payload:@{@"users" : self.userIDs}];
+        [[SKYRequest alloc] initWithAction:@"auth:role:get" payload:@{@"users" : self.userIDs}];
 }
 
 // override

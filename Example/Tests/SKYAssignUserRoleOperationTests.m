@@ -52,7 +52,7 @@ SpecBegin(SKYAssignUserRoleOperation)
             [operation makeURLRequestWithError:nil];
 
             SKYRequest *request = operation.request;
-            expect(request.action).to.equal(@"role:assign");
+            expect(request.action).to.equal(@"auth:role:assign");
             expect(request.accessToken.tokenString).to.equal(token);
 
             expect(request.payload[@"users"]).to.equal(@[ @"user1", @"user2", @"user3" ]);
