@@ -32,7 +32,7 @@
         self.container = container;
         self.pubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:nil APIKey:nil];
         self.internalPubsubClient = [[SKYPubsubClient alloc] initWithEndPoint:nil APIKey:nil];
-        self.autoInternalPubsub = true;
+        self.autoInternalPubsub = false;
     }
     return self;
 }
