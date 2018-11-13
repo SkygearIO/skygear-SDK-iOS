@@ -22,7 +22,7 @@ refs:
     osx_image: xcode9.2
     cache: cocoapods
     before_install:
-      - gem install --no-rdoc --no-ri 'cocoapods:1.1.1'
+      - gem install --no-rdoc --no-ri 'cocoapods:1.5.3'
       - pod install --repo-update --project-directory=Example
 jobs:
   include:
