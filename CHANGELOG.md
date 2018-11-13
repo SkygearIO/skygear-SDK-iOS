@@ -1,3 +1,9 @@
+## 1.6.4 (2018-11-12)
+
+### Bug Fixes
+
+- Fix upload asset incomplete error handling
+
 ## 1.6.3 (2018-09-26)
 
 ### Features
