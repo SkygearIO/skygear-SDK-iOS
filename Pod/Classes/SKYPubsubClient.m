@@ -245,6 +245,7 @@ double const SKYPubsubReconnectWait = 1.0;
             wasClean:(BOOL)wasClean
 {
     _webSocket = nil;
+    _connecting = false;
     _opened = false;
 
     if (self.onCloseCallback) {
