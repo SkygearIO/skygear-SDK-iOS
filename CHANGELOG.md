@@ -1,3 +1,11 @@
+## 1.7.0 (2019-01-21)
+
+### Bug Fixes
+
+- Clear up websocket state when socket closed (#243)
+
+
+
 ## 1.6.4 (2018-11-12)
 
 ### Bug Fixes
