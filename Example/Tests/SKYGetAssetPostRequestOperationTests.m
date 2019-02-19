@@ -99,12 +99,20 @@ SpecBegin(SKYGetAssetPostRequestOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.getAssetPostRequestCompletionBlock =
-                    ^(SKYAsset *asset, NSURL *postURL,
+                    ^(SKYAsset *asset, SKYAsset *newAsset, NSURL *postURL,
                       NSDictionary<NSString *, NSObject *> *extraFields, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(asset).notTo.beNil();
                             expect(asset.name)
                                 .to.equal(@"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt");
+
+                            expect(newAsset).notTo.beNil();
+                            expect(newAsset.name)
+                                .to.equal(@"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt");
+                            expect(newAsset.mimeType).to.equal(@"text/plain");
+                            expect(newAsset.url.absoluteString)
+                                .to.equal(@"http://skygear.dev/files/"
+                                          @"8a13d565-0075-42d8-a1a5-81d4c9d9901a-boy.txt");
 
                             expect(postURL).notTo.beNil();
                             expect(postURL.absoluteString)
@@ -141,7 +149,7 @@ SpecBegin(SKYGetAssetPostRequestOperation)
 
             waitUntil(^(DoneCallback done) {
                 operation.getAssetPostRequestCompletionBlock =
-                    ^(SKYAsset *asset, NSURL *postURL,
+                    ^(SKYAsset *asset, SKYAsset *newAsset, NSURL *postURL,
                       NSDictionary<NSString *, NSObject *> *extraFields, NSError *operationError) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             expect(operationError).notTo.beNil();
