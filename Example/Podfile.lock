@@ -26,24 +26,24 @@ PODS:
   - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - SKYKit (1.6.0):
-    - SKYKit/Core (= 1.6.0)
-    - SKYKit/ForgotPassword (= 1.6.0)
-    - SKYKit/RecordStorage (= 1.6.0)
-    - SKYKit/SSO (= 1.6.0)
-  - SKYKit/Core (1.6.0):
+  - SKYKit (1.7.0):
+    - SKYKit/Core (= 1.7.0)
+    - SKYKit/ForgotPassword (= 1.7.0)
+    - SKYKit/RecordStorage (= 1.7.0)
+    - SKYKit/SSO (= 1.7.0)
+  - SKYKit/Core (1.7.0):
     - MagicKit-Skygear (~> 0.0.6)
     - SocketRocket (~> 0.4)
     - UICKeyChainStore (~> 2.1.0)
-  - SKYKit/Facebook (1.6.0):
+  - SKYKit/Facebook (1.7.0):
     - FBSDKCoreKit (~> 4.0)
     - SKYKit/Core
-  - SKYKit/ForgotPassword (1.6.0):
+  - SKYKit/ForgotPassword (1.7.0):
     - SKYKit/Core
-  - SKYKit/RecordStorage (1.6.0):
+  - SKYKit/RecordStorage (1.7.0):
     - FMDB (~> 2.6.0)
     - SKYKit/Core
-  - SKYKit/SSO (1.6.0):
+  - SKYKit/SSO (1.7.0):
     - SKYKit/Core
   - SocketRocket (0.5.1)
   - Specta (1.0.7)
@@ -83,7 +83,7 @@ SPEC CHECKSUMS:
   MagicKit-Skygear: ca78735168eb8ae24be2307af462e632278bced0
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  SKYKit: de5640bfeb2386a81bd1040d747a4dc47e218895
+  SKYKit: 51ca78dad68402c847a4c8dbca546f578a30f072
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
