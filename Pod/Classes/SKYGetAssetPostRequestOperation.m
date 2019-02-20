@@ -19,6 +19,7 @@
 
 #import "SKYGetAssetPostRequestOperation.h"
 #import "SKYAsset_Private.h"
+#import "SKYDataSerialization.h"
 
 @implementation SKYGetAssetPostRequestOperation
 
@@ -58,7 +59,7 @@
 - (void)handleRequestError:(NSError *)error
 {
     if (self.getAssetPostRequestCompletionBlock) {
-        self.getAssetPostRequestCompletionBlock(nil, nil, nil, error);
+        self.getAssetPostRequestCompletionBlock(nil, nil, nil, nil, error);
     }
 }
 
@@ -69,10 +70,8 @@
     // Update the asset name with the generated name obtained from the server.
     // Note: Do not update the URL of the asset here because the file is not
     // uploaded to the server yet.
-    NSString *assetName = result[@"asset"][@"$name"];
-    if ([assetName isKindOfClass:[NSString class]] || assetName == nil) {
-        self.asset.name = assetName;
-    }
+    SKYAsset *newAsset = [SKYDataSerialization deserializeAssetWithDictionary:result[@"asset"]];
+    self.asset.name = newAsset.name;
 
     NSDictionary *rawPostRequest = result[@"post-request"];
     NSDictionary *extraFields = rawPostRequest[@"extra-fields"];
@@ -84,7 +83,7 @@
     }
 
     if (self.getAssetPostRequestCompletionBlock) {
-        self.getAssetPostRequestCompletionBlock(self.asset, postURL, extraFields, nil);
+        self.getAssetPostRequestCompletionBlock(self.asset, newAsset, postURL, extraFields, nil);
     }
 }
 
