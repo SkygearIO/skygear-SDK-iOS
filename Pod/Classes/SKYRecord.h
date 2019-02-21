@@ -172,9 +172,9 @@ extern NSString *const SKYRecordTypeUserRecord;
 - (id _Nullable)objectForKeyedSubscript:(id)key;
 
 /// Undocumented
-- (void)setObject:(id)object forKey:(id<NSCopying> _Nullable)key;
+- (void)setObject:(id _Nullable)object forKey:(id<NSCopying> _Nullable)key;
 /// Undocumented
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying> _Nullable)key;
+- (void)setObject:(id _Nullable)object forKeyedSubscript:(id<NSCopying> _Nullable)key;
 
 /// Undocumented
 - (SKYRecord *_Nullable)referencedRecordForKey:(NSString *)key;
