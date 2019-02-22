@@ -1,10 +1,18 @@
+## 1.7.1 (2019-02-22)
+
+### Bug Fixes
+
+- Fix `saveRecord` always upload the assets again even they are uploaded #245
+
+### Other Notes
+
+- Add _Nullable annotation to SKYRecord setObject #244
+
 ## 1.7.0 (2019-01-21)
 
 ### Bug Fixes
 
 - Clear up websocket state when socket closed (#243)
-
-
 
 ## 1.6.4 (2018-11-12)
 
